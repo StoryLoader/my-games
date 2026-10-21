@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>승부차기 · 민준이의 오락실</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #2f6bff;
+      --blue-dark: #1d46b0;
+      --navy: #1d3a7a;
+      --purple: #ffb347;
+      --display: 'Black Han Sans', 'Do Hyeon', sans-serif;
+      --body: 'Jua', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      font-family: var(--body);
+      color: var(--navy);
+      background: linear-gradient(180deg, #ffffff 0%, #e6f2ff 40%, #b9dbff 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 40px;
+    }
+    button, a { font: inherit; }
+    :focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
+
+    .top {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .back {
+      padding: 10px 18px 12px;
+      border-radius: 999px;
+      color: #fff;
+      text-decoration: none;
+      background: var(--blue-dark);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), inset 0 -4px 0 rgba(0, 0, 0, .25), 0 6px 14px rgba(0, 0, 0, .2);
+    }
+    .back:hover { filter: brightness(1.1); }
+    h1 {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      color: var(--blue);
+      text-shadow: 0 2px 0 var(--blue-dark), 0 4px 0 #15337f;
+    }
+    .how { margin: 14px 0 10px; font-size: 1.15rem; text-align: center; }
+
+    .board {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--display);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    canvas {
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 3 / 4;
+      border-radius: 20px;
+      border: 4px solid #fff;
+      box-shadow: 0 14px 30px rgba(29, 58, 122, .25);
+      cursor: crosshair;
+      touch-action: manipulation;
+    }
+    .again {
+      margin-top: 16px;
+      padding: 12px 30px 14px;
+      border: none;
+      border-radius: 999px;
+      font-family: var(--display);
+      font-size: 1.4rem;
+      color: #2b1a0e;
+      background: var(--purple);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), inset 0 -5px 0 rgba(0, 0, 0, .25), 0 8px 18px rgba(0, 0, 0, .2);
+      cursor: pointer;
+    }
+    .again[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <a class="back" href="../arcade.html">⬅️ 오락실</a>
+    <h1>⚽ 승부차기</h1>
+  </div>
+  <p class="how">골대를 눌러서 슛! 골키퍼를 피해서 넣어 봐 🥅</p>
+  <div class="board">
+    <span id="score">골 0</span>
+    <span id="left">남은 공 10</span>
+  </div>
+  <canvas id="game" width="480" height="640" aria-label="승부차기 게임 화면"></canvas>
+  <button class="again" id="again" hidden>다시 하기 🔄</button>
+
+  <script>
+    const cv = document.getElementById('game');
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    const GOAL = { x: 60, y: 70, w: 360, h: 150 };
+    const START = { x: W / 2, y: 560 };
+    const TOTAL = 10;
+
+    let score = 0, shots = 0, t = 0;
+    let ball = null;          // 날아가는 공
+    let message = null;       // '골!' / '막혔다!'
+    const keeper = { x: W / 2, w: 90, h: 70, speed: 2.2 };
+
+    function hud() {
+      document.getElementById('score').textContent = '골 ' + score;
+      document.getElementById('left').textContent = '남은 공 ' + (TOTAL - shots);
+    }
+
+    // 화면을 누른 곳으로 슛
+    cv.addEventListener('click', e => {
+      if (ball || shots >= TOTAL) return;
+      const r = cv.getBoundingClientRect();
+      const tx = (e.clientX - r.left) * W / r.width;
+      const ty = (e.clientY - r.top) * H / r.height;
+      ball = { x: START.x, y: START.y, tx, ty: Math.min(ty, GOAL.y + GOAL.h - 10), p: 0 };
+      message = null;
+    });
+
+    document.getElementById('again').addEventListener('click', () => {
+      score = 0; shots = 0; ball = null; message = null;
+      keeper.speed = 2.2;
+      document.getElementById('again').hidden = true;
+      hud();
+    });
+
+    function finishShot() {
+      const inGoal = ball.tx > GOAL.x && ball.tx < GOAL.x + GOAL.w && ball.ty > GOAL.y;
+      const saved = Math.abs(ball.tx - keeper.x) < keeper.w / 2 + 14 && ball.ty > GOAL.y + GOAL.h - keeper.h - 40;
+      shots++;
+      if (inGoal && !saved) { score++; message = { text: '골!!! ⚽', color: '#2f6bff' }; keeper.speed += 0.3; }
+      else message = { text: inGoal ? '막혔다! 🧤' : '빗나갔다! 😅', color: '#1d46b0' };
+      message.time = t;
+      ball = null;
+      hud();
+      if (shots >= TOTAL) {
+        setTimeout(() => {
+          message = { text: `끝! ${score}골 🏆`, color: '#1d3a7a', time: t, stay: true };
+          document.getElementById('again').hidden = false;
+        }, 900);
+      }
+    }
+
+    function draw() {
+      t++;
+      // 잔디
+      for (let i = 0; i < 8; i++) {
+        ctx.fillStyle = i % 2 ? '#5fb14a' : '#55a243';
+        ctx.fillRect(0, i * H / 8, W, H / 8);
+      }
+      // 골대 + 그물
+      ctx.fillStyle = 'rgba(255,255,255,.25)';
+      ctx.fillRect(GOAL.x, GOAL.y, GOAL.w, GOAL.h);
+      ctx.strokeStyle = 'rgba(255,255,255,.6)';
+      ctx.lineWidth = 1;
+      for (let x = GOAL.x; x <= GOAL.x + GOAL.w; x += 20) { ctx.beginPath(); ctx.moveTo(x, GOAL.y); ctx.lineTo(x, GOAL.y + GOAL.h); ctx.stroke(); }
+      for (let y = GOAL.y; y <= GOAL.y + GOAL.h; y += 20) { ctx.beginPath(); ctx.moveTo(GOAL.x, y); ctx.lineTo(GOAL.x + GOAL.w, y); ctx.stroke(); }
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(GOAL.x, GOAL.y, GOAL.w, GOAL.h + 6);
+      // 페널티 점
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(START.x, START.y + 20, 6, 0, Math.PI * 2); ctx.fill();
+
+      // 골키퍼 (좌우로 움직임)
+      keeper.x += keeper.speed;
+      if (keeper.x > GOAL.x + GOAL.w - keeper.w / 2 || keeper.x < GOAL.x + keeper.w / 2) keeper.speed *= -1;
+      const ky = GOAL.y + GOAL.h - keeper.h;
+      ctx.fillStyle = '#ff9f1a';
+      ctx.fillRect(keeper.x - keeper.w / 2, ky + 20, keeper.w, keeper.h - 20);
+      ctx.fillStyle = '#ffdcbf';
+      ctx.fillRect(keeper.x - 20, ky - 14, 40, 36);
+      ctx.fillStyle = '#1a1530';
+      ctx.fillRect(keeper.x - 11, ky, 6, 9); ctx.fillRect(keeper.x + 5, ky, 6, 9);
+
+      // 공
+      let bx = START.x, by = START.y, br = 18;
+      if (ball) {
+        ball.p = Math.min(ball.p + 0.04, 1);
+        bx = START.x + (ball.tx - START.x) * ball.p;
+        by = START.y + (ball.ty - START.y) * ball.p - Math.sin(Math.PI * ball.p) * 60;
+        br = 18 - ball.p * 6;
+        if (ball.p >= 1) finishShot();
+      }
+      if (shots < TOTAL || ball) {
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#1a1530';
+        ctx.beginPath(); ctx.arc(bx, by, br * 0.35, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // 메시지
+      if (message && (message.stay || t - message.time < 70)) {
+        ctx.font = '64px "Black Han Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = '#fff';
+        ctx.strokeText(message.text, W / 2, 380);
+        ctx.fillStyle = message.color;
+        ctx.fillText(message.text, W / 2, 380);
+      }
+      requestAnimationFrame(draw);
+    }
+    hud();
+    draw();
+  </script>
+</body>
+</html>

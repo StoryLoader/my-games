@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>두더지 잡기 · 민준이의 오락실</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night: #0b1530;
+      --night-deep: #050a1c;
+      --night-glow: #1b3a6b;
+      --ink: #ffffff;
+      --ink-soft: #cfe0ff;
+      --blue: #2f6bff;
+      --blue-light: #7fd1ff;
+      --blue-dark: #1d46b0;
+      --wood: #c69c5d;
+      --wood-ink: #2b1a0e;
+      --wood-edge: #6e4a25;
+      --grass: #5fb14a;
+      --torch: #ffb347;
+      --game: 'Jua', sans-serif;
+
+      /* 잔디밭 만화 팔레트 (테두리는 전부 --line 한 가지) */
+      --line: var(--wood-ink);
+      --sky-top: #5cbcff;
+      --sky-bottom: #d2f0ff;
+      --hill-far: #a7de7c;
+      --hill-near: #88cf5e;
+      --meadow: #7cc653;
+      --meadow-deep: #68b746;
+      --turf: #92d965;
+      --turf-tuft: #b5eb88;
+      --dirt: #c4854a;
+      --dirt-side: #93582c;
+      --dirt-speck: #7d4823;
+      --alarm: #ff5d73;
+      /* 나무 표지판의 나무결과 판자 이음새 (테두리와 같은 잉크로) */
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%236e4a25' stroke-opacity='.42' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M10 24C45 18 75 30 112 23S168 18 186 25'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M30 38C44 36 52 40 64 38'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M24 74C58 68 92 81 128 72S170 70 190 76'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M70 90C88 86 104 93 122 88'/%3E%3Cellipse vector-effect='non-scaling-stroke' cx='152' cy='42' rx='7' ry='3.4'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='.55' stroke-width='2' d='M0 56H200'/%3E%3C/g%3E%3C/svg%3E");
+      --grain-plain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%236e4a25' stroke-opacity='.42' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M10 24C45 18 75 30 112 23S168 18 186 25'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M30 38C44 36 52 40 64 38'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M24 74C58 68 92 81 128 72S170 70 190 76'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M70 90C88 86 104 93 122 88'/%3E%3Cellipse vector-effect='non-scaling-stroke' cx='152' cy='42' rx='7' ry='3.4'/%3E%3C/g%3E%3C/svg%3E");
+      --lip: 26px; /* 잔디판 아래로 보이는 흙 옆면 두께 */
+      color-scheme: light;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { scrollbar-color: var(--meadow-deep) var(--sky-bottom); }
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      font-family: var(--game);
+      color: var(--line);
+      background: linear-gradient(var(--sky-top), var(--sky-bottom) 42%) fixed, var(--sky-bottom);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      word-break: keep-all;
+    }
+    ::selection { background: var(--torch); color: var(--line); }
+    :focus-visible { outline: 3px solid var(--line); outline-offset: 3px; border-radius: 14px; }
+    button, a { font: inherit; color: inherit; }
+    svg { display: block; }
+
+    /* ───── 배경: 하늘, 구름, 언덕, 풀밭 ───── */
+    .scenery { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .cloud {
+      position: absolute;
+      left: 0;
+      width: var(--w, 130px);
+      height: calc(var(--w, 130px) * 64 / 130); /* 구름 그림 비율. 없으면 SVG 기본 높이 150px 가운데에 그려져 아래로 처진다 */
+      animation: drift var(--t, 90s) linear infinite;
+      animation-delay: var(--d, 0s);
+    }
+    @keyframes drift {
+      from { transform: translateX(-40vw); }
+      to { transform: translateX(110vw); }
+    }
+    .hills {
+      position: absolute;
+      left: 0;
+      top: 22vh;
+      top: 22svh;
+      width: 100%;
+      height: 20vh;
+      height: 20svh;
+    }
+    .meadow {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(42vh - 2px);
+      top: calc(42svh - 2px);
+      bottom: 0;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='110'%3E%3Cg fill='none' stroke='%2393d26c' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M40 40l-3-5M44 40l0-7'/%3E%3Cpath d='M98 92l-1-6M102 92l2-7M106 92l3-4'/%3E%3C/g%3E%3C/svg%3E") 37px 23px / 130px 110px,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='70'%3E%3Cg fill='none' stroke='%239ad874' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M14 26l-2-7M18 26l1-9M22 26l3-6'/%3E%3Cpath d='M62 54l-2-6M66 54l1-8M70 54l3-5'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 90px 70px,
+        linear-gradient(var(--hill-near), var(--meadow) 30%, var(--meadow-deep));
+    }
+    .flower { position: absolute; width: var(--s, 22px); }
+
+    /* ───── 화면 틀 ───── */
+    .page {
+      position: relative;
+      width: min(100%, 592px);
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(12px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+    .title {
+      grid-column: 2;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 7.4vw, 2.5rem);
+      line-height: 1.1;
+      color: #fff;
+      letter-spacing: .01em;
+      -webkit-text-stroke: .15em var(--line);
+      paint-order: stroke fill;
+      text-shadow: 0 .09em 0 var(--line);
+      white-space: nowrap;
+    }
+
+    /* 나무 표지판 (뒤로가기, 점수, 시간) */
+    .sign, .back {
+      position: relative;
+      border: 3px solid var(--line);
+      background: var(--grain) center / 100% 100% no-repeat, var(--wood);
+      color: var(--wood-ink);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .32), inset 0 -5px 0 var(--wood-edge), 0 6px 12px rgba(43, 26, 14, .22);
+    }
+    .back {
+      grid-column: 1;
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 7px 13px 10px 9px;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: transform .15s ease-out;
+    }
+    .back svg { width: 20px; height: 20px; }
+    .back:hover { transform: translateY(-2px) rotate(-2deg); }
+    .back:active { transform: translateY(2px); }
+
+    .hud {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+    }
+    .sign {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+      padding: 7px 12px 12px 15px;
+      border-radius: 16px;
+    }
+    /* 표지판 못 */
+    .sign::before, .sign::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--wood-edge);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35);
+    }
+    .sign::before { left: 5px; }
+    .sign::after { right: 5px; }
+    .label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: .9rem;
+      line-height: 1.2;
+      white-space: nowrap;
+      color: var(--wood-ink);
+    }
+    .ico { flex: none; width: 22px; height: 22px; }
+    .num {
+      display: block;
+      margin-top: 1px;
+      font-size: clamp(1.7rem, 7vw, 2.2rem);
+      line-height: 1.05;
+      color: #fff;
+      -webkit-text-stroke: .14em var(--line);
+      paint-order: stroke fill;
+      font-variant-numeric: tabular-nums;
+      transform-origin: left center;
+    }
+    .num small { margin-left: 2px; font-size: .55em; }
+    .bar {
+      display: block;
+      height: 7px;
+      margin-top: 4px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--wood-edge);
+      box-shadow: inset 0 0 0 1.5px var(--line);
+    }
+    .bar i {
+      display: block;
+      height: 100%;
+      background: #7fe05a;
+      box-shadow: inset 0 -2px 0 rgba(43, 26, 14, .25);
+      transform-origin: left;
+    }
+    .time.low .num { color: var(--alarm); }
+    .time.low .bar i { background: var(--alarm); }
+
+    /* 파란 3D 버튼 (게임 시작, 결과 창의 다시 하기) */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 128px;
+      padding: 4px 16px 9px 13px;
+      border: 3px solid var(--line);
+      border-radius: 18px;
+      font-size: 1.32rem;
+      line-height: 1.1;
+      color: #fff;
+      -webkit-text-stroke: .13em var(--line);
+      paint-order: stroke fill;
+      background: var(--blue);
+      box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), inset 0 -6px 0 var(--blue-dark), 0 7px 14px rgba(43, 26, 14, .25);
+      cursor: pointer;
+      transition: transform .15s ease-out;
+    }
+    .cta svg { width: 24px; height: 24px; flex: none; }
+    .cta:hover { transform: translateY(-2px); background-color: #4a7fff; }
+    .cta:active {
+      transform: translateY(3px);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .3), inset 0 -2px 0 var(--blue-dark), 0 3px 8px rgba(43, 26, 14, .25);
+    }
+    /* 게임 중에는 '그만하기' 나무 버튼 */
+    [data-state="play"] .start, [data-state="over"] .start {
+      background: var(--grain) center / 100% 100% no-repeat, var(--wood);
+      box-shadow: inset 0 4px 0 rgba(255, 255, 255, .32), inset 0 -6px 0 var(--wood-edge), 0 7px 14px rgba(43, 26, 14, .25);
+    }
+    [data-state="play"] .start:hover, [data-state="over"] .start:hover { background-color: #d2aa6c; }
+
+    /* ───── 잔디판 ───── */
+    .yard {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 18px 0 8px;
+    }
+    /* 잔디판은 남은 높이를 쓴다. 가로 화면은 거의 정사각형, 세로로 긴 휴대폰은 줄 간격을 벌려 길쭉하게.
+       196px = 맨 위 줄 + 점수판 + 위아래 여백 (.yard 높이는 컨테이너 단위로 못 읽어서 화면 높이로 계산) */
+    .field {
+      position: relative;
+      container-type: inline-size;
+      width: min(100%, 540px, max(272px, 100vh - 250px));
+      width: min(100%, 540px, max(272px, 100svh - 250px));
+      aspect-ratio: 1 / var(--tall, 1.06);
+      max-height: max(288px, 100vh - 196px);
+      max-height: max(288px, 100svh - 196px);
+      display: flex;
+      flex-direction: column;
+      padding-bottom: var(--lip);
+    }
+    @media (orientation: portrait) {
+      .field { --tall: 1.5; }
+    }
+    /* 잔디판 앞쪽 옆면: 물결 잔디 + 흙 */
+    .side {
+      position: absolute;
+      inset: 28px 0 0;
+      border: 3.5px solid var(--line);
+      border-radius: 34px;
+      background:
+        linear-gradient(var(--grass), var(--grass)) top / 100% calc(100% - 15px) no-repeat,
+        radial-gradient(circle at 50% 0, var(--grass) 7px, transparent 7.5px) 4px calc(100% + 3px) / 22px 18px repeat-x,
+        radial-gradient(circle, var(--dirt-speck) 1.5px, transparent 2px) 0 0 / 15px 9px,
+        var(--dirt-side);
+      box-shadow: 0 14px 26px rgba(40, 90, 20, .3);
+    }
+    .turf {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      padding: 3.5cqw 3.5cqw 2cqw;
+      border: 3.5px solid var(--line);
+      border-radius: 34px;
+      background:
+        radial-gradient(120% 70% at 50% 0%, rgba(255, 255, 255, .2), transparent 70%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='none' stroke='%23b5eb88' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 24l-2-6M16 24l1-8M20 24l3-5'/%3E%3Cpath d='M50 12l-2-5M54 12l1-7M58 12l3-4'/%3E%3Cpath d='M44 62l-2-6M48 62l1-8M52 62l3-5'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 72px 72px,
+        var(--turf);
+      box-shadow: inset 0 5px 0 rgba(255, 255, 255, .28), inset 0 -7px 0 rgba(60, 130, 40, .3);
+    }
+    .holes {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 1cqw 2cqw;
+    }
+    /* 버튼(누르는 자리)은 칸 전체, 구멍 그림(.art)은 칸 아래쪽 정사각형 */
+    .hole {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 0;
+      border: 0;
+      background: none;
+      border-radius: 50% 50% 46% 46% / 30% 30% 22% 22%;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg transform='rotate(-30 20 20)' stroke='%232b1a0e' stroke-width='2.5' stroke-linejoin='round'%3E%3Crect x='16' y='15' width='7' height='23' rx='3.5' fill='%23e9c58c'/%3E%3Crect x='6' y='4' width='27' height='14' rx='6' fill='%232f6bff'/%3E%3Crect x='10' y='7' width='11' height='3' rx='1.5' fill='%23ffffff' stroke='none' opacity='.55'/%3E%3C/g%3E%3C/svg%3E") 4 18, pointer;
+    }
+    .hole:focus-visible { outline-offset: -4px; }
+    .art { position: relative; display: block; width: 100%; aspect-ratio: 1; }
+    .dig { width: 100%; height: 100%; overflow: visible; transform-origin: 50% 88%; }
+
+    /* 두더지: 숨어 있을 때는 구멍 아래로 내려가 있고(.pit-clip 밖이라 안 보임), .up이면 쏙 올라온다 */
+    .mole { transform: translateY(80px); transition: transform .18s ease-in; }
+    .hole.up .mole { transform: none; transition: transform .34s cubic-bezier(.25, 1.6, .45, 1); }
+    .mole-body { transform-box: fill-box; transform-origin: 50% 100%; }
+    .hole.up .mole-body { animation: boing .5s ease-out; }
+    @keyframes boing {
+      0% { transform: scale(.88, 1.14); }
+      45% { transform: scale(1.08, .93); }
+      75% { transform: scale(.98, 1.03); }
+    }
+    .paws { opacity: 0; transform: translateY(8px); transition: opacity .08s, transform .1s ease-in; }
+    .hole.up .paws { opacity: 1; transform: none; transition: opacity .1s .12s, transform .24s .12s cubic-bezier(.25, 1.6, .45, 1); }
+    /* 잡힌 두더지는 내려가는 애니메이션 없이 바로 사라진다 */
+    .hole.hit .mole, .hole.hit .paws { transition: none; }
+
+    .fx { position: absolute; inset: 0; pointer-events: none; }
+    /* 잡았을 때: 팡 터지는 별 + '+1' */
+    .pow {
+      position: absolute;
+      left: 50%;
+      top: 44%;
+      width: 82%;
+      translate: -50% -50%;
+    }
+    .pow svg { width: 100%; height: auto; aspect-ratio: 1; overflow: visible; }
+    .plus {
+      position: absolute;
+      left: 50%;
+      top: -12%;
+      translate: -50% 0;
+      font-size: min(8cqw, 2.6rem);
+      line-height: 1;
+      color: #fff;
+      -webkit-text-stroke: .15em var(--line);
+      paint-order: stroke fill;
+      white-space: nowrap;
+    }
+    .clod {
+      position: absolute;
+      left: 50%;
+      top: 68%;
+      width: var(--s);
+      height: var(--s);
+      margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+      border-radius: 45% 55% 50% 40%;
+      background: var(--dirt);
+      border: 2px solid var(--line);
+    }
+
+    /* 시작! 배너 */
+    .banner {
+      position: absolute;
+      inset: 0 0 var(--lip);
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+    .banner-box { text-align: center; color: #fff; -webkit-text-stroke: .12em var(--line); paint-order: stroke fill; }
+    .banner-main {
+      display: block;
+      font-size: 17cqw;
+      line-height: 1;
+      text-shadow: 0 .07em 0 var(--line), 0 .16em .22em rgba(43, 26, 14, .3);
+    }
+
+    /* 결과 창: 시간이 0이 되면 잔디판 위에 나무 표지판 */
+    .result {
+      position: absolute;
+      inset: 0 0 var(--lip);
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      padding: 4cqw;
+      border-radius: 34px;
+      background: rgba(255, 255, 255, .38);
+      animation: fade-in .25s ease-out both;
+    }
+    @keyframes fade-in { from { opacity: 0; } }
+    .result-card {
+      position: relative;
+      width: min(100%, 340px);
+      padding: 14px 18px 22px;
+      border: 3.5px solid var(--line);
+      border-radius: 26px;
+      text-align: center;
+      color: var(--wood-ink);
+      background: var(--grain-plain) center / 100% 100% no-repeat, var(--wood);
+      box-shadow: inset 0 4px 0 rgba(255, 255, 255, .32), inset 0 -7px 0 var(--wood-edge), 0 14px 28px rgba(43, 26, 14, .35);
+      animation: card-pop .5s cubic-bezier(.2, 1.4, .4, 1) .05s both;
+    }
+    @keyframes card-pop { from { transform: scale(.6) rotate(-6deg); opacity: 0; } }
+    .result-card::before, .result-card::after {
+      content: '';
+      position: absolute;
+      top: 9px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--wood-edge);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35);
+    }
+    .result-card::before { left: 10px; }
+    .result-card::after { right: 10px; }
+    .result-title {
+      font-weight: 400;
+      font-size: min(12.5cqw, 3.3rem);
+      line-height: 1.1;
+      color: #fff;
+      -webkit-text-stroke: .13em var(--line);
+      paint-order: stroke fill;
+      text-shadow: 0 .07em 0 var(--line);
+      rotate: -3deg;
+    }
+    .result-label { margin-top: 8px; font-size: min(5.2cqw, 1.3rem); }
+    .result-score {
+      font-size: min(7cqw, 1.8rem);
+      line-height: 1;
+      color: #fff;
+      -webkit-text-stroke: .14em var(--line);
+      paint-order: stroke fill;
+    }
+    .result-score b {
+      font-weight: 400;
+      font-size: 2.7em;
+      font-variant-numeric: tabular-nums;
+    }
+    .result .cta { margin-top: 14px; }
+
+    /* 휴대폰: 시작 버튼을 아이콘 위·글자 아래로 세워서 표지판 자리를 넓힌다 */
+    @media (max-width: 480px) {
+      .start {
+        flex-direction: column;
+        gap: 0;
+        min-width: 94px;
+        padding: 5px 10px 10px;
+        font-size: 1.08rem;
+      }
+      .start svg { width: 28px; height: 28px; }
+      .sign { padding-inline: 12px 9px; }
+      .label { font-size: .84rem; }
+      .ico { width: 19px; height: 19px; }
+    }
+    @media (max-width: 360px) {
+      .ico { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cloud { animation: none; transform: translateX(var(--x, 10vw)); }
+      .back, .cta { transition: none; }
+      .mole, .hole.up .mole, .paws, .hole.up .paws { transition-duration: .01s; transition-delay: 0s; }
+      .hole.up .mole-body, .result, .result-card { animation: none; }
+    }
+  </style>
+</head>
+<body data-state="ready">
+  <!-- 그림 조각 (아이콘, 풀, 꽃) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- 구멍 그림(120×120) 좌표: 구멍 가운데 줄 위쪽 전부 + 구멍 안쪽 타원. 두더지는 이 안에서만 보인다 -->
+      <clipPath id="pit-clip" clipPathUnits="userSpaceOnUse">
+        <rect x="0" y="-60" width="120" height="143"/>
+        <ellipse cx="60" cy="83" rx="32.5" ry="11"/>
+      </clipPath>
+      <symbol id="i-back" viewBox="0 0 24 24">
+        <path d="M13.5 5 6.5 12l7 7M7.5 12H19" fill="none" stroke="#2b1a0e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-mallet" viewBox="0 0 40 40">
+        <g transform="rotate(-30 20 20)" stroke="#2b1a0e" stroke-width="2.5" stroke-linejoin="round">
+          <rect x="16" y="15" width="7" height="23" rx="3.5" fill="#e9c58c"/>
+          <rect x="6" y="4" width="27" height="14" rx="6" fill="#2f6bff"/>
+          <rect x="10" y="7" width="11" height="3" rx="1.5" fill="#fff" stroke="none" opacity=".55"/>
+        </g>
+      </symbol>
+      <symbol id="i-watch" viewBox="0 0 40 40">
+        <g stroke="#2b1a0e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+          <rect x="16" y="3" width="8" height="6" rx="2" fill="#2f6bff"/>
+          <path d="M30 9.5 33 7" fill="none"/>
+          <circle cx="20" cy="23" r="14" fill="#fff"/>
+          <path d="M20 23v-8M20 23l5 3" fill="none"/>
+          <circle cx="20" cy="23" r="1.6" fill="#2b1a0e" stroke="none"/>
+        </g>
+      </symbol>
+      <symbol id="i-play" viewBox="0 0 24 24">
+        <path d="M8 4.8 19 12 8 19.2Z" fill="#fff" stroke="#2b1a0e" stroke-width="2.4" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24">
+        <rect x="5.5" y="5.5" width="13" height="13" rx="3" fill="#fff" stroke="#2b1a0e" stroke-width="2.4"/>
+      </symbol>
+      <symbol id="i-again" viewBox="0 0 24 24">
+        <g fill="none" stroke-linecap="round">
+          <path d="M18.4 13.6A6.6 6.6 0 1 1 16.6 7" stroke="#2b1a0e" stroke-width="6.2"/>
+          <path d="M18.4 13.6A6.6 6.6 0 1 1 16.6 7" stroke="#fff" stroke-width="2.4"/>
+        </g>
+        <path d="M13.6 3.4 20.4 4.6 18.3 11Z" fill="#fff" stroke="#2b1a0e" stroke-width="2.2" stroke-linejoin="round"/>
+      </symbol>
+      <g id="tuft">
+        <path d="M0 0C1-6 2-10 3-13 4.5-8 5-5 6-2 7-8 9-13 11-16 11.5-9 11.5-5 12-1 13.5-6 15.5-9 18-10 16.5-5 16-2 16 0Z" fill="#5fb14a" stroke="#2b1a0e" stroke-width="2.2" stroke-linejoin="round"/>
+      </g>
+      <symbol id="flower" viewBox="0 0 30 30">
+        <g fill="currentColor" stroke="#2b1a0e" stroke-width="2">
+          <circle cx="15" cy="7.5" r="5.5"/>
+          <circle cx="22.2" cy="12.8" r="5.5"/>
+          <circle cx="19.4" cy="21.2" r="5.5"/>
+          <circle cx="10.6" cy="21.2" r="5.5"/>
+          <circle cx="7.8" cy="12.8" r="5.5"/>
+          <circle cx="15" cy="15" r="4.4" fill="#ffd23f"/>
+        </g>
+      </symbol>
+      <symbol id="cloud" viewBox="0 0 130 64">
+        <path d="M22 58C10 58 4 50 6 41 8 33 15 29 23 30 24 17 36 8 50 11 57 3 72 1 82 9 92 5 105 10 108 22 120 22 127 32 125 42 123 52 115 58 106 58Z" fill="#fff" stroke="#2b1a0e" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M14 50C24 53 40 52 52 50 66 53 88 53 104 50 112 50 118 47 121 43" fill="none" stroke="#cfe9fb" stroke-width="5" stroke-linecap="round"/>
+      </symbol>
+      <!-- 두더지를 잡았을 때 팡! 터지는 별 -->
+      <symbol id="pow" viewBox="0 0 100 100" overflow="visible">
+        <path d="M50 1.8 57.9 20.6 74.9 6.9 72.3 27.7 92.7 25.4 80.4 41.9 92.6 50 77.8 57.5 94.3 75.6 71.1 71.1 75.4 94 56.9 75.8 50 96.7 42.9 76.6 26.3 91.1 29.2 70.8 13.3 71.2 23.6 57.1 5.1 50 19.7 41.9 7.1 25.3 30.9 30.9 25.1 6.9 43 24Z" fill="#ffd23f" stroke="#2b1a0e" stroke-width="3.2" stroke-linejoin="round"/>
+        <path d="M59.8 19.7 59.6 36.7 72.1 34 68.6 43.9 78.8 50 66 55.2 78 70.3 61.5 65.9 59.1 78 50 70 40.3 79.8 39 65.2 26.7 66.9 31.1 56.2 17.6 50 31 43.8 22.6 30.1 39.9 36.1 40.7 21.5 50 33.4Z" fill="#ff7a3d" stroke="#2b1a0e" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M44 44 50 38 56 44 50 50Z" fill="#fff"/>
+        <circle cx="62" cy="38" r="2.6" fill="#fff"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="scenery" aria-hidden="true">
+    <!-- 구름은 맨 위 줄(뒤로가기·제목) 높이로만 지나간다: 점수판 틈이나 언덕에 잘려 보이지 않게 -->
+    <svg class="cloud" style="top:6px;--w:112px;--t:100s;--d:-20s;--x:8vw"><use href="#cloud"/></svg>
+    <svg class="cloud" style="top:12px;--w:84px;--t:130s;--d:-80s;--x:70vw"><use href="#cloud"/></svg>
+    <svg class="hills" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <path d="M-20 104C140 30 300 26 450 92 560 140 690 40 840 52 980 64 1080 34 1220 70V230H-20Z" fill="#a7de7c" stroke="#2b1a0e" stroke-width="3" vector-effect="non-scaling-stroke"/>
+      <path d="M-20 156C170 104 340 112 520 150 700 190 860 104 1040 118 1110 124 1160 134 1220 146V230H-20Z" fill="#88cf5e" stroke="#2b1a0e" stroke-width="3" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <div class="meadow" id="meadow"></div>
+  </div>
+
+  <div class="page">
+    <header class="top">
+      <a class="back" href="../arcade.html"><svg aria-hidden="true"><use href="#i-back"/></svg>오락실</a>
+      <h1 class="title">두더지 잡기</h1>
+    </header>
+
+    <section class="hud" aria-label="게임 정보">
+      <div class="sign">
+        <span class="label"><svg class="ico" aria-hidden="true"><use href="#i-mallet"/></svg>점수</span>
+        <output class="num" id="score">0</output>
+      </div>
+      <div class="sign time" id="timeSign">
+        <span class="label"><svg class="ico" aria-hidden="true"><use href="#i-watch"/></svg>남은 시간</span>
+        <span class="num"><output id="time">30</output><small>초</small></span>
+        <span class="bar" aria-hidden="true"><i id="bar"></i></span>
+      </div>
+      <button class="cta start" id="startBtn" type="button">
+        <svg aria-hidden="true"><use id="startIcon" href="#i-play"/></svg>
+        <span id="startLabel">게임 시작</span>
+      </button>
+    </section>
+
+    <main class="yard">
+      <div class="field">
+        <div class="side" aria-hidden="true"></div>
+        <div class="turf">
+          <div class="holes" id="holes" role="group" aria-label="두더지 구멍 9개"></div>
+        </div>
+        <div class="banner" id="banner" hidden>
+          <div class="banner-box" id="bannerBox" role="status">
+            <span class="banner-main" id="bannerMain"></span>
+          </div>
+        </div>
+        <div class="result" id="result" hidden>
+          <div class="result-card" role="dialog" aria-labelledby="resultTitle" aria-describedby="resultScore">
+            <h2 class="result-title" id="resultTitle">게임 오버!</h2>
+            <p class="result-label">최종 점수</p>
+            <p class="result-score" id="resultScore"><b id="finalScore">0</b>점</p>
+            <button class="cta" id="againBtn" type="button">
+              <svg aria-hidden="true"><use href="#i-again"/></svg>
+              <span>다시 하기</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <template id="holeTpl">
+    <button class="hole" type="button">
+      <span class="art">
+        <svg class="dig" viewBox="0 0 120 120" aria-hidden="true">
+          <ellipse cx="60" cy="88" rx="54" ry="25" fill="#93582c" stroke="#2b1a0e" stroke-width="3.5"/>
+          <ellipse cx="60" cy="84" rx="49" ry="19" fill="#c4854a"/>
+          <path d="M23 80Q60 56 97 80" fill="none" stroke="#dea66b" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="60" cy="83" rx="34" ry="12.5" fill="#2e190b" stroke="#2b1a0e" stroke-width="3"/>
+          <ellipse cx="60" cy="86.5" rx="27" ry="7.5" fill="#140a04"/>
+          <circle cx="17" cy="88" r="2.6" fill="#dea66b"/>
+          <circle cx="25" cy="97" r="1.8" fill="#7d4823"/>
+          <circle cx="101" cy="90" r="2.2" fill="#dea66b"/>
+          <circle cx="86" cy="104" r="2.4" fill="#7d4823"/>
+          <g clip-path="url(#pit-clip)">
+            <g class="mole">
+              <g class="mole-body">
+                <path d="M33 112V58C33 39 45 28 60 28S87 39 87 58V112Z" fill="#7d5f55" stroke="#2b1a0e" stroke-width="3"/>
+                <path d="M41 50C42 41 48 35 56 33" fill="none" stroke="#9e8074" stroke-width="3.5" stroke-linecap="round"/>
+                <path d="M55.5 29 54 22.5M60 28V21M64.5 29 66 22.5" fill="none" stroke="#2b1a0e" stroke-width="2.4" stroke-linecap="round"/>
+                <ellipse cx="60" cy="63" rx="17" ry="12.5" fill="#f1d3bc"/>
+                <ellipse cx="47" cy="47" rx="3.2" ry="4.2" fill="#2b1a0e"/>
+                <ellipse cx="73" cy="47" rx="3.2" ry="4.2" fill="#2b1a0e"/>
+                <circle cx="48.2" cy="45.4" r="1.2" fill="#fff"/>
+                <circle cx="74.2" cy="45.4" r="1.2" fill="#fff"/>
+                <ellipse cx="41" cy="58" rx="5" ry="3" fill="#ffa3b5"/>
+                <ellipse cx="79" cy="58" rx="5" ry="3" fill="#ffa3b5"/>
+                <path d="M56.5 66.2h7v4.6a1.6 1.6 0 0 1-1.6 1.6h-3.8a1.6 1.6 0 0 1-1.6-1.6Z" fill="#fff" stroke="#2b1a0e" stroke-width="1.8"/>
+                <path d="M60 66.4v5.6" stroke="#2b1a0e" stroke-width="1.4"/>
+                <path d="M52.5 64Q56.2 67.6 60 64.6 63.8 67.6 67.5 64" fill="none" stroke="#2b1a0e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <ellipse cx="60" cy="57" rx="7.5" ry="5.6" fill="#ff7a96" stroke="#2b1a0e" stroke-width="2.4"/>
+                <ellipse cx="57.6" cy="55.4" rx="2.4" ry="1.5" fill="#fff" opacity=".7"/>
+              </g>
+            </g>
+          </g>
+          <g class="paws">
+            <ellipse cx="43" cy="92" rx="8" ry="5.5" fill="#f6b8a5" stroke="#2b1a0e" stroke-width="2.4"/>
+            <ellipse cx="77" cy="92" rx="8" ry="5.5" fill="#f6b8a5" stroke="#2b1a0e" stroke-width="2.4"/>
+            <path d="M40 89.5V93M43.5 89v4M47 89.5V93M73 89.5V93M76.5 89v4M80 89.5V93" stroke="#2b1a0e" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+          <use href="#tuft" transform="translate(1 104)"/>
+          <use href="#tuft" transform="translate(101 112) scale(.8)"/>
+        </svg>
+        <span class="fx"></span>
+      </span>
+    </button>
+  </template>
+
+  <script>
+  (() => {
+    const $ = id => document.getElementById(id);
+    const GAME_SECONDS = 30;
+    const LOW_SECONDS = 5;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const holesEl = $('holes');
+    const timeEl = $('time');
+    const timeSign = $('timeSign');
+    const bar = $('bar');
+    const startBtn = $('startBtn');
+    const scoreEl = $('score');
+    const banner = $('banner');
+    const bannerBox = $('bannerBox');
+    const result = $('result');
+
+    let state = 'ready';
+    let score = 0;
+    let endAt = 0;
+    let shownSec = GAME_SECONDS;
+    let raf = 0;
+    let bannerTimer = 0;
+
+    // ───── 풀밭에 꽃 심기 (매번 같은 자리) ─────
+    let seed = 7;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const PETALS = ['#ffffff', '#ffffff', '#ffb3c7', '#ffe27a', '#bfe3ff'];
+    const meadow = $('meadow');
+    for (let i = 0; i < 26; i++) {
+      const f = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      f.setAttribute('class', 'flower');
+      f.innerHTML = '<use href="#flower"/>';
+      f.style.left = (rnd() * 100 - 2) + '%';
+      f.style.top = (6 + rnd() * 88) + '%';
+      f.style.color = PETALS[Math.floor(rnd() * PETALS.length)];
+      f.style.setProperty('--s', (16 + rnd() * 14).toFixed(0) + 'px');
+      meadow.appendChild(f);
+    }
+
+    // ───── 구멍 9개 ─────
+    const tpl = $('holeTpl');
+    const holes = [];
+    for (let i = 0; i < 9; i++) {
+      const hole = tpl.content.firstElementChild.cloneNode(true);
+      hole.setAttribute('aria-label', `구멍 ${i + 1}`);
+      hole.addEventListener('pointerdown', () => whack(i));
+      hole.addEventListener('click', e => { if (e.detail === 0) whack(i); }); // 키보드 Enter/Space
+      holesEl.appendChild(hole);
+      holes.push(hole);
+    }
+
+    function kickDirt(hole, count) {
+      if (reduced) return;
+      const fx = hole.querySelector('.fx');
+      const w = hole.clientWidth;
+      for (let i = 0; i < count; i++) {
+        const c = document.createElement('span');
+        c.className = 'clod';
+        c.style.setProperty('--s', (w * (.05 + Math.random() * .04)).toFixed(1) + 'px');
+        fx.appendChild(c);
+        const dx = (Math.random() - .5) * w * .9;
+        const up = w * (.22 + Math.random() * .2);
+        const spin = (Math.random() - .5) * 400;
+        c.animate([
+          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${dx * .6}px, ${-up}px) rotate(${spin * .6}deg)`, opacity: 1, offset: .45 },
+          { transform: `translate(${dx}px, ${w * .08}px) rotate(${spin}deg)`, opacity: 0 },
+        ], { duration: 520 + Math.random() * 160, easing: 'cubic-bezier(.3, .7, .5, 1)' })
+          .onfinish = () => c.remove();
+      }
+    }
+
+    // 키보드 1~9 = 구멍 (위 줄부터 왼쪽→오른쪽), 숫자 패드는 패드 모양대로
+    const NUMPAD = { Numpad7: 0, Numpad8: 1, Numpad9: 2, Numpad4: 3, Numpad5: 4, Numpad6: 5, Numpad1: 6, Numpad2: 7, Numpad3: 8 };
+    addEventListener('keydown', e => {
+      if (e.repeat) return;
+      const i = e.code in NUMPAD ? NUMPAD[e.code] : /^Digit[1-9]$/.test(e.code) ? +e.code.slice(5) - 1 : -1;
+      if (i >= 0) whack(i);
+    });
+
+    // ───── 두더지: 한 번에 한 마리, 랜덤 구멍에서 1초 동안 ─────
+    const FIRST_MS = 1000;        // 시작 후 첫 두더지까지 ("시작!" 배너가 지나갈 시간)
+    const SHOW_MS = 1000;         // 올라와 있는 시간
+    const GAP_MS = [350, 700];    // 들어간 뒤 다음 두더지까지 쉬는 시간 (최소, 최대)
+    let moleAt = -1;              // 마지막으로 나온 구멍 (같은 구멍 연속 방지)
+    let upHole = -1;              // 지금 잡을 수 있는 두더지가 있는 구멍 (없으면 -1)
+    let moleTimer = 0;
+
+    function popMole() {
+      if (state !== 'play') return;
+      let i;
+      do { i = Math.floor(Math.random() * holes.length); } while (i === moleAt);
+      moleAt = upHole = i;
+      holes.forEach(h => h.classList.remove('hit'));
+      holes[i].classList.add('up');
+      kickDirt(holes[i], 4);
+      moleTimer = setTimeout(() => {
+        holes[i].classList.remove('up');
+        upHole = -1;
+        nextMole();
+      }, SHOW_MS);
+    }
+
+    function nextMole() {
+      moleTimer = setTimeout(popMole, GAP_MS[0] + Math.random() * (GAP_MS[1] - GAP_MS[0]));
+    }
+
+    function clearMoles() {
+      clearTimeout(moleTimer);
+      holes.forEach(h => h.classList.remove('up'));
+      moleAt = upHole = -1;
+    }
+
+    // 두더지를 잡으면 +1. 빈 구멍이나 이미 잡은 두더지(연타)는 아무 일도 없다
+    function whack(i) {
+      if (state !== 'play' || i !== upHole) return;
+      upHole = -1;
+      clearTimeout(moleTimer);
+      const hole = holes[i];
+      hole.classList.add('hit');
+      hole.classList.remove('up');
+      score++;
+      scoreEl.textContent = score;
+      if (!reduced) {
+        scoreEl.animate([{ transform: 'scale(1.35)' }, { transform: 'scale(1)' }], { duration: 280, easing: 'ease-out' });
+        hole.querySelector('.dig').animate([
+          { transform: 'scale(1, 1)' },
+          { transform: 'scale(1.07, .86)' },
+          { transform: 'scale(1, 1)' },
+        ], { duration: 220, easing: 'ease-out' });
+      }
+      pow(hole);
+      nextMole();
+    }
+
+    function pow(hole) {
+      const fx = hole.querySelector('.fx');
+      const star = document.createElement('span');
+      star.className = 'pow';
+      star.innerHTML = '<svg aria-hidden="true"><use href="#pow"/></svg>';
+      const plus = document.createElement('span');
+      plus.className = 'plus';
+      plus.textContent = '+1';
+      fx.append(star, plus);
+      if (!reduced) {
+        const tilt = (Math.random() - .5) * 30;
+        star.animate([
+          { transform: `scale(.3) rotate(${tilt - 20}deg)`, opacity: 1 },
+          { transform: `scale(1.1) rotate(${tilt}deg)`, opacity: 1, offset: .35 },
+          { transform: `scale(1.25) rotate(${tilt + 8}deg)`, opacity: 0 },
+        ], { duration: 420, easing: 'ease-out', fill: 'forwards' });
+        plus.animate([
+          { transform: 'translateY(30%) scale(.6)', opacity: 0 },
+          { transform: 'translateY(0) scale(1.1)', opacity: 1, offset: .25 },
+          { transform: 'translateY(-70%) scale(1)', opacity: 0 },
+        ], { duration: 700, easing: 'ease-out', fill: 'forwards' });
+      }
+      setTimeout(() => { star.remove(); plus.remove(); }, reduced ? 450 : 720);
+    }
+
+    // ───── 시작 / 그만 / 끝 ─────
+    const BUTTON = {
+      ready: ['#i-play', '게임 시작'],
+      play: ['#i-stop', '그만하기'],
+      over: ['#i-again', '다시 하기'],
+    };
+    function setState(s) {
+      state = s;
+      document.body.dataset.state = s;
+      $('startIcon').setAttribute('href', BUTTON[s][0]);
+      $('startLabel').textContent = BUTTON[s][1];
+    }
+
+    function setTime(sec) {
+      shownSec = sec;
+      timeEl.textContent = sec;
+      timeSign.classList.toggle('low', sec > 0 && sec <= LOW_SECONDS);
+      if (state === 'play' && sec > 0 && sec <= LOW_SECONDS && !reduced) {
+        timeEl.parentElement.animate(
+          [{ transform: 'scale(1.25)' }, { transform: 'scale(1)' }],
+          { duration: 300, easing: 'ease-out' });
+      }
+    }
+
+    function start() {
+      score = 0;
+      scoreEl.textContent = score;
+      result.hidden = true;
+      endAt = performance.now() + GAME_SECONDS * 1000;
+      setState('play');
+      setTime(GAME_SECONDS);
+      showBanner('시작!');
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(tick);
+      clearMoles();
+      moleTimer = setTimeout(popMole, FIRST_MS);
+    }
+
+    function tick() {
+      const left = Math.max(0, endAt - performance.now());
+      const sec = Math.ceil(left / 1000);
+      if (sec !== shownSec) setTime(sec);
+      bar.style.transform = `scaleX(${left / (GAME_SECONDS * 1000)})`;
+      if (left <= 0) return finish();
+      raf = requestAnimationFrame(tick);
+    }
+
+    function stop() {
+      cancelAnimationFrame(raf);
+      clearMoles();
+      setState('ready');
+      setTime(GAME_SECONDS);
+      bar.style.transform = '';
+      hideBanner();
+    }
+
+    // 시간이 0이 되면: 두더지 그만, 클릭 막힘(state가 'over'), 결과 창
+    function finish() {
+      clearMoles();
+      setState('over');
+      $('finalScore').textContent = score;
+      result.hidden = false;
+      $('againBtn').focus({ preventScroll: true });
+    }
+
+    startBtn.addEventListener('click', () => (state === 'play' ? stop() : start()));
+    $('againBtn').addEventListener('click', start);
+
+    // ───── "시작!" 배너 ─────
+    function showBanner(main) {
+      clearTimeout(bannerTimer);
+      $('bannerMain').textContent = main;
+      banner.hidden = false;
+      bannerBox.getAnimations().forEach(a => a.cancel());
+      bannerBox.animate([
+        { transform: 'scale(.4) rotate(-14deg)', opacity: 0 },
+        { transform: 'scale(1.08) rotate(-3deg)', opacity: 1, offset: .6 },
+        { transform: 'scale(1) rotate(-4deg)', opacity: 1 },
+      ], { duration: reduced ? 1 : 420, easing: 'ease-out', fill: 'forwards' });
+      bannerTimer = setTimeout(hideBanner, 900);
+    }
+    function hideBanner() {
+      clearTimeout(bannerTimer);
+      if (banner.hidden) return;
+      const fade = reduced ? 1 : 220;
+      bannerBox.animate(
+        [{ opacity: 1 }, { opacity: 0, transform: 'scale(1.15) rotate(-4deg)' }],
+        { duration: fade, easing: 'ease-in', fill: 'forwards' });
+      bannerTimer = setTimeout(() => { banner.hidden = true; }, fade);
+    }
+  })();
+  </script>
+</body>
+</html>

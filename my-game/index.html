@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>민준이의 섬</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night: #0b1530;
+      --night-deep: #050a1c;
+      --night-glow: #1b3a6b;
+      --ink: #ffffff;
+      --ink-soft: #cfe0ff;
+      --blue: #2f6bff;
+      --blue-light: #7fd1ff;
+      --blue-dark: #1d46b0;
+      --wood: #c69c5d;
+      --wood-ink: #2b1a0e;
+      --wood-edge: #6e4a25;
+      --grass: #5fb14a;
+      --torch: #ffb347;
+      --display: 'Black Han Sans', 'Do Hyeon', sans-serif;
+      --body: 'Do Hyeon', sans-serif;
+      color-scheme: dark;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scrollbar-color: var(--grass) var(--night-deep); }
+    body {
+      font-family: var(--body);
+      background: #f4f9ff;
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--blue); color: #fff; }
+    :focus-visible { outline: 3px solid var(--blue-light); outline-offset: 3px; border-radius: 4px; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+
+    /* ───────── 하늘 + 섬 ───────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      height: calc(100svh - var(--welcome-h, 0px));
+      min-height: 560px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ffffff 0%, #e6f2ff 40%, #b9dbff 100%);
+    }
+    .sky { position: absolute; inset: 0; pointer-events: none; }
+    .star {
+      display: none;
+      position: absolute;
+      background: #fff;
+      animation: twinkle ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--lo, .35); }
+      50%      { opacity: 1; }
+    }
+    .moon {
+      position: absolute;
+      top: 9%;
+      right: 9%;
+      width: 72px;
+      height: 72px;
+      background: var(--tex-moon) center / 100% 100%;
+      image-rendering: pixelated;
+      box-shadow: 0 0 60px 12px rgba(190, 215, 255, .28);
+    }
+    .shooting {
+      position: absolute;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2f6bff, #7fb8ff 30%, transparent);
+      transform: rotate(-35deg);
+      transform-origin: left center;
+      animation: shoot 1.2s ease-out forwards;
+    }
+    @keyframes shoot {
+      from { opacity: 1; translate: 0 0; }
+      to   { opacity: 0; translate: -420px 290px; }
+    }
+
+    #scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      touch-action: pan-y;
+      cursor: grab;
+    }
+    #scene.dragging { cursor: grabbing; }
+    #scene.pointing { cursor: pointer; }
+
+    /* 이름 표지판 */
+    .title {
+      position: absolute;
+      top: clamp(20px, 5vh, 56px);
+      left: clamp(16px, 5vw, 64px);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .title h1 {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(3.2rem, 9vw, 6rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: #2f6bff;
+      text-shadow:
+        0 1px 0 #2a60e8, 0 2px 0 #2453cc, 0 3px 0 #2049b8,
+        0 4px 0 var(--blue-dark), 0 5px 0 #193c99, 0 6px 0 #15337f, 0 7px 0 #112a6a,
+        0 12px 20px rgba(29, 70, 176, .25);
+    }
+    .title h1 small {
+      font-size: .55em;
+      margin-left: .08em;
+    }
+    .title p {
+      margin-top: 14px;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      color: #1d3a7a;
+    }
+
+    /* 땅에 꽂힌 나무 표지판 */
+    #tags { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .tag {
+      position: absolute;
+      left: 0;
+      top: 0;
+      pointer-events: auto;
+      padding: 0;
+      border: none;
+      background: none;
+      will-change: transform;
+    }
+    .tag span {
+      position: relative;
+      display: block;
+      padding: 7px 13px 8px;
+      font-size: 1.05rem;
+      white-space: nowrap;
+      color: var(--wood-ink);
+      background: var(--tex-plank) 0 0 / 32px 32px;
+      image-rendering: pixelated;
+      border: 2px solid var(--wood-edge);
+      border-radius: 6px;
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, .3), inset 0 -3px 0 rgba(0, 0, 0, .18), 0 8px 18px rgba(0, 0, 0, .45);
+      transform-origin: 50% calc(100% + 14px);
+      transition: opacity .3s, filter .3s, scale .2s;
+    }
+    .tag span::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 5px;
+      height: 14px;
+      margin-left: -2.5px;
+      background: var(--wood-edge);
+    }
+    .tag:hover span { scale: 1.08; }
+    .tag.far span { opacity: .45; filter: saturate(.6) brightness(.8); scale: .88; }
+    .tag.active span { scale: 1.12; border-color: var(--blue-light); box-shadow: 0 0 0 3px var(--blue), 0 10px 22px rgba(0, 0, 0, .5); }
+
+    .hint {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(16px, 4vh, 36px);
+      translate: -50% 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      font-size: 1rem;
+      color: #1d3a7a;
+      width: max-content;
+      max-width: calc(100% - 32px);
+    }
+    .hint .tip { padding: 4px 12px; border-radius: 999px; background: rgba(255, 255, 255, .85); }
+    .dig-link {
+      border: none;
+      font: inherit;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 8px 18px 9px;
+      border-radius: 8px;
+      background: var(--tex-grassSide) 0 0 / 40px 40px;
+      image-rendering: pixelated;
+      box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .3), 0 8px 18px rgba(0, 0, 0, .45);
+      text-shadow: 0 2px 0 rgba(0, 0, 0, .45);
+      animation: nudge 2.4s ease-in-out infinite;
+    }
+    @keyframes nudge { 50% { translate: 0 5px; } }
+
+    /* 이야기 패널 */
+    .panel {
+      position: absolute;
+      right: clamp(16px, 4vw, 48px);
+      bottom: clamp(16px, 5vh, 48px);
+      z-index: 4;
+      width: min(360px, calc(100% - 32px));
+      padding: 22px 22px 20px;
+      color: var(--wood-ink);
+      background: var(--tex-plank) 0 0 / 48px 48px;
+      image-rendering: pixelated;
+      border: 3px solid var(--wood-edge);
+      border-radius: 10px;
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .3), inset 0 -4px 0 rgba(0, 0, 0, .18), 0 18px 40px rgba(0, 0, 0, .55);
+      opacity: 0;
+      translate: 0 24px;
+      visibility: hidden;
+      transition: opacity .35s cubic-bezier(.16, 1, .3, 1), translate .45s cubic-bezier(.16, 1, .3, 1), visibility 0s .45s;
+    }
+    .panel.open { opacity: 1; translate: 0 0; visibility: visible; transition-delay: 0s; }
+    .panel h2 {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 2.1rem;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      padding-right: 48px;
+    }
+    .panel p { font-size: 1.2rem; line-height: 1.5; }
+    .panel p + p { margin-top: 6px; }
+    .panel .close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--wood-edge);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .28);
+      font-size: 1.3rem;
+      line-height: 1;
+      color: var(--wood-ink);
+    }
+    .panel .close:hover { background: rgba(255, 255, 255, .5); }
+    .action {
+      margin-top: 16px;
+      padding: 12px 22px 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.3rem;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), inset 0 -5px 0 rgba(0, 0, 0, .25), 0 8px 18px rgba(0, 0, 0, .4);
+      text-shadow: 0 2px 0 rgba(0, 0, 0, .3);
+      transition: translate .1s, filter .15s;
+    }
+    .action:hover { filter: brightness(1.1); }
+    .action:active { translate: 0 2px; }
+    .action[hidden] { display: none; }
+
+    .goal-pop {
+      position: absolute;
+      z-index: 5;
+      pointer-events: none;
+      font-family: var(--display);
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      color: #fff;
+      text-shadow: 0 2px 0 #a9c1ff, 0 4px 0 var(--blue), 0 6px 0 var(--blue-dark), 0 16px 30px rgba(0, 0, 0, .5);
+      translate: -50% -50%;
+      animation: goalPop 1.4s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+    @keyframes goalPop {
+      0%   { scale: .2; rotate: -12deg; opacity: 0; }
+      20%  { scale: 1.15; rotate: 4deg; opacity: 1; }
+      35%  { scale: 1; rotate: 0deg; }
+      80%  { opacity: 1; }
+      100% { opacity: 0; translate: -50% -110%; }
+    }
+
+    .fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      text-align: center;
+      font-size: 1.3rem;
+      color: #1d3a7a;
+    }
+    .fallback[hidden] { display: none; }
+
+    /* ───────── 땅속으로 파 내려가기 ───────── */
+    .layer {
+      position: relative;
+      padding: clamp(64px, 11vw, 132px) 16px;
+      background-image: linear-gradient(rgba(0, 0, 0, var(--shade, .2)), rgba(0, 0, 0, var(--shade, .2))), var(--tex);
+      background-size: auto, 64px 64px;
+      image-rendering: pixelated;
+    }
+    .layer.grass {
+      --tex: var(--tex-dirt);
+      --shade: .22;
+      padding-top: calc(clamp(64px, 11vw, 132px) + 40px);
+    }
+    .layer.grass::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 64px;
+      background: var(--tex-grassSide) 0 0 / 64px 64px repeat-x;
+      image-rendering: pixelated;
+    }
+    .layer.stone { --tex: var(--tex-stone); --shade: .32; }
+    .layer.deep  { --tex: var(--tex-deep);  --shade: .1; }
+    .layer.water { --tex: var(--tex-water); --shade: .16; }
+    .layer.bottom { --tex: var(--tex-deepDiamond); --shade: .5; padding-bottom: clamp(80px, 12vw, 150px); }
+
+    .layer-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px 32px;
+    }
+    .layer h2, .layer .line {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(2rem, 5.6vw, 4.2rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+      text-shadow: 0 3px 0 rgba(0, 0, 0, .35), 0 10px 26px rgba(0, 0, 0, .5);
+      max-width: min(22ch, 100%);
+      min-width: 0;
+      word-break: keep-all;
+    }
+    .line b {
+      font-weight: 400;
+      padding: 0 .18em .04em;
+      border-radius: 8px;
+      background: rgba(11, 21, 48, .62);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+    .layer.water .line b { background: rgba(255, 255, 255, .92); color: var(--blue-dark); text-shadow: none; }
+    .see {
+      flex: none;
+      padding: 10px 18px 11px;
+      font-size: 1.15rem;
+      color: var(--wood-ink);
+      background: var(--tex-plank) 0 0 / 32px 32px;
+      image-rendering: pixelated;
+      border: 2px solid var(--wood-edge);
+      border-radius: 8px;
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, .3), inset 0 -3px 0 rgba(0, 0, 0, .18), 0 8px 18px rgba(0, 0, 0, .4);
+      transition: scale .15s;
+    }
+    .see:hover { scale: 1.05; }
+
+    .bottom .layer-inner { flex-direction: column; align-items: flex-start; }
+    .bottom p {
+      font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+      color: #e6f6ff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .8);
+      max-width: min(40ch, 100%);
+      word-break: keep-all;
+    }
+
+    /* 클릭하면 튀어나오는 이모지 */
+    .pop {
+      position: fixed;
+      z-index: 10;
+      font-size: 2rem;
+      pointer-events: none;
+      translate: -50% -50%;
+      animation: pop 1s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+    @keyframes pop {
+      to { transform: translate(var(--dx), var(--dy)) scale(.3) rotate(var(--rot)); opacity: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .moon { width: 52px; height: 52px; top: 13%; right: 7%; }
+      .panel { right: 16px; bottom: 16px; }
+      .hint .tip { font-size: .95rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .dig-link, .star { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* 맨 위 환영 인사 */
+    .welcome {
+      position: relative;
+      z-index: 6;
+      padding: clamp(18px, 4vw, 32px) 16px;
+      text-align: center;
+      background: linear-gradient(135deg, #fff3a0 0%, #ffd84d 50%, #ffb800 100%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+      animation: dropIn .9s cubic-bezier(.16, 1, .3, 1) both;
+    }
+    .welcome p {
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      line-height: 1.05;
+      color: #3a2400;
+      text-shadow: 0 3px 0 rgba(255, 255, 255, .55);
+    }
+    @keyframes dropIn {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) { .welcome { animation: none; } }
+
+    .start-btn {
+      margin-top: 14px;
+      padding: 12px 30px 14px;
+      border: none;
+      border-radius: 999px;
+      font-family: var(--display);
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: #fff;
+      background: var(--blue);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), inset 0 -5px 0 rgba(0, 0, 0, .25), 0 8px 18px rgba(0, 0, 0, .25);
+      transition: translate .1s;
+    }
+    .start-btn:active { translate: 0 2px; }
+    .start-btn.clicked { background: #8b3dff; }
+    .start-pop {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      place-items: center;
+      padding: 16px;
+      background: rgba(20, 40, 90, .35);
+    }
+    .start-pop.show { display: grid; }
+    .start-pop .box {
+      width: min(360px, 100%);
+      padding: 28px 24px 24px;
+      text-align: center;
+      color: #1d2a55;
+      background: #fff;
+      border: 4px solid #8b3dff;
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .3);
+      animation: popBox .4s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    @keyframes popBox { from { scale: .5; opacity: 0; } }
+    .start-pop h2 { font-family: var(--display); font-weight: 400; font-size: 2.2rem; margin-bottom: 8px; }
+    .start-pop p { font-size: 1.2rem; margin-bottom: 18px; }
+
+    /* 게임 페이지로 가는 무지개 버튼 */
+    .welcome-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 14px; }
+    .welcome-actions .start-btn { margin-top: 0; }
+    .game-btn {
+      position: relative;
+      display: inline-block;
+      padding: 12px 30px 14px;
+      border-radius: 999px;
+      font-family: var(--display);
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: #fff;
+      text-decoration: none;
+      text-shadow: 0 2px 0 rgba(0, 0, 0, .35);
+      background: linear-gradient(90deg, #e0245e, #d9480f, #b86e00, #1b8f4f, #1b6fe0, #7b2ff7, #e0245e);
+      background-size: 300% 100%;
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .4), inset 0 -5px 0 rgba(0, 0, 0, .25), 0 8px 18px rgba(0, 0, 0, .25);
+      animation: rainbowMove 2s linear infinite, wiggle 1.6s ease-in-out infinite;
+      overflow: hidden;
+    }
+    .game-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .7) 50%, transparent 70%);
+      translate: -120% 0;
+      animation: shine 1.8s ease-in-out infinite;
+    }
+    .game-btn:hover { animation-duration: .6s, .4s; scale: 1.08; }
+    @keyframes rainbowMove { to { background-position: 300% 0; } }
+    @keyframes wiggle { 0%, 100% { rotate: -3deg; } 50% { rotate: 3deg; } }
+    @keyframes shine { 60%, 100% { translate: 120% 0; } }
+    @media (prefers-reduced-motion: reduce) { .game-btn, .game-btn::after { animation: none; } }
+  </style>
+</head>
+<body>
+  <div class="welcome" role="banner">
+    <p>어서오세요! 👋</p>
+    <div class="welcome-actions">
+      <button class="start-btn" id="startBtn">시작하기 🚀</button>
+      <a class="game-btn" href="arcade.html">🎮 게임하러 가기! 🕹️</a>
+    </div>
+  </div>
+  <div class="start-pop" id="startPop" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+    <div class="box">
+      <h2 id="startTitle">환영해! 🏝️</h2>
+      <p>민준이의 섬에 온 걸 환영해!<br>표지판을 눌러서 구경해 봐 ⚽</p>
+      <button class="start-btn clicked" id="startClose">좋아! 😊</button>
+    </div>
+  </div>
+  <section class="hero" id="hero">
+    <div class="sky" id="sky"></div>
+    <canvas id="scene" aria-label="민준이의 3D 섬. 옆으로 끌어서 돌릴 수 있어요."></canvas>
+    <div class="fallback" id="fallback" hidden>인터넷에 연결하면 민준이의 3D 섬이 나타나요 🏝️</div>
+
+    <header class="title">
+      <h1>민준<small>이의 섬</small></h1>
+      <p>마크 건축 · 서바이벌 · 축구 공격수 ⛏️⚽</p>
+    </header>
+
+    <div id="tags">
+      <button class="tag" data-id="minjun"><span>💙 민준</span></button>
+      <button class="tag" data-id="house"><span>🏠 건축</span></button>
+      <button class="tag" data-id="camp"><span>⚔️ 서바이벌</span></button>
+      <button class="tag" data-id="goal"><span>⚽ 축구</span></button>
+      <button class="tag" data-id="chicken"><span>🍗 치킨</span></button>
+    </div>
+
+    <aside class="panel" id="panel" aria-live="polite">
+      <button class="close" id="panelClose" aria-label="닫기">✕</button>
+      <h2 id="panelTitle"></h2>
+      <div id="panelBody"></div>
+      <button class="action" id="panelAction" hidden></button>
+    </aside>
+
+    <div class="hint">
+      <span class="tip">섬을 옆으로 끌어서 돌려 봐 · 표지판을 눌러 봐</span>
+      <button type="button" class="dig-link" data-scroll="dig">아래로 파 내려가기 ⛏️</button>
+    </div>
+  </section>
+
+  <main id="dig">
+    <section class="layer grass">
+      <div class="layer-inner">
+        <p class="line">마크에서는 <b>건축</b>이랑 <b>서바이벌</b> 🧱</p>
+        <button class="see" data-focus="house">섬에서 보기 ⬆️</button>
+      </div>
+    </section>
+    <section class="layer stone">
+      <div class="layer-inner">
+        <p class="line">축구 포지션은 <b>공격수</b> ⚽🔥</p>
+        <button class="see" data-focus="goal">슛 보러 가기 ⬆️</button>
+      </div>
+    </section>
+    <section class="layer deep">
+      <div class="layer-inner">
+        <p class="line">제일 좋아하는 음식은 <b>치킨</b> 🍗</p>
+        <button class="see" data-focus="chicken">섬에서 보기 ⬆️</button>
+      </div>
+    </section>
+    <section class="layer water">
+      <div class="layer-inner">
+        <p class="line">제일 좋아하는 색은 <b>파란색</b> 💙</p>
+        <button class="see" data-focus="minjun">섬에서 보기 ⬆️</button>
+      </div>
+    </section>
+    <footer class="layer bottom" id="bottom">
+      <div class="layer-inner">
+        <h2>끝까지 파 내려왔다! 💎</h2>
+        <p>다이아 찾았네! 놀러 와 줘서 고마워. 학교에서 마크나 축구 얘기하자 ⛏️⚽</p>
+        <button type="button" class="see" data-scroll="hero">섬으로 올라가기 ⬆️</button>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // ───────── 16×16 픽셀 블록 텍스처 (3D 섬과 페이지가 같이 써요) ─────────
+    const PIX = {};
+    (function () {
+      let seed = 7;
+      const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const pick = arr => arr[Math.floor(r() * arr.length)];
+      function make(name, draw) {
+        const c = document.createElement('canvas');
+        c.width = c.height = 16;
+        const g = c.getContext('2d');
+        draw(g);
+        PIX[name] = c;
+      }
+      const px = (g, x, y, col) => { g.fillStyle = col; g.fillRect(x, y, 1, 1); };
+      const noise = (g, cols) => { for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) px(g, x, y, pick(cols)); };
+      const ore = (g, cols) => {
+        [[3, 3], [10, 5], [5, 11], [12, 12]].forEach(([cx, cy]) => {
+          [[0, 0], [1, 0], [0, 1], [1, 1], [-1, 0], [0, -1]].forEach(([dx, dy]) => { if (r() < .8) px(g, cx + dx, cy + dy, pick(cols)); });
+        });
+      };
+      const planks = (g, cols, line) => {
+        for (let y = 0; y < 16; y++) {
+          const band = Math.floor(y / 4);
+          for (let x = 0; x < 16; x++) px(g, x, y, y % 4 === 3 ? line : (r() < .15 ? cols[2] : cols[band % 2]));
+        }
+        for (let b = 0; b < 4; b++) { const sx = (b * 7 + 3) % 16; for (let y = b * 4; y < b * 4 + 3; y++) px(g, sx, y, line); }
+      };
+      const GREENS = ['#5fb14a', '#55a243', '#6cc054', '#4c9a3d'];
+      const DIRT = ['#8b5a33', '#7a4d2b', '#946038', '#6e4426'];
+      const STONE = ['#8a8f99', '#7d828c', '#959aa3', '#727782'];
+      const DEEP = ['#3d4250', '#454b5a', '#363a47', '#4d5363'];
+      const DIA = ['#5ff2ff', '#2bd3e6', '#b9fbff'];
+
+      make('grassTop', g => noise(g, GREENS));
+      make('dirt', g => noise(g, DIRT));
+      make('grassSide', g => {
+        noise(g, DIRT);
+        for (let x = 0; x < 16; x++) {
+          const h = 3 + (r() < .5 ? 1 : 0) + (r() < .2 ? 1 : 0);
+          for (let y = 0; y < h; y++) px(g, x, y, pick(GREENS));
+        }
+      });
+      make('stone', g => noise(g, STONE));
+      make('deep', g => noise(g, DEEP));
+      make('diamondOre', g => { noise(g, STONE); ore(g, DIA); });
+      make('deepDiamond', g => { noise(g, DEEP); ore(g, DIA); });
+      make('plank', g => planks(g, ['#c69c5d', '#bb9152', '#d1a866'], '#9c7540'));
+      make('roof', g => planks(g, ['#2f6bff', '#2a60e8', '#3d78ff'], '#1d46b0'));
+      make('door', g => {
+        planks(g, ['#7a5230', '#6e4a2b', '#845a35'], '#4f331b');
+        px(g, 12, 8, '#e0b84f'); px(g, 12, 9, '#c99a35');
+      });
+      make('window', g => {
+        for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
+          const frame = x < 2 || x > 13 || y < 2 || y > 13 || x === 7 || x === 8 || y === 7 || y === 8;
+          px(g, x, y, frame ? pick(['#c69c5d', '#bb9152']) : (y < 7 ? '#ffd27a' : '#ffb347'));
+        }
+      });
+      make('log', g => {
+        for (let x = 0; x < 16; x++) {
+          const base = pick(['#6b4a2b', '#5c3f24', '#76522f']);
+          for (let y = 0; y < 16; y++) px(g, x, y, r() < .2 ? '#4f3520' : base);
+        }
+      });
+      make('leaves', g => noise(g, ['#3f8a35', '#357a2d', '#4d9c3f', '#2d6b27', '#58a84a']));
+      make('water', g => noise(g, ['#2f6bff', '#3a78ff', '#2a5fe6', '#4a86ff', '#2456d6']));
+      make('moon', g => {
+        noise(g, ['#eef2ff', '#e4e9fb', '#f6f8ff']);
+        [[3, 4], [4, 4], [3, 5], [10, 3], [11, 9], [12, 9], [11, 10], [5, 11], [6, 11]].forEach(([x, y]) => px(g, x, y, '#c5cde6'));
+      });
+
+      const root = document.documentElement.style;
+      ['grassSide', 'dirt', 'stone', 'deep', 'water', 'deepDiamond', 'plank', 'moon'].forEach(n => {
+        root.setProperty('--tex-' + n, `url(${PIX[n].toDataURL()})`);
+      });
+    })();
+
+    // 환영 영역 높이만큼 섬 화면을 줄여서 첫 화면에 다 보이게
+    const welcomeEl = document.querySelector('.welcome');
+    new ResizeObserver(() => requestAnimationFrame(() => document.documentElement.style.setProperty('--welcome-h', welcomeEl.offsetHeight + 'px'))).observe(welcomeEl);
+
+    // 페이지 안 이동은 주소(#)를 쓰지 않고 스크롤만 해요 (file:// 보안 오류 방지)
+    document.querySelectorAll('[data-scroll]').forEach(b => b.addEventListener('click', () => {
+      document.getElementById(b.dataset.scroll).scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }));
+
+
+    // 시작하기 버튼: 누르면 바로 팝업 + 보라색으로
+    const startBtn = document.getElementById('startBtn');
+    const startPop = document.getElementById('startPop');
+    startBtn.addEventListener('click', () => {
+      startBtn.classList.add('clicked');
+      startPop.classList.add('show');
+      document.getElementById('startClose').focus();
+    });
+    startPop.addEventListener('click', e => {
+      if (e.target === startPop || e.target.id === 'startClose') startPop.classList.remove('show');
+    });
+    addEventListener('keydown', e => { if (e.key === 'Escape') startPop.classList.remove('show'); });
+
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ───────── 밤하늘: 밝기 등급별 별 + 유성우 ─────────
+    const sky = document.getElementById('sky');
+    [[3.4, 3, .6], [2.6, 9, .5], [2, 22, .4], [1.4, 48, .3], [1, 80, .2]].forEach(([size, count, lo]) => {
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.width = s.style.height = size + 'px';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 78 + '%';
+        s.style.setProperty('--lo', lo);
+        if (size > 2) s.style.boxShadow = `0 0 ${size * 2.5}px rgba(200,225,255,.9)`;
+        s.style.animationDuration = (2 + Math.random() * 3) + 's';
+        s.style.animationDelay = -Math.random() * 3 + 's';
+        sky.appendChild(s);
+      }
+    });
+
+    function shootingStar() {
+      if (document.hidden) return;
+      const el = document.createElement('div');
+      el.className = 'shooting';
+      el.style.left = (20 + Math.random() * 90) + '%';
+      el.style.top = (Math.random() * 50 - 10) + '%';
+      el.style.width = (60 + Math.random() * 140) + 'px';
+      el.style.height = (Math.random() < .2 ? 3 : 2) + 'px';
+      el.style.animationDuration = (.6 + Math.random() * .9) + 's';
+      sky.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+    setInterval(shootingStar, reduceMotion ? 1200 : 150);
+
+    // ───────── 아무 데나 누르면 이모지 폭죽 ─────────
+    const EMOJIS = ['⚽', '⛏️', '💎', '🧱', '🍗', '💙', '⭐', '🏠', '🧟', '🔥', '🥅', '🌟'];
+    function burst(x, y, count = 8, pool = EMOJIS) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'pop';
+        el.textContent = pool[Math.floor(Math.random() * pool.length)];
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        const a = Math.random() * Math.PI * 2, d = 60 + Math.random() * 130;
+        el.style.setProperty('--dx', Math.cos(a) * d + 'px');
+        el.style.setProperty('--dy', Math.sin(a) * d + 'px');
+        el.style.setProperty('--rot', (Math.random() * 120 - 60) + 'deg');
+        document.body.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+    }
+    window.burst = burst;
+    window.__suppressBurst = false;
+    document.addEventListener('click', e => {
+      if (window.__suppressBurst) { window.__suppressBurst = false; return; }
+      burst(e.clientX, e.clientY);
+    });
+
+    // 3D가 안 뜨면 안내 문구
+    setTimeout(() => { if (!window.__island) document.getElementById('fallback').hidden = false; }, 7000);
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+    const hero = document.getElementById('hero');
+    const canvas = document.getElementById('scene');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 200);
+
+    // 달빛 + 파란 밤하늘 빛
+    scene.add(new THREE.HemisphereLight(0xa8c6ff, 0x26304f, 1.5));
+    const moonLight = new THREE.DirectionalLight(0xe6eeff, 2.4);
+    moonLight.position.set(8, 14, 7);
+    moonLight.castShadow = true;
+    moonLight.shadow.mapSize.set(2048, 2048);
+    Object.assign(moonLight.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 45 });
+    moonLight.shadow.bias = -0.0006;
+    moonLight.shadow.normalBias = 0.02;
+    scene.add(moonLight);
+    const rim = new THREE.DirectionalLight(0x5f8cff, 1.1);
+    rim.position.set(-10, 5, -8);
+    scene.add(rim);
+
+    const island = new THREE.Group();
+    scene.add(island);
+
+    // ── 블록 재료 ──
+    const texCache = {};
+    function tex(name) {
+      if (texCache[name]) return texCache[name];
+      const t = new THREE.CanvasTexture(PIX[name]);
+      t.magFilter = t.minFilter = THREE.NearestFilter;
+      t.generateMipmaps = false;
+      t.colorSpace = THREE.SRGBColorSpace;
+      return (texCache[name] = t);
+    }
+    const lam = (name, extra = {}) => new THREE.MeshLambertMaterial({ map: tex(name), ...extra });
+    const side = lam('grassSide');
+    const MATS = {
+      grass: [side, side, lam('grassTop'), lam('dirt'), side, side],
+      dirt: lam('dirt'), stone: lam('stone'), deep: lam('deep'),
+      diamondOre: lam('diamondOre'), deepDiamond: lam('deepDiamond'),
+      plank: lam('plank'), roof: lam('roof'), door: lam('door'),
+      window: lam('window', { emissive: 0xffa040, emissiveMap: tex('window'), emissiveIntensity: .9 }),
+      log: lam('log'), leaves: lam('leaves'),
+      water: lam('water', { transparent: true, opacity: .88, emissive: 0x1a3fa0, emissiveIntensity: .35 }),
+    };
+
+    const blocks = {};
+    const put = (type, x, y, z) => (blocks[type] ||= []).push([x, y, z]);
+    const hash = (x, z, s = 0) => {
+      const n = Math.sin(x * 127.1 + z * 311.7 + s * 74.7) * 43758.5453;
+      return n - Math.floor(n);
+    };
+
+    // ── 떠 있는 섬 ──
+    const POND = new Set(['-1,-5', '0,-5', '-1,-4', '0,-4', '-2,-5']);
+    for (let x = -8; x <= 8; x++) for (let z = -8; z <= 8; z++) {
+      const d = Math.hypot(x, z);
+      const rad = 6.9 + hash(x, z) * 0.9;
+      if (d > rad) continue;
+      if (POND.has(x + ',' + z)) put('water', x, -0.6, z);
+      else put('grass', x, -0.5, z);
+      const depth = 1 + Math.floor((rad - d) * 1.15 + hash(x, z, 1) * 1.5);
+      for (let k = 1; k <= depth; k++) {
+        let type = k <= 2 ? 'dirt' : k <= 5 ? 'stone' : 'deep';
+        if (type !== 'dirt' && hash(x, z, k) < 0.06) type = type === 'stone' ? 'diamondOre' : 'deepDiamond';
+        put(type, x, -0.5 - k, z);
+      }
+    }
+
+    // ── 나무 ──
+    function tree(x, z, h = 3) {
+      for (let i = 0; i < h; i++) put('log', x, 0.5 + i, z);
+      for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) {
+        if (dx || dz) put('leaves', x + dx, h - 0.5, z + dz);
+        put('leaves', x + dx, h + 0.5, z + dz);
+        if (!dx || !dz) put('leaves', x + dx, h + 1.5, z + dz);
+      }
+    }
+    tree(-6, 1, 3); tree(5, -1, 4); tree(1, -6, 3);
+
+    // ── 건축: 파란 지붕 집 ──
+    for (let y = 0.5; y <= 2.5; y++) {
+      for (const [x, z] of [[-5, -4], [-2, -4], [-5, -1], [-2, -1]]) put('log', x, y, z);
+      for (const x of [-4, -3]) put(y === 1.5 && x === -4 ? 'window' : 'plank', x, y, -4);
+      for (const z of [-3, -2]) {
+        put(y === 1.5 && z === -2 ? 'window' : 'plank', -5, y, z);
+        put(y === 1.5 && z === -3 ? 'window' : 'plank', -2, y, z);
+      }
+      put(y === 1.5 ? 'window' : 'plank', -4, y, -1);
+      put(y < 2 ? 'door' : 'plank', -3, y, -1);
+    }
+    for (let x = -6; x <= -1; x++) for (let z = -5; z <= 0; z++) put('roof', x, 3.5, z);
+    for (let x = -5; x <= -2; x++) for (let z = -4; z <= -1; z++) put('roof', x, 4.5, z);
+    for (let x = -4; x <= -3; x++) for (let z = -3; z <= -2; z++) put('roof', x, 5.5, z);
+
+    // ── 서바이벌: 다이아 광석 ──
+    put('diamondOre', 5, 0.5, -4);
+
+    // 아래에 떠다니는 작은 돌섬
+    [[9, -3.5, 2], [-9, -4.5, -2], [3, -6, 9], [-4, -2.5, -9]].forEach(([x, y, z]) => {
+      put('grass', x, y, z); put('dirt', x, y - 1, z);
+    });
+
+    const unit = new THREE.BoxGeometry(1, 1, 1);
+    const waterGeo = new THREE.BoxGeometry(1, 0.8, 1);
+    const m4 = new THREE.Matrix4();
+    for (const [type, list] of Object.entries(blocks)) {
+      const mesh = new THREE.InstancedMesh(type === 'water' ? waterGeo : unit, MATS[type], list.length);
+      list.forEach(([x, y, z], i) => mesh.setMatrixAt(i, m4.makeTranslation(x, y, z)));
+      mesh.castShadow = type !== 'water';
+      mesh.receiveShadow = true;
+      island.add(mesh);
+    }
+
+    // ── 치비 재료 (말랑한 툰 셰이딩) ──
+    const grad = new THREE.DataTexture(new Uint8Array([110, 190, 255]), 3, 1, THREE.RedFormat);
+    grad.minFilter = grad.magFilter = THREE.NearestFilter;
+    grad.needsUpdate = true;
+    const toonCache = {};
+    const toon = (c, extra = {}) => {
+      const key = c + JSON.stringify(extra);
+      return toonCache[key] ||= new THREE.MeshToonMaterial({ color: c, gradientMap: grad, ...extra });
+    };
+    function rbox(w, h, d, color, x = 0, y = 0, z = 0, parent, radius = Math.min(w, h, d) * 0.3) {
+      const m = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 4, radius), toon(color));
+      m.position.set(x, y, z);
+      m.castShadow = true;
+      parent.add(m);
+      return m;
+    }
+
+    // ── 치비 민준 ──
+    const SKIN = 0xffdcbf, HAIR = 0x2b1d17, JERSEY = 0x2f6bff;
+    const minjun = new THREE.Group();
+    minjun.position.set(0, 0, 0.6);
+    island.add(minjun);
+    const body = new THREE.Group();
+    minjun.add(body);
+
+    function limb(x, y, parent) { const g = new THREE.Group(); g.position.set(x, y, 0); parent.add(g); return g; }
+    const legL = limb(-0.14, 0.38, body), legR = limb(0.14, 0.38, body);
+    for (const leg of [legL, legR]) {
+      rbox(0.22, 0.3, 0.24, SKIN, 0, -0.17, 0, leg);
+      rbox(0.27, 0.14, 0.34, 0x1d3f9e, 0, -0.31, 0.04, leg);
+    }
+    rbox(0.58, 0.22, 0.36, 0xf4f7ff, 0, 0.44, 0, body);
+    rbox(0.62, 0.48, 0.4, JERSEY, 0, 0.74, 0, body);
+    rbox(0.64, 0.07, 0.42, 0xffffff, 0, 0.62, 0, body, 0.03);
+    const armL = limb(-0.4, 0.92, body), armR = limb(0.4, 0.92, body);
+    for (const [arm, s] of [[armL, -1], [armR, 1]]) {
+      arm.rotation.z = s * 0.18;
+      rbox(0.19, 0.3, 0.21, JERSEY, 0, -0.12, 0, arm);
+      rbox(0.17, 0.17, 0.17, SKIN, 0, -0.33, 0, arm);
+    }
+    const head = new THREE.Group();
+    head.position.y = 0.98;
+    body.add(head);
+    rbox(1.0, 0.92, 0.9, SKIN, 0, 0.48, 0, head, 0.26);
+    rbox(1.08, 0.34, 0.98, HAIR, 0, 0.84, -0.02, head, 0.14);
+    rbox(1.08, 0.72, 0.32, HAIR, 0, 0.56, -0.34, head, 0.12);
+    rbox(0.16, 0.5, 0.72, HAIR, -0.5, 0.62, -0.08, head, 0.07);
+    rbox(0.16, 0.5, 0.72, HAIR, 0.5, 0.62, -0.08, head, 0.07);
+    [[-0.3, 0.72], [-0.08, 0.7], [0.16, 0.73], [0.36, 0.71]].forEach(([x, y]) => rbox(0.26, 0.2, 0.12, HAIR, x, y, 0.42, head, 0.05));
+    const eyes = [];
+    for (const s of [-1, 1]) {
+      const eye = rbox(0.15, 0.24, 0.06, 0x1a1530, s * 0.2, 0.42, 0.45, head, 0.03);
+      rbox(0.06, 0.07, 0.02, 0xffffff, 0.03, 0.05, 0.035, eye, 0.01);
+      eyes.push(eye);
+      rbox(0.16, 0.07, 0.02, 0xff9fb0, s * 0.33, 0.27, 0.452, head, 0.01);
+    }
+    rbox(0.12, 0.04, 0.02, 0x8a3b3b, 0, 0.22, 0.452, head, 0.01);
+
+    // ── 축구공 ──
+    const ballGeo = new THREE.IcosahedronGeometry(0.22, 2);
+    {
+      const base = new THREE.IcosahedronGeometry(1, 0);
+      const pos = base.attributes.position;
+      const corners = [];
+      for (let i = 0; i < pos.count; i++) corners.push(new THREE.Vector3().fromBufferAttribute(pos, i).normalize());
+      const p = ballGeo.attributes.position, colors = [], v = new THREE.Vector3();
+      for (let t = 0; t < p.count; t += 3) {
+        let black = false;
+        for (let k = 0; k < 3; k++) {
+          v.fromBufferAttribute(p, t + k).normalize();
+          if (corners.some(c => c.distanceTo(v) < 0.01)) black = true;
+        }
+        const c = black ? [0.08, 0.1, 0.16] : [1, 1, 1];
+        for (let k = 0; k < 3; k++) colors.push(...c);
+      }
+      ballGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    }
+    const ball = new THREE.Mesh(ballGeo, new THREE.MeshToonMaterial({ vertexColors: true, gradientMap: grad }));
+    const BALL_HOME = new THREE.Vector3(0.45, 0.22, 1.35);
+    ball.position.copy(BALL_HOME);
+    ball.castShadow = true;
+    island.add(ball);
+
+    // ── 축구 골대 ──
+    const goal = new THREE.Group();
+    goal.position.set(3, 0, 3.5);
+    island.add(goal);
+    rbox(0.14, 1.6, 0.14, 0xffffff, -1.5, 0.8, 0, goal, 0.05);
+    rbox(0.14, 1.6, 0.14, 0xffffff, 1.5, 0.8, 0, goal, 0.05);
+    rbox(3.14, 0.14, 0.14, 0xffffff, 0, 1.6, 0, goal, 0.05);
+    const net = new THREE.Group();
+    goal.add(net);
+    {
+      const pts = [], D = 0.8;
+      for (let i = 0; i <= 10; i++) { const x = -1.5 + i * 0.3; pts.push(x, 0, D, x, 1.6, D, x, 1.6, 0, x, 1.6, D); }
+      for (let j = 0; j <= 5; j++) { const y = j * 0.32; pts.push(-1.5, y, D, 1.5, y, D); for (const x of [-1.5, 1.5]) pts.push(x, y, 0, x, y, D); }
+      for (let k = 0; k <= 3; k++) { const z = k * D / 3; pts.push(-1.5, 1.6, z, 1.5, 1.6, z); for (const x of [-1.5, 1.5]) pts.push(x, 0, z, x, 1.6, z); }
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+      net.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 })));
+    }
+
+    // ── 서바이벌 캠프: 모닥불 + 좀비 + 다이아 ──
+    const camp = new THREE.Group();
+    camp.position.set(3, 0, -3);
+    island.add(camp);
+    const logMat = MATS.log;
+    for (const r of [0.4, -0.4]) {
+      const l = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.2, 0.2), logMat);
+      l.position.y = 0.1; l.rotation.y = r; l.castShadow = true; camp.add(l);
+    }
+    const flames = [[0, 0xffb347, 0.3], [0.12, 0xff7a1a, 0.22], [-0.1, 0xffe08a, 0.18]].map(([x, c, s], i) => {
+      const f = new THREE.Mesh(new THREE.BoxGeometry(s, s * 1.6, s), new THREE.MeshBasicMaterial({ color: c }));
+      f.position.set(x, 0.3, i * 0.05 - 0.05);
+      camp.add(f);
+      return f;
+    });
+    const fireLight = new THREE.PointLight(0xff8a3d, 6, 6, 1.2);
+    fireLight.position.set(0, 0.7, 0);
+    camp.add(fireLight);
+
+    const zombie = new THREE.Group();
+    zombie.position.set(-1, 0, -1.6);
+    zombie.rotation.y = 0.5;
+    camp.add(zombie);
+    rbox(0.14, 0.3, 0.16, 0x4b4fa8, -0.09, 0.15, 0, zombie);
+    rbox(0.14, 0.3, 0.16, 0x4b4fa8, 0.09, 0.15, 0, zombie);
+    rbox(0.36, 0.34, 0.22, 0x2fa3a3, 0, 0.46, 0, zombie);
+    const zArms = new THREE.Group(); zArms.position.set(0, 0.56, 0.08); zombie.add(zArms);
+    rbox(0.1, 0.1, 0.34, 0x6fb35a, -0.22, 0, 0.12, zArms);
+    rbox(0.1, 0.1, 0.34, 0x6fb35a, 0.22, 0, 0.12, zArms);
+    const zHead = rbox(0.5, 0.48, 0.46, 0x6fb35a, 0, 0.88, 0, zombie, 0.12);
+    rbox(0.09, 0.07, 0.02, 0x1a2a1a, -0.12, 0.02, 0.235, zHead, 0.01);
+    rbox(0.09, 0.07, 0.02, 0x1a2a1a, 0.12, 0.02, 0.235, zHead, 0.01);
+
+    const diamond = new THREE.Mesh(new THREE.OctahedronGeometry(0.26, 0),
+      new THREE.MeshToonMaterial({ color: 0x5ff2ff, emissive: 0x1aa9c4, emissiveIntensity: .6, gradientMap: grad }));
+    diamond.position.set(5, 1.55, -4);
+    diamond.scale.y = 1.3;
+    island.add(diamond);
+
+    // ── 치킨 테이블 ──
+    const chicken = new THREE.Group();
+    chicken.position.set(-3.5, 0, 3.5);
+    island.add(chicken);
+    const top = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.14, 1), MATS.plank);
+    top.position.y = 0.66; top.castShadow = top.receiveShadow = true; chicken.add(top);
+    for (const [x, z] of [[-0.58, -0.38], [0.58, -0.38], [-0.58, 0.38], [0.58, 0.38]]) {
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.6, 0.12), MATS.log);
+      leg.position.set(x, 0.3, z); leg.castShadow = true; chicken.add(leg);
+    }
+    const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.36, 0.05, 24), toon(0xf4f7ff));
+    plate.position.y = 0.76; chicken.add(plate);
+    const drums = [];
+    for (const [x, z, ry] of [[-0.1, 0.05, 0.5], [0.16, -0.08, -0.9]]) {
+      const d = new THREE.Group();
+      d.position.set(x, 0.92, z); d.rotation.set(0, ry, 0.15);
+      chicken.add(d);
+      rbox(0.36, 0.26, 0.26, 0xc06a2b, -0.06, 0, 0, d, 0.12);
+      rbox(0.12, 0.08, 0.08, 0xe39a4c, -0.1, 0.1, 0.06, d, 0.03);
+      const bone = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.22, 8), toon(0xfff6e6));
+      bone.rotation.z = Math.PI / 2; bone.position.x = 0.2; d.add(bone);
+      rbox(0.09, 0.12, 0.09, 0xfff6e6, 0.32, 0, 0, d, 0.04);
+      drums.push(d);
+    }
+
+    // ── 표지판·클릭 영역 ──
+    const LANDMARKS = {
+      minjun:  { anchor: [0, 2.3, 0.6],   box: [[0, 1.1, 0.6], [1.3, 2.3, 1.2]] },
+      house:   { anchor: [-3.5, 6.3, -2.5], box: [[-3.5, 2.8, -2.5], [6, 6, 6]] },
+      camp:    { anchor: [3, 1.5, -3.6],  box: [[3.5, 0.8, -4], [4, 2.2, 3]] },
+      goal:    { anchor: [3, 1.95, 3.7],    box: [[3, 0.9, 3.9], [3.4, 2, 1.2]] },
+      chicken: { anchor: [-3.5, 1.35, 3.5], box: [[-3.5, 0.6, 3.5], [1.8, 1.4, 1.4]] },
+    };
+    const pickables = [];
+    const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+    for (const [id, L] of Object.entries(LANDMARKS)) {
+      const [c, s] = L.box;
+      const m = new THREE.Mesh(new THREE.BoxGeometry(...s), hitMat);
+      m.position.set(...c); m.userData.id = id;
+      island.add(m); pickables.push(m);
+      L.anchorV = new THREE.Vector3(...L.anchor);
+      L.angle = Math.atan2(-L.anchor[0], L.anchor[2]);
+      L.el = document.querySelector(`.tag[data-id="${id}"]`);
+    }
+    ball.userData.id = 'ball';
+    pickables.push(ball);
+
+    const INFO = {
+      minjun:  { title: '민준', lines: ['안녕! 여기는 내 섬이야 👋', '제일 좋아하는 색은 파란색이라 옷도 지붕도 파란색 💙'] },
+      house:   { title: '마크 건축 🏠', lines: ['마인크래프트에서 주로 하는 것 하나!', '블록을 하나하나 쌓아서 건물을 지어요 🧱'] },
+      camp:    { title: '마크 서바이벌 ⚔️', lines: ['서바이벌도 주로 해요.', '밤에 나오는 좀비를 피해서 살아남고, 다이아도 캐요 💎'] },
+      goal:    { title: '축구 · 공격수 ⚽', lines: ['포지션은 공격수!', '골 넣는 게 공격수의 일이에요 🥅'], action: '슛! 골 넣기 ⚽' },
+      chicken: { title: '최애 음식 🍗', lines: ['제일 좋아하는 음식은 치킨!'] },
+    };
+
+    // ── 패널 ──
+    const panel = document.getElementById('panel');
+    const pTitle = document.getElementById('panelTitle');
+    const pBody = document.getElementById('panelBody');
+    const pAction = document.getElementById('panelAction');
+    let focused = null;
+    function focusOn(id) {
+      const info = INFO[id];
+      focused = id;
+      pTitle.textContent = info.title;
+      pBody.replaceChildren(...info.lines.map(t => Object.assign(document.createElement('p'), { textContent: t })));
+      pAction.hidden = !info.action;
+      if (info.action) pAction.textContent = info.action;
+      panel.classList.add('open');
+      for (const [k, L] of Object.entries(LANDMARKS)) L.el.classList.toggle('active', k === id);
+      // 그 장소가 앞으로 오도록 섬을 돌려요
+      let a = LANDMARKS[id].angle;
+      while (a - rotTarget > Math.PI) a -= Math.PI * 2;
+      while (a - rotTarget < -Math.PI) a += Math.PI * 2;
+      rotTarget = a;
+      if (id === 'minjun') jumpT = 0;
+    }
+    function closePanel() {
+      focused = null;
+      panel.classList.remove('open');
+      for (const L of Object.values(LANDMARKS)) L.el.classList.remove('active');
+    }
+    document.getElementById('panelClose').addEventListener('click', closePanel);
+    pAction.addEventListener('click', () => kick());
+    addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+    for (const [id, L] of Object.entries(LANDMARKS)) L.el.addEventListener('click', () => focusOn(id));
+    new IntersectionObserver(([e]) => { if (!e.isIntersecting) closePanel(); }, { threshold: 0.25 }).observe(hero);
+
+    document.querySelectorAll('.see[data-focus]').forEach(b => b.addEventListener('click', () => {
+      hero.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+      setTimeout(() => focusOn(b.dataset.focus), reduceMotion ? 0 : 450);
+    }));
+
+    // ── 끌어서 돌리기 + 누르기 ──
+    let rot = 0.35, rotTarget = 0.35, dragging = false, lastX = 0, moved = 0;
+    const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+    function hit(e) {
+      const r = canvas.getBoundingClientRect();
+      ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      const h = ray.intersectObjects(pickables, false)[0];
+      return h && h.object.userData.id;
+    }
+    canvas.addEventListener('pointerdown', e => {
+      dragging = true; lastX = e.clientX; moved = 0;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', e => {
+      if (dragging) {
+        const dx = e.clientX - lastX;
+        lastX = e.clientX; moved += Math.abs(dx);
+        rotTarget += dx * 0.008;
+        if (moved > 6) canvas.classList.add('dragging');
+      } else if (e.pointerType === 'mouse') {
+        canvas.classList.toggle('pointing', !!hit(e));
+      }
+    });
+    function endDrag(e) {
+      if (!dragging) return;
+      dragging = false;
+      canvas.classList.remove('dragging');
+      if (moved > 6) { window.__suppressBurst = true; return; }
+      const id = hit(e);
+      if (id === 'ball') { focusOn('goal'); kick(); }
+      else if (id) focusOn(id);
+    }
+    canvas.addEventListener('pointerup', endDrag);
+    canvas.addEventListener('pointercancel', () => { dragging = false; canvas.classList.remove('dragging'); });
+
+    // ── 슛! ──
+    let kickT = -1, jumpT = -1;
+    const GOAL_SPOT = new THREE.Vector3(3, 0.85, 4.05);
+    const KICK_ANGLE = Math.atan2(BALL_HOME.x - 0 + 2.5, 3);
+    function kick() {
+      if (kickT >= 0) return;
+      ball.position.copy(BALL_HOME);
+      kickT = 0;
+    }
+    const tmp = new THREE.Vector3();
+    function screenOf(local) {
+      tmp.copy(local); island.localToWorld(tmp); tmp.project(camera);
+      const r = canvas.getBoundingClientRect();
+      return [r.left + (tmp.x + 1) / 2 * r.width, r.top + (1 - tmp.y) / 2 * r.height, tmp.z];
+    }
+    function goalCelebrate() {
+      const [x, y] = screenOf(GOAL_SPOT);
+      const pop = document.createElement('div');
+      pop.className = 'goal-pop';
+      pop.textContent = '골!!!';
+      const hr = hero.getBoundingClientRect();
+      pop.style.left = (x - hr.left) + 'px';
+      pop.style.top = (y - hr.top - 40) + 'px';
+      hero.appendChild(pop);
+      pop.addEventListener('animationend', () => pop.remove());
+      window.burst(x, y, 22, ['⚽', '🎉', '🥅', '🔥', '💙', '⭐']);
+      netWiggle = 1;
+    }
+    let netWiggle = 0;
+
+    // ── 화면 크기 맞추기 ──
+    let W = 1, H = 1, baseDist = 24;
+    const camDir = new THREE.Vector3(0, 0.46, 1).normalize();
+    function fit() {
+      W = hero.clientWidth; H = hero.clientHeight;
+      renderer.setSize(W, H, false);
+      camera.aspect = W / H;
+      camera.updateProjectionMatrix();
+      const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const needW = W < 700 ? 19.5 : 21, needH = 17;
+      baseDist = Math.max((needH / 2) / tanV, (needW / 2) / (tanV * camera.aspect));
+    }
+    new ResizeObserver(fit).observe(hero);
+    fit();
+
+    // ── 움직임 ──
+    const clock = new THREE.Clock();
+    let zoom = 1, t = 0, lastLabel = 0;
+    function frame() {
+      const dt = Math.min(clock.getDelta(), 0.05);
+      t += dt;
+
+      if (!dragging && !focused && !reduceMotion) rotTarget += dt * 0.12;
+      rot += (rotTarget - rot) * (1 - Math.exp(-dt * 5));
+      island.rotation.y = rot;
+      island.position.y = reduceMotion ? 0 : Math.sin(t * 0.6) * 0.15;
+
+      zoom += ((focused ? 0.84 : 1) - zoom) * (1 - Math.exp(-dt * 3));
+      const lookY = W < 700 ? 0.2 : 0.8;
+      camera.position.copy(camDir).multiplyScalar(baseDist * zoom).add(new THREE.Vector3(0, lookY, 0));
+      camera.lookAt(0, lookY, 0);
+
+      // 민준 숨쉬기, 눈 깜빡
+      body.position.y = Math.abs(Math.sin(t * 2.2)) * 0.035;
+      head.rotation.z = Math.sin(t * 1.3) * 0.06;
+      const blink = (t % 3.4) < 0.12 ? 0.15 : 1;
+      eyes.forEach(e => (e.scale.y = blink));
+      armL.rotation.x = Math.sin(t * 2.2) * 0.08;
+
+      if (jumpT >= 0) {
+        jumpT += dt;
+        const p = Math.min(jumpT / 0.7, 1);
+        minjun.position.y = Math.sin(Math.PI * p) * 0.7;
+        armR.rotation.z = 0.18 + Math.sin(Math.PI * p) * 2.6;
+        if (p >= 1) { jumpT = -1; minjun.position.y = 0; armR.rotation.z = 0.18; }
+      }
+
+      if (kickT >= 0) {
+        kickT += dt;
+        const turn = Math.min(kickT / 0.3, 1);
+        minjun.rotation.y = KICK_ANGLE * turn;
+        if (kickT > 0.3 && kickT < 0.62) {
+          const k = (kickT - 0.3) / 0.32;
+          legR.rotation.x = k < 0.55 ? -k / 0.55 * 0.9 : -0.9 + (k - 0.55) / 0.45 * 1.8;
+        } else legR.rotation.x *= 0.85;
+        if (kickT > 0.5) {
+          const p = Math.min((kickT - 0.5) / 0.75, 1);
+          ball.position.lerpVectors(BALL_HOME, GOAL_SPOT, p);
+          ball.position.y += Math.sin(Math.PI * p) * 1.3;
+          ball.rotation.x += dt * 14;
+          if (p >= 1 && netWiggle === 0 && kickT < 1.4) goalCelebrate();
+        }
+        if (kickT > 2.6) {
+          const back = Math.min((kickT - 2.6) / 0.6, 1);
+          ball.position.lerpVectors(GOAL_SPOT, BALL_HOME, back);
+          ball.position.y = 0.22;
+          ball.rotation.x -= dt * 10;
+          minjun.rotation.y = KICK_ANGLE * (1 - back);
+          if (back >= 1) { kickT = -1; minjun.rotation.y = 0; }
+        }
+      }
+      if (netWiggle > 0) {
+        netWiggle = Math.max(0, netWiggle - dt * 0.9);
+        net.scale.z = 1 + Math.sin(netWiggle * 30) * netWiggle * 0.35;
+        if (netWiggle === 0) net.scale.z = 1;
+      }
+
+      // 모닥불, 좀비, 다이아
+      flames.forEach((f, i) => { f.scale.y = 0.75 + Math.abs(Math.sin(t * 9 + i * 2)) * 0.5; f.rotation.y = t * (1 + i); });
+      fireLight.intensity = 5 + Math.sin(t * 13) * 0.8 + Math.sin(t * 7.3) * 0.6;
+      zombie.position.y = Math.abs(Math.sin(t * 3)) * 0.04;
+      zArms.rotation.x = Math.sin(t * 3) * 0.15;
+      diamond.rotation.y = t * 1.5;
+      diamond.position.y = 1.55 + Math.sin(t * 2) * 0.1;
+      drums.forEach((d, i) => (d.position.y = 0.92 + Math.sin(t * 2.5 + i) * 0.015));
+
+      renderer.render(scene, camera);
+
+      // 표지판 따라다니기
+      if (t - lastLabel > 0.016) {
+        lastLabel = t;
+        for (const L of Object.values(LANDMARKS)) {
+          tmp.copy(L.anchorV); island.localToWorld(tmp);
+          const far = tmp.z < -1.2;
+          tmp.project(camera);
+          const x = (tmp.x + 1) / 2 * W, y = (1 - tmp.y) / 2 * H;
+          L.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, calc(-100% - 14px))`;
+          L.el.classList.toggle('far', far);
+          L.el.style.zIndex = far ? 1 : 2;
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    window.__island = true;
+    document.getElementById('fallback').hidden = true;
+    frame();
+  </script>
+</body>
+</html>

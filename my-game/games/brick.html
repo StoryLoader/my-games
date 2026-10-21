@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>벽돌깨기 · 민준이의 오락실</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night: #0b1530;
+      --night-deep: #050a1c;
+      --night-glow: #1b3a6b;
+      --ink: #ffffff;
+      --ink-soft: #cfe0ff;
+      --blue: #2f6bff;
+      --blue-light: #7fd1ff;
+      --blue-dark: #1d46b0;
+      --wood: #c69c5d;
+      --wood-ink: #2b1a0e;
+      --wood-edge: #6e4a25;
+      --grass: #5fb14a;
+      --torch: #ffb347;
+      --game: 'Jua', sans-serif;
+      --pixel: 'Press Start 2P', 'Jua', monospace;
+
+      /* 오락기 팔레트 */
+      --body-light: #5b8fff;
+      --body-shade: #2457e0;
+      --rim-light: #7aa4ff;
+      --bezel: #0b1024;
+      --crt: #070c22;
+      --red: #ff4f64;
+      --red-dark: #b52a43;
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%236e4a25' stroke-opacity='.42' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath vector-effect='non-scaling-stroke' d='M10 24C45 18 75 30 112 23S168 18 186 25'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M30 38C44 36 52 40 64 38'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M24 74C58 68 92 81 128 72S170 70 190 76'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M70 90C88 86 104 93 122 88'/%3E%3Cellipse vector-effect='non-scaling-stroke' cx='152' cy='42' rx='7' ry='3.4'/%3E%3Cpath vector-effect='non-scaling-stroke' stroke-opacity='.55' stroke-width='2' d='M0 56H200'/%3E%3C/g%3E%3C/svg%3E");
+      /* 조작판 앞면에 붙인 벽돌 스티커 */
+      --decal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 7' shape-rendering='crispEdges'%3E%3Crect width='56' height='7' fill='%231d46b0'/%3E%3Crect x='1' y='1' width='12' height='5' fill='%23ff4f64'/%3E%3Crect x='15' y='1' width='12' height='5' fill='%23ffa53a'/%3E%3Crect x='29' y='1' width='12' height='5' fill='%235fc24a'/%3E%3Crect x='43' y='1' width='12' height='5' fill='%237fd1ff'/%3E%3Cg fill='%23fff' fill-opacity='.45'%3E%3Crect x='1' y='1' width='12' height='1'/%3E%3Crect x='15' y='1' width='12' height='1'/%3E%3Crect x='29' y='1' width='12' height='1'/%3E%3Crect x='43' y='1' width='12' height='1'/%3E%3C/g%3E%3C/svg%3E");
+
+      /* 크기: --s = 화면(유리) 너비, --u = 게임 화면 1픽셀(논리 좌표 224 기준) */
+      --pad: 12px;    /* 몸체 옆 두께(테두리 포함) */
+      --bez: 10px;    /* 화면 테두리(검은 베젤) */
+      --over: 6px;    /* 간판·조작판이 몸체 밖으로 나온 만큼 */
+      --chrome: 324px;/* 화면을 뺀 세로 높이 합 */
+      --s: max(180px, min(
+        calc(100vw - 32px - 2 * (var(--pad) + var(--bez) + 3px + var(--over))),
+        calc((100svh - var(--chrome)) * 224 / 304),
+        480px));
+      --u: calc(var(--s) / 224);
+      color-scheme: dark;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scrollbar-color: var(--blue) var(--night-deep); }
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--game);
+      color: var(--ink);
+      background: radial-gradient(120% 70% at 50% 0%, var(--night-glow), var(--night) 55%, var(--night-deep));
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      word-break: keep-all;
+    }
+    ::selection { background: var(--torch); color: var(--night); }
+    :focus-visible { outline: 3px solid var(--blue-light); outline-offset: 3px; border-radius: 14px; }
+    a { font: inherit; color: inherit; }
+    .sr {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    /* 오락실 방: 밤하늘 창 + 바닥 */
+    .room { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+    .room i {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: #fff;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle { 50% { opacity: .25; } }
+    .floor {
+      position: absolute;
+      inset: auto 0 0;
+      height: 64px;
+      background: linear-gradient(#10204e, #0a1436);
+      border-top: 2px solid rgba(127, 209, 255, .14);
+    }
+
+    /* 뒤로가기 (다른 게임과 같은 나무 표지판) */
+    .bar { padding: max(14px, env(safe-area-inset-top)) 16px 12px; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 44px;
+      padding: 0 13px 3px 9px;
+      border: 3px solid var(--wood-ink);
+      border-radius: 14px;
+      font-size: 1.05rem;
+      text-decoration: none;
+      color: var(--wood-ink);
+      background: var(--grain) center / 100% 100% no-repeat, var(--wood);
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .32), inset 0 -5px 0 var(--wood-edge), 0 6px 12px rgba(5, 10, 28, .4);
+      transition: transform .15s ease-out;
+    }
+    .back svg { width: 20px; height: 20px; }
+    .back:hover { transform: translateY(-2px) rotate(-2deg); }
+    .back:active { transform: translateY(2px); }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 14px;
+    }
+
+    /* ── 오락기 ── */
+    .cabinet {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: calc(var(--s) + 2 * (var(--bez) + 3px + var(--pad)));
+    }
+    .cabinet::after { /* 바닥 그림자 */
+      content: '';
+      position: absolute;
+      left: -8%; right: -8%; bottom: -12px;
+      height: 24px;
+      z-index: -1;
+      background: radial-gradient(closest-side, rgba(0, 0, 0, .6), transparent);
+    }
+
+    /* 간판: 뒤에서 불이 켜진 판 */
+    .marquee {
+      position: relative;
+      z-index: 2;
+      margin: 0 calc(-1 * var(--over));
+      padding: 6px;
+      border-radius: 16px 16px 8px 8px;
+      background: var(--blue-dark);
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, .22), 0 6px 10px rgba(5, 10, 28, .4);
+    }
+    .lightbox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      height: 80px;
+      border-radius: 10px;
+      background: radial-gradient(62% 120% at 50% 42%, #fffef6, #fff1c4 38%, #ffd27a 76%, #f29a2e);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55);
+    }
+    .lightbox .spark { width: 15px; height: 15px; flex: none; }
+    h1 {
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .logo {
+      --o: 2px;
+      font-family: var(--pixel);
+      font-size: clamp(28px, calc(var(--s) * .11), 44px);
+      letter-spacing: 3px;
+      margin-right: -3px;
+      text-shadow:
+        var(--o) 0 var(--night), calc(-1 * var(--o)) 0 var(--night),
+        0 var(--o) var(--night), 0 calc(-1 * var(--o)) var(--night),
+        var(--o) var(--o) var(--night), calc(-1 * var(--o)) var(--o) var(--night),
+        var(--o) calc(-1 * var(--o)) var(--night), calc(-1 * var(--o)) calc(-1 * var(--o)) var(--night),
+        0 calc(2 * var(--o)) var(--night), var(--o) calc(2 * var(--o)) var(--night), calc(-1 * var(--o)) calc(2 * var(--o)) var(--night);
+    }
+    .logo b { font-weight: 400; }
+    .logo b:nth-child(1) { color: var(--red); }
+    .logo b:nth-child(2) { color: #ffa53a; }
+    .logo b:nth-child(3) { color: #5fc24a; }
+    .logo b:nth-child(4) { color: var(--blue-light); }
+    .logo b:nth-child(5) { color: var(--red); }
+    .ko {
+      font-size: 17px;
+      letter-spacing: .12em;
+      margin-right: -.12em;
+      color: var(--night);
+    }
+
+    /* 몸체 앞면 */
+    .front {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 12px calc(var(--pad) - 4px) 0;
+      border: 4px solid var(--blue-dark);
+      border-top: 0;
+      border-radius: 0 0 12px 12px;
+      background: linear-gradient(90deg, var(--body-light) 0 8px, var(--blue) 8px calc(100% - 10px), var(--body-shade) calc(100% - 10px));
+    }
+
+    /* 화면: 몸체에 파묻힌 홈(rim) → 베젤 → 유리 */
+    .rim {
+      padding: 3px;
+      border-radius: calc(var(--bez) + 17px);
+      background: linear-gradient(var(--blue-dark), var(--rim-light));
+    }
+    .bezel {
+      padding: var(--bez);
+      border-radius: calc(var(--bez) + 14px);
+      background: linear-gradient(#151b36, var(--bezel) 30%);
+    }
+    .glass {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: var(--s);
+      height: calc(304 * var(--u));
+      overflow: hidden;
+      border-radius: 8% / 6%;
+      background: var(--crt);
+    }
+    .glass::before, .glass::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .glass::before { /* 주사선 */
+      background: linear-gradient(rgba(0, 0, 0, .2) 50%, transparent 50%) 0 0 / 100% 3px;
+    }
+    .glass::after { /* 볼록한 유리: 가장자리 어둡게 + 위쪽 반사광 */
+      border-radius: inherit;
+      background: radial-gradient(110% 55% at 22% -8%, rgba(255, 255, 255, .13), transparent 62%);
+      box-shadow: inset 0 0 calc(22 * var(--u)) rgba(0, 0, 0, .75), inset 0 0 calc(5 * var(--u)) rgba(0, 0, 0, .9);
+    }
+    .roll { /* 천천히 내려가는 화면 빛줄기 */
+      position: absolute;
+      inset: 0 0 auto;
+      height: 22%;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(transparent, rgba(127, 209, 255, .05), transparent);
+      animation: roll 7s linear infinite;
+    }
+    @keyframes roll { from { transform: translateY(-100%); } to { transform: translateY(460%); } }
+
+    .hud {
+      position: relative;
+      z-index: 3;  /* 주사선 위: 글씨가 줄무늬로 끊기지 않게 */
+      flex: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      height: calc(32 * var(--u));
+      padding: calc(5 * var(--u)) calc(14 * var(--u)) 0;
+    }
+    .hud-item { display: grid; gap: calc(3 * var(--u)); }
+    .hud-lives { justify-items: end; }
+    .hud-label {
+      font-family: var(--pixel);
+      font-size: calc(8 * var(--u));
+      font-size: max(8px, round(nearest, calc(8 * var(--u)), 4px));
+      line-height: 1;
+      color: var(--torch);
+    }
+    .hud-label.ko-label {
+      font-family: var(--game);
+      font-size: calc(10 * var(--u));
+      margin-top: calc(-1.5 * var(--u));
+      line-height: 1;
+      letter-spacing: .06em;
+      color: var(--torch);
+    }
+    .hud-num {
+      font-family: var(--pixel);
+      font-size: calc(12 * var(--u));
+      font-size: max(16px, round(nearest, calc(12 * var(--u)), 8px));
+      line-height: 1;
+      color: var(--ink);
+    }
+    .hearts { display: flex; gap: calc(3 * var(--u)); margin-top: calc(-1 * var(--u)); }
+    .heart { width: calc(14 * var(--u)); height: calc(12 * var(--u)); display: block; }
+
+    .heart .fade { animation: lost .9s linear forwards; }
+    @keyframes lost {  /* 잃은 목숨은 깜빡깜빡하다 빈 하트로 */
+      0%, 22%, 44%, 66% { opacity: 1; }
+      11%, 33%, 55%, 77%, 100% { opacity: 0; }
+    }
+
+    /* 화면 안 안내판: 게임 오버 / 클리어 */
+    .msg {
+      position: absolute;
+      inset: calc(32 * var(--u)) 0 0;
+      z-index: 1;  /* 주사선 아래: 브라운관 화면에 뜬 글씨처럼 */
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      padding: 0 calc(16 * var(--u)) calc(24 * var(--u));
+      text-align: center;
+      background: rgba(7, 12, 34, .74);
+      animation: msg-in .3s steps(3) both;
+    }
+    .msg[hidden] { display: none; }
+    .msg.clear { background: rgba(7, 12, 34, .5); }  /* 떨어지는 색종이가 비쳐 보이게 */
+    @keyframes msg-in { from { opacity: 0; transform: scale(.9); } }
+    .msg-title {
+      --o: max(2px, calc(1.5 * var(--u)));
+      display: flex;
+      align-items: center;
+      gap: calc(6 * var(--u));
+      margin-bottom: calc(14 * var(--u));
+      font-weight: 400;
+      font-size: calc(30 * var(--u));
+      line-height: 1.1;
+      color: var(--red);
+      -webkit-text-stroke: calc(2 * var(--o)) var(--night);
+      paint-order: stroke fill;
+      text-shadow: 0 calc(1.5 * var(--o)) var(--night);
+    }
+    .clear .msg-title { color: var(--torch); }
+    .popper { width: calc(24 * var(--u)); height: calc(24 * var(--u)); flex: none; }
+    .popper.flip { transform: scaleX(-1); }
+    .msg-label {
+      font-size: calc(11 * var(--u));
+      letter-spacing: .06em;
+      color: var(--ink-soft);
+    }
+    .msg-score, .msg-time b {
+      font-family: var(--pixel);
+      font-weight: 400;
+      font-size: calc(16 * var(--u));
+      font-size: max(16px, round(nearest, calc(16 * var(--u)), 8px));
+      line-height: 1;
+      color: var(--ink);
+    }
+    .msg-score, .msg-time { margin-top: calc(6 * var(--u)); }
+    .msg-time { font-size: calc(13 * var(--u)); line-height: 1; color: var(--ink-soft); }
+    .msg-time b { margin-right: calc(2 * var(--u)); }
+    .again {
+      margin-top: calc(18 * var(--u));
+      padding: calc(6 * var(--u)) calc(18 * var(--u)) calc(8 * var(--u));
+      border: calc(2 * var(--u)) solid var(--night);
+      border-radius: calc(4 * var(--u));
+      font: inherit;
+      font-size: calc(14 * var(--u));
+      line-height: 1.1;
+      color: var(--ink);
+      background: var(--blue);
+      box-shadow: inset 0 calc(2 * var(--u)) 0 rgba(255, 255, 255, .35), inset 0 calc(-3 * var(--u)) 0 var(--blue-dark);
+      cursor: pointer;
+    }
+    .again:hover { background-color: #4a7fff; }
+    .again:active { transform: translateY(calc(1 * var(--u))); box-shadow: inset 0 calc(2 * var(--u)) 0 var(--blue-dark); }
+    .again:focus-visible { outline: 3px solid var(--blue-light); outline-offset: calc(4 * var(--u)); border-radius: calc(3 * var(--u)); }
+
+    #field {
+      display: block;
+      width: 100%;
+      height: calc(272 * var(--u));
+    }
+
+    /* 조작판: 조이스틱 + 버튼 2개 */
+    .deck {
+      position: relative;
+      margin: 12px calc(-1 * (var(--pad) - 4px) - 4px - var(--over)) 0;
+    }
+    .deck-top {
+      position: relative;
+      height: 58px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 13% 6px;
+      clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%);
+      background: linear-gradient(var(--rim-light), #4a82ff);
+    }
+    .deck-lip {
+      height: 14px;
+      border-radius: 0 0 8px 8px;
+      background: var(--decal) center / auto 7px repeat-x, var(--blue-dark);
+      box-shadow: inset 0 2px 0 rgba(5, 10, 28, .25), 0 7px 10px rgba(5, 10, 28, .4);
+    }
+    .stick {
+      width: 52px;
+      height: 56px;
+      margin-bottom: -2px;
+      cursor: grab;
+      touch-action: none;
+    }
+    .stick .lever {
+      transform-box: view-box;
+      transform-origin: 50% 80%;
+      transition: transform .35s cubic-bezier(.2, 1.6, .4, 1);
+    }
+    .stick.left .lever { transform: rotate(-16deg); transition-duration: .08s; }
+    .stick.right .lever { transform: rotate(16deg); transition-duration: .08s; }
+    .stick.left, .stick.right { cursor: grabbing; }
+    .buttons { display: flex; gap: 8px; }
+    .push { width: 44px; height: 36px; cursor: pointer; touch-action: none; }
+    .push .cap { transition: transform .09s ease-out; }
+    .push.down .cap { transform: translateY(4px); }
+
+    /* 아래 몸체: 동전 넣는 곳 */
+    .base {
+      position: relative;
+      flex: 1;
+      min-height: 24px;
+    }
+    .door {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 12px;
+      padding: 10px 14px 12px;
+      border: 3px solid var(--night);
+      border-radius: 10px;
+      background: linear-gradient(#18224a, #111836);
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, .08), 0 3px 0 var(--rim-light);
+    }
+    .slot { display: grid; justify-items: center; gap: 6px; }
+    .slot span { font-size: 14px; line-height: 1; color: var(--torch); }
+    .slot i { /* 쇠 판 + 동전 구멍 + 불 켜진 반환 버튼 */
+      position: relative;
+      width: 38px;
+      height: 46px;
+      border-radius: 4px;
+      background: linear-gradient(#7d8fc4, #4a5890);
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35), inset 0 -2px 0 #2a3358;
+    }
+    .slot i::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 6px;
+      width: 4px; height: 18px;
+      margin-left: -2px;
+      border-radius: 2px;
+      background: var(--night-deep);
+      box-shadow: 1px 1px 0 rgba(255, 255, 255, .3);
+    }
+    .slot i::after {
+      content: '';
+      position: absolute;
+      left: 7px; right: 7px; bottom: 6px;
+      height: 10px;
+      border-radius: 3px;
+      background: linear-gradient(#ffe3a3, var(--torch));
+      box-shadow: inset 0 -2px 0 #c46a12;
+    }
+    /* 화면이 낮으면 동전 넣는 곳을 숨기고, 오락기가 화면 아래 끝 너머로 이어지게 자른다 */
+    .short main { padding-bottom: 0; }
+    .short .front { border-bottom: 0; border-radius: 0; }
+    .short .cabinet::after, .short .door { display: none; }
+
+    @media (min-width: 720px) {
+      :root { --pad: 16px; --bez: 12px; --over: 8px; --chrome: 280px; }
+      .bar { position: absolute; top: 0; left: 0; z-index: 3; }
+      main { padding-top: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .room i, .roll { animation: none; }
+      .roll { display: none; }
+      .msg { animation: none; }
+      .stick .lever, .push .cap, .back { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-back" viewBox="0 0 24 24">
+        <path d="M13.5 5 6.5 12l7 7M7.5 12H19" fill="none" stroke="#2b1a0e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-heart" viewBox="0 0 7 6">
+        <g shape-rendering="crispEdges">
+          <path fill="#ff4f64" d="M1 0h2v1h1V0h2v1h1v2H6v1H5v1H4v1H3V5H2V4H1V3H0V1h1z"/>
+          <path fill="#b52a43" d="M6 2h1v1H6zM5 3h1v1H5zM4 4h1v1H4zM3 5h1v1H3z"/>
+          <path fill="#fff" d="M1 1h1v1H1z"/>
+        </g>
+      </symbol>
+      <symbol id="i-heart-empty" viewBox="0 0 7 6">
+        <path shape-rendering="crispEdges" fill="#26315e" d="M1 0h2v1h1V0h2v1h1v2H6v1H5v1H4v1H3V5H2V4H1V3H0V1h1z"/>
+      </symbol>
+      <symbol id="i-popper" viewBox="0 0 12 12">
+        <g shape-rendering="crispEdges"><path fill="#ffb347" d="M3 6h1v1h-1zM4 6h1v1h-1zM2 7h1v1h-1zM3 7h1v1h-1zM5 7h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM1 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM0 10h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM0 11h1v1h-1zM1 11h1v1h-1z"/><path fill="#ff4f64" d="M4 7h1v1h-1zM3 8h1v1h-1zM2 9h1v1h-1zM1 10h1v1h-1zM11 1h1v1h-1zM5 3h1v1h-1z"/><path fill="#ffd84a" d="M8 0h1v1h-1zM7 5h1v1h-1zM10 7h1v1h-1z"/><path fill="#7fd1ff" d="M6 1h1v1h-1zM10 4h1v1h-1z"/><path fill="#5fc24a" d="M9 2h1v1h-1zM8 6h1v1h-1z"/><path fill="#ffffff" d="M7 3h1v1h-1z"/></g>
+      </symbol>
+      <symbol id="i-spark" viewBox="0 0 5 5">
+        <path shape-rendering="crispEdges" fill="#1d46b0" d="M2 0h1v2h2v1H3v2H2V3H0V2h2z"/>
+      </symbol>
+      <clipPath id="push-clip" clipPathUnits="userSpaceOnUse">
+        <rect x="0" y="-10" width="44" height="34"/>
+        <ellipse cx="22" cy="24" rx="15" ry="6"/>
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="room" id="room" aria-hidden="true"><div class="floor"></div></div>
+
+  <div class="bar">
+    <a class="back" href="../arcade.html"><svg aria-hidden="true"><use href="#i-back"/></svg>오락실</a>
+  </div>
+
+  <main>
+    <div class="cabinet">
+      <header class="marquee">
+        <div class="lightbox">
+          <svg class="spark" aria-hidden="true"><use href="#i-spark"/></svg>
+          <h1>
+            <span class="logo" aria-hidden="true"><b>B</b><b>R</b><b>I</b><b>C</b><b>K</b></span>
+            <span class="ko">벽돌깨기</span>
+          </h1>
+          <svg class="spark" aria-hidden="true"><use href="#i-spark"/></svg>
+        </div>
+      </header>
+
+      <div class="front">
+        <section class="rim" aria-label="게임 화면">
+          <div class="bezel">
+            <div class="glass">
+              <div class="hud">
+                <div class="hud-item">
+                  <span class="hud-label" aria-hidden="true">SCORE</span>
+                  <span class="hud-num"><span class="sr">점수 </span><span id="score">00000</span></span>
+                </div>
+                <div class="hud-item hud-lives">
+                  <span class="hud-label ko-label" aria-hidden="true">목숨</span>
+                  <span class="hearts" id="lives" role="img" aria-label="목숨 3개"></span>
+                </div>
+              </div>
+              <canvas id="field" width="224" height="272" role="img" aria-keyshortcuts="ArrowLeft ArrowRight Space" aria-label="위쪽에 알록달록한 벽돌 4줄 8개씩, 아래쪽 패들 위에 공이 놓여 있어요. 왼쪽·오른쪽 화살표 키로 패들을 움직이고 스페이스바로 공을 쏴요"></canvas>
+              <div class="msg" id="overMsg" role="dialog" aria-labelledby="overTitle" hidden>
+                <h2 class="msg-title" id="overTitle">게임 오버</h2>
+                <p class="msg-label">최종 점수</p>
+                <p class="msg-score" id="finalScore">00000</p>
+                <button class="again" type="button">다시 하기</button>
+              </div>
+              <div class="msg clear" id="clearMsg" role="dialog" aria-labelledby="clearTitle" hidden>
+                <h2 class="msg-title" id="clearTitle"><svg class="popper" aria-hidden="true"><use href="#i-popper"/></svg>클리어!<svg class="popper flip" aria-hidden="true"><use href="#i-popper"/></svg></h2>
+                <p class="msg-label">걸린 시간</p>
+                <p class="msg-time" id="clearTime"></p>
+                <button class="again" type="button">다시 하기</button>
+              </div>
+              <span class="roll" aria-hidden="true"></span>
+            </div>
+          </div>
+        </section>
+
+        <div class="deck" aria-hidden="true">
+          <div class="deck-top">
+            <svg class="stick" id="stick" viewBox="0 0 52 56">
+              <ellipse cx="26" cy="47" rx="21" ry="7.5" fill="#0b1530"/>
+              <ellipse cx="26" cy="45.5" rx="17" ry="5.5" fill="#1d2a55"/>
+              <g class="lever">
+                <ellipse cx="26" cy="45" rx="6.5" ry="2.6" fill="#0b1530"/>
+                <rect x="23" y="18" width="6" height="27" rx="3" fill="#c9d3ea"/>
+                <rect x="26" y="18" width="3" height="27" fill="#8b97b8"/>
+                <circle cx="26" cy="15" r="12.5" fill="#ff4f64"/>
+                <path d="M14.2 19.2A12.5 12.5 0 0 0 37.8 19.2 13 9 0 0 1 14.2 19.2Z" fill="#b52a43"/>
+                <ellipse cx="21" cy="10" rx="5" ry="3.2" fill="#fff" opacity=".7"/>
+              </g>
+            </svg>
+            <div class="buttons">
+              <svg class="push" viewBox="0 0 44 36">
+                <ellipse cx="22" cy="25" rx="20" ry="9.5" fill="#0b1530"/>
+                <g clip-path="url(#push-clip)">
+                  <g class="cap">
+                    <rect x="7" y="14" width="30" height="10" fill="#c46a12"/>
+                    <ellipse cx="22" cy="24" rx="15" ry="6" fill="#c46a12"/>
+                    <ellipse cx="22" cy="14" rx="15" ry="6.5" fill="#ffb347"/>
+                    <ellipse cx="17" cy="12" rx="6" ry="2.2" fill="#fff" opacity=".55"/>
+                  </g>
+                </g>
+              </svg>
+              <svg class="push" viewBox="0 0 44 36">
+                <ellipse cx="22" cy="25" rx="20" ry="9.5" fill="#0b1530"/>
+                <g clip-path="url(#push-clip)">
+                  <g class="cap">
+                    <rect x="7" y="14" width="30" height="10" fill="#b52a43"/>
+                    <ellipse cx="22" cy="24" rx="15" ry="6" fill="#b52a43"/>
+                    <ellipse cx="22" cy="14" rx="15" ry="6.5" fill="#ff4f64"/>
+                    <ellipse cx="17" cy="12" rx="6" ry="2.2" fill="#fff" opacity=".55"/>
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="deck-lip"></div>
+        </div>
+
+        <div class="base" id="base" aria-hidden="true">
+          <div class="door">
+            <div class="slot"><span>100원</span><i></i></div>
+            <div class="slot"><span>100원</span><i></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ── 오락실 별 ──
+    const room = document.getElementById('room');
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('i');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 82 + '%';
+      s.style.animationDelay = -Math.random() * 3 + 's';
+      if (Math.random() > .8) s.style.width = s.style.height = '4px';
+      room.appendChild(s);
+    }
+
+    // ── 게임 화면 (논리 좌표 224 × 272, 1 = 픽셀 하나) ──
+    const W = 224, H = 272;
+    const WALL = 8;
+    const COLS = 8, ROWS = 4;
+    const BRICK_W = (W - WALL * 2) / COLS;   // 26
+    const BRICK_H = 12;
+    const BRICK_TOP = 30;
+    const PADDLE_W = 40, PADDLE_H = 8, PADDLE_Y = 244;
+    const BALL = 6;
+    const START_LIVES = 3;
+    const BRICK_POINTS = 10;
+
+    const ROW_COLORS = [
+      { base: '#ff4f64', light: '#ffa0ab', dark: '#b52a43' },  // 빨강
+      { base: '#ffa53a', light: '#ffd48f', dark: '#c46a12' },  // 주황
+      { base: '#5fc24a', light: '#a6ec8a', dark: '#2f7d2a' },  // 초록
+      { base: '#4a86ff', light: '#a9cbff', dark: '#1d46b0' },  // 파랑
+    ];
+
+    const state = {
+      mode: 'play',        // play | over(게임 오버) | clear(전부 깸)
+      score: 0,
+      lives: START_LIVES,
+      startedAt: null,     // 첫 발사 시각 → 클리어까지 걸린 시간
+      paddle: { x: (W - PADDLE_W) / 2, y: PADDLE_Y, w: PADDLE_W, h: PADDLE_H },
+      ball: { x: (W - BALL) / 2, y: PADDLE_Y - BALL, size: BALL, vx: 0, vy: 0, stuck: true, gone: false },
+      bricks: [],
+    };
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        state.bricks.push({ x: WALL + c * BRICK_W, y: BRICK_TOP + r * BRICK_H, w: BRICK_W, h: BRICK_H, row: r, alive: true });
+      }
+    }
+
+    // 배경 별 위치는 고정(창 크기를 바꿔도 같은 하늘)
+    const STARS = (() => {
+      let seed = 7;
+      const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const list = [];
+      for (let i = 0; i < 34; i++) {
+        list.push({ x: WALL + 2 + Math.floor(rnd() * (W - WALL * 2 - 4)), y: WALL + 2 + Math.floor(rnd() * (H - WALL - 4)), big: rnd() > .9, c: rnd() > .7 ? '#3a5fa8' : '#1f2f63' });
+      }
+      return list;
+    })();
+
+    const canvas = document.getElementById('field');
+    const ctx = canvas.getContext('2d');
+    const rect = (x, y, w, h, color) => { ctx.fillStyle = color; ctx.fillRect(x, y, w, h); };
+
+    function drawField() {
+      rect(0, 0, W, H, '#0a1433');
+      for (const s of STARS) {
+        if (s.big) {
+          rect(s.x - 1, s.y, 3, 1, '#4f7cc9');
+          rect(s.x, s.y - 1, 1, 3, '#4f7cc9');
+          rect(s.x, s.y, 1, 1, '#9fd8ff');
+        } else {
+          rect(s.x, s.y, 1, 1, s.c);
+        }
+      }
+    }
+
+    // 쇠 파이프 벽 (왼쪽·오른쪽·위)
+    const PIPE = ['#151b38', '#38467a', '#6a7db8', '#a9bbe6', '#8a9dd2', '#5a6ca6', '#33406f', '#1a2148'];
+    function drawWalls() {
+      for (let i = 0; i < WALL; i++) {
+        rect(i, 0, 1, H, PIPE[i]);
+        rect(W - WALL + i, 0, 1, H, PIPE[i]);
+        rect(0, i, W, 1, PIPE[i]);
+      }
+      for (let y = 30; y < H; y += 40) {
+        for (const x of [0, W - WALL]) {
+          rect(x, y, WALL, 1, '#151b38');
+          rect(x + 1, y + 1, WALL - 2, 2, '#c9d6f5');
+          rect(x + 1, y + 3, WALL - 2, 1, '#4a5890');
+          rect(x, y + 4, WALL, 1, '#151b38');
+        }
+      }
+      for (let x = 36; x < W - WALL; x += 38) {
+        rect(x, 0, 1, WALL, '#151b38');
+        rect(x + 1, 1, 2, WALL - 2, '#c9d6f5');
+        rect(x + 3, 1, 1, WALL - 2, '#4a5890');
+        rect(x + 4, 0, 1, WALL, '#151b38');
+      }
+      for (const x of [0, W - WALL]) {  // 모서리 이음쇠
+        rect(x, 0, WALL, WALL, '#151b38');
+        rect(x + 1, 1, WALL - 2, WALL - 2, '#5a6ca6');
+        rect(x + 1, 1, WALL - 2, 1, '#a9bbe6');
+        rect(x + 1, 1, 1, WALL - 2, '#a9bbe6');
+        rect(x + 3, 3, 2, 2, '#e4ecff');
+      }
+    }
+
+    function drawBrick(b) {
+      const c = ROW_COLORS[b.row];
+      const w = b.w - 1, h = b.h - 1;  // 오른쪽·아래 1픽셀은 틈
+      rect(b.x, b.y, w, h, c.base);
+      rect(b.x, b.y, w, 1, c.light);
+      rect(b.x, b.y, 1, h, c.light);
+      rect(b.x, b.y + h - 2, w, 2, c.dark);
+      rect(b.x + w - 1, b.y + 1, 1, h - 1, c.dark);
+      rect(b.x + 2, b.y + 2, 4, 1, 'rgba(255,255,255,.8)');
+      rect(b.x + 2, b.y + 3, 1, 1, 'rgba(255,255,255,.8)');
+    }
+
+    // 은색 몸통 + 빨간 양쪽 끝
+    function drawPaddle(p) {
+      const cap = 7, mid = p.w - cap * 2;
+      rect(p.x + cap, p.y, mid, p.h, '#c3cde6');
+      rect(p.x + cap, p.y, mid, 1, '#ffffff');
+      rect(p.x + cap, p.y + 1, mid, 1, '#e6ecf9');
+      rect(p.x + cap, p.y + 3, mid, 2, '#7fd1ff');
+      rect(p.x + cap, p.y + p.h - 2, mid, 2, '#76829f');
+      for (const side of [0, 1]) {
+        const x = side ? p.x + p.w - cap : p.x;
+        const round = side ? x : x + 1;  // 바깥쪽 모서리를 깎는다
+        rect(round, p.y, cap - 1, p.h, '#ff4f64');
+        rect(x, p.y + 1, cap, p.h - 2, '#ff4f64');
+        rect(round, p.y + 1, cap - 1, 1, '#ffa0ab');
+        rect(side ? x : x + 1, p.y + 2, 1, 2, '#ffa0ab');
+        rect(round, p.y + p.h - 2, cap - 1, 1, '#b52a43');
+        rect(round, p.y + p.h - 1, cap - 1, 1, '#8a1f33');
+      }
+      rect(p.x + cap, p.y, 1, p.h, '#3b4670');
+      rect(p.x + p.w - cap - 1, p.y, 1, p.h, '#3b4670');
+    }
+
+    function drawBall(b) {
+      const { x, y } = b;
+      rect(x + 1, y, 4, 6, '#eef4ff');
+      rect(x, y + 1, 6, 4, '#eef4ff');
+      rect(x + 1, y + 1, 1, 1, '#ffffff');
+      rect(x + 5, y + 3, 1, 2, '#9fb6e6');
+      rect(x + 4, y + 4, 1, 1, '#9fb6e6');
+      rect(x + 2, y + 5, 3, 1, '#9fb6e6');
+    }
+
+    // 움직이는 것은 실제 화면 픽셀 단위로 맞춰 그린다 → 번지지 않고 부드럽게 미끄러진다
+    let scale = 1;
+    const snap = v => Math.round(v * scale) / scale;
+
+    // 벽돌 조각·색종이 (사각 픽셀만, 글자·이모지는 그리지 않는다)
+    const parts = [];
+    const MAX_PARTS = 240;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const spawn = p => { if (parts.length < MAX_PARTS) parts.push(p); };
+
+    function burst(k) {
+      const c = ROW_COLORS[k.row];
+      for (let i = 0; i < 8; i++) {
+        spawn({ x: k.x + 3 + Math.random() * (k.w - 8), y: k.y + 2 + Math.random() * (k.h - 6),
+          vx: (Math.random() - .5) * 120, vy: -30 - Math.random() * 90, g: 360,
+          life: .5, max: .5, size: i % 2 ? 2 : 3, color: i % 3 ? c.base : c.light });
+      }
+    }
+
+    function confetti() {
+      if (reduceMotion) return;
+      const colors = ['#ff4f64', '#ffa53a', '#5fc24a', '#4a86ff', '#7fd1ff', '#ffd84a', '#ffffff'];
+      for (let i = 0; i < 150; i++) {
+        spawn({ x: WALL + Math.random() * (W - WALL * 2), y: -Math.random() * 140,
+          vx: (Math.random() - .5) * 40, vy: 30 + Math.random() * 45, g: 20,
+          life: 3.2, max: 3.2, size: 2 + (i % 2), color: colors[i % colors.length] });
+      }
+    }
+
+    function updateParts(dt) {
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.vy += p.g * dt;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.life -= dt;
+        if (p.life <= 0 || p.y > H) parts.splice(i, 1);
+      }
+    }
+
+    function drawParts() {
+      for (const p of parts) {
+        ctx.globalAlpha = Math.min(1, p.life / p.max * 2);
+        rect(snap(p.x), snap(p.y), p.size, p.size, p.color);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function draw() {
+      drawField();
+      for (const b of state.bricks) if (b.alive) drawBrick(b);
+      drawWalls();
+      drawPaddle({ ...state.paddle, x: snap(state.paddle.x) });
+      if (!state.ball.gone) drawBall({ ...state.ball, x: snap(state.ball.x), y: snap(state.ball.y) });
+      drawParts();
+    }
+
+    // 픽셀 하나를 정수배로 크게 그린 뒤 화면 크기로 줄인다 → 픽셀 크기가 고르게 보인다
+    const base = document.getElementById('base');
+    function fit() {
+      const space = base.clientHeight - (document.body.classList.contains('short') ? 14 : 0);
+      document.body.classList.toggle('short', space < 104);
+      const dpr = window.devicePixelRatio || 1;
+      const n = Math.min(8, Math.max(1, Math.ceil((canvas.clientWidth || W) * dpr / W)));
+      if (canvas.width !== W * n) {
+        canvas.width = W * n;
+        canvas.height = H * n;
+      }
+      scale = n;
+      ctx.setTransform(n, 0, 0, n, 0, 0);
+      ctx.imageSmoothingEnabled = false;
+      draw();
+    }
+
+    // ── 점수·목숨 ──
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+    const pad5 = n => String(n).padStart(5, '0');
+    function renderScore() {
+      scoreEl.textContent = pad5(state.score);
+    }
+    // 빈 자리까지 3칸을 그린다. 방금 잃은 칸(lost)은 꽉 찬 하트가 깜빡이다 사라진다
+    function renderLives(lost = -1) {
+      let html = '';
+      for (let i = 0; i < START_LIVES; i++) {
+        if (i < state.lives) html += '<svg class="heart" aria-hidden="true"><use href="#i-heart"/></svg>';
+        else html += `<svg class="heart" aria-hidden="true"><use href="#i-heart-empty"/>${i === lost ? '<use class="fade" href="#i-heart"/>' : ''}</svg>`;
+      }
+      livesEl.innerHTML = html;
+      livesEl.setAttribute('aria-label', `목숨 ${state.lives}개`);
+    }
+
+    renderScore();
+    renderLives();
+    fit();
+    addEventListener('resize', fit);
+
+    // ── 게임 진행: ←/→ 패들 이동, 스페이스 = 발사, 벽·패들·벽돌에 튕김, 바닥 = 목숨 −1 ──
+    const PADDLE_SPEED = 170;  // 초당 픽셀(논리 좌표) — 벽 끝에서 끝까지 약 1초
+    const BALL_SPEED = 160;    // 초당 픽셀, 첫 발사는 대각선(45°)
+    const MAX_BOUNCE = Math.PI / 3;   // 패들 끝에 맞으면 수직에서 60°까지 비스듬히
+    const MIN_BOUNCE = Math.PI / 15;  // 한가운데여도 12°는 기울여 같은 자리만 오가지 않게
+    const RESPAWN_MS = 800;    // 공을 놓친 뒤 패들 위에 새 공이 놓이기까지
+    const MSG_DELAY = 700;     // 마지막 공을 놓친 뒤 / 마지막 벽돌을 깬 뒤 안내판이 뜨기까지
+    const MSG_GUARD = 600;     // 안내판이 뜨고 이 시간 동안은 다시 하기를 무시(연타로 바로 넘어가지 않게)
+    const KEYS = { ArrowLeft: 'left', ArrowRight: 'right' };
+    const held = { left: false, right: false };
+    const keyDir = () => held.right - held.left;
+    const playing = () => state.mode === 'play';
+    const ballFlying = () => playing() && !state.ball.stuck && !state.ball.gone;
+    const busy = () => (playing() && keyDir() !== 0) || ballFlying() || parts.length > 0;
+    const fireBtn = document.querySelector('.push');  // 주황 버튼 = 발사 버튼
+    const overMsg = document.getElementById('overMsg');
+    const clearMsg = document.getElementById('clearMsg');
+    let last = 0, running = false, timer = 0, msgAt = 0;
+
+    function movePaddle(dx) {
+      const p = state.paddle;
+      p.x = Math.min(W - WALL - p.w, Math.max(WALL, p.x + dx));  // 양쪽 벽 안에서만
+      if (state.ball.stuck) state.ball.x = p.x + (p.w - state.ball.size) / 2;  // 발사 전에는 공이 패들 위에 붙어 다닌다
+    }
+
+    function launch() {
+      const b = state.ball;
+      if (!playing() || !b.stuck || b.gone) return;
+      const dir = keyDir() || 1;  // 움직이던 쪽으로, 가만히 있으면 오른쪽 위로
+      b.vx = dir * BALL_SPEED * Math.SQRT1_2;
+      b.vy = -BALL_SPEED * Math.SQRT1_2;
+      b.stuck = false;
+      if (state.startedAt === null) state.startedAt = performance.now();
+      wake();
+    }
+
+    function resetBall() {
+      const b = state.ball, p = state.paddle;
+      Object.assign(b, { x: p.x + (p.w - b.size) / 2, y: p.y - b.size, vx: 0, vy: 0, stuck: true, gone: false });
+      draw();
+    }
+
+    // 패들: 맞은 자리에 따라 각도가 바뀐다(가운데 = 거의 위로, 끝 = 비스듬히)
+    function hitPaddle(b) {
+      const p = state.paddle;
+      const bottom = b.y + b.size;
+      if (b.vy <= 0 || bottom < p.y || bottom > p.y + p.h || b.x + b.size <= p.x || b.x >= p.x + p.w) return;
+      b.y = p.y - b.size;
+      const off = ((b.x + b.size / 2) - (p.x + p.w / 2)) / ((p.w + b.size) / 2);
+      let a = Math.max(-1, Math.min(1, off)) * MAX_BOUNCE;
+      if (Math.abs(a) < MIN_BOUNCE) a = (a < 0 || (a === 0 && b.vx < 0) ? -1 : 1) * MIN_BOUNCE;
+      b.vx = BALL_SPEED * Math.sin(a);
+      b.vy = -BALL_SPEED * Math.cos(a);
+    }
+
+    // 벽돌: 겹친 폭이 좁은 쪽으로 밀어내고 그 방향만 뒤집는다(옆면이면 좌우, 위·아랫면이면 위아래)
+    function hitBrick(b) {
+      for (const k of state.bricks) {
+        if (!k.alive || b.x + b.size <= k.x || b.x >= k.x + k.w || b.y + b.size <= k.y || b.y >= k.y + k.h) continue;
+        const ox = Math.min(b.x + b.size, k.x + k.w) - Math.max(b.x, k.x);
+        const oy = Math.min(b.y + b.size, k.y + k.h) - Math.max(b.y, k.y);
+        if (ox < oy) {
+          const left = b.x + b.size / 2 < k.x + k.w / 2;
+          b.x += left ? -ox : ox;
+          b.vx = (left ? -1 : 1) * Math.abs(b.vx);
+        } else {
+          const above = b.y + b.size / 2 < k.y + k.h / 2;
+          b.y += above ? -oy : oy;
+          b.vy = (above ? -1 : 1) * Math.abs(b.vy);
+        }
+        breakBrick(k);
+        return;  // 한 번에 벽돌 하나만
+      }
+    }
+
+    function breakBrick(k) {
+      k.alive = false;
+      state.score += BRICK_POINTS;
+      renderScore();
+      burst(k);
+      if (state.bricks.every(x => !x.alive)) clearStage();
+    }
+
+    // 위·왼쪽·오른쪽 벽은 넘어간 만큼 되돌려 놓고 그쪽 속도만 뒤집는다(거울 반사 → 빠르기·각도 그대로)
+    function moveBall(dt) {
+      if (!ballFlying()) return;
+      const b = state.ball;
+      const right = W - WALL - b.size;
+      const steps = Math.max(1, Math.ceil(BALL_SPEED * dt / 3));  // 3픽셀 이하씩 나눠 움직여 벽·벽돌을 뚫지 않게
+      for (let i = 0; i < steps; i++) {
+        b.x += b.vx * dt / steps;
+        b.y += b.vy * dt / steps;
+        if (b.x < WALL) { b.x = WALL * 2 - b.x; b.vx = Math.abs(b.vx); }
+        if (b.x > right) { b.x = right * 2 - b.x; b.vx = -Math.abs(b.vx); }
+        if (b.y < WALL) { b.y = WALL * 2 - b.y; b.vy = Math.abs(b.vy); }
+        hitBrick(b);
+        if (!playing()) return;  // 마지막 벽돌을 깼다
+        hitPaddle(b);
+      }
+      if (b.y >= H) loseLife();
+    }
+
+    function loseLife() {
+      state.ball.gone = true;
+      state.lives -= 1;
+      renderLives(state.lives);
+      if (state.lives > 0) {
+        timer = setTimeout(resetBall, RESPAWN_MS);
+      } else {
+        state.mode = 'over';
+        document.getElementById('finalScore').textContent = pad5(state.score);
+        timer = setTimeout(() => showMsg(overMsg), MSG_DELAY);
+      }
+    }
+
+    function clearStage() {
+      state.mode = 'clear';
+      state.ball.gone = true;
+      const sec = Math.max(1, Math.round((performance.now() - state.startedAt) / 1000));
+      const m = Math.floor(sec / 60), ss = sec % 60;
+      document.getElementById('clearTime').innerHTML = m ? `<b>${m}</b>분 <b>${String(ss).padStart(2, '0')}</b>초` : `<b>${ss}</b>초`;
+      confetti();
+      timer = setTimeout(() => showMsg(clearMsg), MSG_DELAY);
+    }
+
+    function showMsg(el) {
+      el.hidden = false;
+      msgAt = performance.now();
+      el.querySelector('.again').focus({ preventScroll: true });
+    }
+
+    function newGame() {
+      if (playing() || !msgAt || performance.now() - msgAt < MSG_GUARD) return;
+      clearTimeout(timer);
+      overMsg.hidden = clearMsg.hidden = true;
+      msgAt = 0;
+      Object.assign(state, { mode: 'play', score: 0, lives: START_LIVES, startedAt: null });
+      for (const k of state.bricks) k.alive = true;
+      state.paddle.x = (W - PADDLE_W) / 2;
+      parts.length = 0;
+      renderScore();
+      renderLives();
+      resetBall();
+      onKeys();  // 화살표를 누른 채 다시 시작해도 바로 움직이게
+    }
+    for (const btn of document.querySelectorAll('.again')) btn.addEventListener('click', newGame);
+
+    function tick(now) {
+      const dt = Math.min(.05, Math.max(0, (now - last) / 1000));  // 프레임 간격 기준(탭 전환 뒤 순간이동 방지)
+      last = now;
+      if (playing()) movePaddle(keyDir() * PADDLE_SPEED * dt);
+      moveBall(dt);
+      updateParts(dt);
+      draw();
+      if (busy()) requestAnimationFrame(tick);
+      else running = false;  // 움직일 것이 없으면 쉰다
+    }
+
+    function wake() {
+      if (running || !busy()) return;
+      running = true;
+      last = performance.now();
+      requestAnimationFrame(tick);
+    }
+
+    function onKeys() {
+      tiltStick(playing() ? keyDir() : 0);
+      wake();
+    }
+
+    const isSpace = e => e.code === 'Space' || e.key === ' ';
+    addEventListener('keydown', e => {
+      if (isSpace(e)) {
+        e.preventDefault();  // 스페이스로 페이지가 내려가거나 버튼이 한 번 더 눌리지 않게
+        if (e.repeat) return;
+        if (playing()) {
+          fireBtn.classList.add('down');
+          launch();
+        } else {
+          newGame();  // 안내판이 떠 있으면 스페이스 = 다시 하기
+        }
+        return;
+      }
+      const k = KEYS[e.key];
+      if (!k) return;
+      e.preventDefault();      // 화살표로 페이지가 스크롤되지 않게
+      if (held[k]) return;     // 누르고 있을 때 반복되는 keydown은 무시
+      held[k] = true;
+      onKeys();
+    });
+    addEventListener('keyup', e => {
+      if (isSpace(e)) { e.preventDefault(); fireBtn.classList.remove('down'); return; }
+      const k = KEYS[e.key];
+      if (!k) return;
+      held[k] = false;
+      onKeys();
+    });
+    const releaseKeys = () => {
+      held.left = held.right = false;
+      fireBtn.classList.remove('down');
+      onKeys();
+    };
+    addEventListener('blur', releaseKeys);  // 다른 창으로 가면 keyup이 안 오므로 직접 멈춘다
+    document.addEventListener('visibilitychange', () => { if (document.hidden) releaseKeys(); });
+
+    // ── 만지면 반응하는 조이스틱·버튼 (조이스틱은 화살표 키, 주황 버튼은 스페이스를 따라 움직인다. 터치는 아직 게임 조작 아님) ──
+    const stick = document.getElementById('stick');
+    function tiltStick(dir) {
+      stick.classList.toggle('left', dir < 0);
+      stick.classList.toggle('right', dir > 0);
+    }
+    const tilt = e => {
+      const r = stick.getBoundingClientRect();
+      tiltStick(e.clientX < r.left + r.width / 2 ? -1 : 1);
+    };
+    const release = () => tiltStick(keyDir());
+    stick.addEventListener('pointerdown', e => { stick.setPointerCapture(e.pointerId); tilt(e); });
+    stick.addEventListener('pointermove', e => { if (stick.hasPointerCapture(e.pointerId)) tilt(e); });
+    stick.addEventListener('pointerup', release);
+    stick.addEventListener('pointercancel', release);
+
+    for (const btn of document.querySelectorAll('.push')) {
+      const up = () => btn.classList.remove('down');
+      btn.addEventListener('pointerdown', () => btn.classList.add('down'));
+      btn.addEventListener('pointerup', up);
+      btn.addEventListener('pointerleave', up);
+      btn.addEventListener('pointercancel', up);
+    }
+  </script>
+</body>
+</html>
