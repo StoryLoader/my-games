@@ -57,7 +57,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
 
   // ---- the title made of soil grains (technique: cokacmotion 17-hangul-particles, rebuilt in Canvas 2D) ----
   const title = '흙은 어디에서 왔는가?';
-  const pts = WO.sampleText(title, "700 150px 'Gowun Batang'", 3400, 17, 150);
+  const pts = WO.sampleText(title, "700 150px 'Gowun Batang'", 2600, 17, 150);
   const rnd = rand(71);
   const grains = pts.map((p) => ({ tx: 960 + p[0], ty: 430 + p[1], sx: 1290 + (rnd() - 0.5) * 90, sy: 300 + (rnd() - 0.5) * 60, d: rnd(), s: sp.grainA[Math.floor(rnd() * 3)], r: rnd() * 6.28, up: 0.6 + rnd() * 0.8, vx: (rnd() - 0.5) * 160 }));
   const T_gather = S('mo02') + 0.1, T_hold = E('mo02'), T_scatter = about('mo03', '달에') - 0.1, T_moon = S('mo04') - 0.15, T_earth = S('mo07') - 0.1;

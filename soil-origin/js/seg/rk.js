@@ -89,7 +89,8 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
     // how far the pieces have moved apart: the ice wedges the inner ones; the split and the roots open everything; the shelf stays open
     const iceW = t < T.wedge ? 0 : t < T.cycles0 ? WO.ease.out((t - T.wedge) / 1.6) : 1;
     const sep = t < T.split ? 0 : t < T.root0 ? 10 * WO.ease.out((t - T.split) / 0.9) : t < T.wide ? 10 + 16 * WO.ease.out((t - T.root0) / (T.root1 - T.root0)) : 26 + 14 * WO.ease.out((t - T.wide) / 1.4);
-    for (const c of fr.cells) {
+    if (sep === 0 && iceW === 0) drawGranite();   // one piece until the ice wedges it: no per-cell clipping needed
+    else for (const c of fr.cells) {
       const dx = c.c[0] - IMP[0], dy = c.c[1] - IMP[1], L = Math.hypot(dx, dy) || 1;
       let push = sep * (0.5 + 0.5 * Math.min(1, 900 / Math.max(80, L))) * (0.7 + 0.6 * c.r);
       if (iceW > 0 && L < 460) push += 16 * iceW * (1 - L / 460);
