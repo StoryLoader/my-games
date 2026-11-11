@@ -40,7 +40,7 @@ Video.define(async (ctx) => {
     fingers(g, x, y, k = 1, open = 0, alpha = 1) {
       g.save(); g.translate(x, y); g.scale(k, k); g.globalAlpha = alpha;
       // each finger: a rounded, tapering pad coming down from above; skin in shadow, a rim light on the upper right, a nail
-      const finger = (sx, rot) => { g.save(); g.scale(sx, 1); g.rotate(rot);
+      const finger = (sx, rot) => { g.save(); g.scale(sx, 1); g.translate(34, 0); g.rotate(rot);
         const grd = g.createLinearGradient(-60, -600, 70, -40); grd.addColorStop(0, '#3a2a22'); grd.addColorStop(0.6, '#5c4034'); grd.addColorStop(1, '#8a6250');
         g.fillStyle = grd; g.beginPath(); g.moveTo(-62, -760); g.lineTo(62, -760); g.bezierCurveTo(70, -420, 62, -200, 48, -90); g.bezierCurveTo(40, -20, 14, 4, 0, 4); g.bezierCurveTo(-14, 4, -40, -20, -48, -90); g.bezierCurveTo(-62, -200, -70, -420, -62, -760); g.closePath(); g.fill();
         // knuckle creases

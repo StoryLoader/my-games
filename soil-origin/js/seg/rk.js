@@ -92,7 +92,7 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
     for (const c of fr.cells) {
       const dx = c.c[0] - IMP[0], dy = c.c[1] - IMP[1], L = Math.hypot(dx, dy) || 1;
       let push = sep * (0.5 + 0.5 * Math.min(1, 900 / Math.max(80, L))) * (0.7 + 0.6 * c.r);
-      if (iceW > 0 && L < 420) push += 7 * iceW * (1 - L / 420);
+      if (iceW > 0 && L < 460) push += 16 * iceW * (1 - L / 460);
       const ox = (dx / L) * push, oy = (dy / L) * push + sep * 0.6 * c.r;
       const rot = sep > 0 ? (c.r - 0.5) * 0.03 * Math.min(1, sep / 26) : 0;
       // the cell that falls out at "갈라지죠"
@@ -102,7 +102,12 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
       if (sep > 0 || push > 0) { g.lineWidth = 3; g.strokeStyle = 'rgba(0,0,0,0.55)'; g.stroke(); g.save(); g.translate(-1.5, -1.5); g.lineWidth = 1.5; g.strokeStyle = 'rgba(255,236,210,0.35)'; g.stroke(); g.restore(); }
       g.restore();
     }
-    if (sep > 0 || iceW > 0) { g.fillStyle = '#060302'; g.globalCompositeOperation = 'destination-over'; g.fillRect(-100, -100, 2200, 1300); g.globalCompositeOperation = 'source-over'; }
+    if (sep > 0 || iceW > 0) {
+      g.globalCompositeOperation = 'destination-over';
+      if (iceW > 0 && t < T.split + 1.5) { // the ice body fills the gaps: bright near the impact, fading out
+        const fade = t < T.split ? 1 : 1 - (t - T.split) / 1.5; const ig = g.createRadialGradient(IMP[0], IMP[1], 20, IMP[0], IMP[1], 460 + 100 * iceW);
+        ig.addColorStop(0, `rgba(235,250,255,${0.95 * fade})`); ig.addColorStop(0.5, `rgba(160,210,240,${0.9 * fade})`); ig.addColorStop(1, `rgba(40,60,90,${0.6 * fade})`); g.fillStyle = ig; g.fillRect(-100, -100, 2200, 1300); }
+      g.fillStyle = '#060302'; g.fillRect(-100, -100, 2200, 1300); g.globalCompositeOperation = 'source-over'; }
     // the cracks: a lit lip towards the light, a dark inside
     if (R > 0) {
       const wet = t < T.rain0 ? 0 : t < T.night ? WO.clamp((t - T.rain0) / 1.5, 0, 1) : 1;
@@ -117,8 +122,8 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
     const iceK = t < T.ice ? 0 : t < T.cycles0 ? WO.ease.out((t - T.ice) / 1.2) : t < T.split ? 1 : WO.clamp(1 - (t - T.split) / 1.5, 0, 1);
     if (iceK > 0) {
       const Ri = Math.min(R, 330 + 120 * iceW);
-      WO.drawCracks(g, fr, Ri, (34 + 26 * iceW), `rgba(190,225,245,${0.1 * iceK})`, false);           // frost bleeding into the rock
-      WO.drawCracks(g, fr, Ri, (10 + 16 * iceW), `rgba(140,195,235,${0.62 * iceK})`, false);          // the ice body
+      WO.drawCracks(g, fr, Ri, (30 + 30 * iceW), `rgba(190,225,245,${0.12 * iceK})`, false);           // frost bleeding into the rock
+      WO.drawCracks(g, fr, Ri, (6 + 10 * iceW), `rgba(170,215,245,${0.5 * iceK})`, false);           // the ice body in the hairline cracks
       g.save(); g.translate(-1.2, -1.6); WO.drawCracks(g, fr, Ri, (3 + 6 * iceW), `rgba(245,252,255,${0.85 * iceK})`, false); g.restore();   // rim towards the light
       g.save(); g.translate(1.5, 2); WO.drawCracks(g, fr, Ri, (2 + 4 * iceW), `rgba(20,50,90,${0.5 * iceK})`, false); g.restore();            // the shadowed side
       g.globalCompositeOperation = 'lighter'; WO.drawCracks(g, fr, Ri, (18 + 24 * iceW), `rgba(120,180,240,${0.16 * iceK})`, false); g.globalCompositeOperation = 'source-over';
@@ -126,9 +131,10 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
     // roots along the cracks
     if (t > T.root0) {
       const G = WO.ease.out((t - T.root0) / (T.root1 - T.root0));
+      const back = t < T.wide ? 1 : t < T.recap ? 1 - 0.6 * WO.ease.inout((t - T.wide) / 1.4) : 0.4 + 0.6 * WO.ease.inout((t - T.recap) / 1.0); g.globalAlpha = back;
       g.save(); g.translate(0, 1.5); WO.drawRoots(g, roots, Math.min(1, G), { color: 'rgba(30,18,8,0.7)', base: 2.2, k: 0.75, pow: 0.55 }); g.restore();
       WO.drawRoots(g, roots, Math.min(1, G), { color: '#d9c3a0', tip: '#e9f2c0', base: 1.1, k: 0.62, pow: 0.55 });
-      g.save(); g.translate(-0.8, -0.8); g.globalAlpha = 0.5; WO.drawRoots(g, roots, Math.min(1, G), { color: '#fff3dc', base: 0.5, k: 0.25, pow: 0.55 }); g.restore(); g.globalAlpha = 1;
+      g.save(); g.translate(-0.8, -0.8); g.globalAlpha = 0.5 * back; WO.drawRoots(g, roots, Math.min(1, G), { color: '#fff3dc', base: 0.5, k: 0.25, pow: 0.55 }); g.restore(); g.globalAlpha = 1;
     }
     // the feldspar crystal in the face (rk09): pink while whole, turning to chalk from the rim inward, crumbs falling from its underside
     if (t > T.feld0 - 1.6 && t < T.pair) {
