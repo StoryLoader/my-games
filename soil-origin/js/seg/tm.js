@@ -7,16 +7,16 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
       <canvas class="world"></canvas>
       <p class="hero num years"><span class="v">0</span><i>년 · 흙 1 cm</i></p>
       <p class="note n-fao" style="left:1300px;top:230px">유엔 식량농업기구 기준</p>
-      <p class="lbl l-life" style="left:1180px;top:560px;font-size:48px">사람의 한평생<i>약 80년</i></p>
-      <p class="lbl l-o">낙엽층<i>아직 썩지 않은 잎</i></p>
-      <p class="lbl l-a">겉흙<i>부식토가 섞인 검은 층</i></p>
-      <p class="lbl l-b">속흙<i>씻겨 내려온 점토와 철분</i></p>
-      <p class="lbl l-c">바위 조각<i>아직 다 부서지지 않은</i></p>
-      <p class="lbl l-r">기반암<i>모든 흙의 출발점</i></p>
+      <p class="lbl l-life" style="left:1120px;top:600px;font-size:60px;color:#ffb84d">사람의 한평생<i>약 80년 · 같은 눈금에서</i></p>
+      <p class="lbl l-o" style="font-size:72px"><span class="mat">낙엽층</span><i>아직 썩지 않은 잎</i></p>
+      <p class="lbl l-a" style="font-size:84px"><span class="mat">겉흙</span><i>부식토가 섞인 검은 층</i></p>
+      <p class="lbl l-b" style="font-size:84px"><span class="mat">속흙</span><i>위에서 씻겨 내려온 점토와 철분</i></p>
+      <p class="lbl l-c" style="font-size:84px"><span class="mat">바위 조각</span><i>아직 다 부서지지 않은</i></p>
+      <p class="lbl l-r" style="font-size:84px"><span class="mat">기반암</span><i>모든 흙의 출발점</i></p>
       <p class="lbl l-order" style="left:1280px;top:400px;font-size:64px">생명<i style="font-size:40px">↓</i>바위</p>
       <p class="note n-dev" style="left:160px;top:160px;font-size:76px">4억 1천만 년 전</p>
       <p class="sup s-dev" style="left:160px;top:270px;text-align:left">데본기 초 · 중국 윈난 · 2016년 발견</p>
-      <p class="lbl l-m" style="left:1500px;top:560px;font-size:52px">1 m</p>
+      <p class="note l-m" style="left:1480px;top:780px;font-size:56px;transform:rotate(-3deg)">1 m 깊이</p>
       <p class="hero w-cm">1 cm<i>1,000년</i></p>
       <p class="hero w-eon">수억 년<i>깊어지기까지</i></p>
       ${H.card(4, '흙은 얼마나 오래 걸려 만들어지는가?', '얼마나 오래')}
@@ -34,8 +34,9 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
   Q('.w-eon').querySelector('i').style.cssText = 'display:block;font-style:normal;font-family:var(--font);font-weight:500;font-size:48px;color:#b9a893;margin-top:16px';
   // layer labels sit on the layers (world y → screen at cam z 1)
   const LAY = [['o', 60, 150, mat.soilO.canvas], ['a', 150, 380, mat.soilA.canvas], ['b', 380, 690, mat.soilB.canvas], ['c', 690, 910, mat.soilC.canvas], ['r', 910, 1300, mat.granite.canvas]];
-  const labelY = { o: 62, a: 220, b: 480, c: 760, r: 940 };
-  for (const [id, y0, y1] of LAY) gsap.set(Q(`.l-${id}`), { left: 160, top: labelY[id] });
+  const labelPos = { o: [200, 50], a: [460, 200], b: [820, 450], c: [1150, 720], r: [1420, 930] };
+  const labelTex = { o: H.tex.clay, a: H.tex.clay, b: H.tex.clay, c: H.tex.clay, r: H.tex.clay };
+  for (const [id] of LAY) { gsap.set(Q(`.l-${id}`), { left: labelPos[id][0], top: labelPos[id][1] }); Q(`.l-${id} .mat`).style.backgroundImage = labelTex[id]; Q(`.l-${id} .mat`).style.webkitTextStroke = '2px rgba(255,230,190,0.7)'; }
 
   const cam = H.cam(); cam.z = 1; cam.x = 0; cam.y = 0;
   const T = {
@@ -80,14 +81,14 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
     const p = WO.clamp((years.v) / 1000, 0, 1);
     for (const s of stack) { const need = (s.row + 1) / 10; if (p < need - 0.1 * s.d) continue; const kk = WO.clamp((p - need + 0.1 * s.d) / 0.05, 0, 1); const y = yTop + h - 14 - s.row * 14 - 20 * (1 - kk); g.save(); g.translate(cx + s.x, y); g.scale(s.k, s.k); g.globalAlpha = k * fade * kk; g.drawImage(s.s, -10, -10, 20, 20); g.restore(); }
     // a human lifetime: an 80-year sliver of the centimetre
-    if (t > T.life) { const q = WO.ease.out((t - T.life) / 0.7); g.globalAlpha = k * fade * q; g.fillStyle = '#ffb84d'; g.fillRect(cx + 200, yTop + h - h * 0.08 * q, 50, h * 0.08 * q); g.strokeStyle = '#ffb84d'; g.lineWidth = 2; g.beginPath(); g.moveTo(cx + 250, yTop + h - 6); g.lineTo(cx + 420, yTop + h + 40); g.stroke(); }
+    if (t > T.life) { const q = WO.ease.out((t - T.life) / 0.7); g.globalAlpha = k * fade * q; g.fillStyle = '#ffb84d'; g.fillRect(cx + 300, yTop + h - h * 0.08, 70, h * 0.08 * q); g.strokeStyle = '#ffb84d'; g.lineWidth = 3; g.beginPath(); g.moveTo(cx + 300, yTop + h - h * 0.08); g.lineTo(cx + 370, yTop + h - h * 0.08); g.moveTo(cx + 300, yTop + h); g.lineTo(cx + 370, yTop + h); g.stroke(); }
     g.globalAlpha = 1; H.reset(g);
   }
   function drawFocus(t) {
     // tm04–tm06: the band being spoken is lit, the rest sinks; tm07: a sweep from top to bottom
     const focus = t < S('tm04') ? null : t < about('tm04', '그 아래에') ? 'o' : t < S('tm05') ? 'a' : t < S('tm06') ? 'b' : t < about('tm06', '맨 밑에는') ? 'c' : t < S('tm07') ? 'r' : null;
     H.view(g, cam, 1);
-    if (focus) { g.fillStyle = 'rgba(0,0,0,0.42)'; for (const [id, y0, y1] of LAY) { if (id === focus) continue; g.fillRect(-100, y0 + 6, 2200, y1 - y0); } }
+    if (focus) { for (const [id, y0, y1] of LAY) { if (id === focus) { const lg = g.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, 'rgba(255,225,170,0.16)'); lg.addColorStop(0.5, 'rgba(255,225,170,0.05)'); lg.addColorStop(1, 'rgba(255,225,170,0)'); g.fillStyle = lg; g.fillRect(-100, y0, 2200, y1 - y0); continue; } g.fillStyle = 'rgba(0,0,0,0.45)'; g.fillRect(-100, y0 + 6, 2200, y1 - y0); } }
     if (t > T.sweep && t < E('tm07')) { const u = (t - T.sweep) / (E('tm07') - T.sweep); const y = 40 + 1000 * u; const grd = g.createLinearGradient(0, y - 120, 0, y + 40); grd.addColorStop(0, 'rgba(255,230,180,0)'); grd.addColorStop(0.8, 'rgba(255,230,180,0.28)'); grd.addColorStop(1, 'rgba(255,230,180,0)'); g.fillStyle = grd; g.fillRect(-100, y - 120, 2200, 160); }
     H.reset(g);
   }
@@ -102,7 +103,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
     g.globalCompositeOperation = 'saturation'; g.fillStyle = 'rgba(128,128,128,0.8)'; g.fillRect(-100, 300, 2200, 900); g.globalCompositeOperation = 'source-over';
     // sediment: left (rooted) stays; right (bare) washes away during tm10
     const erode = t < T.rain ? 0 : WO.clamp((t - T.rain) / 3.5, 0, 1);
-    const sed = (x) => (x < 1100 ? 70 : 70 * (1 - erode * WO.clamp((x - 1100) / 300, 0, 1)));
+    const sed = (x) => (x < 1060 ? 70 : 70 * (1 - 0.95 * erode * WO.clamp((x - 1060) / 220, 0, 1)));
     g.save(); g.beginPath(); g.moveTo(-100, 330); for (let x = -100; x <= 2020; x += 20) g.lineTo(x, 300 - sed(x) + 60 + 6 * WO.noise(x / 50, 1, 4)); g.lineTo(2020, 330); g.closePath(); g.clip();
     g.drawImage(mat.soilC.canvas, 0, 0, mat.soilC.w, mat.soilC.h, -60, 240, 2040, 200); g.restore();
     // water on the left: a river edge
@@ -111,16 +112,23 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
       g.strokeStyle = 'rgba(220,235,245,0.35)'; g.lineWidth = 2; for (let i = 0; i < 9; i++) { const y = 330 + i * 70 + 10 * Math.sin(t * 1.3 + i); g.beginPath(); g.moveTo(-60 + 20 * Math.sin(t + i), y); g.lineTo(60 + 80 * ((i * 7) % 3) / 3 + 20 * Math.sin(t * 0.8 + i), y + 2); g.stroke(); } }
     // roots, 1 m deep, and the scale bar
     if (t > T.roots0) { const G = WO.ease.out((t - T.roots0) / (E('tm09') - T.roots0 + 0.5)); WO.drawRoots(g, devRoots, G, { color: '#c9b58f', tip: '#e9f2c0', base: 1.2, k: 0.7 }); WO.drawRoots(g, devRoots2, G, { color: '#bfa985', tip: '#e9f2c0', base: 1, k: 0.6 }); }
-    if (t > about('tm09', '1미터')) { const q = WO.ease.out((t - about('tm09', '1미터')) / 0.7); g.strokeStyle = `rgba(243,235,223,${q})`; g.lineWidth = 3; g.beginPath(); g.moveTo(1460, 300); g.lineTo(1460, 300 + 520 * q); g.moveTo(1440, 300); g.lineTo(1480, 300); g.moveTo(1440, 300 + 520 * q); g.lineTo(1480, 300 + 520 * q); g.stroke(); }
+    if (t > about('tm09', '1미터')) { const q = WO.ease.out((t - about('tm09', '1미터')) / 0.7); g.globalAlpha = k * q; g.strokeStyle = 'rgba(255,214,160,0.7)'; g.lineWidth = 3; g.setLineDash([10, 12]); g.beginPath(); g.moveTo(1440, 300); g.lineTo(1440, 820); g.stroke(); g.setLineDash([]); g.strokeStyle = 'rgba(255,214,160,0.9)'; g.beginPath(); g.moveTo(1410, 300); g.lineTo(1470, 300); g.moveTo(1410, 820); g.lineTo(1470, 820); g.stroke(); g.globalAlpha = k; }
     // the rain (tm10) and the washed grains on the bare side
     if (t > T.rain) { const kk = WO.clamp((t - T.rain) / 0.6, 0, 1) * (1 - WO.clamp((t - E('tm10')) / 0.5, 0, 1)); g.strokeStyle = `rgba(190,225,255,${0.4 * kk})`; g.lineWidth = 2; g.beginPath(); for (let i = 0; i < 140; i++) { const r = WO.rand(600 + i)(); const x = -100 + i * 15 + r * 10, y = ((t * (1400 + r * 600) + r * 2000) % 1500) - 300; g.moveTo(x, y); g.lineTo(x - 5, y + 70); } g.stroke();
-      for (const w of wash) { const u = ((t - T.rain) * 0.3 + w.d) % 1; const x = w.x + 500 * u, y = w.y + 40 + 700 * u * u; g.globalAlpha = k * (1 - u) * erode; g.drawImage(w.s, x, y, 14, 14); } g.globalAlpha = k; }
+      for (const w of wash) { const u = ((t - T.rain) * 0.3 + w.d) % 1; const x = w.x + 500 * u, y = w.y - 30 + 700 * u * u; g.globalAlpha = k * (1 - u) * Math.min(1, erode * 3); g.drawImage(w.s, x, y, 14, 14); } g.globalAlpha = k;
+      // the two halves named: roots hold the left, the bare right slides away
+      g.globalAlpha = k * WO.clamp((t - T.rain) / 0.6, 0, 1); g.fillStyle = 'rgba(0,0,0,0.0)'; g.globalAlpha = k; }
     g.globalAlpha = 1; H.reset(g);
   }
 
   // ---- camera ----
   tl.fromTo(cam, { z: 2.3, x: -180, y: -380 }, { z: 2.3, x: -180, y: -380, duration: 0.01, immediateRender: false }, win.a);   // CU on the surface ticks
   tl.fromTo(cam, { z: 2.3, x: -180, y: -380 }, { z: 1.0, x: 0, y: 0, duration: 1.8, ease: 'power3.inOut', immediateRender: false }, S('tm03') + 0.2);   // pull out: the whole cut
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.12, x: 0, y: -60, duration: 0.01, immediateRender: false }, S('tm04') - 0.02);
+  tl.fromTo(cam, { z: 1.12, x: 0, y: -60 }, { z: 1.12, x: 0, y: 110, duration: E('tm06') - S('tm04'), ease: 'none', immediateRender: false }, S('tm04'));   // crane down through the layers as they are named
+  tl.fromTo(cam, { z: 1.12, x: 0, y: 110 }, { z: 1.0, x: 0, y: 0, duration: 1.2, ease: 'power2.inOut', immediateRender: false }, S('tm07') - 0.2);         // the whole again for the sweep
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, T.numbers - 0.02);
+  tl.fromTo(cam, { z: 1.25, x: 0, y: 160 }, { z: 1.0, x: 0, y: -40, duration: E('tm11') - T.numbers, ease: 'power1.inOut', immediateRender: false }, T.numbers);   // tm11: rise from the rock to the surface — the deepening
 
   // ---- type ----
   H.inn(Q('.years'), T.count0 - 0.1, { y: 30 }, 0.7); H.inn(Q('.n-fao'), about('tm01', '유엔') - 0.1, { x: 20 }, 0.6);
@@ -149,6 +157,6 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
     if (back < 1) { g.globalAlpha = 1 - back; drawDevonian(t); g.globalAlpha = 1; }
     if (t > T.numbers) { H.reset(g); g.fillStyle = `rgba(10,7,4,${0.5 * back})`; g.fillRect(0, 0, 1920, 1080); }
     if (yv) { const n = Math.round(years.v); if (n !== lastY) { lastY = n; yv.textContent = n.toLocaleString('ko-KR'); } }
-    H.reset(g);
+    H.keyLight(g, t < T.past0 ? 0.75 : 0.4);
   });
 };

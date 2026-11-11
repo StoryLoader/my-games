@@ -9,9 +9,9 @@ window.SEG.us = (ctx, K, TX, H, win) => {
       <p class="note n-fao" style="left:1340px;top:200px">유엔 식량농업기구</p>
       <p class="hero num tons">240<span style="font-size:0.5em">억 톤</span><i>해마다 사라지는 기름진 흙</i></p>
       <p class="note n-un" style="left:1300px;top:200px">유엔 사막화방지협약 2017년 보고서</p>
-      <p class="lbl l-make" style="left:220px;top:150px;font-size:60px;text-align:center;width:640px">생기는 속도<i>1 cm에 1,000년</i></p>
-      <p class="lbl l-lose" style="left:1060px;top:150px;font-size:60px;text-align:center;width:640px">사라지는 속도<i>큰비 한 번에</i></p>
-      <h1 class="hero w-nonre" style="color:#e9d7b8">재생되지 않는 자원</h1>
+      <p class="lbl l-make" style="left:260px;top:140px;font-size:64px;text-align:center;width:600px">생기는 속도<i>1 cm에 1,000년</i></p>
+      <p class="lbl l-lose" style="left:1060px;top:140px;font-size:64px;text-align:center;width:600px">사라지는 속도<i>같은 1 cm가</i></p>
+      <h1 class="hero mat w-nonre">재생되지 않는 자원</h1>
       <h1 class="hero mat w-last">발밑에 천 년</h1>
       ${H.card(5, '그래서 흙은 왜 중요한가?', '왜 중요한가')}
     </section>`);
@@ -23,8 +23,8 @@ window.SEG.us = (ctx, K, TX, H, win) => {
   gsap.set(txt, { autoAlpha: 0 });
   Q('.pct').style.backgroundImage = H.tex.soil; Q('.pct').querySelector('i').style.cssText = '-webkit-text-fill-color:#b9a893';
   Q('.tons').style.color = '#e8d7c2';
-  gsap.set(Q('.w-nonre'), { left: 0, right: 0, top: 420, textAlign: 'center', fontSize: 150 });
-  Q('.w-last').style.backgroundImage = H.tex.soil; Q('.w-last').style.webkitTextStroke = '1.5px rgba(255,225,180,0.55)'; gsap.set(Q('.w-last'), { left: 0, right: 0, top: 420, textAlign: 'center', fontSize: 170 });
+  gsap.set(Q('.w-nonre'), { left: 0, right: 0, top: 110, textAlign: 'center', fontSize: 150 }); Q('.w-nonre').style.backgroundImage = H.tex.soil; Q('.w-nonre').style.webkitTextStroke = '2px rgba(255,200,120,0.8)';
+  Q('.w-last').style.backgroundImage = H.tex.soil; Q('.w-last').style.webkitTextStroke = '2px rgba(255,200,120,0.85)'; gsap.set(Q('.w-last'), { left: 0, right: 0, top: 120, textAlign: 'center', fontSize: 170 });
 
   const cam = H.cam(); cam.z = 1; cam.x = 0; cam.y = 0;
   const SURF = 560;
@@ -35,8 +35,8 @@ window.SEG.us = (ctx, K, TX, H, win) => {
   };
   // crops: a row of plants with roots growing into the topsoil, fruits that appear
   const cr = rand(501);
-  const plants = Array.from({ length: 9 }, (_, i) => ({ x: 170 + i * 200 + (cr() - 0.5) * 40, h: 150 + cr() * 90, d: cr(), lean: (cr() - 0.5) * 0.4, fruit: cr() < 0.7 }));
-  const rootsOf = plants.map((p, i) => WO.roots({ origin: [p.x, SURF + 4], box: [p.x - 110, SURF, 220, 260], n: 90, step: 8, kill: 14, influence: 120, down: 0.8, seed: 50 + i, iters: 110 }));
+  const plants = []; [[0.62, SURF - 150, 150, 0.5], [0.8, SURF - 70, 110, 0.75], [1.0, SURF, 230, 1.0]].forEach(([sc, base, step, al], row) => { for (let i = 0; i < Math.ceil(2000 / step); i++) plants.push({ x: -40 + i * step + (cr() - 0.5) * step * 0.6, base, sc: sc * (0.85 + cr() * 0.3), al, row, h: 150 + cr() * 90, d: cr(), lean: (cr() - 0.5) * 0.5, fruit: cr() < 0.65, ph: cr() * 6.28 }); });
+  const rootsOf = plants.map((p, i) => p.row === 2 ? WO.roots({ origin: [p.x, SURF + 4], box: [p.x - 110, SURF, 220, 260], n: 90, step: 8, kill: 14, influence: 120, down: 0.8, seed: 50 + i, iters: 110 }) : null);
   // the topsoil that the rain strips: the A layer's top descends while grains stream off to the right
   const wr = rand(503), wash = Array.from({ length: 260 }, () => ({ x: wr() * 1920, y: SURF + 20 + wr() * 40, d: wr(), v: 240 + wr() * 320, s: sp.grainA[1] }));
   // the pinch of soil released at the end
@@ -68,13 +68,15 @@ window.SEG.us = (ctx, K, TX, H, win) => {
     // the plants (us01) — stems, leaves, fruit; roots in the topsoil
     const fadePlants = t < T.rain ? 1 : 1 - 0.6 * erode;
     for (let i = 0; i < plants.length; i++) {
-      const p = plants[i]; const k = WO.ease.out(WO.clamp((t - T.crops - p.d * 1.2) / 1.6, 0, 1)); if (k <= 0) continue;
-      g.globalAlpha = fadePlants;
-      WO.drawRoots(g, rootsOf[i], k, { color: '#e2cfa8', tip: '#dff0a8', base: 1, k: 0.5 });
-      const top = topAt(p.x);
-      g.strokeStyle = '#4f7a2a'; g.lineWidth = 7; g.lineCap = 'round'; g.beginPath(); g.moveTo(p.x, top + 2); g.quadraticCurveTo(p.x + p.lean * 60, top - p.h * k * 0.5, p.x + p.lean * 120 + 12 * Math.sin(t + i), top - p.h * k); g.stroke();
-      for (let j = 1; j <= 4; j++) { const q = j / 5; const y = top - p.h * k * q, x = p.x + p.lean * 120 * q; const dir = j % 2 ? 1 : -1; g.fillStyle = j % 2 ? '#6c9a3a' : '#86b04a'; g.beginPath(); g.ellipse(x + dir * 34 * k, y, 38 * k, 13 * k, dir * 0.4, 0, 6.283); g.fill(); }
-      if (p.fruit && t > about('us01', '음식의')) { const q = WO.ease.out((t - about('us01', '음식의') - p.d * 0.5) / 0.8); if (q > 0) { const y = top - p.h * k * 0.62, x = p.x + p.lean * 120 * 0.62; const grd = g.createRadialGradient(x - 8, y - 8, 3, x, y, 24 * q); grd.addColorStop(0, '#ffd27a'); grd.addColorStop(0.6, '#e2652e'); grd.addColorStop(1, '#7a2a12'); g.fillStyle = grd; g.beginPath(); g.arc(x, y, 24 * q, 0, 6.283); g.fill(); } }
+      const p = plants[i]; const k = WO.ease.out(WO.clamp((t - T.crops - p.d * 1.2 - p.row * 0.2) / 1.6, 0, 1)); if (k <= 0) continue;
+      g.globalAlpha = fadePlants * p.al;
+      if (rootsOf[i]) WO.drawRoots(g, rootsOf[i], k, { color: '#e2cfa8', tip: '#dff0a8', base: 1, k: 0.5 });
+      const top = p.row === 2 ? topAt(p.x) : p.base, sc = p.sc, H2 = p.h * k * sc;
+      // a long shadow on the ground from the low sun on the left
+      if (p.row === 2) { g.fillStyle = 'rgba(0,0,0,0.35)'; g.beginPath(); g.ellipse(p.x + 90, top + 4, 110 * k, 7, 0, 0, 6.283); g.fill(); }
+      g.strokeStyle = p.row === 2 ? '#4f7a2a' : '#3e6222'; g.lineWidth = 7 * sc; g.lineCap = 'round'; g.beginPath(); g.moveTo(p.x, top + 2); g.quadraticCurveTo(p.x + p.lean * 60 * sc, top - H2 * 0.5, p.x + p.lean * 120 * sc + 10 * Math.sin(t * 0.9 + p.ph), top - H2); g.stroke();
+      for (let j = 1; j <= 4; j++) { const q = j / 5; const y = top - H2 * q, x = p.x + p.lean * 120 * sc * q; const dir = j % 2 ? 1 : -1; const lit = dir < 0 ? 1 : 0.7; g.fillStyle = `rgba(${Math.round(110 * lit)},${Math.round(160 * lit)},${Math.round(58 * lit)},1)`; g.beginPath(); g.ellipse(x + dir * 34 * k * sc, y, 38 * k * sc, 13 * k * sc, dir * 0.4 + 0.05 * Math.sin(t + j), 0, 6.283); g.fill(); }
+      if (p.fruit && t > about('us01', '음식의')) { const q = WO.ease.out((t - about('us01', '음식의') - p.d * 0.5) / 0.8); if (q > 0) { const y = top - H2 * 0.62, x = p.x + p.lean * 120 * sc * 0.62; const grd = g.createRadialGradient(x - 8 * sc, y - 8 * sc, 3, x, y, 24 * q * sc); grd.addColorStop(0, '#ffd27a'); grd.addColorStop(0.6, '#e2652e'); grd.addColorStop(1, '#7a2a12'); g.fillStyle = grd; g.beginPath(); g.arc(x, y, 24 * q * sc, 0, 6.283); g.fill(); } }
       g.globalAlpha = 1;
     }
     // the rain (us02) and the grains streaming off the field
@@ -82,29 +84,29 @@ window.SEG.us = (ctx, K, TX, H, win) => {
       for (const w of wash) { const u = ((t - T.rain) * 0.28 + w.d) % 1; const x = w.x + 700 * u, y = topAt(w.x) + 10 + 90 * u * u; if (x > 2000) continue; g.globalAlpha = kk * (1 - u); g.drawImage(w.s, x, y, 13, 13); } g.globalAlpha = 1; }
     H.reset(g);
   }
-  // us03: two patches of ground side by side — on the left the surface creeps up as grains settle (1 cm in a thousand years);
-  // on the right the rain takes the surface down in seconds. The same soil, two speeds.
+  // us03: the same 1 cm ticks as in the time chapter, twice: on the left the grains settle a few in the whole beat;
+  // on the right the same centimetre pours out in one rain. The same measure, two speeds.
+  const tg = rand(507), tick = Array.from({ length: 160 }, (_, i) => ({ x: (tg() - 0.5) * 300, row: Math.floor(i / 16), d: tg(), s: sp.grainA[i % 3], k: 0.9 + tg() * 0.5 }));
   function drawGauges(t) {
     if (t < T.gauges || t > T.nonre + 0.5) return;
     const k = WO.ease.out(WO.clamp((t - T.gauges) / 0.8, 0, 1)), out = 1 - WO.clamp((t - T.nonre) / 0.5, 0, 1);
     H.reset(g); g.globalAlpha = k * out;
-    g.fillStyle = 'rgba(8,5,3,0.55)'; g.fillRect(0, 0, 1920, 1080);
-    const u = WO.clamp((t - T.gauges - 0.5) / 6, 0, 1);
-    const patch = (x0, top, label) => {
-      g.save(); g.beginPath(); g.moveTo(x0, 1080); g.lineTo(x0, top); for (let x = x0; x <= x0 + 640; x += 20) g.lineTo(x, top + 6 * WO.noise(x / 50, 3, 12)); g.lineTo(x0 + 640, 1080); g.closePath(); g.clip();
-      g.drawImage(mat.soilA.canvas, 0, 0, mat.soilA.w, 420, x0, top - 20, 640, 520); g.drawImage(mat.soilB.canvas, 0, 0, mat.soilB.w, 300, x0, top + 460, 640, 400); g.restore();
-      const lip = g.createLinearGradient(0, top - 4, 0, top + 40); lip.addColorStop(0, 'rgba(255,214,160,0.45)'); lip.addColorStop(1, 'rgba(255,214,160,0)'); g.fillStyle = lip; g.fillRect(x0, top - 4, 640, 44);
+    g.fillStyle = 'rgba(8,5,3,0.6)'; g.fillRect(0, 0, 1920, 1080);
+    const u = WO.clamp((t - T.gauges - 0.5) / 6, 0, 1), loss = WO.ease.out(WO.clamp((t - about('us03', '사라지고') + 0.4) / 1.6, 0, 1));
+    const col = (cx, fill, falling) => {
+      const yTop = 330, h = 420;   // 1 cm at this magnification
+      // the ground this centimetre sits on
+      g.save(); g.beginPath(); g.rect(cx - 260, yTop + h, 520, 400); g.clip(); g.drawImage(mat.soilB.canvas, 0, 0, 600, 400, cx - 260, yTop + h - 10, 520, 410); g.restore();
+      g.strokeStyle = '#f3ebdf'; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx + 200, yTop); g.lineTo(cx + 280, yTop); g.moveTo(cx + 200, yTop + h); g.lineTo(cx + 280, yTop + h); g.moveTo(cx + 240, yTop); g.lineTo(cx + 240, yTop + h); g.stroke();
+      for (const s2 of tick) { const need = (s2.row + 1) / 10; let kk; let dy = 0;
+        if (!falling) { if (fill < need - 0.1 * s2.d) continue; kk = WO.clamp((fill - need + 0.1 * s2.d) / 0.05, 0, 1); }
+        else { kk = 1; const gone = WO.clamp((loss - (1 - need) * 0.6 - s2.d * 0.3) * 3, 0, 1); if (gone >= 1) continue; dy = 700 * gone * gone; g.globalAlpha = k * out * (1 - gone); }
+        const y = yTop + h - 20 - s2.row * 40 - 30 * (1 - kk) + dy; g.save(); g.translate(cx + s2.x, y); g.scale(s2.k * 1.9, s2.k * 1.9); g.globalAlpha *= kk; g.drawImage(s2.s, -10, -10, 20, 20); g.restore(); g.globalAlpha = k * out; }
     };
-    const base = 560;
-    patch(220, base - 14 * u);                                  // forming: 14 px in the whole beat
-    const lossK = WO.ease.out(Math.min(1, u * 2.4));
-    patch(1060, base + 170 * lossK);                            // losing
-    // grains landing on the left, streaming off the right
-    for (let i = 0; i < 40; i++) { const r = WO.rand(950 + i)(); const q = ((t - T.gauges) * 0.25 + r) % 1; g.globalAlpha = k * out * (1 - q * 0.3); g.drawImage(sp.grainA[i % 3], 240 + r * 600, base - 300 + 290 * q * q, 12, 12); }
-    for (let i = 0; i < 90; i++) { const r = WO.rand(990 + i)(); const q = ((t - T.gauges - 0.5) * 0.45 + r) % 1; if (t < T.gauges + 0.5 || lossK >= 1) continue; g.globalAlpha = k * out * (1 - q); g.drawImage(sp.grainA[1], 1080 + r * 600 + 300 * q, base + 170 * lossK - 20 + 240 * q * q, 12, 12); }
-    g.globalAlpha = k * out;
-    // the rain on the right patch only
-    g.strokeStyle = 'rgba(190,225,255,0.45)'; g.lineWidth = 2; g.beginPath(); for (let i = 0; i < 60; i++) { const r = WO.rand(1030 + i)(); const x = 1060 + i * 11 + r * 8, y = ((t * (1500 + r * 700) + r * 2000) % 900) - 200; g.moveTo(x, y); g.lineTo(x - 5, y + 70); } g.stroke();
+    col(560, 0.3 + 0.05 * u, false);
+    col(1360, 1, true);
+    // rain over the right one only
+    if (loss < 1) { g.strokeStyle = 'rgba(190,225,255,0.5)'; g.lineWidth = 2; g.beginPath(); for (let i = 0; i < 60; i++) { const r = WO.rand(1030 + i)(); const x = 1080 + i * 10 + r * 8, y = ((t * (1500 + r * 700) + r * 2000) % 900) - 200; g.moveTo(x, y); g.lineTo(x - 5, y + 70); } g.stroke(); }
     g.globalAlpha = 1;
   }
   // us05–us08: our feet again, the layers replayed under them, the pinch released
@@ -115,8 +117,9 @@ window.SEG.us = (ctx, K, TX, H, win) => {
     WO.shoe(g, 1300, SURF - 2 - 40 * (1 - k), 1.15, k);
     // replay (us06): the layers light up from the bottom (rock) to the top (humus) as the line sums it up
     if (t > T.replay && t < T.moon + 1) { const u = WO.clamp((t - T.replay) / (E('us06') - T.replay), 0, 1); const fade = 1 - WO.clamp((t - T.moon) / 1, 0, 1); const yl = SURF + 900 - 960 * u; const grd = g.createLinearGradient(0, yl - 60, 0, yl + 60); grd.addColorStop(0, 'rgba(255,200,120,0)'); grd.addColorStop(0.5, `rgba(255,200,120,${0.35 * fade})`); grd.addColorStop(1, 'rgba(255,200,120,0)'); g.fillStyle = grd; g.fillRect(-100, yl - 60, 2200, 120); }
-    // the pinch released (us08): grains fall from the fingertips onto the surface
-    if (t > T.drop) { for (const p of pinch) { const u = t - T.drop - p.d * 0.5; if (u < 0) continue; const y = Math.min(SURF - 300 + p.dy + 1200 * u * u, SURF - 6 - Math.abs(p.dy) * 0.3); const x = 760 + p.dx + p.vx * Math.min(u, 0.6); g.save(); g.translate(x, y); g.scale(p.k, p.k); g.drawImage(p.s, -10, -10, 20, 20); g.restore(); } }
+    // the pinch released (us08): the fingertips open and the grains fall onto the surface
+    if (t > T.drop - 1.2) { const kf = WO.ease.out(WO.clamp((t - T.drop + 1.2) / 0.9, 0, 1)); H.fingers(g, 760, SURF - 300 + 120 * (1 - kf), 0.62, t < T.drop ? 0 : WO.ease.out(WO.clamp((t - T.drop) / 0.6, 0, 1)), kf); }
+    if (t > T.drop) { for (const p of pinch) { const u = t - T.drop - p.d * 0.5; if (u < 0) continue; const y = Math.min(SURF - 290 + p.dy + 1200 * u * u, SURF - 6 - Math.abs(p.dy) * 0.3); const x = 760 + p.dx + p.vx * Math.min(u, 0.6); g.save(); g.translate(x, y); g.scale(p.k, p.k); g.drawImage(p.s, -10, -10, 20, 20); g.restore(); } }
     H.reset(g);
   }
 
@@ -124,13 +127,13 @@ window.SEG.us = (ctx, K, TX, H, win) => {
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, duration: 0.01, immediateRender: false }, win.a);
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.5, x: 200, y: -120, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.feet - 0.3);   // back to the shoe: the first shot's framing
   tl.fromTo(cam, { z: 1.5, x: 200, y: -120 }, { z: 1.0, x: 0, y: 80, duration: 2.0, ease: 'power3.inOut', immediateRender: false }, T.replay - 0.2);     // the cut under our feet
-  tl.fromTo(cam, { z: 1.0, x: 0, y: 80 }, { z: 1.4, x: -160, y: -140, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.drop - 0.8);  // CU: the pinch let go
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 80 }, { z: 1.25, x: -120, y: -150, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.drop - 1.4);  // CU: the pinch let go
 
   // ---- type ----
-  gsap.set(Q('.pct'), { left: 0, right: 0, top: 150, textAlign: 'center' });
+  gsap.set(Q('.pct'), { left: 0, right: 0, top: 20, textAlign: 'center', fontSize: 280 });
   H.inn(Q('.pct'), T.pct, { scale: 1.2 }, 0.8, 'power4.out'); H.inn(Q('.n-fao'), S('us01') + 0.2, { x: 20 }, 0.6);
   H.out(Q('.pct'), S('us02') - 0.2, { y: -40 }, 0.45); H.out(Q('.n-fao'), S('us02') - 0.2, { y: -20 }, 0.4);
-  gsap.set(Q('.tons'), { left: 0, right: 0, top: 150, textAlign: 'center' });
+  gsap.set(Q('.tons'), { left: 0, right: 0, top: 40, textAlign: 'center' });
   H.inn(Q('.tons'), T.tons, { scale: 1.15 }, 0.8, 'power4.out'); H.inn(Q('.n-un'), about('us02', '유엔') - 0.1, { x: 20 }, 0.6);
   H.out(Q('.tons'), S('us03') - 0.2, { y: -40 }, 0.45); H.out(Q('.n-un'), S('us03') - 0.2, { y: -20 }, 0.4);
   H.inn(Q('.l-make'), T.gauges + 0.3, { y: 24 }, 0.7); H.inn(Q('.l-lose'), about('us03', '사라지고') - 0.4, { y: 24 }, 0.7);
@@ -145,6 +148,6 @@ window.SEG.us = (ctx, K, TX, H, win) => {
     drawField(t);
     drawGauges(t);
     drawFeet(t);
-    H.reset(g);
+    H.keyLight(g, 0.6, 300, 420);
   });
 };

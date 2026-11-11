@@ -28,21 +28,46 @@ Video.define(async (ctx) => {
     inn(target, pos, from = { y: 40 }, dur = 0.8, ease = 'expo.out') { tl.fromTo(target, { autoAlpha: 0, ...from }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: dur, ease, overwrite: 'auto' }, pos); },
     out(target, pos, to = { y: -30 }, dur = 0.45, ease = 'power2.in') { tl.to(target, { autoAlpha: 0, ...to, duration: dur, ease, overwrite: 'auto' }, pos); },
     rand, TX, K, WO, tl, cue, scene, onFrame, fitCanvas,
+    // the key light as a pool over the frame: brighter where the low sun from the upper left strikes, falling off to the lower right.
+    // Drawn in screen space at the end of a chapter's frame; strength 0..1
+    keyLight(g, k = 1, cx = 520, cy = 240) {
+      g.setTransform(1, 0, 0, 1, 0, 0);
+      const grd = g.createRadialGradient(cx, cy, 80, cx, cy, 1900);
+      grd.addColorStop(0, `rgba(255,232,190,${0.16 * k})`); grd.addColorStop(0.35, `rgba(255,220,170,${0.04 * k})`); grd.addColorStop(0.7, `rgba(0,0,0,${0.18 * k})`); grd.addColorStop(1, `rgba(0,0,0,${0.5 * k})`);
+      g.fillStyle = grd; g.fillRect(0, 0, 1920, 1080);
+    },
+    // two fingertips (thumb and index) pinching at (x, y), seen against the light: dark skin with a rim on the upper right. open 0..1 spreads them
+    fingers(g, x, y, k = 1, open = 0, alpha = 1) {
+      g.save(); g.translate(x, y); g.scale(k, k); g.globalAlpha = alpha;
+      // each finger: a rounded, tapering pad coming down from above; skin in shadow, a rim light on the upper right, a nail
+      const finger = (sx, rot) => { g.save(); g.scale(sx, 1); g.rotate(rot);
+        const grd = g.createLinearGradient(-60, -600, 70, -40); grd.addColorStop(0, '#3a2a22'); grd.addColorStop(0.6, '#5c4034'); grd.addColorStop(1, '#8a6250');
+        g.fillStyle = grd; g.beginPath(); g.moveTo(-62, -760); g.lineTo(62, -760); g.bezierCurveTo(70, -420, 62, -200, 48, -90); g.bezierCurveTo(40, -20, 14, 4, 0, 4); g.bezierCurveTo(-14, 4, -40, -20, -48, -90); g.bezierCurveTo(-62, -200, -70, -420, -62, -760); g.closePath(); g.fill();
+        // knuckle creases
+        g.strokeStyle = 'rgba(20,10,6,0.35)'; g.lineWidth = 3; for (const yy of [-300, -170]) { g.beginPath(); g.moveTo(-40, yy); g.quadraticCurveTo(0, yy + 14, 40, yy); g.stroke(); }
+        // nail on the outer side near the tip
+        g.fillStyle = 'rgba(230,200,180,0.55)'; g.beginPath(); g.ellipse(22, -62, 18, 34, 0.15, 0, 6.283); g.fill();
+        // rim light
+        g.strokeStyle = 'rgba(255,214,170,0.6)'; g.lineWidth = 4; g.beginPath(); g.moveTo(60, -740); g.bezierCurveTo(68, -420, 60, -200, 46, -92); g.stroke();
+        g.restore(); };
+      finger(1, 0.1 + 0.3 * open); finger(-1, 0.1 + 0.3 * open);
+      g.restore();
+    },
   };
 
   // ---------- materials: baked once, shared ----------
   Video.progress(0.22);
-  const TW = 1280, TH = 720;
+  const TW = 1920, TH = 1080;
   const M = (H.mat = {});
   M.granite = WO.granite(TW, TH, 11);
   Video.progress(0.3);
-  M.soilO = WO.soil(TW, 360, { base: '#2a1a10', dark: '#140b06', light: '#5a3a24', grain: 2.6, relief: 6, seed: 5 });
-  M.soilA = WO.soil(TW, 420, { base: '#4a3020', dark: '#2a180d', light: '#7a5536', grain: 3.0, relief: 7, seed: 6 });
+  M.soilO = WO.soil(TW, 420, { base: '#2a1a10', dark: '#140b06', light: '#5a3a24', grain: 2.6, relief: 6, seed: 5 });
+  M.soilA = WO.soil(TW, 560, { base: '#4a3020', dark: '#2a180d', light: '#7a5536', grain: 3.0, relief: 7, seed: 6 });
   Video.progress(0.38);
-  M.soilB = WO.soil(TW, 480, { base: '#a9622c', dark: '#6d3a18', light: '#d08a48', grain: 4.5, relief: 5, mottle: 0.5, mottleColor: '#c99a5a', seed: 7 });
-  M.soilC = WO.soil(TW, 480, { base: '#6b5340', dark: '#3d2d22', light: '#9a8470', grain: 5.5, relief: 9, mottle: 0.6, mottleColor: '#8f877f', seed: 8 });
+  M.soilB = WO.soil(TW, 640, { base: '#a9622c', dark: '#6d3a18', light: '#d08a48', grain: 4.5, relief: 5, mottle: 0.5, mottleColor: '#c99a5a', seed: 7 });
+  M.soilC = WO.soil(TW, 640, { base: '#6b5340', dark: '#3d2d22', light: '#9a8470', grain: 5.5, relief: 9, mottle: 0.6, mottleColor: '#8f877f', seed: 8 });
   Video.progress(0.46);
-  M.regolith = WO.regolith(TW, TH, 23, WO.HARD, WO.bootprint(620, 150, 1.7, 1.7, -0.35));
+  M.regolith = WO.regolith(TW, TH, 23, WO.HARD, WO.bootprint(930, 230, 2.4, 2.4, -0.35));
   Video.progress(0.54);
   // CSS textures for hero type (built at run time from the baked canvases)
   const small = (c) => { const s = WO.canvas(512, 288); WO.ctx(s).drawImage(c, 0, 0, 512, 288); return s; };
@@ -69,6 +94,7 @@ Video.define(async (ctx) => {
     tl.to(blade, { opacity: 0, duration: 0.25, ease: 'power2.out' }, t0 + 0.05);
     tl.fromTo(el, { clipPath: 'inset(0px 960px 0px 960px)' }, { clipPath: 'inset(0px 0px 0px 0px)', duration: dur, ease: 'expo.inOut', immediateRender: false }, t0);
     tl.fromTo(gap, { v: 0 }, { v: 1000, duration: dur, ease: 'expo.inOut', immediateRender: false }, t0);
+    tl.set([edgeL, edgeR], { opacity: 1 }, t0 - 0.02);
     tl.fromTo([edgeL, edgeR], { opacity: 1 }, { opacity: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, t0 + dur - 0.2);
     cutActive.push([t0 - 0.4, t0 + dur + 0.1]);
   };
@@ -86,8 +112,8 @@ Video.define(async (ctx) => {
   H.cardIn = function (el, t0, t1) {
     const no = el.querySelector('.no'), q = el.querySelector('.q');
     gsap.set(el, { autoAlpha: 1 });
-    tl.fromTo(no, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'expo.out', immediateRender: false }, t0 + 0.15);
-    tl.fromTo(q, { autoAlpha: 0, y: 40, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out', immediateRender: false }, t0 + 0.3);
+    tl.fromTo(no, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'expo.out', immediateRender: false }, t0 + 0.6);
+    tl.fromTo(q, { autoAlpha: 0, y: 40, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out', immediateRender: false }, t0 + 0.7);
     tl.to(el, { autoAlpha: 0, scale: 0.92, duration: 0.7, ease: 'power2.in' }, t1);
   };
 

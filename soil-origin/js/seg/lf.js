@@ -9,17 +9,17 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       <p class="sup s-lichen" style="left:0;right:0;top:300px;text-align:center">균류 + 조류가 한 몸처럼 사는 생물</p>
       <h1 class="hero mat word w-humus">부식토</h1>
       <p class="sup s-humus" style="left:0;right:0;top:380px;text-align:center">양분 · 물 · 알갱이를 붙이는 풀</p>
-      <p class="hero num gram" style="left:140px;top:130px;text-align:left;font-size:240px">1<i>g · 손가락 끝 한 꼬집</i></p>
-      <p class="lbl l-city" style="left:1120px;top:180px;text-align:left;font-size:64px">수백만 마리<i style="font-size:40px">수천 종의 세균</i></p>
-      <p class="sup s-fao" style="left:1120px;top:330px;text-align:left">유엔 식량농업기구(FAO)</p>
+      <p class="hero num gram" style="left:150px;top:640px;text-align:left;font-size:220px;line-height:0.9">1<span style="font-family:var(--serif);font-size:0.45em;font-weight:700"> g</span><i style="font-family:var(--font);font-weight:500;font-size:40px;letter-spacing:0;color:#d8c9b4;margin-top:14px;display:block">손가락 끝으로 집은 한 꼬집</i></p>
+      <p class="lbl l-city" style="left:1180px;top:150px;text-align:left;font-size:72px">수백만 마리<i>수천 종의 세균</i></p>
+      <p class="note s-fao" style="left:1180px;top:310px;text-align:left;font-size:40px;transform:none">유엔 식량농업기구 기준</p>
       <p class="lbl l-city2" style="left:0;right:0;top:160px;text-align:center;font-size:64px">큰 도시 하나의 사람 수보다 많다</p>
       <p class="note n-darwin" style="left:1180px;top:200px;font-size:120px;transform:rotate(-5deg)">1881</p>
       <p class="sup s-darwin" style="left:1180px;top:340px;text-align:left">찰스 다윈 · 지렁이에 관한 책</p>
       <p class="hero two-mat"><span class="mat g1">알갱이</span><span class="plus">+</span><span class="mat g2">부식토</span></p>
-      <p class="lbl l-45" style="font-size:76px"><span class="num">45</span>% <i>광물 알갱이</i></p>
-      <p class="lbl l-5" style="font-size:76px"><span class="num">5</span>% <i>유기물</i></p>
-      <p class="lbl l-50" style="font-size:76px"><span class="num">50</span>% <i>틈 · 물과 공기</i></p>
-      <p class="note n-avg" style="left:1320px;top:880px">평균값 · 미국 농무부</p>
+      <p class="hero num l-45" style="font-size:150px"><span class="mat m45">45</span><span style="font-size:0.45em;color:#e9e2d6">%</span><i>광물 알갱이</i></p>
+      <p class="hero num l-5" style="font-size:120px"><span class="mat m5">5</span><span style="font-size:0.45em;color:#e9e2d6">%</span><i>유기물</i></p>
+      <p class="hero num l-50" style="font-size:150px;color:#bfe6ff">50<span style="font-size:0.45em">%</span><i>틈 · 물과 공기</i></p>
+      <p class="note n-avg" style="left:1300px;top:160px;font-size:40px;transform:none">평균값 · 미국 농무부 자료</p>
       ${H.card(3, '생명은 어떻게 흙이 되는가?', '생명')}
     </section>`);
   scene(el, win.a, win.b + 1.4);
@@ -29,11 +29,13 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
   const txt = ['.w-lichen', '.s-lichen', '.w-humus', '.s-humus', '.gram', '.l-city', '.s-fao', '.l-city2', '.n-darwin', '.s-darwin', '.two-mat', '.l-45', '.l-5', '.l-50', '.n-avg'].map(Q);
   gsap.set(txt, { autoAlpha: 0 });
   gsap.set(Q('.w-lichen'), { left: 0, right: 0, top: 120, textAlign: 'center', fontSize: 150 });
-  gsap.set(Q('.w-humus'), { left: 0, right: 0, top: 110, textAlign: 'center', fontSize: 240 }); Q('.w-humus').style.backgroundImage = H.tex.humus; Q('.w-humus').style.webkitTextStroke = '2px rgba(255,225,180,0.75)';
+  gsap.set(Q('.w-humus'), { left: 0, right: 0, top: 100, textAlign: 'center', fontSize: 240 }); Q('.w-humus').style.backgroundImage = H.tex.humus; Q('.w-humus').style.webkitTextStroke = '2px rgba(255,225,180,0.75)';
   gsap.set(Q('.two-mat'), { left: 0, right: 0, top: 150, textAlign: 'center', fontSize: 150 });
   Q('.two-mat .g1').style.backgroundImage = H.tex.rock; Q('.two-mat .g2').style.backgroundImage = H.tex.humus;
   Q('.two-mat .plus').style.cssText = 'font-family:var(--font);font-weight:300;font-size:120px;color:#b9a893;margin:0 40px;vertical-align:14px';
-  gsap.set(Q('.l-45'), { left: 200, top: 200 }); gsap.set(Q('.l-5'), { left: 800, top: 200 }); gsap.set(Q('.l-50'), { left: 1180, top: 200 });
+  gsap.set(Q('.l-45'), { left: 300, top: 250 }); gsap.set(Q('.l-5'), { left: 790, top: 650 }); gsap.set(Q('.l-50'), { left: 1240, top: 250 });
+  Q('.m45').style.backgroundImage = H.tex.rock; Q('.m5').style.backgroundImage = H.tex.humus;
+  ['.l-45', '.l-5', '.l-50'].forEach((c) => { const i = Q(c).querySelector('i'); i.style.cssText = 'display:block;font-style:normal;font-family:var(--font);font-weight:500;font-size:40px;color:#d8c9b4;letter-spacing:0;margin-top:8px'; });
 
   // ---- world: the surface boundary. rock below at the start (lf01–lf02), then soil forms on it ----
   const cam = H.cam(); cam.z = 1; cam.x = 0; cam.y = 0;
@@ -81,10 +83,11 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       }
       H.reset(g); return;
     }
-    // sky: filtered green-gold light from above
-    const sky = g.createLinearGradient(0, -400, 0, rockY); sky.addColorStop(0, '#1d2412'); sky.addColorStop(0.6, '#3a4a22'); sky.addColorStop(1, '#6b6a3a'); g.fillStyle = sky; g.fillRect(-100, -500, 2200, rockY + 500);
-    // light shafts through the leaves
-    for (let i = 0; i < 6; i++) { const x = 200 + i * 300 + 40 * Math.sin(t * 0.2 + i); const gr = g.createLinearGradient(x, -400, x + 500, rockY); gr.addColorStop(0, 'rgba(255,230,150,0.0)'); gr.addColorStop(0.3, 'rgba(255,230,150,0.035)'); gr.addColorStop(1, 'rgba(255,230,150,0)'); g.fillStyle = gr; g.beginPath(); g.moveTo(x - 80, -400); g.lineTo(x + 80, -400); g.lineTo(x + 560, rockY); g.lineTo(x + 320, rockY); g.closePath(); g.fill(); }
+    // the air above the surface: a low, warm back-light through leaves, deep and out of focus (the surface is the subject)
+    const sky = g.createLinearGradient(0, -400, 0, rockY); sky.addColorStop(0, '#0f130a'); sky.addColorStop(0.55, '#2a3517'); sky.addColorStop(1, '#5a5a2c'); g.fillStyle = sky; g.fillRect(-100, -500, 2200, rockY + 500);
+    { const sun = g.createRadialGradient(1500, rockY - 160, 20, 1500, rockY - 160, 900); sun.addColorStop(0, 'rgba(255,220,140,0.55)'); sun.addColorStop(0.3, 'rgba(255,200,110,0.18)'); sun.addColorStop(1, 'rgba(255,200,110,0)'); g.fillStyle = sun; g.fillRect(-100, -500, 2200, rockY + 500); }
+    // out-of-focus canopy: soft dark leaf blobs hanging from above
+    for (let i = 0; i < 26; i++) { const r = WO.rand(230 + i); const x = -60 + i * 80 + r() * 50, y = -420 + r() * 300 + 14 * Math.sin(t * 0.6 + i); const rr = 90 + r() * 120; g.fillStyle = `rgba(${20 + r() * 30},${40 + r() * 30},${14},0.55)`; g.beginPath(); g.ellipse(x, y, rr, rr * 0.55, r() * 1.2, 0, 6.283); g.fill(); }
     // the rock below the surface
     g.drawImage(mat.granite.canvas, 0, 0, mat.granite.w, mat.granite.h, -60, rockY, 2040, 1148);
     // the soil that forms over the rock through the chapter: a growing dark band
@@ -100,6 +103,8 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
     if (t > T.moss) {
       const G = WO.ease.out(WO.clamp((t - T.moss) / 4.5, 0, 1));
       WO.drawRoots(g, roots, G, { color: '#e2cfa8', tip: '#dff0a8', base: 1, k: 0.5 });
+      // grass: fine blades, the back-light coming through them
+      for (let i = 0; i < 160; i++) { const rr = WO.rand(700 + i); const r = rr(), r2 = rr(); const x = -40 + i * 12.5 + r * 10, h = (40 + r * 120) * G, lean = (r2 - 0.5) * 0.8 + 0.08 * Math.sin(t * 1.1 + i * 0.3); g.strokeStyle = r < 0.35 ? '#9fbf52' : r < 0.7 ? '#6f8f33' : '#c9d86a'; g.lineWidth = 2 + r2 * 2; g.lineCap = 'round'; g.beginPath(); g.moveTo(x, rockY - soilH + 6); g.quadraticCurveTo(x + lean * h * 0.5, rockY - soilH - h * 0.55, x + lean * h, rockY - soilH - h); g.stroke(); }
       // moss tufts along the surface
       for (let i = 0; i < 110; i++) { const rr = WO.rand(400 + i); const r = rr(), r2 = rr(); const x = 100 + i * 16 + r * 14, h = (10 + r * 22) * G, w = 8 + r2 * 10; g.fillStyle = ['#5f7f2c', '#7a9a3a', '#4f6d26', '#8fae4a'][i % 4]; g.beginPath(); g.ellipse(x, rockY - soilH + 4, w, h, 0, 3.14, 6.283); g.fill(); g.fillStyle = 'rgba(220,240,170,0.35)'; g.beginPath(); g.ellipse(x - w * 0.3, rockY - soilH + 4 - h * 0.55, w * 0.3, h * 0.3, 0, 0, 6.283); g.fill(); }
     }
@@ -135,7 +140,9 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
     if (t < T.pinch || t > T.worm0 + 0.3) return;
     const inK = WO.ease.out(WO.clamp((t - T.pinch) / 0.8, 0, 1)), outK = 1 - WO.clamp((t - T.worm0) / 0.3, 0, 1);
     H.reset(g);
-    g.globalAlpha = inK * outK; g.fillStyle = '#0b0805'; g.fillRect(0, 0, 1920, 1080);
+    g.globalAlpha = inK * outK; g.drawImage(mat.soilO.canvas, 0, 0, mat.soilO.w, mat.soilO.h, 0, 0, 1920, 1080); g.fillStyle = 'rgba(6,3,1,0.72)'; g.fillRect(0, 0, 1920, 1080);
+    // two fingertips hold the pinch against the light
+    H.fingers(g, 1180, 330, 1.05, 0.08, inK * outK);
     // the pinch itself: a dark soil crumb, lit from the upper left
     g.save(); g.translate(960, 560); g.scale(inK, inK);
     g.beginPath(); for (let i = 0; i <= 36; i++) { const a = i / 36 * 6.283; const rr = 420 * (0.82 + 0.18 * WO.noise(Math.cos(a) * 2 + 3, Math.sin(a) * 2, 8)); g.lineTo(Math.cos(a) * rr * 1.3, Math.sin(a) * rr * 0.75); } g.closePath();
@@ -178,6 +185,12 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
     H.reset(g);
     const fadeWorld = WO.ease.out(WO.clamp((t - T.mix) / 0.8, 0, 1));
     g.fillStyle = `rgba(14,9,5,${0.86 * fadeWorld})`; g.fillRect(0, 0, 1920, 1080);
+    // the two ingredients as two faces sliding in and meeting at a seam in the middle
+    { const kL = WO.ease.out(WO.clamp((t - about('lf13', '바위에서') + 0.3) / 1.1, 0, 1)), kR = WO.ease.out(WO.clamp((t - about('lf13', '생명에서') + 0.3) / 1.1, 0, 1)); const gone = t < T.lump ? 0 : WO.ease.out(WO.clamp((t - T.lump) / 0.8, 0, 1));
+      g.globalAlpha = (1 - gone) * fadeWorld; if (kL > 0) { g.save(); g.translate(-980 + 980 * kL, 0); g.drawImage(mat.granite.canvas, 0, 0, mat.granite.w / 2, mat.granite.h, 0, 0, 960, 1080); g.restore(); }
+      if (kR > 0) { g.save(); g.translate(980 - 980 * kR, 0); g.drawImage(mat.soilO.canvas, 0, 0, mat.soilO.w / 2, mat.soilO.h, 960, 0, 960, 1080); g.restore(); }
+      if (kL >= 1 && kR >= 1) { const seam = g.createLinearGradient(900, 0, 1020, 0); seam.addColorStop(0, 'rgba(0,0,0,0)'); seam.addColorStop(0.5, 'rgba(0,0,0,0.6)'); seam.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = seam; g.fillRect(900, 0, 120, 1080); }
+      g.globalAlpha = 1; }
     const lumpK = t < T.lump ? 0 : WO.ease.out(WO.clamp((t - T.lump) / 1, 0, 1));
     if (lumpK < 1) {
       g.globalAlpha = 1 - lumpK;
@@ -185,22 +198,28 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       g.globalAlpha = 1;
     }
     if (lumpK > 0) {
-      // the mixed soil sorted into what it is made of: a heap of mineral grains, a small heap of humus, and the empty
-      // space between them — water and air — as droplets and bubbles. Heap areas are 45 : 5 : 50 of the same soil.
-      const base = 860, reveal = (tt) => WO.ease.out(WO.clamp((t - tt) / 0.8, 0, 1));
+      // one clod of the mixed soil, cut open, 1080 px wide: the mineral grains, the black humus veins and the pores between them,
+      // each drawn as what it is. The numbers sit on their own region, filled with that region's material.
+      const cx = 960, cy = 600, RX = 540 * lumpK, RY = 360 * lumpK;
+      const reveal = (tt) => WO.ease.out(WO.clamp((t - tt) / 0.8, 0, 1));
       const k45 = reveal(T.lump45 - 0.3), k5 = reveal(T.lump5 - 0.3), k50 = reveal(T.lump50 - 0.3);
-      const heap = (cx, w, kk, tex, tint) => { if (kk <= 0) return; const ww = w * kk, hh = w * 0.56 * kk; g.save(); g.beginPath(); g.moveTo(cx - ww / 2, base); for (let i = 0; i <= 30; i++) { const a = 3.14159 + i / 30 * 3.14159; g.lineTo(cx + Math.cos(a) * ww / 2, base + Math.sin(a) * hh * (0.92 + 0.08 * WO.noise(i * 0.4, cx))); } g.closePath(); g.clip();
-        g.drawImage(tex, 0, 0, tex.width, tex.height, cx - ww / 2 - 10, base - hh - 10, ww + 20, hh + 20); if (tint) { g.fillStyle = tint; g.fillRect(cx - ww / 2, base - hh, ww, hh); } g.restore();
-        g.fillStyle = 'rgba(0,0,0,0.5)'; g.beginPath(); g.ellipse(cx, base + 10, ww / 2 * 1.04, 18, 0, 0, 6.283); g.fill(); };
-      g.globalAlpha = lumpK;
-      heap(430, 540, k45, mat.soilC.canvas, 'rgba(236,232,226,0.08)');
-      heap(900, 180, k5, mat.soilO.canvas, null);
-      // pores: a cloud of droplets and bubbles over the space where the heaps were
-      if (k50 > 0) { for (let i = 0; i < 110; i++) { const r = WO.rand(800 + i); const x = 1180 + r() * 560, y = base - 20 - Math.sqrt(r()) * 300 - 6 * Math.sin(t * 1.5 + i); const rr = 7 + r() * 16; const kk = WO.clamp((k50 - r() * 0.5) * 2, 0, 1); if (kk <= 0) continue; g.globalAlpha = lumpK * kk; if (i % 3) { g.fillStyle = 'rgba(143,215,255,0.55)'; g.beginPath(); g.arc(x, y, rr, 0, 6.283); g.fill(); g.fillStyle = 'rgba(255,255,255,0.75)'; g.beginPath(); g.arc(x - rr * 0.35, y - rr * 0.35, rr * 0.25, 0, 6.283); g.fill(); } else { g.strokeStyle = 'rgba(255,255,255,0.5)'; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, rr, 0, 6.283); g.stroke(); } } }
-      g.globalAlpha = 1;
+      const clod = () => { g.beginPath(); for (let i = 0; i <= 60; i++) { const a = i / 60 * 6.283; const rr = 0.86 + 0.14 * WO.noise(Math.cos(a) * 2.2 + 7, Math.sin(a) * 2.2, 15); g.lineTo(cx + Math.cos(a) * RX * rr, cy + Math.sin(a) * RY * rr); } g.closePath(); };
+      g.fillStyle = 'rgba(0,0,0,0.6)'; g.beginPath(); g.ellipse(cx, cy + RY + 24, RX * 1.02, 30, 0, 0, 6.283); g.fill();
+      g.save(); clod(); g.clip();
+      g.drawImage(mat.soilA.canvas, 0, 0, mat.soilA.w, mat.soilA.h, cx - RX - 20, cy - RY - 20, 2 * RX + 40, 2 * RY + 40);
+      // minerals: pale angular grains scattered through the clod (they are most of it)
+      if (k45 > 0) { const mr = WO.rand(810); for (let i = 0; i < 260; i++) { const a = mr() * 6.283, d = Math.sqrt(mr()) * 0.95; const x = cx + Math.cos(a) * RX * d, y = cy + Math.sin(a) * RY * d; const kk = WO.clamp((k45 - mr() * 0.6) * 2.5, 0, 1); if (kk <= 0) continue; g.globalAlpha = kk; g.save(); g.translate(x, y); g.rotate(mr() * 6); g.scale(1.2 + mr() * 1.6, 1.2 + mr() * 1.6); g.drawImage(mr() < 0.5 ? sp.grainG[0] : sp.grainG[1], -10, -10, 20, 20); g.restore(); } g.globalAlpha = 1; }
+      // humus: black veins and crumbs, a small share
+      if (k5 > 0) { g.globalAlpha = k5; for (let i = 0; i < 16; i++) { const r = WO.rand(820 + i); const x = cx + (r() - 0.5) * RX * 1.6, y = cy + (r() - 0.5) * RY * 1.6; g.save(); g.beginPath(); for (let j = 0; j <= 14; j++) { const a = j / 14 * 6.283; const rr = (22 + r() * 18) * (0.7 + 0.3 * WO.noise(j, i, 3)); g.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr * 0.7); } g.closePath(); g.clip(); g.drawImage(mat.soilO.canvas, 0, 0, 200, 140, x - 50, y - 35, 100, 70); g.restore(); } g.globalAlpha = 1; }
+      // pores: half the volume is the space between — water films and air bubbles
+      if (k50 > 0) { const pr2 = WO.rand(830); for (let i = 0; i < 150; i++) { const a = pr2() * 6.283, d = Math.sqrt(pr2()) * 0.96; const x = cx + Math.cos(a) * RX * d, y = cy + Math.sin(a) * RY * d; const rr = 5 + pr2() * 15; const kk = WO.clamp((k50 - pr2() * 0.6) * 2.5, 0, 1); if (kk <= 0) continue; g.globalAlpha = kk; if (i % 3) { g.fillStyle = 'rgba(143,215,255,0.5)'; g.beginPath(); g.arc(x, y, rr, 0, 6.283); g.fill(); g.fillStyle = 'rgba(255,255,255,0.7)'; g.beginPath(); g.arc(x - rr * 0.35, y - rr * 0.35, rr * 0.25, 0, 6.283); g.fill(); } else { g.strokeStyle = 'rgba(255,255,255,0.5)'; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, rr, 0, 6.283); g.stroke(); } } g.globalAlpha = 1; }
+      g.restore();
+      // the cut rim, lit towards the key light
+      g.save(); g.translate(-2, -2); clod(); g.strokeStyle = 'rgba(255,230,190,0.45)'; g.lineWidth = 3; g.stroke(); g.restore();
+      clod(); g.strokeStyle = 'rgba(0,0,0,0.6)'; g.lineWidth = 3; g.stroke();
     }
     // lf15: grains of time begin to fall onto the lump
-    if (t > T.sand) { const n = 120; for (let i = 0; i < n; i++) { const r = WO.rand(900 + i); const u = ((t - T.sand) * (0.5 + r() * 0.5) + r()) % 1.2; if (u > 1) continue; const x = 430 + (r() - 0.5) * 160, y = -40 + 600 * u * u; g.globalAlpha = 0.9; g.drawImage(sp.grainA[i % 3], x - 8, y - 8, 16, 16); } g.globalAlpha = 1; }
+    if (t > T.sand) { const n = 120; for (let i = 0; i < n; i++) { const r = WO.rand(900 + i); const u = ((t - T.sand) * (0.5 + r() * 0.5) + r()) % 1.2; if (u > 1) continue; const x = 960 + (r() - 0.5) * 200, y = -40 + 280 * u * u; g.globalAlpha = 0.9; g.drawImage(sp.grainA[i % 3], x - 8, y - 8, 16, 16); } g.globalAlpha = 1; }
   }
 
   // ---- camera ----
@@ -240,6 +259,6 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
     drawWorm(t);
     drawPinch(t);
     drawMix(t);
-    H.reset(g);
+    H.keyLight(g, 0.8, 1400, 200);
   });
 };

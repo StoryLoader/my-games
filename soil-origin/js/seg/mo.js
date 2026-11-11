@@ -59,7 +59,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   const title = '흙은 어디에서 왔는가?';
   const pts = WO.sampleText(title, "700 150px 'Gowun Batang'", 3400, 17, 150);
   const rnd = rand(71);
-  const grains = pts.map((p) => ({ tx: 960 + p[0], ty: 430 + p[1], sx: 200 + rnd() * 1520, sy: 640 + rnd() * 520, d: rnd(), s: sp.grainA[Math.floor(rnd() * 3)], r: rnd() * 6.28, up: 0.6 + rnd() * 0.8, vx: (rnd() - 0.5) * 160 }));
+  const grains = pts.map((p) => ({ tx: 960 + p[0], ty: 430 + p[1], sx: 1290 + (rnd() - 0.5) * 90, sy: 300 + (rnd() - 0.5) * 60, d: rnd(), s: sp.grainA[Math.floor(rnd() * 3)], r: rnd() * 6.28, up: 0.6 + rnd() * 0.8, vx: (rnd() - 0.5) * 160 }));
   const T_gather = S('mo02') + 0.1, T_hold = E('mo02'), T_scatter = about('mo03', '달에') - 0.1, T_moon = S('mo04') - 0.15, T_earth = S('mo07') - 0.1;
   function drawGrains(t) {
     if (t < T_gather - 0.1 || t > T_moon) return;
@@ -78,7 +78,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   const stars = Array.from({ length: 140 }, (_, i) => ({ x: WO.rand(i + 300)() * 1920, y: WO.rand(i + 900)() * 420, r: 0.6 + WO.rand(i + 7)() * 1.4, a: 0.3 + WO.rand(i + 1200)() * 0.7 }));
   const mcam = H.cam(); mcam.x = 0; mcam.y = 0; mcam.z = 0.92;
   // micrometeorite strikes (mo06): hashed times, each a streak + a grey dust puff
-  const strikes = Array.from({ length: 26 }, (_, i) => { const r = WO.rand(500 + i); return { t: S('mo06') + 0.2 + r() * (E('mo06') - S('mo06') - 1.2), x: 240 + r() * 1440, y: 520 + r() * 420, a: 0.9 + r() * 0.8 }; });
+  const strikes = Array.from({ length: 22 }, (_, i) => { const r = WO.rand(500 + i); return { t: S('mo06') + 0.2 + i * ((E('mo06') - S('mo06') - 1.2) / 22) + r() * 0.3, x: 560 + r() * 900, y: 560 + r() * 400, a: 0.9 + r() * 0.8 }; });
   function drawMoon(t) {
     H.reset(g);
     g.fillStyle = '#050608'; g.fillRect(0, 0, 1920, 1080);
@@ -100,7 +100,10 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
     for (const s of strikes) {
       const u = t - s.t; if (u < -0.25 || u > 1.6) continue;
       if (u < 0) { const k = (u + 0.25) / 0.25; g.strokeStyle = `rgba(255,250,240,${0.85 * k})`; g.lineWidth = 2; g.beginPath(); g.moveTo(s.x + 300 * (1 - k), s.y - 520 * (1 - k)); g.lineTo(s.x + 240 * (1 - k) + 20, s.y - 420 * (1 - k) - 40); g.stroke(); }
-      else { const k = WO.clamp(u / 1.4, 0, 1); const rr = 10 + 90 * Math.sqrt(k); g.globalAlpha = (1 - k) * 0.55; g.fillStyle = '#b9bcc2'; for (let i = 0; i < 9; i++) { const a = i * 0.7 + s.a, d = rr * (0.5 + 0.5 * ((i * 37) % 10) / 10); g.beginPath(); g.arc(s.x + Math.cos(a) * d, s.y + Math.sin(a) * d * 0.5 - 40 * k * (1 - k) * 4 * ((i % 3) + 1) / 3, 2 + 4 * (1 - k), 0, 6.28); g.fill(); } g.globalAlpha = 1; }
+      else { const k = WO.clamp(u / 1.4, 0, 1); const rr = 10 + 90 * Math.sqrt(k);
+        // the little crater it leaves: a dark pit with a lit far rim (the hard sun from the upper right)
+        g.globalAlpha = Math.min(1, u * 4); g.fillStyle = 'rgba(30,32,36,0.8)'; g.beginPath(); g.ellipse(s.x, s.y, 16, 9, 0, 0, 6.283); g.fill(); g.strokeStyle = 'rgba(230,234,240,0.7)'; g.lineWidth = 2.5; g.beginPath(); g.ellipse(s.x - 2, s.y + 2, 17, 10, 0, 3.4, 6.1); g.stroke();
+        g.globalAlpha = (1 - k) * 0.55; g.fillStyle = '#b9bcc2'; for (let i = 0; i < 9; i++) { const a = i * 0.7 + s.a, d = rr * (0.5 + 0.5 * ((i * 37) % 10) / 10); g.beginPath(); g.arc(s.x + Math.cos(a) * d, s.y + Math.sin(a) * d * 0.5 - 40 * k * (1 - k) * 4 * ((i % 3) + 1) / 3, 2 + 4 * (1 - k), 0, 6.28); g.fill(); } g.globalAlpha = 1; }
     }
     H.reset(g);
   }
@@ -121,7 +124,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   tl.fromTo(cam, { z: 1.32, y: -560 }, { z: 1.12, y: -470, duration: E('mo02') - win.a, ease: 'none', immediateRender: false }, win.a);       // settle: looking down at our feet
   tl.fromTo(mcam, { z: 0.92, x: 0, y: 0 }, { z: 1.6, x: -37, y: 65, duration: E('mo04') - about('mo04', '우주인이'), ease: 'power2.inOut', immediateRender: false }, about('mo04', '우주인이'));   // push in: "발자국이 선명"
   tl.fromTo(mcam, { z: 1.6, x: -37, y: 65 }, { z: 2.3, x: 120, y: 200, duration: 1.2, ease: 'power3.inOut', immediateRender: false }, S('mo05') - 0.1);   // ECU: the grains, "흙?"
-  tl.fromTo(mcam, { z: 2.3, x: 120, y: 200 }, { z: 0.95, x: 0, y: 0, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('mo06') - 0.2);   // back out: the strikes over the whole face
+  tl.fromTo(mcam, { z: 2.3, x: 120, y: 200 }, { z: 1.7, x: 40, y: 150, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('mo06') - 0.2);   // back out: the strikes over the whole face
   tl.fromTo(cam, { z: 1.0, y: -300 }, { z: 1.0, y: -300, duration: 0.01, immediateRender: false }, T_earth);
   tl.fromTo(cam, { y: -300, z: 1.0 }, { y: 1950, z: 0.96, duration: E('mo08') - about('mo08', '바위가') + 0.6, ease: 'power2.inOut', immediateRender: false }, about('mo08', '바위가') - 0.4);  // crane down: "바위가 부서지는 쪽부터"
 
@@ -135,7 +138,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   H.inn(sup, S('mo04') + 0.6, { y: 24 }, 0.8); H.out(sup, E('mo04') - 0.2, { y: -20 }, 0.4);
   H.inn(note, about('mo06', '생명이') - 0.2, { x: 30 }, 0.6); H.out(note, E('mo06') - 0.1, { x: 20 }, 0.35);
   // "0 살았던 생명" — the number lands on the word
-  H.inn(zero, about('mo06', '생명이') - 0.1, { scale: 1.3, y: 0 }, 0.6, 'power4.out'); H.out(zero, E('mo06') - 0.1, { y: -40 }, 0.35);
+  H.inn(zero, about('mo06', '생명이') - 0.5, { scale: 1.3, y: 0 }, 0.6, 'power4.out'); H.out(zero, E('mo06') - 0.1, { y: -40 }, 0.35);
   // "바위 + 생명"
   const rw = H.q(el, '.rockw'), pl = H.q(el, '.plus'), lw = H.q(el, '.lifew');
   gsap.set([rw, pl, lw], { autoAlpha: 0 });
@@ -157,8 +160,11 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
     if (t < S('mo02') + 0.6) { const k = WO.ease.out(WO.clamp((t - win.a - 0.3) / 1.2, 0, 1)); const fade = 1 - WO.clamp((t - S('mo02')) / 0.6, 0, 1); H.view(g, cam, 1); WO.shoe(g, 1300, -58, 1.15, k * fade); if (k < 1) { g.globalAlpha = k * fade; } H.reset(g); g.globalAlpha = 1; }
     // the opening: light comes up
     if (t < win.a + 1.2) { H.reset(g); g.fillStyle = `rgba(0,0,0,${1 - WO.ease.out((t - win.a) / 1.2)})`; g.fillRect(0, 0, 1920, 1080); }
+    // mo02: two fingertips come down to the surface, lift a pinch, and the title gathers out of it
+    if (t > S('mo02') - 0.6 && t < T_moon) { const u = t - (S('mo02') - 0.6); const down = WO.ease.out(WO.clamp(u / 0.9, 0, 1)); const lift = WO.ease.inout(WO.clamp((u - 1.0) / 1.2, 0, 1)); const gone = WO.clamp((t - T_scatter) / 0.8, 0, 1);
+      H.view(g, cam, 1); H.fingers(g, 1290, -40 - 500 * (1 - down) - 320 * lift, 0.9, 0.3 * (1 - lift), 1 - gone); H.reset(g); }
     drawGrains(t);
     drawLife(t);
-    H.reset(g);
+    H.keyLight(g, 0.7);
   });
 };
