@@ -2,3 +2,4 @@
 .snapshots/
 screenshots/
 .env
+*.mp4

@@ -1,0 +1,73 @@
+/* style.css — 「세상에서 가장 이해하기 쉬운 GPU 만드는 법」 art direction (storyboard.md → 월드 바이블). Stage 1920×1080. */
+
+:root {
+  --bg: #070a12;
+  --fg: #eef2fa;
+  --muted: #9aa6bd;
+  --accent: #f2c14e;        /* gold: the core, what is spoken now */
+  --accent-2: #5fe3c0;      /* on = 1 */
+  --si: #0d1424;
+  --cu: #e08a4a;
+  --core: #f2c14e;
+  --on: #5fe3c0;
+  --euv: #9b7bff;
+
+  /* SIL OFL 1.1 fonts only (fonts/, css/player.css) */
+  --font: 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px;
+}
+:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+
+#stage { background: var(--bg); color: var(--fg); font-family: var(--font); font-variant-numeric: tabular-nums; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+.scene { position: absolute; inset: 0; overflow: hidden; }
+.scene canvas.world { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+
+/* ---- type: engraved metal ---- */
+.t { position: absolute; margin: 0; white-space: nowrap; line-height: 1; }
+.hero { font-weight: 800; letter-spacing: -0.035em; filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.6)); }
+.hero.xl { font-size: 250px; }
+.hero.l { font-size: 170px; }
+.hero.m { font-size: 120px; }
+.hero.s { font-size: 84px; }
+/* metals: the type is cut from the same materials as the world, lit from the upper left */
+.au { background: linear-gradient(176deg, #fff3c4 0%, #f6cf6a 30%, #c98d22 62%, #f2c14e 78%, #7a5410 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-stroke: 1.2px rgba(255, 240, 200, 0.35); }
+.cu { background: linear-gradient(176deg, #ffe0c2 0%, #f0a066 32%, #b5602c 64%, #e08a4a 80%, #5e2c10 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-stroke: 1.2px rgba(255, 220, 190, 0.35); }
+.ag { background: linear-gradient(176deg, #ffffff 0%, #dfe6f4 35%, #8d99b2 66%, #cfd8ea 80%, #5a647a 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.3); }
+.onc { color: var(--on); text-shadow: 0 0 24px rgba(95, 227, 192, 0.55); }
+.euvc { color: #c9b8ff; text-shadow: 0 0 28px rgba(155, 123, 255, 0.8); }
+.sub { font-weight: 500; font-size: 42px; color: var(--muted); letter-spacing: 0.01em; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.8)); }
+.sub b { color: var(--fg); font-weight: 700; }
+.lbl { font-weight: 700; font-size: 54px; color: var(--fg); filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85)); }
+.lbl i { display: block; font-style: normal; font-weight: 500; font-size: 32px; color: var(--muted); margin-top: 14px; letter-spacing: 0.01em; }
+.tag { font-family: var(--mono); font-size: 30px; letter-spacing: 0.08em; color: var(--muted); }
+.ctr { left: 0; right: 0; text-align: center; }
+.unit { font-size: 0.36em; font-weight: 700; letter-spacing: 0; margin-left: 0.12em; }
+.chip { display: inline-block; padding: 14px 30px 16px; border-radius: 10px; border: 2px solid rgba(242, 193, 78, 0.55); background: rgba(10, 14, 24, 0.78); }
+
+/* ---- step markers (op06 · ai07) ---- */
+.step { position: absolute; top: 700px; width: 470px; text-align: center; }
+.step .n { font-family: var(--mono); font-size: 34px; color: var(--core); letter-spacing: 0.1em; }
+.step .w { display: block; margin-top: 16px; font-weight: 800; font-size: 58px; letter-spacing: -0.02em; color: var(--fg); filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.8)); }
+
+/* ---- chapter card + the signature transition (the exposure sweep) ---- */
+#sweep { position: absolute; inset: 0; pointer-events: none; z-index: 36; }
+#sweep .band { position: absolute; top: -40px; left: 0; width: 360px; height: 1160px; opacity: 0; margin-left: -180px;
+  background: linear-gradient(90deg, rgba(120, 90, 255, 0), rgba(140, 110, 255, 0.35) 30%, rgba(200, 185, 255, 0.85) 50%, rgba(140, 110, 255, 0.35) 70%, rgba(120, 90, 255, 0));
+  filter: blur(6px); mix-blend-mode: screen; }
+#sweep .core { position: absolute; top: 0; left: 0; width: 6px; height: 1080px; margin-left: -3px; opacity: 0; background: #f2eeff; box-shadow: 0 0 30px 8px rgba(155, 123, 255, 0.9); }
+.chcard { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; pointer-events: none; }
+.chcard .no { font-family: var(--mono); font-size: 40px; letter-spacing: 0.3em; color: var(--core); padding-left: 0.3em; filter: drop-shadow(0 0 14px rgba(242, 193, 78, 0.5)); }
+.chcard .q { font-weight: 800; font-size: 104px; line-height: 1.15; letter-spacing: -0.03em; color: var(--fg); text-align: center; max-width: 1400px; text-wrap: balance;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.75)); }
+.chcard .q em { font-style: normal; background: linear-gradient(176deg, #fff3c4 0%, #f6cf6a 30%, #c98d22 62%, #f2c14e 78%, #7a5410 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.chcard .rule { width: 0; height: 2px; background: linear-gradient(90deg, rgba(155, 123, 255, 0), #b9a6ff, rgba(155, 123, 255, 0)); }
+
+/* ---- the finish ---- */
+.vignette { background: radial-gradient(ellipse 92% 88% at 50% 48%, transparent 56%, rgba(0, 0, 0, 0.28) 80%, rgba(0, 0, 0, 0.6) 100%); }

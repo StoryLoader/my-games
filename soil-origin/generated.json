@@ -736,6 +736,10 @@
   "screenshots/voiced/soil-origin_20261111-121645_4-moments-0m02.50s-to-0m06.00s_sheet-1-of-1.jpg": {
    "sha256": "15609abc486abe3d9a26a829c13b8b2fdc34cc547f1ddefb91e0cf0f3f6e23a5",
    "by": "render.py"
+  },
+  "흙은_어디에서_왔는가_1080p.mp4": {
+   "sha256": "47684da4e4af00c6f7837188bd6565524e747e6879293976579e04f53b58d7a4",
+   "by": "render.py"
   }
  }
 }
