@@ -26,7 +26,8 @@ Video.define(async (ctx) => {
     reset(g) { g.setTransform(1, 0, 0, 1, 0, 0); },
     // fromTo entrance / exit on tl with explicit states (no immediateRender surprises)
     inn(target, pos, from = { y: 40 }, dur = 0.8, ease = 'expo.out') { tl.fromTo(target, { autoAlpha: 0, ...from }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: dur, ease, overwrite: 'auto' }, pos); },
-    out(target, pos, to = { y: -30 }, dur = 0.45, ease = 'power2.in') { tl.to(target, { autoAlpha: 0, ...to, duration: dur, ease, overwrite: 'auto' }, pos); },
+    // exits start from the entrance's end state explicitly, so a seek that reaches the exit first still shows the right frame before it
+    out(target, pos, to = { y: -30 }, dur = 0.45, ease = 'power2.in') { tl.fromTo(target, { autoAlpha: 1, x: 0, y: 0, scale: 1 }, { autoAlpha: 0, ...to, duration: dur, ease, immediateRender: false }, pos); },
     rand, TX, K, WO, tl, cue, scene, onFrame, fitCanvas,
     // the key light as a pool over the frame: brighter where the low sun from the upper left strikes, falling off to the lower right.
     // Drawn in screen space at the end of a chapter's frame; strength 0..1
@@ -114,7 +115,7 @@ Video.define(async (ctx) => {
     gsap.set(el, { autoAlpha: 1 });
     tl.fromTo(no, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'expo.out', immediateRender: false }, t0 + 0.6);
     tl.fromTo(q, { autoAlpha: 0, y: 40, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out', immediateRender: false }, t0 + 0.7);
-    tl.to(el, { autoAlpha: 0, scale: 0.92, duration: 0.7, ease: 'power2.in' }, t1);
+    tl.fromTo(el, { autoAlpha: 1, scale: 1 }, { autoAlpha: 0, scale: 0.92, duration: 0.7, ease: 'power2.in', immediateRender: false }, t1);
   };
 
   // ---------- chapter windows (references/long-form.md §4) ----------

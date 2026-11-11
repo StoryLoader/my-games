@@ -40,7 +40,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
 
   const cam = H.cam(); cam.z = 1; cam.x = 0; cam.y = 0;
   const T = {
-    count0: about('tm01', '1센티미터') - 0.3, count1: E('tm01') + 0.4, life: about('tm02', '한평생') - 0.2, wide: S('tm03') + 0.2, sweep: about('tm07', '위에서') - 0.2,
+    count0: about('tm01', '1센티미터') - 0.3, count1: E('tm01') + 0.4, life: about('tm02', '한평생') - 1.0, wide: S('tm03') + 0.2, sweep: about('tm07', '위에서') - 0.2,
     past0: S('tm08'), dev: S('tm09'), roots0: about('tm09', '뿌리가') - 0.2, rain: about('tm10', '비에') - 0.6, numbers: S('tm11'),
   };
   const years = { v: 0 }; tl.fromTo(years, { v: 0 }, { v: 1000, duration: T.count1 - T.count0, ease: 'power1.inOut', immediateRender: false }, T.count0);
@@ -62,6 +62,11 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
       if (age > 0 && id !== 'r') { const h = (y1 - y0) * (1 - age); a = 910 - (910 - y0) * (1 - age); b = a + h; if (h < 1) continue; }
       g.save(); g.beginPath(); g.moveTo(-100, a); for (let x = -100; x <= 2020; x += 30) g.lineTo(x, a + 10 * WO.noise(x / 90, y0, 3)); g.lineTo(2020, b + 20); g.lineTo(-100, b + 20); g.closePath(); g.clip();
       let yy = a; while (yy < b + 20) { const hh = Math.min(c.height, b + 20 - yy); g.drawImage(c, 0, 0, c.width, hh, -60, yy, 2040, hh); yy += hh; }
+      // the cut face: a lit lip where the layer meets the one above, falling into shadow towards its bottom
+      const lip = g.createLinearGradient(0, a, 0, a + 34); lip.addColorStop(0, 'rgba(255,232,190,0.28)'); lip.addColorStop(1, 'rgba(255,232,190,0)'); g.fillStyle = lip; g.fillRect(-100, a, 2200, 34);
+      const sh = g.createLinearGradient(0, b - 70, 0, b + 20); sh.addColorStop(0, 'rgba(0,0,0,0)'); sh.addColorStop(1, 'rgba(0,0,0,0.45)'); g.fillStyle = sh; g.fillRect(-100, b - 70, 2200, 90);
+      if (id === 'o' && age === 0) { for (let i = 0; i < 40; i++) { const r = WO.rand(900 + i); const x = -40 + i * 50 + r() * 30, y = a + 12 + r() * (b - a - 24); g.save(); g.translate(x, y); g.rotate(r() * 6.28); g.scale(0.5 + r() * 0.4, 0.22); g.globalAlpha = 0.85; g.drawImage(sp.leaf[i % 3], -45, -45); g.restore(); } g.globalAlpha = 1; }
+      if (id === 'c' && age === 0) { for (let i = 0; i < 26; i++) { const r = WO.rand(950 + i); const x = -40 + i * 78 + r() * 40, y = a + 40 + r() * (b - a - 80), rr = 18 + r() * 26; g.save(); g.translate(x, y); g.rotate(r() * 6.28); g.beginPath(); for (let j = 0; j < 6; j++) { const an = j / 6 * 6.283, rd = rr * (0.7 + 0.3 * ((j * 37) % 5) / 5); g.lineTo(Math.cos(an) * rd, Math.sin(an) * rd * 0.8); } g.closePath(); g.clip(); g.drawImage(mat.granite.canvas, 0, 0, 200, 200, -rr, -rr, rr * 2, rr * 2); g.fillStyle = 'rgba(0,0,0,0.25)'; g.fill(); g.restore(); } }
       g.restore();
     }
     // grass on top
@@ -128,7 +133,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
   tl.fromTo(cam, { z: 1.12, x: 0, y: -60 }, { z: 1.12, x: 0, y: 110, duration: E('tm06') - S('tm04'), ease: 'none', immediateRender: false }, S('tm04'));   // crane down through the layers as they are named
   tl.fromTo(cam, { z: 1.12, x: 0, y: 110 }, { z: 1.0, x: 0, y: 0, duration: 1.2, ease: 'power2.inOut', immediateRender: false }, S('tm07') - 0.2);         // the whole again for the sweep
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, T.numbers - 0.02);
-  tl.fromTo(cam, { z: 1.25, x: 0, y: 160 }, { z: 1.0, x: 0, y: -40, duration: E('tm11') - T.numbers, ease: 'power1.inOut', immediateRender: false }, T.numbers);   // tm11: rise from the rock to the surface — the deepening
+  tl.fromTo(cam, { z: 1.3, x: 0, y: -200 }, { z: 1.0, x: 0, y: 60, duration: E('tm11') - T.numbers, ease: 'power1.inOut', immediateRender: false }, T.numbers);   // tm11: a slow descent from the surface into the depth — 깊어지기까지
 
   // ---- type ----
   H.inn(Q('.years'), T.count0 - 0.1, { y: 30 }, 0.7); H.inn(Q('.n-fao'), about('tm01', '유엔') - 0.1, { x: 20 }, 0.6);
@@ -148,10 +153,10 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
   onFrame((t) => {
     if (t < win.a - 0.1 || t > win.b + 1.5) return;
     g.clearRect(0, 0, 1920, 1080);
-    const age = t < T.past0 ? 0 : t < T.dev ? WO.ease.inout((t - T.past0) / (T.dev - T.past0)) * 0.9 : 0.9;
+    const age = t < T.past0 ? 0 : t < T.dev ? WO.ease.inout((t - T.past0) / (T.dev - T.past0)) * 0.72 : 0.72;
     const devK = t < T.dev ? 0 : WO.ease.out(WO.clamp((t - T.dev) / 1, 0, 1));
     const back = t < T.numbers ? 0 : WO.ease.inout((t - T.numbers) / 1.2);
-    if (devK < 1 || back > 0) { drawProfile(t, back > 0 ? 0.9 * (1 - back) : age); }
+    if (devK < 1 || back > 0) { drawProfile(t, back > 0 ? 0.72 * (1 - back) : age); }
     drawTicks(t);
     drawFocus(t);
     if (back < 1) { g.globalAlpha = 1 - back; drawDevonian(t); g.globalAlpha = 1; }

@@ -224,6 +224,8 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
   function drawPile(t) {
     if (t < T.recap) return;
     H.reset(g);
+    // rk13: the face steps back; only the grains matter now ("이 알갱이만 모아 놓으면")
+    if (t > S('rk13')) { g.fillStyle = `rgba(6,3,2,${0.8 * WO.ease.inout((t - S('rk13')) / 1.2)})`; g.fillRect(0, 0, 1920, 1080); }
     for (const p of pile) { const k = WO.ease.out(WO.clamp((t - T.recap - p.d * 1.6) / 0.6, 0, 1)); if (k <= 0) continue; g.save(); g.translate(p.x, p.y - 300 * (1 - k)); g.rotate(p.r); g.globalAlpha = k; g.drawImage(p.s, -p.s.width / 2, -p.s.height / 2); g.restore(); }
     g.globalAlpha = 1;
     if (t > T.grey0) { const k = WO.ease.inout((t - T.grey0) / 1.4); g.globalCompositeOperation = 'saturation'; g.fillStyle = `rgba(128,128,128,${k})`; g.fillRect(0, 0, 1920, 1080); g.globalCompositeOperation = 'source-over'; g.fillStyle = `rgba(12,14,18,${0.35 * k})`; g.fillRect(0, 0, 1920, 1080); }
@@ -265,7 +267,8 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
     H.view(g, cam, 1);
     drawDrop(t);
     // the chip (rk01): one grain breaks from the top edge and falls — "하나하나는 원래 단단한 바위의 일부"
-    if (t > T.chip && t < T.chip + 2.4) { const u = t - T.chip; const x = 700 + 60 * u, y = 120 + 0.5 * 1400 * u * u; g.save(); g.translate(x, y); g.rotate(u * 5); g.drawImage(sp.grainG[0], -14, -14, 28, 28); g.restore(); g.fillStyle = 'rgba(0,0,0,0.6)'; g.beginPath(); g.arc(700, 118, 12, 0, 6.283); g.fill(); }
+    for (let i = 0; i < 7; i++) { const r = WO.rand(2100 + i)(); const t0 = T.chip + i * 0.45 + r * 0.2; const u = t - t0; const x0 = 300 + r * 1300, y0 = 90 + r * 120; if (t > t0 - 2) { g.fillStyle = 'rgba(0,0,0,0.55)'; g.beginPath(); g.arc(x0, y0, 10 + r * 8, 0, 6.283); g.fill(); }
+      if (u > 0 && u < 2.4) { const x = x0 + 60 * u * (r - 0.5), y = y0 + 0.5 * 1400 * u * u; g.save(); g.translate(x, y); g.rotate(u * 5); const sz = 22 + r * 16; g.drawImage(r < 0.5 ? sp.grainG[0] : sp.grainG[1], -sz / 2, -sz / 2, sz, sz); g.restore(); } }
     if (t > T.rain0 - 0.3 && t < T.rain1) drawRain(t, WO.clamp((t - T.rain0 + 0.3) / 0.6, 0, 1) * (1 - WO.clamp((t - (T.rain1 - 0.6)) / 0.6, 0, 1)));
     if (t > T.rain2 && t < E('rk07') + 0.6) drawRain(t, 0.6 * WO.clamp((t - T.rain2) / 0.8, 0, 1) * (1 - WO.clamp((t - E('rk07')) / 0.6, 0, 1)));
     H.reset(g);

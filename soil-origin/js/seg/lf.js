@@ -31,10 +31,10 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
   gsap.set(Q('.w-lichen'), { left: 0, right: 0, top: 120, textAlign: 'center', fontSize: 150 });
   gsap.set(Q('.w-humus'), { left: 0, right: 0, top: 100, textAlign: 'center', fontSize: 240 }); Q('.w-humus').style.backgroundImage = H.tex.humus; Q('.w-humus').style.webkitTextStroke = '2px rgba(255,225,180,0.75)';
   gsap.set(Q('.two-mat'), { left: 0, right: 0, top: 150, textAlign: 'center', fontSize: 150 });
-  Q('.two-mat .g1').style.backgroundImage = H.tex.rock; Q('.two-mat .g2').style.backgroundImage = H.tex.humus;
+  Q('.two-mat .g1').style.backgroundImage = H.tex.clay; Q('.two-mat .g2').style.backgroundImage = H.tex.humus; Q('.two-mat .g1').style.webkitTextStroke = '2px rgba(255,225,180,0.85)'; Q('.two-mat .g2').style.webkitTextStroke = '2px rgba(255,225,180,0.85)';
   Q('.two-mat .plus').style.cssText = 'font-family:var(--font);font-weight:300;font-size:120px;color:#b9a893;margin:0 40px;vertical-align:14px';
   gsap.set(Q('.l-45'), { left: 300, top: 250 }); gsap.set(Q('.l-5'), { left: 790, top: 650 }); gsap.set(Q('.l-50'), { left: 1240, top: 250 });
-  Q('.m45').style.backgroundImage = H.tex.rock; Q('.m5').style.backgroundImage = H.tex.humus;
+  Q('.m45').style.backgroundImage = H.tex.clay; Q('.m5').style.backgroundImage = H.tex.humus; Q('.m45').style.webkitTextStroke = '2px rgba(255,225,180,0.85)'; Q('.m5').style.webkitTextStroke = '2px rgba(255,225,180,0.85)';
   ['.l-45', '.l-5', '.l-50'].forEach((c) => { const i = Q(c).querySelector('i'); i.style.cssText = 'display:block;font-style:normal;font-family:var(--font);font-weight:500;font-size:40px;color:#d8c9b4;letter-spacing:0;margin-top:8px'; });
 
   // ---- world: the surface boundary. rock below at the start (lf01–lf02), then soil forms on it ----
@@ -198,6 +198,7 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       g.globalAlpha = 1;
     }
     if (lumpK > 0) {
+      g.save(); g.translate(960, 600); g.scale(clodCam.z, clodCam.z); g.translate(-960, -600);
       // one clod of the mixed soil, cut open, 1080 px wide: the mineral grains, the black humus veins and the pores between them,
       // each drawn as what it is. The numbers sit on their own region, filled with that region's material.
       const cx = 960, cy = 600, RX = 540 * lumpK, RY = 360 * lumpK;
@@ -217,18 +218,22 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       // the cut rim, lit towards the key light
       g.save(); g.translate(-2, -2); clod(); g.strokeStyle = 'rgba(255,230,190,0.45)'; g.lineWidth = 3; g.stroke(); g.restore();
       clod(); g.strokeStyle = 'rgba(0,0,0,0.6)'; g.lineWidth = 3; g.stroke();
+      g.restore();
     }
     // lf15: grains of time begin to fall onto the lump
-    if (t > T.sand) { const n = 120; for (let i = 0; i < n; i++) { const r = WO.rand(900 + i); const u = ((t - T.sand) * (0.5 + r() * 0.5) + r()) % 1.2; if (u > 1) continue; const x = 960 + (r() - 0.5) * 200, y = -40 + 280 * u * u; g.globalAlpha = 0.9; g.drawImage(sp.grainA[i % 3], x - 8, y - 8, 16, 16); } g.globalAlpha = 1; }
+    if (t > T.sand) { const n = 220; for (let i = 0; i < n; i++) { const r = WO.rand(900 + i); const u = ((t - T.sand) * (0.5 + r() * 0.5) + r()) % 1.2; if (u > 1) continue; const x = 960 + (r() - 0.5) * 260, y = -40 + 290 * u * u; g.globalAlpha = 0.95; const sz = 18 + r() * 14; g.drawImage(sp.grainA[i % 3], x - sz / 2, y - sz / 2, sz, sz); } g.globalAlpha = 1; }
   }
 
   // ---- camera ----
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, duration: 0.01, immediateRender: false }, win.a);
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.7, x: 60, y: 20, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('lf02') - 0.2);           // ECU: the rock pits under the lichen
   tl.fromTo(cam, { z: 1.7, x: 60, y: 20 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, S('lf03') - 0.02);             // cut to the side view: the surface boundary
-  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.45, x: 0, y: 30, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('lf04') - 0.1);           // CU: threads and bugs in the litter
-  tl.fromTo(cam, { z: 1.45, x: 0, y: 30 }, { z: 1.0, x: 0, y: 0, duration: 1.4, ease: 'power3.inOut', immediateRender: false }, S('lf06') - 0.2);             // the dark band of topsoil
-  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 2.6, x: 100, y: 60, duration: 1.4, ease: 'power3.in', immediateRender: false }, T.push);                        // push in to the pinch (lf07 cushion)
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.7, x: 120, y: -40, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('lf04') - 0.1);         // CU: threads and bugs in the litter
+  tl.fromTo(cam, { z: 1.7, x: 120, y: -40 }, { z: 2.3, x: -80, y: -70, duration: 1.6, ease: 'power3.inOut', immediateRender: false }, S('lf05') - 0.2);        // ECU: the pile sinks and blackens
+  tl.fromTo(cam, { z: 2.3, x: -80, y: -70 }, { z: 1.25, x: 0, y: -20, duration: 1.6, ease: 'power3.inOut', immediateRender: false }, S('lf06') - 0.2);         // back: the dark band it became
+  tl.fromTo(cam, { z: 1.25, x: 0, y: -20 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, T.push - 0.02);
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 2.6, x: 100, y: 60, duration: 1.4, ease: 'power3.in', immediateRender: false }, T.push);
+  const clodCam = { z: 1 }; tl.fromTo(clodCam, { z: 1 }, { z: 1.22, duration: E('lf15') - T.sand + 0.5, ease: 'power1.inOut', immediateRender: false }, T.sand);                        // push in to the pinch (lf07 cushion)
   tl.fromTo(cam, { z: 2.6, x: 100, y: 60 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, T.worm0 - 0.05);
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, x: 0, y: -120, duration: 2, ease: 'power2.inOut', immediateRender: false }, S('lf10'));                   // tilt down to the burrow
 

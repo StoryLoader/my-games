@@ -14,7 +14,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   scene(el, win.a, win.b + 1.4);
   const canvas = H.q(el, 'canvas.world'), g = fitCanvas(canvas, 1920, 1080, 2);
   const zero = H.q(el, '.zero'), two = H.q(el, '.two'), sup = H.q(el, '.sup'), note = H.q(el, '#mo-moonnote');
-  H.q(el, '.rockw').style.backgroundImage = H.tex.rock;
+  H.q(el, '.rockw').style.backgroundImage = H.tex.clay; H.q(el, '.rockw').style.webkitTextStroke = '2px rgba(255,225,180,0.8)';
   gsap.set([zero, two, sup, note], { autoAlpha: 0 });
 
   // ---- the earth column (world coords; the camera travels it) ----
@@ -95,7 +95,12 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
     const gr = g.createLinearGradient(0, sky - 40, 0, sky + 110); gr.addColorStop(0, 'rgba(255,255,255,0.5)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(-200, sky - 60, 2320, 200);
     g.restore();
     // a few half-buried rocks on the horizon, lit hard from the upper right
-    for (const [rx, ry, rr] of [[300, 392, 46], [1500, 384, 70], [1640, 408, 30], [760, 398, 26]]) { const grd = g.createRadialGradient(rx + rr * 0.4, ry - rr * 0.5, rr * 0.1, rx, ry, rr); grd.addColorStop(0, '#c7cacf'); grd.addColorStop(0.6, '#7a7e84'); grd.addColorStop(1, '#2a2c30'); g.fillStyle = grd; g.beginPath(); g.ellipse(rx, ry, rr, rr * 0.62, 0, 3.14, 6.283); g.fill(); g.fillStyle = 'rgba(0,0,0,0.6)'; g.beginPath(); g.ellipse(rx - rr * 0.9, ry + 6, rr * 1.1, rr * 0.22, 0, 0, 6.283); g.fill(); }
+    // craters: depressions in the dust. The hard sun comes from the upper right, so the near (upper-right) inner wall is in shadow and the far rim is lit
+    for (const [rx, ry, rr] of [[300, 470, 90], [1500, 520, 150], [1680, 440, 46], [760, 500, 60], [1150, 700, 110]]) {
+      g.save(); g.beginPath(); g.ellipse(rx, ry, rr, rr * 0.42, 0, 0, 6.283); g.clip();
+      const grd = g.createLinearGradient(rx + rr, ry - rr * 0.5, rx - rr * 0.6, ry + rr * 0.3); grd.addColorStop(0, 'rgba(10,11,14,0.92)'); grd.addColorStop(0.55, 'rgba(60,64,70,0.6)'); grd.addColorStop(1, 'rgba(190,195,202,0.55)'); g.fillStyle = grd; g.fillRect(rx - rr, ry - rr, rr * 2, rr * 2); g.restore();
+      g.strokeStyle = 'rgba(235,238,242,0.75)'; g.lineWidth = 3; g.beginPath(); g.ellipse(rx, ry, rr, rr * 0.42, 0, 1.9, 4.2); g.stroke();   // lit far rim (lower left)
+      g.strokeStyle = 'rgba(0,0,0,0.5)'; g.lineWidth = 2; g.beginPath(); g.ellipse(rx, ry, rr, rr * 0.42, 0, 5.0, 7.3); g.stroke(); }
     // strikes
     for (const s of strikes) {
       const u = t - s.t; if (u < -0.25 || u > 1.6) continue;
@@ -126,7 +131,8 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   tl.fromTo(mcam, { z: 1.6, x: -37, y: 65 }, { z: 2.3, x: 120, y: 200, duration: 1.2, ease: 'power3.inOut', immediateRender: false }, S('mo05') - 0.1);   // ECU: the grains, "흙?"
   tl.fromTo(mcam, { z: 2.3, x: 120, y: 200 }, { z: 1.7, x: 40, y: 150, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('mo06') - 0.2);   // back out: the strikes over the whole face
   tl.fromTo(cam, { z: 1.0, y: -300 }, { z: 1.0, y: -300, duration: 0.01, immediateRender: false }, T_earth);
-  tl.fromTo(cam, { y: -300, z: 1.0 }, { y: 1950, z: 0.96, duration: E('mo08') - about('mo08', '바위가') + 0.6, ease: 'power2.inOut', immediateRender: false }, about('mo08', '바위가') - 0.4);  // crane down: "바위가 부서지는 쪽부터"
+  tl.fromTo(cam, { z: 1.0, y: -300 }, { z: 1.22, y: -260, duration: E('mo07') - about('mo07', '그 안에') + 0.3, ease: 'power1.inOut', immediateRender: false }, about('mo07', '그 안에') - 0.3);   // push in: look inside the soil for the life
+  tl.fromTo(cam, { y: -260, z: 1.22 }, { y: 1950, z: 0.96, duration: E('mo08') - about('mo08', '바위가') + 0.6, ease: 'power2.inOut', immediateRender: false }, about('mo08', '바위가') - 0.4);  // crane down: "바위가 부서지는 쪽부터"
 
   // ---- type ----
   const moonq = H.q(el, '.moonq'); moonq.textContent = '흙?'; gsap.set(moonq, { autoAlpha: 0 });

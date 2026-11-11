@@ -113,7 +113,7 @@
 
   // ---------- materials ----------
   // light: a low sun from the upper left, slightly towards the viewer (the cut face is lit obliquely)
-  W.KEY = { dx: -0.55, dy: -0.6, dz: 0.5, col: [1.04, 0.95, 0.84], amb: 0.17, wrap: 0.25, rim: 0.34, ao: 0.7, heightScale: 1.5 };
+  W.KEY = { dx: -0.55, dy: -0.6, dz: 0.45, col: [1.05, 0.95, 0.83], amb: 0.15, wrap: 0.2, rim: 0.42, ao: 0.85, heightScale: 2.4, aoRadius: 7, aoDepth: 8 };
   W.HARD = { dx: 0.6, dy: -0.7, dz: 0.35, col: [1, 1, 1.02], amb: 0.08, wrap: 0.05, rim: 0.2, ao: 0.8 };   // the moon: hard sun, no sky light
 
   // granite: grey base, pink feldspar, pale quartz, black mica flecks; sharp creased height

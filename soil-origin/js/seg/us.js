@@ -24,7 +24,7 @@ window.SEG.us = (ctx, K, TX, H, win) => {
   Q('.pct').style.backgroundImage = H.tex.soil; Q('.pct').querySelector('i').style.cssText = '-webkit-text-fill-color:#b9a893';
   Q('.tons').style.color = '#e8d7c2';
   gsap.set(Q('.w-nonre'), { left: 0, right: 0, top: 110, textAlign: 'center', fontSize: 150 }); Q('.w-nonre').style.backgroundImage = H.tex.soil; Q('.w-nonre').style.webkitTextStroke = '2px rgba(255,200,120,0.8)';
-  Q('.w-last').style.backgroundImage = H.tex.soil; Q('.w-last').style.webkitTextStroke = '2px rgba(255,200,120,0.85)'; gsap.set(Q('.w-last'), { left: 0, right: 0, top: 120, textAlign: 'center', fontSize: 170 });
+  Q('.w-last').style.backgroundImage = H.tex.soil; Q('.w-last').style.webkitTextStroke = '2px rgba(255,200,120,0.85)'; gsap.set(Q('.w-last'), { left: 110, top: 150, textAlign: 'left', fontSize: 160 });
 
   const cam = H.cam(); cam.z = 1; cam.x = 0; cam.y = 0;
   const SURF = 560;
@@ -116,18 +116,24 @@ window.SEG.us = (ctx, K, TX, H, win) => {
     const k = WO.ease.out(WO.clamp((t - T.feet - 0.3) / 1.4, 0, 1));
     WO.shoe(g, 1300, SURF - 2 - 40 * (1 - k), 1.15, k);
     // replay (us06): the layers light up from the bottom (rock) to the top (humus) as the line sums it up
-    if (t > T.replay && t < T.moon + 1) { const u = WO.clamp((t - T.replay) / (E('us06') - T.replay), 0, 1); const fade = 1 - WO.clamp((t - T.moon) / 1, 0, 1); const yl = SURF + 900 - 960 * u; const grd = g.createLinearGradient(0, yl - 60, 0, yl + 60); grd.addColorStop(0, 'rgba(255,200,120,0)'); grd.addColorStop(0.5, `rgba(255,200,120,${0.35 * fade})`); grd.addColorStop(1, 'rgba(255,200,120,0)'); g.fillStyle = grd; g.fillRect(-100, yl - 60, 2200, 120); }
+    if (t > T.replay && t < T.moon + 1) { const fade = 1 - WO.clamp((t - T.moon) / 1, 0, 1);
+      const beats = [[about('us06', '바위가'), SURF + 760, mat.granite.canvas, '#d9c3a0'], [about('us06', '알갱이가'), SURF + 450, mat.soilC.canvas, '#e8dcc8'], [about('us06', '부식토가'), SURF + 120, mat.soilO.canvas, '#9fd36a']];
+      for (const [tt, yy, tex, col] of beats) { const kk = WO.ease.out(WO.clamp((t - tt + 0.2) / 0.8, 0, 1)); if (kk <= 0) continue; g.globalAlpha = fade * kk; const lg = g.createRadialGradient(1300, yy, 20, 1300, yy, 520); lg.addColorStop(0, 'rgba(255,214,150,0.45)'); lg.addColorStop(1, 'rgba(255,214,150,0)'); g.fillStyle = lg; g.fillRect(500, yy - 300, 1600, 600);
+        g.save(); g.translate(1300, yy); g.scale(kk, kk); g.beginPath(); for (let i = 0; i <= 24; i++) { const a = i / 24 * 6.283; const rr = 120 * (0.8 + 0.2 * WO.noise(Math.cos(a) * 2 + yy, Math.sin(a) * 2, 5)); g.lineTo(Math.cos(a) * rr, Math.sin(a) * rr * 0.7); } g.closePath(); g.clip(); g.drawImage(tex, 0, 0, 300, 220, -130, -90, 260, 180); g.restore();
+        const hi = g.createRadialGradient(1260, yy - 30, 10, 1300, yy, 130); hi.addColorStop(0, 'rgba(255,240,210,0.35)'); hi.addColorStop(1, 'rgba(255,240,210,0)'); g.fillStyle = hi; g.beginPath(); g.ellipse(1300, yy, 122 * kk, 86 * kk, 0, 0, 6.283); g.fill();
+        g.strokeStyle = col; g.lineWidth = 3; g.beginPath(); g.ellipse(1300, yy, 122 * kk, 86 * kk, 0, 0, 6.283); g.stroke(); g.globalAlpha = 1; } }
     // the pinch released (us08): the fingertips open and the grains fall onto the surface
-    if (t > T.drop - 1.2) { const kf = WO.ease.out(WO.clamp((t - T.drop + 1.2) / 0.9, 0, 1)); H.fingers(g, 760, SURF - 300 + 120 * (1 - kf), 0.62, t < T.drop ? 0 : WO.ease.out(WO.clamp((t - T.drop) / 0.6, 0, 1)), kf); }
-    if (t > T.drop) { for (const p of pinch) { const u = t - T.drop - p.d * 0.5; if (u < 0) continue; const y = Math.min(SURF - 290 + p.dy + 1200 * u * u, SURF - 6 - Math.abs(p.dy) * 0.3); const x = 760 + p.dx + p.vx * Math.min(u, 0.6); g.save(); g.translate(x, y); g.scale(p.k, p.k); g.drawImage(p.s, -10, -10, 20, 20); g.restore(); } }
+    if (t > T.drop - 1.2) { const kf = WO.ease.out(WO.clamp((t - T.drop + 1.2) / 0.9, 0, 1)), up = WO.ease.inout(WO.clamp((t - T.drop - 1.4) / 1.2, 0, 1)); H.fingers(g, 980, SURF - 120 + 90 * (1 - kf) - 420 * up, 0.5, t < T.drop ? 0 : WO.ease.out(WO.clamp((t - T.drop) / 0.6, 0, 1)), kf); }
+    if (t > T.drop) { for (const p of pinch) { const u = t - T.drop - p.d * 0.5; if (u < 0) continue; const y = Math.min(SURF - 118 + p.dy + 1200 * u * u, SURF - 6 - Math.abs(p.dy) * 0.3); const x = 980 + p.dx + p.vx * Math.min(u, 0.6); g.save(); g.translate(x, y); g.scale(p.k, p.k); g.drawImage(p.s, -10, -10, 20, 20); g.restore(); } }
     H.reset(g);
   }
 
   // ---- camera ----
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, duration: 0.01, immediateRender: false }, win.a);
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.5, x: 200, y: -120, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.feet - 0.3);   // back to the shoe: the first shot's framing
-  tl.fromTo(cam, { z: 1.5, x: 200, y: -120 }, { z: 1.0, x: 0, y: 80, duration: 2.0, ease: 'power3.inOut', immediateRender: false }, T.replay - 0.2);     // the cut under our feet
-  tl.fromTo(cam, { z: 1.0, x: 0, y: 80 }, { z: 1.25, x: -120, y: -150, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.drop - 1.4);  // CU: the pinch let go
+  tl.fromTo(cam, { z: 1.5, x: 200, y: -120 }, { z: 1.1, x: 0, y: 330, duration: 2.0, ease: 'power3.inOut', immediateRender: false }, T.replay - 0.2);   // crane down into the cut under our feet
+  tl.fromTo(cam, { z: 1.1, x: 0, y: 330 }, { z: 1.0, x: 0, y: -170, duration: 2.6, ease: 'power3.inOut', immediateRender: false }, T.moon - 0.4);       // back up to the sky as the moon rises
+  tl.fromTo(cam, { z: 1.0, x: 0, y: -170 }, { z: 1.15, x: 160, y: -140, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.drop - 1.4);   // CU on the fingers by the shoe  // CU: the pinch let go
 
   // ---- type ----
   gsap.set(Q('.pct'), { left: 0, right: 0, top: 20, textAlign: 'center', fontSize: 280 });
@@ -139,8 +145,7 @@ window.SEG.us = (ctx, K, TX, H, win) => {
   H.inn(Q('.l-make'), T.gauges + 0.3, { y: 24 }, 0.7); H.inn(Q('.l-lose'), about('us03', '사라지고') - 0.4, { y: 24 }, 0.7);
   H.out(Q('.l-make'), T.nonre - 0.2, { y: -20 }, 0.4); H.out(Q('.l-lose'), T.nonre - 0.2, { y: -20 }, 0.4);
   H.inn(Q('.w-nonre'), T.nonre, { y: 50 }, 0.9); H.out(Q('.w-nonre'), T.feet - 0.2, { y: -40 }, 0.5);
-  const nr = TX.split(Q('.w-nonre'), { by: 'chars' }); TX.tremble(nr, about('us04', '돌아오지') - 0.1, E('us04'), { amp: 1.6, rate: 7 });
-  H.inn(Q('.w-last'), T.last, { y: 40 }, 1.1, 'power3.out');
+  H.inn(Q('.w-last'), T.last + 0.4, { y: 40 }, 1.1, 'power3.out');
 
   onFrame((t) => {
     if (t < win.a - 0.1) return;

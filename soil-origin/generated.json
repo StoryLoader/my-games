@@ -249,6 +249,14 @@
    "sha256": "218af352ed4bc669fa9bc411a0bce24ba62cedc3a4943f597272f3f7c9eb64d4",
    "by": "render.py"
   },
+  "screenshots/after/soil-origin_20261111-112906_17-moments-0m16.00s-to-7m52.00s_sheet-1-of-1.jpg": {
+   "sha256": "dc8d8cda419676257553926ce4b60be5e2cf687f73beb362d78fcad584e9c648",
+   "by": "render.py"
+  },
+  "screenshots/after/soil-origin_20261111-112939_moment-7m20.00s_res-1080p_sheet-1-of-1.jpg": {
+   "sha256": "51914359de1624093b96b5ca66718e891c6a97b0e9497985f0e4c04f8b0c6390",
+   "by": "render.py"
+  },
   "screenshots/cuts/soil-origin_20261111-105514_0m54.90s-to-0m56.90s_every-6-frames-at-60fps_sheet-1-of-1.jpg": {
    "sha256": "d28f480277b929a21ce58e60ced0deafcbada1ba77cf68b5ff92d948fb13c2a3",
    "by": "render.py"
