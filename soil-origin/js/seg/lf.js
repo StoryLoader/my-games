@@ -22,7 +22,7 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       <p class="note n-avg" style="left:1320px;top:880px">평균값 · 미국 농무부</p>
       ${H.card(3, '생명은 어떻게 흙이 되는가?', '생명')}
     </section>`);
-  scene(el, win.a, win.b + 0.3);
+  scene(el, win.a, win.b + 1.4);
   H.cut(el, win.a); H.cardIn(H.q(el, '.chcard'), win.a, S('lf01') + 1.3);
   const canvas = H.q(el, 'canvas.world'), g = fitCanvas(canvas, 1920, 1080, 2);
   const Q = (s) => H.q(el, s);
@@ -84,7 +84,7 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
     // sky: filtered green-gold light from above
     const sky = g.createLinearGradient(0, -400, 0, rockY); sky.addColorStop(0, '#1d2412'); sky.addColorStop(0.6, '#3a4a22'); sky.addColorStop(1, '#6b6a3a'); g.fillStyle = sky; g.fillRect(-100, -500, 2200, rockY + 500);
     // light shafts through the leaves
-    for (let i = 0; i < 6; i++) { const x = 200 + i * 300 + 40 * Math.sin(t * 0.2 + i); const gr = g.createLinearGradient(x, -400, x + 500, rockY); gr.addColorStop(0, 'rgba(255,230,150,0.0)'); gr.addColorStop(0.3, 'rgba(255,230,150,0.08)'); gr.addColorStop(1, 'rgba(255,230,150,0)'); g.fillStyle = gr; g.beginPath(); g.moveTo(x - 80, -400); g.lineTo(x + 80, -400); g.lineTo(x + 560, rockY); g.lineTo(x + 320, rockY); g.closePath(); g.fill(); }
+    for (let i = 0; i < 6; i++) { const x = 200 + i * 300 + 40 * Math.sin(t * 0.2 + i); const gr = g.createLinearGradient(x, -400, x + 500, rockY); gr.addColorStop(0, 'rgba(255,230,150,0.0)'); gr.addColorStop(0.3, 'rgba(255,230,150,0.035)'); gr.addColorStop(1, 'rgba(255,230,150,0)'); g.fillStyle = gr; g.beginPath(); g.moveTo(x - 80, -400); g.lineTo(x + 80, -400); g.lineTo(x + 560, rockY); g.lineTo(x + 320, rockY); g.closePath(); g.fill(); }
     // the rock below the surface
     g.drawImage(mat.granite.canvas, 0, 0, mat.granite.w, mat.granite.h, -60, rockY, 2040, 1148);
     // the soil that forms over the rock through the chapter: a growing dark band
@@ -101,7 +101,7 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
       const G = WO.ease.out(WO.clamp((t - T.moss) / 4.5, 0, 1));
       WO.drawRoots(g, roots, G, { color: '#e2cfa8', tip: '#dff0a8', base: 1, k: 0.5 });
       // moss tufts along the surface
-      for (let i = 0; i < 48; i++) { const r = WO.rand(400 + i)(); const x = 160 + i * 34 + r * 20, h = (26 + r * 30) * G; g.fillStyle = i % 2 ? '#6c8d35' : '#8aa848'; g.beginPath(); g.ellipse(x, rockY - soilH + 4, 22, h, 0, 3.14, 6.283); g.fill(); }
+      for (let i = 0; i < 110; i++) { const rr = WO.rand(400 + i); const r = rr(), r2 = rr(); const x = 100 + i * 16 + r * 14, h = (10 + r * 22) * G, w = 8 + r2 * 10; g.fillStyle = ['#5f7f2c', '#7a9a3a', '#4f6d26', '#8fae4a'][i % 4]; g.beginPath(); g.ellipse(x, rockY - soilH + 4, w, h, 0, 3.14, 6.283); g.fill(); g.fillStyle = 'rgba(220,240,170,0.35)'; g.beginPath(); g.ellipse(x - w * 0.3, rockY - soilH + 4 - h * 0.55, w * 0.3, h * 0.3, 0, 0, 6.283); g.fill(); }
     }
     // falling leaves (lf03): each a closed-form fall with sway, then lying on the pile
     for (const l of leaves) {
@@ -117,8 +117,8 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
     }
     // hyphae and bugs (lf04): threads spread; bugs crawl among the leaves
     if (t > T.hyph) {
-      g.strokeStyle = 'rgba(240,236,220,0.75)'; g.lineWidth = 1.6; g.lineCap = 'round';
-      for (const h of hyphae) { const k = WO.ease.out(WO.clamp((t - T.hyph - h.d * 1.5) / 2.2, 0, 1)); if (k <= 0) continue; for (let b = 0; b < 3; b++) { const a = h.ang + (b - 1) * 0.6 + h.bend * 0.3; g.beginPath(); g.moveTo(h.x, h.y); const L = h.len * k * (0.7 + 0.3 * b / 2); g.quadraticCurveTo(h.x + Math.cos(a + 0.5) * L * 0.5, h.y + Math.sin(a + 0.5) * L * 0.5 * 0.4, h.x + Math.cos(a) * L, h.y + Math.sin(a) * L * 0.4); g.stroke(); } }
+      g.strokeStyle = 'rgba(240,232,210,0.5)'; g.lineWidth = 1; g.lineCap = 'round';
+      for (const h of hyphae) { const k = WO.ease.out(WO.clamp((t - T.hyph - h.d * 1.5) / 2.2, 0, 1)); if (k <= 0) continue; for (let b = 0; b < 5; b++) { const a = h.ang + (b - 2) * 0.45 + h.bend * 0.3; g.beginPath(); g.moveTo(h.x, h.y); const L = h.len * k * (0.7 + 0.3 * b / 2); g.quadraticCurveTo(h.x + Math.cos(a + 0.5) * L * 0.5, h.y + Math.sin(a + 0.5) * L * 0.5 * 0.4, h.x + Math.cos(a) * L, h.y + Math.sin(a) * L * 0.4); g.stroke(); } }
       for (const b of bugs) { const k = WO.clamp((t - T.bugs - b.d * 0.6) / 0.5, 0, 1); if (k <= 0) continue; const x = b.x + b.dir * ((t - T.bugs) * b.v % 400) - (b.dir > 0 ? 0 : 0); const y = b.y + 6 * Math.sin((t - T.bugs) * 9 + b.ph); g.globalAlpha = k; g.fillStyle = '#2b1d12'; g.beginPath(); g.ellipse(x, y, 11, 7, 0, 0, 6.283); g.fill(); g.strokeStyle = '#2b1d12'; g.lineWidth = 1.5; for (let i = -1; i <= 1; i++) { const lg = Math.sin((t - T.bugs) * 18 + i * 2) * 4; g.beginPath(); g.moveTo(x + i * 6, y); g.lineTo(x + i * 6 + lg, y + 10); g.stroke(); } g.globalAlpha = 1; }
     }
     // humus binding (lf06): little bridges between grains, a drop held
@@ -234,7 +234,7 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
   [Q('.l-45'), Q('.l-5'), Q('.l-50'), Q('.n-avg')].forEach((e) => H.out(e, S('lf15') + 0.3, { y: -24 }, 0.4));
 
   onFrame((t) => {
-    if (t < win.a - 0.1 || t > win.b + 0.4) return;
+    if (t < win.a - 0.1 || t > win.b + 1.5) return;
     g.clearRect(0, 0, 1920, 1080);
     drawWorld(t);
     drawWorm(t);

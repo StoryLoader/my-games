@@ -392,20 +392,30 @@
     return c;
   };
 
-  /** a shoe seen from the side, standing on the ground at (x, groundY); toe points left. Dark leather with a rim light. */
+  /** a sneaker seen from the side, standing on the ground at (x, groundY); toe points left. Lit from the upper left. */
   W.shoe = function (g, x, gy, k = 1, alpha = 1) {
     g.save(); g.translate(x, gy); g.scale(k, k); g.globalAlpha = alpha;
-    // sole
-    g.fillStyle = '#17110c'; g.beginPath(); g.moveTo(-230, 0); g.lineTo(150, 0); g.quadraticCurveTo(175, 0, 175, -18); g.lineTo(175, -30); g.lineTo(-215, -30); g.quadraticCurveTo(-240, -30, -235, -8); g.closePath(); g.fill();
-    // upper
-    const grd = g.createLinearGradient(0, -200, 0, -30); grd.addColorStop(0, '#2b2219'); grd.addColorStop(1, '#0d0906');
-    g.fillStyle = grd; g.beginPath(); g.moveTo(-215, -30); g.quadraticCurveTo(-245, -60, -200, -92); g.quadraticCurveTo(-120, -120, -40, -150); g.quadraticCurveTo(20, -190, 60, -200); g.lineTo(150, -200); g.quadraticCurveTo(170, -120, 170, -30); g.closePath(); g.fill();
-    // rim light along the top edge (the key light comes from the upper left)
-    g.strokeStyle = 'rgba(255,214,160,0.55)'; g.lineWidth = 3; g.beginPath(); g.moveTo(-205, -88); g.quadraticCurveTo(-120, -118, -40, -148); g.quadraticCurveTo(20, -188, 60, -198); g.stroke();
-    // laces
-    g.strokeStyle = 'rgba(200,180,150,0.5)'; g.lineWidth = 3; for (let i = 0; i < 4; i++) { g.beginPath(); g.moveTo(-20 + i * 32, -160 + i * 6); g.lineTo(0 + i * 32, -126 + i * 4); g.stroke(); }
-    // contact shadow on the ground
-    g.fillStyle = 'rgba(0,0,0,0.55)'; g.beginPath(); g.ellipse(-30, 6, 230, 14, 0, 0, Math.PI * 2); g.fill();
+    // contact shadow
+    g.fillStyle = 'rgba(0,0,0,0.5)'; g.beginPath(); g.ellipse(-20, 6, 250, 16, 0, 0, Math.PI * 2); g.fill();
+    // midsole + outsole: pale rubber with a dark tread
+    g.fillStyle = '#2a211a'; g.beginPath(); g.moveTo(-250, 0); g.lineTo(190, 0); g.quadraticCurveTo(205, 0, 205, -14); g.lineTo(-240, -14); g.quadraticCurveTo(-256, -14, -250, 0); g.closePath(); g.fill();
+    const mid = g.createLinearGradient(0, -46, 0, -14); mid.addColorStop(0, '#e8e0d2'); mid.addColorStop(1, '#b9ad9c');
+    g.fillStyle = mid; g.beginPath(); g.moveTo(-246, -14); g.quadraticCurveTo(-262, -30, -236, -46); g.lineTo(186, -40); g.quadraticCurveTo(208, -38, 206, -14); g.closePath(); g.fill();
+    // upper: a low sneaker profile
+    const up = g.createLinearGradient(-100, -230, 60, -40); up.addColorStop(0, '#5a4636'); up.addColorStop(0.5, '#33271d'); up.addColorStop(1, '#17110c');
+    g.fillStyle = up; g.beginPath();
+    g.moveTo(-236, -46); g.quadraticCurveTo(-250, -80, -205, -104);           // toe cap
+    g.quadraticCurveTo(-130, -124, -70, -150); g.quadraticCurveTo(-30, -168, 10, -176); // vamp up to the tongue
+    g.quadraticCurveTo(60, -186, 110, -214); g.quadraticCurveTo(160, -236, 186, -206); // collar
+    g.lineTo(186, -40); g.closePath(); g.fill();
+    // toe cap seam and rim light along the top (the key light from the upper left)
+    g.strokeStyle = 'rgba(255,224,180,0.5)'; g.lineWidth = 3; g.lineCap = 'round'; g.beginPath(); g.moveTo(-204, -102); g.quadraticCurveTo(-130, -122, -70, -148); g.quadraticCurveTo(-30, -166, 10, -174); g.quadraticCurveTo(60, -184, 110, -212); g.stroke();
+    g.strokeStyle = 'rgba(0,0,0,0.5)'; g.lineWidth = 2; g.beginPath(); g.moveTo(-150, -60); g.quadraticCurveTo(-150, -95, -120, -118); g.stroke();
+    // eyelets and laces
+    g.strokeStyle = '#d8ccb8'; g.lineWidth = 4; for (let i = 0; i < 4; i++) { const xx = -40 + i * 40, yy = -150 + i * 14; g.beginPath(); g.moveTo(xx, yy); g.lineTo(xx + 30, yy - 22); g.stroke(); }
+    g.fillStyle = '#17110c'; for (let i = 0; i < 5; i++) { g.beginPath(); g.arc(-44 + i * 40, -148 + i * 14 - 12, 3, 0, 6.283); g.fill(); }
+    // heel tab
+    g.fillStyle = '#c9b89c'; g.beginPath(); g.moveTo(160, -206); g.lineTo(186, -210); g.lineTo(186, -160); g.lineTo(166, -160); g.closePath(); g.fill();
     g.restore();
   };
 

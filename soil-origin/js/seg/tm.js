@@ -21,7 +21,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
       <p class="hero w-eon">수억 년<i>깊어지기까지</i></p>
       ${H.card(4, '흙은 얼마나 오래 걸려 만들어지는가?', '얼마나 오래')}
     </section>`);
-  scene(el, win.a, win.b + 0.3);
+  scene(el, win.a, win.b + 1.4);
   H.cut(el, win.a); H.cardIn(H.q(el, '.chcard'), win.a, S('tm01') + 1.3);
   const canvas = H.q(el, 'canvas.world'), g = fitCanvas(canvas, 1920, 1080, 2);
   const Q = (s) => H.q(el, s);
@@ -138,7 +138,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
   const eon = TX.split(Q('.w-eon'), { by: 'chars' }); TX.breathe(eon, about('tm11', '수억 년') + 0.5, E('tm11'), { min: 600, max: 760, rest: 700, speed: 0.8 });
 
   onFrame((t) => {
-    if (t < win.a - 0.1 || t > win.b + 0.4) return;
+    if (t < win.a - 0.1 || t > win.b + 1.5) return;
     g.clearRect(0, 0, 1920, 1080);
     const age = t < T.past0 ? 0 : t < T.dev ? WO.ease.inout((t - T.past0) / (T.dev - T.past0)) * 0.9 : 0.9;
     const devK = t < T.dev ? 0 : WO.ease.out(WO.clamp((t - T.dev) / 1, 0, 1));

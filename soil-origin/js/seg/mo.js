@@ -11,7 +11,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
       <p class="sup" style="left:0;right:0;top:860px;text-align:center">달 표면의 가루 <b>레골리스</b> · 미세 운석이 수십억 년 두드려 부순 바위</p>
       <p class="note" id="mo-moonnote" style="left:1250px;top:220px">생명의 색이 없다</p>
     </section>`);
-  scene(el, win.a, win.b + 0.3);
+  scene(el, win.a, win.b + 1.4);
   const canvas = H.q(el, 'canvas.world'), g = fitCanvas(canvas, 1920, 1080, 2);
   const zero = H.q(el, '.zero'), two = H.q(el, '.two'), sup = H.q(el, '.sup'), note = H.q(el, '#mo-moonnote');
   H.q(el, '.rockw').style.backgroundImage = H.tex.rock;
@@ -148,7 +148,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
 
   // the frame
   onFrame((t) => {
-    if (t < win.a - 0.1 || t > win.b + 0.4) return;
+    if (t < win.a - 0.1 || t > win.b + 1.5) return;
     g.clearRect(0, 0, 1920, 1080);
     const moon = t >= T_moon && t < T_earth;
     if (moon) { drawMoon(t); return; }

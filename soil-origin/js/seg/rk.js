@@ -18,7 +18,7 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
       <p class="lbl s-recap" style="left:0;right:0;top:150px;text-align:center;font-size:72px"><b>물</b> &nbsp;·&nbsp; <b>얼음</b> &nbsp;·&nbsp; <b>뿌리</b> &nbsp;·&nbsp; <b>약한 산</b></p>
       ${H.card(2, '바위는 어떻게 알갱이가 되는가?', '알갱이')}
     </section>`);
-  scene(el, win.a, win.b + 0.3);
+  scene(el, win.a, win.b + 1.4);
   H.cut(el, win.a); H.cardIn(H.q(el, '.chcard'), win.a, S('rk01') + 1.3);
   const canvas = H.q(el, 'canvas.world'), g = fitCanvas(canvas, 1920, 1080, 2);
   const Q = (s) => H.q(el, s);
@@ -190,7 +190,7 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
   H.out(rc, S('rk13') - 0.2, { y: -20 }, 0.4);
 
   onFrame((t) => {
-    if (t < win.a - 0.1 || t > win.b + 0.4) return;
+    if (t < win.a - 0.1 || t > win.b + 1.5) return;
     g.clearRect(0, 0, 1920, 1080);
     drawFace(t);
     H.view(g, cam, 1);

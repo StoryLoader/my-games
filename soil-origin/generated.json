@@ -229,6 +229,78 @@
    "sha256": "e531072c54a54731f59b8068bcb7f9be91266eb69e7882efbe8ba2f594a4a898",
    "by": "tts.mjs"
   },
+  "screenshots/after/soil-origin_20261111-105701_4-moments-0m03.00s-to-7m51.00s_sheet-1-of-1.jpg": {
+   "sha256": "dda26e09410da551ca0a8f052ed10fe4d3095994005bf9d66a536b2880356eb4",
+   "by": "render.py"
+  },
+  "screenshots/cuts/soil-origin_20261111-105514_0m54.90s-to-0m56.90s_every-6-frames-at-60fps_sheet-1-of-1.jpg": {
+   "sha256": "d28f480277b929a21ce58e60ced0deafcbada1ba77cf68b5ff92d948fb13c2a3",
+   "by": "render.py"
+  },
+  "screenshots/cuts/soil-origin_20261111-105536_0m11.50s-to-0m12.60s_every-3-frames-at-60fps_sheet-1-of-1.jpg": {
+   "sha256": "e89fc57cab7cdc6419971ac0ec691e320ec6f9eecb2e28617f5282493641858a",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-01-of-10.jpg": {
+   "sha256": "8db14da56e5be8272fa6016aab49ad24626e4041cf982efd71e1c6ea04c4e3c3",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-02-of-10.jpg": {
+   "sha256": "1dadb40b49698ad22d9a2d83170c630475e2e3b7bc315bb1a777d3cce6635e82",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-03-of-10.jpg": {
+   "sha256": "be236781fdc2bc5f2e040d2b62fa0b140fc39a4c0a936b2fd66d793f636b6eb2",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-04-of-10.jpg": {
+   "sha256": "b799bc9b2c24b3da49a20220ad3a4a0dca348cb788eee40b15dda3f4e6f38739",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-05-of-10.jpg": {
+   "sha256": "2372a9feb7ff347f0ed330c9ea19dee63d71d0136d61cc9b1f58a9dcccb5c463",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-06-of-10.jpg": {
+   "sha256": "2ae72b80cf8a9cce5f9c90f1d57d4b4d1610253a3c42807f39bbde098a1fb9af",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-07-of-10.jpg": {
+   "sha256": "a67a1dced04a726af2ee81bd1c98de4994c7c6af1b9ffde973596039848c1630",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-08-of-10.jpg": {
+   "sha256": "7ef0b1ee6dfb99c6dffc5162d86f66ea07e9497c9f56c8db4beb0aff6f9f36fa",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-09-of-10.jpg": {
+   "sha256": "03f9e7fe99cbf0f1bb94daed7ccf2c34770282a2ac7313e87107d522f86dfd26",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-104947_0m00.00s-to-7m55.45s_every-120-frames-at-60fps_sheet-10-of-10.jpg": {
+   "sha256": "dbfce65ae7b93a7402c878d9e13538af09aedf2c25ee5f6876db46f4b7659182",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-105402_5-moments-0m16.00s-to-7m50.00s_res-1080p_sheet-1-of-5.jpg": {
+   "sha256": "74714fea226f4b8c2e34c351d8b648e62908168956e1421bea09f8f20a28a3ee",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-105402_5-moments-0m16.00s-to-7m50.00s_res-1080p_sheet-2-of-5.jpg": {
+   "sha256": "ab29b411afc350aaf0ee291ecd64dd51b6fa731ccc60d63727048f25a4ad132a",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-105402_5-moments-0m16.00s-to-7m50.00s_res-1080p_sheet-3-of-5.jpg": {
+   "sha256": "bf8bf2b487fd5c4b92305c7944045a9e2ff207743c3e5099d4d20c1fc5af51bf",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-105402_5-moments-0m16.00s-to-7m50.00s_res-1080p_sheet-4-of-5.jpg": {
+   "sha256": "07617fa1d05d81cf5465e7d297d25cb6c1d29748c946d2b3fa6057b85816d3d1",
+   "by": "render.py"
+  },
+  "screenshots/elevate-1/soil-origin_20261111-105402_5-moments-0m16.00s-to-7m50.00s_res-1080p_sheet-5-of-5.jpg": {
+   "sha256": "7ee1f74ff74624193798293a4e3a0bdf5987e69a3e7b7e80e44cee8aa4756144",
+   "by": "render.py"
+  },
   "screenshots/soil-origin_20261111-102141_0m00.00s-to-2m40.00s_every-180-frames-at-60fps_sheet-1-of-3.jpg": {
    "sha256": "36166cc86a711a6a5249dcf1e9b953227a75d16fdb9b57d7c570e9e566adb067",
    "by": "render.py"
