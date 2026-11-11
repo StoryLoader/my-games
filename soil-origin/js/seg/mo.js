@@ -59,7 +59,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   const title = '흙은 어디에서 왔는가?';
   const pts = WO.sampleText(title, "700 150px 'Gowun Batang'", 2600, 17, 150);
   const rnd = rand(71);
-  const grains = pts.map((p) => ({ tx: 960 + p[0], ty: 430 + p[1], sx: 1290 + (rnd() - 0.5) * 90, sy: 300 + (rnd() - 0.5) * 60, d: rnd(), s: sp.grainA[Math.floor(rnd() * 3)], r: rnd() * 6.28, up: 0.6 + rnd() * 0.8, vx: (rnd() - 0.5) * 160 }));
+  const grains = pts.map((p) => ({ tx: 960 + p[0], ty: 430 + p[1], sx: 640 + (rnd() - 0.5) * 90, sy: 300 + (rnd() - 0.5) * 60, d: rnd(), s: sp.grainA[Math.floor(rnd() * 3)], r: rnd() * 6.28, up: 0.6 + rnd() * 0.8, vx: (rnd() - 0.5) * 160 }));
   const T_gather = S('mo02') + 0.1, T_hold = E('mo02'), T_scatter = about('mo03', '달에') - 0.1, T_moon = S('mo04') - 0.15, T_earth = S('mo07') - 0.1;
   function drawGrains(t) {
     if (t < T_gather - 0.1 || t > T_moon) return;
@@ -168,7 +168,7 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
     if (t < win.a + 1.2) { H.reset(g); g.fillStyle = `rgba(0,0,0,${1 - WO.ease.out((t - win.a) / 1.2)})`; g.fillRect(0, 0, 1920, 1080); }
     // mo02: two fingertips come down to the surface, lift a pinch, and the title gathers out of it
     if (t > S('mo02') - 0.6 && t < T_moon) { const u = t - (S('mo02') - 0.6); const down = WO.ease.out(WO.clamp(u / 0.9, 0, 1)); const lift = WO.ease.inout(WO.clamp((u - 1.0) / 1.2, 0, 1)); const gone = WO.clamp((t - T_scatter) / 0.8, 0, 1);
-      H.view(g, cam, 1); H.fingers(g, 1290, -40 - 500 * (1 - down) - 320 * lift, 0.9, 0.3 * (1 - lift), 1 - gone); H.reset(g); }
+      H.view(g, cam, 1); H.fingers(g, 640, -40 - 500 * (1 - down) - 320 * lift, 0.9, 0.3 * (1 - lift), 1 - gone); H.reset(g); }
     drawGrains(t);
     drawLife(t);
     H.keyLight(g, 0.7);
