@@ -120,8 +120,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
 
   // ---- camera ----
   tl.fromTo(cam, { z: 2.3, x: -180, y: -380 }, { z: 2.3, x: -180, y: -380, duration: 0.01, immediateRender: false }, win.a);   // CU on the surface ticks
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 1.8, ease: 'power3.inOut' }, S('tm03') + 0.2);   // pull out: the whole cut
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 0.01 }, T.dev);
+  tl.fromTo(cam, { z: 2.3, x: -180, y: -380 }, { z: 1.0, x: 0, y: 0, duration: 1.8, ease: 'power3.inOut', immediateRender: false }, S('tm03') + 0.2);   // pull out: the whole cut
 
   // ---- type ----
   H.inn(Q('.years'), T.count0 - 0.1, { y: 30 }, 0.7); H.inn(Q('.n-fao'), about('tm01', '유엔') - 0.1, { x: 20 }, 0.6);

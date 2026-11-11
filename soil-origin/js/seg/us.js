@@ -122,9 +122,9 @@ window.SEG.us = (ctx, K, TX, H, win) => {
 
   // ---- camera ----
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, duration: 0.01, immediateRender: false }, win.a);
-  tl.to(cam, { z: 1.5, x: 200, y: -120, duration: 2.2, ease: 'power3.inOut' }, T.feet - 0.3);   // back to the shoe: the first shot's framing
-  tl.to(cam, { z: 1.0, x: 0, y: 80, duration: 2.0, ease: 'power3.inOut' }, T.replay - 0.2);     // the cut under our feet
-  tl.to(cam, { z: 1.4, x: -160, y: -140, duration: 2.2, ease: 'power3.inOut' }, T.drop - 0.8);  // CU: the pinch let go
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.5, x: 200, y: -120, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.feet - 0.3);   // back to the shoe: the first shot's framing
+  tl.fromTo(cam, { z: 1.5, x: 200, y: -120 }, { z: 1.0, x: 0, y: 80, duration: 2.0, ease: 'power3.inOut', immediateRender: false }, T.replay - 0.2);     // the cut under our feet
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 80 }, { z: 1.4, x: -160, y: -140, duration: 2.2, ease: 'power3.inOut', immediateRender: false }, T.drop - 0.8);  // CU: the pinch let go
 
   // ---- type ----
   gsap.set(Q('.pct'), { left: 0, right: 0, top: 150, textAlign: 'center' });

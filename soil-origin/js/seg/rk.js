@@ -163,12 +163,10 @@ window.SEG.rk = (ctx, K, TX, H, win) => {
 
   // ---- camera (reasons) ----
   tl.fromTo(cam, { z: 1.06, x: 0, y: 0 }, { z: 1.0, duration: E('rk01') - S('rk01'), ease: 'none', immediateRender: false }, S('rk01'));
-  tl.to(cam, { z: 1.45, x: 40, y: -160, duration: E('rk03') - S('rk03'), ease: 'power2.inOut' }, S('rk03'));   // push in: "틈으로 스며듭니다"
-  tl.to(cam, { z: 1.9, x: 60, y: -120, duration: 1.4, ease: 'power3.inOut' }, S('rk04'));                   // ECU: the ice wedge
-  tl.to(cam, { z: 1.25, x: 20, y: -60, duration: 1.6, ease: 'power3.inOut' }, S('rk05'));                     // the cracks run across the face
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 1.4, ease: 'power3.inOut' }, S('rk07'));                         // wide: the pieces
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 0.01 }, S('rk09'));
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 0.01 }, S('rk12'));
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.45, x: 40, y: -160, duration: E('rk03') - S('rk03'), ease: 'power2.inOut', immediateRender: false }, S('rk03'));   // push in: "틈으로 스며듭니다"
+  tl.fromTo(cam, { z: 1.45, x: 40, y: -160 }, { z: 1.9, x: 60, y: -120, duration: 1.4, ease: 'power3.inOut', immediateRender: false }, S('rk04'));                   // ECU: the ice wedge
+  tl.fromTo(cam, { z: 1.9, x: 60, y: -120 }, { z: 1.25, x: 20, y: -60, duration: 1.6, ease: 'power3.inOut', immediateRender: false }, S('rk05'));                     // the cracks run across the face
+  tl.fromTo(cam, { z: 1.25, x: 20, y: -60 }, { z: 1.0, x: 0, y: 0, duration: 1.4, ease: 'power3.inOut', immediateRender: false }, S('rk07'));                         // wide: the pieces
 
   // ---- type ----
   H.inn(Q('.w-water'), T.drop + 0.1, { y: 50, scale: 0.9 }, 0.8); H.out(Q('.w-water'), S('rk03') - 0.2, { y: -40 }, 0.4);

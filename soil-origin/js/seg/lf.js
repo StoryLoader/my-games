@@ -205,13 +205,13 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
 
   // ---- camera ----
   tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, duration: 0.01, immediateRender: false }, win.a);
-  tl.to(cam, { z: 1.7, x: 60, y: 20, duration: 1.3, ease: 'power3.inOut' }, S('lf02') - 0.2);           // ECU: the rock pits under the lichen
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 0.01 }, S('lf03') - 0.02);             // cut to the side view: the surface boundary
-  tl.to(cam, { z: 1.45, x: 0, y: 30, duration: 1.3, ease: 'power3.inOut' }, S('lf04') - 0.1);           // CU: threads and bugs in the litter
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 1.4, ease: 'power3.inOut' }, S('lf06') - 0.2);             // the dark band of topsoil
-  tl.to(cam, { z: 2.6, x: 100, y: 60, duration: 1.4, ease: 'power3.in' }, T.push);                        // push in to the pinch (lf07 cushion)
-  tl.to(cam, { z: 1.0, x: 0, y: 0, duration: 0.01 }, T.worm0 - 0.05);
-  tl.to(cam, { z: 1.0, x: 0, y: -120, duration: 2, ease: 'power2.inOut' }, S('lf10'));                   // tilt down to the burrow
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.7, x: 60, y: 20, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('lf02') - 0.2);           // ECU: the rock pits under the lichen
+  tl.fromTo(cam, { z: 1.7, x: 60, y: 20 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, S('lf03') - 0.02);             // cut to the side view: the surface boundary
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.45, x: 0, y: 30, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('lf04') - 0.1);           // CU: threads and bugs in the litter
+  tl.fromTo(cam, { z: 1.45, x: 0, y: 30 }, { z: 1.0, x: 0, y: 0, duration: 1.4, ease: 'power3.inOut', immediateRender: false }, S('lf06') - 0.2);             // the dark band of topsoil
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 2.6, x: 100, y: 60, duration: 1.4, ease: 'power3.in', immediateRender: false }, T.push);                        // push in to the pinch (lf07 cushion)
+  tl.fromTo(cam, { z: 2.6, x: 100, y: 60 }, { z: 1.0, x: 0, y: 0, duration: 0.01, immediateRender: false }, T.worm0 - 0.05);
+  tl.fromTo(cam, { z: 1.0, x: 0, y: 0 }, { z: 1.0, x: 0, y: -120, duration: 2, ease: 'power2.inOut', immediateRender: false }, S('lf10'));                   // tilt down to the burrow
 
   // ---- type ----
   H.inn(Q('.w-lichen'), about('lf01', '지의류입니다') - 0.3, { y: 50 }, 0.8); H.inn(Q('.s-lichen'), about('lf01', '균류와') - 0.2, { y: 24 }, 0.7);

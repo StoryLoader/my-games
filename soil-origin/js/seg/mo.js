@@ -120,10 +120,10 @@ window.SEG.mo = (ctx, K, TX, H, win) => {
   // ---- camera moves (reasons in the storyboard) ----
   tl.fromTo(cam, { z: 1.32, y: -560 }, { z: 1.12, y: -470, duration: E('mo02') - win.a, ease: 'none', immediateRender: false }, win.a);       // settle: looking down at our feet
   tl.fromTo(mcam, { z: 0.92, x: 0, y: 0 }, { z: 1.6, x: -37, y: 65, duration: E('mo04') - about('mo04', '우주인이'), ease: 'power2.inOut', immediateRender: false }, about('mo04', '우주인이'));   // push in: "발자국이 선명"
-  tl.to(mcam, { z: 2.3, x: 120, y: 200, duration: 1.2, ease: 'power3.inOut' }, S('mo05') - 0.1);   // ECU: the grains, "흙?"
-  tl.to(mcam, { z: 0.95, x: 0, y: 0, duration: 1.3, ease: 'power3.inOut' }, S('mo06') - 0.2);   // back out: the strikes over the whole face
+  tl.fromTo(mcam, { z: 1.6, x: -37, y: 65 }, { z: 2.3, x: 120, y: 200, duration: 1.2, ease: 'power3.inOut', immediateRender: false }, S('mo05') - 0.1);   // ECU: the grains, "흙?"
+  tl.fromTo(mcam, { z: 2.3, x: 120, y: 200 }, { z: 0.95, x: 0, y: 0, duration: 1.3, ease: 'power3.inOut', immediateRender: false }, S('mo06') - 0.2);   // back out: the strikes over the whole face
   tl.fromTo(cam, { z: 1.0, y: -300 }, { z: 1.0, y: -300, duration: 0.01, immediateRender: false }, T_earth);
-  tl.to(cam, { y: 1950, z: 0.96, duration: E('mo08') - about('mo08', '바위가') + 0.6, ease: 'power2.inOut' }, about('mo08', '바위가') - 0.4);  // crane down: "바위가 부서지는 쪽부터"
+  tl.fromTo(cam, { y: -300, z: 1.0 }, { y: 1950, z: 0.96, duration: E('mo08') - about('mo08', '바위가') + 0.6, ease: 'power2.inOut', immediateRender: false }, about('mo08', '바위가') - 0.4);  // crane down: "바위가 부서지는 쪽부터"
 
   // ---- type ----
   const moonq = H.q(el, '.moonq'); moonq.textContent = '흙?'; gsap.set(moonq, { autoAlpha: 0 });
