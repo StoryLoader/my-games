@@ -34,7 +34,7 @@ window.SEG.tm = (ctx, K, TX, H, win) => {
   Q('.w-eon').querySelector('i').style.cssText = 'display:block;font-style:normal;font-family:var(--font);font-weight:500;font-size:48px;color:#b9a893;margin-top:16px';
   // layer labels sit on the layers (world y → screen at cam z 1)
   const LAY = [['o', 60, 150, mat.soilO.canvas], ['a', 150, 380, mat.soilA.canvas], ['b', 380, 690, mat.soilB.canvas], ['c', 690, 910, mat.soilC.canvas], ['r', 910, 1300, mat.granite.canvas]];
-  const labelPos = { o: [200, 50], a: [460, 200], b: [820, 450], c: [1150, 720], r: [1420, 930] };
+  const labelPos = { o: [200, 50], a: [460, 200], b: [820, 440], c: [1150, 690], r: [1400, 860] };
   const labelTex = { o: H.tex.clay, a: H.tex.clay, b: H.tex.clay, c: H.tex.clay, r: H.tex.clay };
   for (const [id] of LAY) { gsap.set(Q(`.l-${id}`), { left: labelPos[id][0], top: labelPos[id][1] }); Q(`.l-${id} .mat`).style.backgroundImage = labelTex[id]; Q(`.l-${id} .mat`).style.webkitTextStroke = '2px rgba(255,230,190,0.7)'; }
 

@@ -55,7 +55,7 @@
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7)); }
 .lbl { position: absolute; margin: 0; font-family: var(--serif); font-weight: 700; font-size: 56px; line-height: 1; color: var(--fg); white-space: nowrap;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.75)); }
-.lbl i { display: block; font-family: var(--font); font-style: normal; font-weight: 500; font-size: 36px; color: var(--muted); margin-top: 10px; letter-spacing: 0.02em; }
+.lbl i { display: block; font-family: var(--font); font-style: normal; font-weight: 500; font-size: 36px; color: var(--muted); margin-top: 20px; letter-spacing: 0.02em; }
 
 /* ---- chapter card + the signature transition (the spade cut) ---- */
 #cut { position: absolute; inset: 0; pointer-events: none; z-index: 36; }
