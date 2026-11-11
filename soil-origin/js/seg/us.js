@@ -88,12 +88,12 @@ window.SEG.us = (ctx, K, TX, H, win) => {
     if (t < T.gauges || t > T.nonre + 0.5) return;
     const k = WO.ease.out(WO.clamp((t - T.gauges) / 0.8, 0, 1)), out = 1 - WO.clamp((t - T.nonre) / 0.5, 0, 1);
     H.reset(g); g.globalAlpha = k * out;
-    g.fillStyle = 'rgba(8,5,3,0.72)'; g.fillRect(0, 0, 1920, 1080);
+    g.fillStyle = 'rgba(8,5,3,0.55)'; g.fillRect(0, 0, 1920, 1080);
     const u = WO.clamp((t - T.gauges - 0.5) / 6, 0, 1);
     const patch = (x0, top, label) => {
       g.save(); g.beginPath(); g.moveTo(x0, 1080); g.lineTo(x0, top); for (let x = x0; x <= x0 + 640; x += 20) g.lineTo(x, top + 6 * WO.noise(x / 50, 3, 12)); g.lineTo(x0 + 640, 1080); g.closePath(); g.clip();
       g.drawImage(mat.soilA.canvas, 0, 0, mat.soilA.w, 420, x0, top - 20, 640, 520); g.drawImage(mat.soilB.canvas, 0, 0, mat.soilB.w, 300, x0, top + 460, 640, 400); g.restore();
-      g.strokeStyle = 'rgba(255,230,190,0.35)'; g.lineWidth = 2; g.beginPath(); g.moveTo(x0, top); g.lineTo(x0 + 640, top); g.stroke();
+      const lip = g.createLinearGradient(0, top - 4, 0, top + 40); lip.addColorStop(0, 'rgba(255,214,160,0.45)'); lip.addColorStop(1, 'rgba(255,214,160,0)'); g.fillStyle = lip; g.fillRect(x0, top - 4, 640, 44);
     };
     const base = 560;
     patch(220, base - 14 * u);                                  // forming: 14 px in the whole beat

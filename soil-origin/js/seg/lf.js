@@ -193,7 +193,7 @@ window.SEG.lf = (ctx, K, TX, H, win) => {
         g.drawImage(tex, 0, 0, tex.width, tex.height, cx - ww / 2 - 10, base - hh - 10, ww + 20, hh + 20); if (tint) { g.fillStyle = tint; g.fillRect(cx - ww / 2, base - hh, ww, hh); } g.restore();
         g.fillStyle = 'rgba(0,0,0,0.5)'; g.beginPath(); g.ellipse(cx, base + 10, ww / 2 * 1.04, 18, 0, 0, 6.283); g.fill(); };
       g.globalAlpha = lumpK;
-      heap(430, 540, k45, mat.soilC.canvas, 'rgba(236,232,226,0.22)');
+      heap(430, 540, k45, mat.soilC.canvas, 'rgba(236,232,226,0.08)');
       heap(900, 180, k5, mat.soilO.canvas, null);
       // pores: a cloud of droplets and bubbles over the space where the heaps were
       if (k50 > 0) { for (let i = 0; i < 110; i++) { const r = WO.rand(800 + i); const x = 1180 + r() * 560, y = base - 20 - Math.sqrt(r()) * 300 - 6 * Math.sin(t * 1.5 + i); const rr = 7 + r() * 16; const kk = WO.clamp((k50 - r() * 0.5) * 2, 0, 1); if (kk <= 0) continue; g.globalAlpha = lumpK * kk; if (i % 3) { g.fillStyle = 'rgba(143,215,255,0.55)'; g.beginPath(); g.arc(x, y, rr, 0, 6.283); g.fill(); g.fillStyle = 'rgba(255,255,255,0.75)'; g.beginPath(); g.arc(x - rr * 0.35, y - rr * 0.35, rr * 0.25, 0, 6.283); g.fill(); } else { g.strokeStyle = 'rgba(255,255,255,0.5)'; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, rr, 0, 6.283); g.stroke(); } } }
