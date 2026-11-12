@@ -34,10 +34,12 @@ Video.define(async (ctx) => {
   };
 
   // op
-  txt('<span class="hero h2">그동안 정말<br><span class="honey">애쓰셨습니다</span></span>', X, 170, T.op2 + 0.3, T.op4 - 0.2);
+  txt('<span class="hero h2">그동안 정말<br><span class="honey">애쓰셨습니다</span></span>', X, 170, T.op2 + 0.3, S('op03') + 0.1);
+  txt('<span class="hero h3">아무것도 나아지지<br>않을 것 같은 날들</span>', X, 180, S('op03') + 0.7, A('op04', '혼자', -0.5));
   txt('<span class="hero h3">혼자 견디지<br>않으셨으면 해요</span>', X, 180, A('op04', '혼자', -0.3), T.help);
   txt('<span class="kick">자살예방 상담전화 · 24시간</span><br><span class="hero h1 honey num">109</span><br><span class="sub">지금 당장 위험하다면 <b>119 · 112</b></span>', X, 150, T.help + 0.3, T.op6 + 0.4);
-  txt('<span class="hero h3">다그치지 않고,<br><span class="teal">조용히</span> 들려드릴게요</span>', X, 180, T.op6 + 0.6, T.md - 0.3);
+  txt('<span class="hero h3">다그치지 않고,<br><span class="teal">조용히</span> 들려드릴게요</span>', X, 180, T.op6 + 0.6, S('op07') - 0.1);
+  txt('<span class="hero h3">왜 이렇게까지<br><span class="teal">힘든지</span>부터</span>', X, 190, S('op07') + 0.2, T.md - 0.3);
   // md
   mark('하나', '왜 이렇게까지 힘들까?', 'md01');
   txt('<span class="hero h2">의지가 아니라,<br><span class="teal">병</span>입니다</span>', X, 200, T.md + 4.3, T.who - 0.3);

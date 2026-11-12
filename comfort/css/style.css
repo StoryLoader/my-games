@@ -46,3 +46,5 @@
 .mark .no { font-family: var(--font); font-weight: 700; font-size: 26px; letter-spacing: 0.2em; color: #9a90a8; }
 .mark .q { display: block; margin-top: 6px; font-family: var(--soft); font-size: 54px; color: var(--fg); }
 .onwin { color: #fffaf0; text-shadow: 0 2px 16px rgba(30, 30, 70, 0.75), 0 0 4px rgba(30, 30, 70, 0.5); }
+.t .sub, .t .kick { display: inline-block; margin-top: 12px; }
+.t .kick { margin: 0 0 8px; }
