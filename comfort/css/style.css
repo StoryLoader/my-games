@@ -1,0 +1,48 @@
+/* style.css — 「삶에 지친 당신에게」: a small room by the window, from rainy night to morning (storyboard.md). Stage 1920×1080. */
+
+:root {
+  --bg: #fbf3e4;
+  --fg: #3b3550;
+  --muted: #6e6680;
+  --accent: #e9a83e;
+  --accent-2: #5fae7a;
+  --honey: #d98f1f; --leaf: #4f9a5b; --teal: #3f8f86; --peach: #d9785a;
+
+  /* SIL OFL 1.1 fonts only (fonts/, css/fonts.css) */
+  --font: 'Pretendard', sans-serif;
+  --soft: 'Gowun Dodum', 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px;
+}
+:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+
+#stage { background: var(--bg); color: var(--fg); font-family: var(--font); font-variant-numeric: tabular-nums; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+#room { position: absolute; inset: 0; overflow: hidden; }
+#room canvas.world { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#ui { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---- type: soft, warm, never shouting ---- */
+.t { position: absolute; margin: 0; white-space: nowrap; line-height: 1.32; opacity: 0; color: var(--fg); text-shadow: 0 0 22px rgba(251, 243, 228, 0.95), 0 0 6px rgba(251, 243, 228, 0.9); }
+.hero { font-family: var(--soft); font-weight: 400; letter-spacing: -0.01em; }
+.h1 { font-size: 168px; line-height: 1.05; }
+.h2 { font-size: 92px; line-height: 1.2; }
+.h3 { font-size: 64px; }
+.sub { font-family: var(--font); font-weight: 600; font-size: 36px; color: var(--muted); }
+.sub b { color: var(--fg); font-weight: 800; }
+.src { display: block; margin-top: 14px; font-family: var(--font); font-weight: 600; font-size: 26px; color: #8a8298; letter-spacing: 0.01em; }
+.kick { font-family: var(--font); font-weight: 700; font-size: 28px; letter-spacing: 0.16em; color: var(--muted); }
+.honey { color: var(--honey); } .leaf { color: var(--leaf); } .teal { color: var(--teal); } .peach { color: var(--peach); }
+.quote { font-family: var(--soft); font-size: 52px; line-height: 1.4; }
+.en { display: block; font-family: var(--font); font-style: italic; font-weight: 500; font-size: 30px; color: #7a7290; margin-bottom: 12px; }
+.num { font-family: var(--font); font-weight: 800; letter-spacing: -0.02em; }
+.lines { font-family: var(--font); font-weight: 700; font-size: 44px; line-height: 1.55; }
+.lines b { font-family: var(--font); font-weight: 900; color: var(--honey); display: inline-block; min-width: 260px; }
+
+/* chapter mark: small, top-left, like a note on the wall */
+.mark { left: 120px; top: 96px; }
+.mark .no { font-family: var(--font); font-weight: 700; font-size: 26px; letter-spacing: 0.2em; color: #9a90a8; }
+.mark .q { display: block; margin-top: 6px; font-family: var(--soft); font-size: 54px; color: var(--fg); }
+.onwin { color: #fffaf0; text-shadow: 0 2px 16px rgba(30, 30, 70, 0.75), 0 0 4px rgba(30, 30, 70, 0.5); }
