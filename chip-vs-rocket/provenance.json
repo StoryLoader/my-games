@@ -1,0 +1,64 @@
+{
+ "assets": [
+  {
+   "file": "assets/user/shuttle.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:STS-125 Atlantis Liftoff 02.jpg — Space Shuttle Atlantis liftoff, NASA / Scott Andrews — public domain (NASA). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/vikram.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Chandrayaan-3 – Image of Vikram lander on lunar surface taken by Pragyan rover navcam at 1104 IST, 30 August 2023 from 15 meters away (3x2 cropped).jpg — ISRO — Government Open Data License – India (GODL-India), attribution shown. Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/die.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Intel@intel7(10nmESF)@RaptorLake@RPL(8P+16E)@i9-13900K@ES DSCx06 poly@5xDIC Lambda.jpg — die photo by Fritzchens Fritz — CC0. Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/wafer.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:12-inch silicon wafer.jpg — photo by Peellden — CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/rs25.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:RS-25 Engine Hot Fire Test.jpg — NASA & Aerojet Rocketdyne — public domain (NASA). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/orion.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Artemis II Splashdown (KSC-20260410-PH-JMB01 0001).jpg — NASA Kennedy Space Center / James Blair — public domain (NASA). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/jwst.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Webb Space Telescope.jpg — NASA / Chris Gunn — public domain (NASA). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/perseverance.png",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Perseverance Stuns in New Selfie.png — NASA/JPL-Caltech/MSSS — public domain (NASA). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/tiangong.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Rear view of Tiangong Space Station.jpg — China Manned Space Engineering Office — CC BY 4.0 (https://creativecommons.org/licenses/by/4.0). Credit shown on the card and in the end credits. 960px (or smaller) thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/sfx/swish.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects. a card whoosh, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  },
+  {
+   "file": "assets/user/sfx/hit.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects. a verdict thump, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  },
+  {
+   "file": "assets/user/sfx/bell.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects. a round bell, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  }
+ ]
+}
