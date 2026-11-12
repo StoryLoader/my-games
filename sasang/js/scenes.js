@@ -278,14 +278,14 @@ Video.define(async (ctx) => {
   await Promise.all(Array.from(ui.querySelectorAll('img')).map((im) => im.decode().catch(() => {})));
 
   // ---------------- fx drawing ----------------
-  const ring = (x, y, r, col, a, w = 3) => { g.globalAlpha = a; g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.stroke(); };
+  const ring = (x, y, r, col, a, w = 3) => { g.globalAlpha = a; g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.arc(x, y, Math.max(0, r), 0, Math.PI * 2); g.stroke(); };
   const disc = (x, y, r, col, a) => { g.globalAlpha = a; g.fillStyle = col; g.beginPath(); g.arc(x, y, Math.max(0, r), 0, Math.PI * 2); g.fill(); };
   function inkCircle(x, y, r, col, a) { // a brushed ring with a soft wash inside
     if (a <= 0 || r <= 0) return;
     const wash = g.createRadialGradient(x, y, r * 0.1, x, y, r);
     wash.addColorStop(0, col + '33'); wash.addColorStop(1, col + '14');
     g.globalAlpha = a; g.fillStyle = wash; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
-    for (let k = 0; k < 3; k++) { g.globalAlpha = a * (0.75 - k * 0.2); g.strokeStyle = col; g.lineWidth = 6 - k * 1.6; g.beginPath(); g.arc(x + k * 1.2, y - k, r - k * 2, -0.3 + k * 0.4, Math.PI * 2 - 0.5 + k * 0.3); g.stroke(); }
+    for (let k = 0; k < 3; k++) { g.globalAlpha = a * (0.75 - k * 0.2); g.strokeStyle = col; g.lineWidth = 6 - k * 1.6; g.beginPath(); g.arc(x + k * 1.2, y - k, Math.max(0, r - k * 2), -0.3 + k * 0.4, Math.PI * 2 - 0.5 + k * 0.3); g.stroke(); }
   }
   // steam over a bowl (card rectangle)
   function steam(t, cx, top, w, a) {
