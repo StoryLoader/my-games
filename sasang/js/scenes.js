@@ -265,16 +265,15 @@ Video.define(async (ctx) => {
   item(`<h4>실사 자료</h4><div class="grid">
     <div>이제마 초상(1920년경) — 퍼블릭 도메인<br>『동의수세보원』 사진 — 이강철 · CC BY-SA 4.0<br>삼계탕 — wizdata · CC0<br>고추 — yoopilsun · CC0<br>삼겹살 — idkjm123 · CC0<br>냉면 — ProjectManhattan · CC0</div>
     <div>수박 — Nesnad · CC BY 4.0<br>인삼 — 국립국어원 · CC BY-SA 2.0 KR<br>꿀 — Shixart1985 · CC BY 2.0<br>한우 — Charlie Yoon · CC0<br>사진 출처: 모두 Wikimedia Commons</div></div>
-    <div style="margin-top:18px">이 영상은 전통 이론을 소개하며 진단·치료를 대신하지 않습니다. 배경음악과 효과음은 이 영상을 위해 코드로 작곡·합성했습니다.</div>`, 210, 220, END - 5.2, END + 2, { cls: 'credits' });
+    <div style="margin-top:18px">이 영상은 전통 이론을 소개하며 진단·치료를 대신하지 않습니다. 효과음은 이 영상을 위해 코드로 합성했습니다.</div>`, 210, 220, END - 5.2, END + 2, { cls: 'credits' });
 
-  // ---------------- sound: music under the voice, synthesized effects on the beats ----------------
+  // ---------------- sound: synthesized effects on the beats (no background music for this topic) ----------------
   const M = MEDIA.install(ctx), sfxBox = document.getElementById('sfx');
   const sfx = (key, t0, vol) => M.clip(sfxBox, key, { x: 0, y: 0, w: 4, h: 4, start: Math.max(0, t0), dur: M.SRC[key].dur, audio: true, vol });
   cardsT.forEach((t0) => sfx('swish', t0 - 0.05, 0.5));
   stamps.forEach((t0) => sfx('stamp', t0 - 0.02, 0.75));
   drawers.forEach((t0) => sfx('chime', t0, 0.45));
   sfx('chime', S('op05') + 0.25, 0.4);
-  if (M.SRC.bgm) M.clip(sfxBox, 'bgm', { x: 0, y: 0, w: 4, h: 4, start: 0, dur: END, audio: true, vol: M.duck(0, END, 0.55, 0.22, 0.25) });
 
   await Promise.all(Array.from(ui.querySelectorAll('img')).map((im) => im.decode().catch(() => {})));
 

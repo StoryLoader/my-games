@@ -64,11 +64,6 @@
    "file": "assets/user/sfx/chime.mp4",
    "source": "user",
    "note": "The user asked (2026-11-12) for code-synthesized sound effects (\"2번과 3번 함께 사용해\"). a small bell chime, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
-  },
-  {
-   "file": "assets/user/sfx/bgm.mp4",
-   "source": "user",
-   "note": "The user asked (2026-11-12) for background music — free-licence tracks and code-synthesized sound together (\"2번과 3번 함께 사용해\"). The free-licence track could not be downloaded in this session (Wikimedia Commons answered 429 for original files), so this music was composed and synthesized from code by sfx/make_bgm.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg."
   }
  ]
 }
