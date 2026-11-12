@@ -488,6 +488,10 @@
   "screenshots/rebirth_20261112-020946_5-moments-1m06.00s-to-7m43.00s_sheet-1-of-1.jpg": {
    "sha256": "55e7d4872b158dc709f8c37d8a27a3bb11869429d186a50d7ce344b5c8d0c54c",
    "by": "render.py"
+  },
+  "screenshots/rebirth_20261112-021301_moment-3m58.87s_seek-check-from-4m08.65s_sheet-1-of-1.jpg": {
+   "sha256": "55749b168e3df4e8a10c819788d1fe8bd6db3e67e99b203f8c0a9d39f70b2f3d",
+   "by": "render.py"
   }
  }
 }
