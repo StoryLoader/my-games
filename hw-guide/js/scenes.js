@@ -10,7 +10,7 @@ Video.define(async (ctx) => {
   const SW = 1920, SH = 1080;
   const s3d = Stage3D.create(document.getElementById('gl'), { W: SW, H: SH, fov: 28, exposure: 0.88 });
   const T = s3d.THREE;
-  s3d.renderer.shadowMap.enabled = true; s3d.renderer.shadowMap.type = T.PCFSoftShadowMap;
+  s3d.renderer.shadowMap.enabled = true; s3d.renderer.shadowMap.type = T.PCFShadowMap;
   s3d.scene.fog = new T.Fog(0xeef1f5, 130, 280);
   const R = HW.build(T, s3d.scene);
   Video.progress(0.4);
