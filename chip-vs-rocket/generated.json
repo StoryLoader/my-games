@@ -1156,6 +1156,38 @@
   "screenshots/chip-vs-rocket_20261112-080649_9-moments-0m13.00s-to-6m21.00s_sheet-1-of-1.jpg": {
    "sha256": "9ca513264df8e61534ae81fe2740977cb0bee910d3cf6acfa771f2a3a460e79a",
    "by": "render.py"
+  },
+  "screenshots/chip-vs-rocket_20261112-082911_16-moments-0m02.00s-to-1m56.00s_sheet-1-of-1.jpg": {
+   "sha256": "de6ceb4d75f97092bb80314b56d1118c1c62852efdca48c86bd32106f92b206f",
+   "by": "render.py"
+  },
+  "screenshots/chip-vs-rocket_20261112-083044_16-moments-0m24.00s-to-4m07.00s_sheet-1-of-1.jpg": {
+   "sha256": "c87129bedd00e58a49f51716e56af1ba329cd4ed9016db32480e502f07d1aa60",
+   "by": "render.py"
+  },
+  "screenshots/chip-vs-rocket_20261112-083144_16-moments-1m20.00s-to-5m40.00s_sheet-1-of-1.jpg": {
+   "sha256": "ff3df1af9bd0db5200b31b93cae0aa7a718c5edd3aaa04feb154ea3a45b6d2ea",
+   "by": "render.py"
+  },
+  "screenshots/chip-vs-rocket_20261112-083223_16-moments-1m06.00s-to-6m21.00s_sheet-1-of-1.jpg": {
+   "sha256": "2554bf73c18cbeaf990b00d05320ed13daba4385c4c56f4eefe28b8769c5b19d",
+   "by": "render.py"
+  },
+  "screenshots/chip-vs-rocket_20261112-084125_4-moments-1m42.00s-to-6m12.00s_sheet-1-of-1.jpg": {
+   "sha256": "825048dcaf843977e87cfe040b8635bf4c5ff9d7efe5c0d23d78dd912c0cabea",
+   "by": "render.py"
+  },
+  "vendor/three/stage3d.js": {
+   "sha256": "13b75ca928c0797aaf700c795ac83779aae2adabbe1e0df73e37b4b413107022",
+   "by": "enable_3d.mjs"
+  },
+  "vendor/three/three.LICENSE": {
+   "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+   "by": "enable_3d.mjs"
+  },
+  "vendor/three/three.bundle.min.js": {
+   "sha256": "0b274f4be4f303da8050e4ae8decccf810b890bb7c11418073d6b4a57267e8bc",
+   "by": "enable_3d.mjs"
   }
  }
 }

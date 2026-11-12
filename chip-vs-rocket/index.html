@@ -15,8 +15,10 @@
 </head>
 <body>
   <div id="stage" data-width="1920" data-height="1080">
-    <div id="world"><canvas class="bg"></canvas><canvas class="fx"></canvas></div>
-    <div id="ui"></div>
+    <div id="world"><canvas id="gl"></canvas></div>
+    <div id="ui-light" class="ui theme-light"></div>
+    <div id="ui-dark" class="ui theme-dark"></div>
+    <div id="seam"></div>
     <div id="sfx"></div>
   </div>
 
@@ -30,6 +32,8 @@
   <script src="vendor/gsap/MotionPathPlugin.min.js"></script>
   <script src="vendor/gsap/TextPlugin.min.js"></script>
   <script src="vendor/gsap/ScrambleTextPlugin.min.js"></script>
+  <script src="vendor/three/three.bundle.min.js"></script>
+  <script src="vendor/three/stage3d.js"></script>
   <script src="js/cues.js"></script>
   <script src="js/sync.js"></script>          <!-- measured phrase times (scripts/sync.mjs): cue(id).when() uses them -->
   <script src="js/player.js"></script>
@@ -39,6 +43,7 @@
   <script src="js/media-src.js"></script>      <!-- footage: the clips this video shows (empty when none) — references/footage.md -->
   <script src="js/media.js"></script>          <!-- footage on the master clock: MEDIA.install(ctx) -->
   <script src="js/reckit.js"></script>         <!-- screen recordings without zooming: RecKit.install(ctx) -->
+  <script src="js/models.js"></script>          <!-- 3D model builders (three.js) -->
   <script src="js/scenes.js"></script>
 </body>
 </html>
