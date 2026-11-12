@@ -372,6 +372,14 @@
   "screenshots/comfort_20261112-040556_3-moments-0m10.30s-to-0m13.00s_sheet-1-of-1.jpg": {
    "sha256": "4cf6d80b66cde4da5772294dbf52244b77776b70fe530fb068a3dac09433ae40",
    "by": "render.py"
+  },
+  "screenshots/comfort_20261112-042604_7-moments-2m02.00s-to-3m10.00s_sheet-1-of-1.jpg": {
+   "sha256": "bb1b278bb86d35311cb050c35bd6041c5338f04575cc39b33ad8974a65919e30",
+   "by": "render.py"
+  },
+  "screenshots/comfort_20261112-042625_3-moments-2m26.00s-to-3m00.00s_sheet-1-of-1.jpg": {
+   "sha256": "c6680dce1ddf460d2815f4402c013ebe35131a35113342f3d5514e361c0e3417",
+   "by": "render.py"
   }
  }
 }

@@ -80,6 +80,12 @@ Video.define(async (ctx) => {
   txt('<span class="hero h1">고마워요</span><br><span class="sub">오늘 하루를 버텨 준 당신에게</span>', X, 170, T.thanks + 0.3, T.last);
   txt('<span class="kick">혼자 견디지 말고</span><br><span class="hero h1 honey num">109</span><br><span class="sub">자살예방 상담전화 · 24시간 · 위급할 땐 <b>119 · 112</b></span><br><span class="sub" style="font-size:30px">정신건강 위기상담 1577-0199 · 청소년 1388</span>', X, 140, T.last + 0.3, T.END + 5);
 
+  // ---------- real photos (freely licensed, credited) standing on the desk ----------
+  const photo = (src, cap, t0, t1) => txt(`<div class="frame"><img src="${src}" alt=""></div><span class="cap">${cap}</span>`, 744, 372, t0, t1, { cls: 'photo' });
+  photo('assets/user/rowling-2010.jpg', 'J.K. 롤링, 2010년<br>사진 Daniel Ogren · CC BY 2.0 · Wikimedia Commons', T.jk + 1.2, T.mp - 0.2);
+  photo('assets/user/phelps-2016.jpg', '마이클 펠프스, 2016년 리우 올림픽<br>사진 Agência Brasil · CC BY 2.0 · Wikimedia Commons', T.mp + 0.4, T.both + 1.2);
+  await Promise.all(Array.from(ui.querySelectorAll('img')).map((im) => im.decode().catch(() => {})));
+
   // ---------- room state over time ----------
   const rainAt = (t) => lerp(1, 0.7, K(t, T.jk, T.jk + 8)) * lerp(1, 0.55, K(t, T.hp, T.hp + 8)) * (1 - K(t, T.body - 1, T.body + 4));
   const mornAt = (t) => 0.12 * K(t, T.jk, T.hp) + 0.48 * io(K(t, T.body, T.body + 8)) + 0.4 * io(K(t, T.tunnel, T.thanks + 2));
@@ -89,7 +95,7 @@ Video.define(async (ctx) => {
     const st = {
       t, rain: rainAt(t), morning: mornAt(t), lamp: 1 - 0.75 * io(K(t, T.tunnel, T.thanks + 2)), grow: growAt(t),
       open: io(K(t, A('hp07', '창문', -0.6), A('hp07', '창문', 1.8))), beam: K(t, A('hp07', '햇빛', -0.5), A('hp07', '햇빛', 2)) * 0.6 + 0.4 * io(K(t, T.tunnel, T.thanks)),
-      book: vis(t, T.jk + 3, T.mp + 0.4, 1.2, 1), pool: vis(t, T.mp, T.both + 1.2, 1.5, 1.5),
+      book: 0, pool: vis(t, T.mp, T.both + 1.2, 1.5, 1.5),
       lights: vis(t, T.nine - 0.2, T.q, 1, 1), lights9: K(t, T.nine + 2, T.nine + 4),
       phone: vis(t, T.talk, T.pro + 0.6, 1, 1), water: vis(t, A('hp07', '물 한 잔', -0.3), T.END + 5, 0.6, 0.1), rice: vis(t, A('hp07', '밥', -0.3), T.END + 5, 0.6, 0.1),
       mug2: vis(t, T.ask, T.END + 5, 1.2, 0.1),
