@@ -15,7 +15,7 @@
 **지난 영상과 다르게**: 3D(하드웨어·차원), 수채 호수(윤회), 종이 오림 방(위로) → 평면 한지 · 실사 카드 · 도장.
 
 ## 소리
-- 음악: Kevin MacLeod “Wholesome”(CC BY 4.0, Wikimedia Commons) — 내레이션 아래로 낮춤(duck), 끝 크레디트에 표기.
+- 음악: sfx/make_bgm.py로 코드 작곡·합성 — D장조 5음 음계, 패드·저음·가야금 같은 뜯는 소리, 80 BPM. 내레이션 아래로 낮춤(duck). (Kevin MacLeod 곡은 위키미디어 원본 다운로드가 막혀 쓰지 못함.)
 - 효과음: sfx/make_sfx.py로 합성 — 사진 카드가 놓일 때 붓 스침(swish), 도장 찍힐 때 쿵(stamp), 장이 바뀔 때 작은 종(chime).
   `python3 sfx/make_sfx.py <scratch>` 후 각 wav를 `ffmpeg -f lavfi -i color=c=black:s=16x16:r=10 -i X.wav -shortest -c:v libx264 -pix_fmt yuv420p -c:a aac assets/user/sfx/X.mp4`로 감쌈.
 

@@ -37,5 +37,5 @@
 → provenance.json 참조.
 
 ## 소리
-- 배경음악: Kevin MacLeod, CC BY (위키미디어 공용) — 화면 끝 크레디트와 provenance.json에 표기. 내레이션 아래로 낮춤(duck).
+- 배경음악: sfx/make_bgm.py로 코드 작곡·합성(D장조 5음 음계, 가야금 같은 뜯는 소리). 원래 쓰려던 Kevin MacLeod “Wholesome”(CC BY 4.0)은 위키미디어 원본 다운로드가 계속 거부(429)되어 쓰지 못함. 내레이션 아래로 낮춤(duck).
 - 효과음: 이 프로젝트의 sfx/make_sfx.py로 코드 합성(외부 소리 없음).

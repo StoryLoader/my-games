@@ -262,10 +262,10 @@ Video.define(async (ctx) => {
   pic('gyetang', '', 1080, 210, S('fn07') + 0.1, END - 5.4, { w: 640, h: 440, rot: -1 });
   item('<span class="brush h2">오늘 저녁,<br>내 몸에 맞는<br><span class="c-ty">한 그릇</span>은?</span>', X, 280, S('fn07') + 0.3, END - 5.4);
   // credits (tail)
-  item(`<h4>실사 자료 · 음악</h4><div class="grid">
+  item(`<h4>실사 자료</h4><div class="grid">
     <div>이제마 초상(1920년경) — 퍼블릭 도메인<br>『동의수세보원』 사진 — 이강철 · CC BY-SA 4.0<br>삼계탕 — wizdata · CC0<br>고추 — yoopilsun · CC0<br>삼겹살 — idkjm123 · CC0<br>냉면 — ProjectManhattan · CC0</div>
-    <div>수박 — Nesnad · CC BY 4.0<br>인삼 — 국립국어원 · CC BY-SA 2.0 KR<br>꿀 — Shixart1985 · CC BY 2.0<br>한우 — Charlie Yoon · CC0<br>사진 출처: 모두 Wikimedia Commons<br>음악 “Wholesome” — Kevin MacLeod (incompetech.com) · CC BY 4.0</div></div>
-    <div style="margin-top:18px">이 영상은 전통 이론을 소개하며 진단·치료를 대신하지 않습니다. 효과음은 이 영상을 위해 코드로 합성했습니다.</div>`, 210, 220, END - 5.2, END + 2, { cls: 'credits' });
+    <div>수박 — Nesnad · CC BY 4.0<br>인삼 — 국립국어원 · CC BY-SA 2.0 KR<br>꿀 — Shixart1985 · CC BY 2.0<br>한우 — Charlie Yoon · CC0<br>사진 출처: 모두 Wikimedia Commons</div></div>
+    <div style="margin-top:18px">이 영상은 전통 이론을 소개하며 진단·치료를 대신하지 않습니다. 배경음악과 효과음은 이 영상을 위해 코드로 작곡·합성했습니다.</div>`, 210, 220, END - 5.2, END + 2, { cls: 'credits' });
 
   // ---------------- sound: music under the voice, synthesized effects on the beats ----------------
   const M = MEDIA.install(ctx), sfxBox = document.getElementById('sfx');
@@ -274,7 +274,7 @@ Video.define(async (ctx) => {
   stamps.forEach((t0) => sfx('stamp', t0 - 0.02, 0.75));
   drawers.forEach((t0) => sfx('chime', t0, 0.45));
   sfx('chime', S('op05') + 0.25, 0.4);
-  if (M.SRC.bgm) M.clip(sfxBox, 'bgm', { x: 0, y: 0, w: 4, h: 4, start: 0, dur: END, audio: true, vol: M.duck(0, END, 0.55, 0.16, 0.25) });
+  if (M.SRC.bgm) M.clip(sfxBox, 'bgm', { x: 0, y: 0, w: 4, h: 4, start: 0, dur: END, audio: true, vol: M.duck(0, END, 0.55, 0.22, 0.25) });
 
   await Promise.all(Array.from(ui.querySelectorAll('img')).map((im) => im.decode().catch(() => {})));
 
@@ -316,6 +316,8 @@ Video.define(async (ctx) => {
   onFrame((t, redraw) => {
     if (!paperDrawn || redraw) { pgc.drawImage(paperOff, 0, 0, 1920, 1080); paperDrawn = true; }
     g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, fc.width, fc.height); g.restore();
+    // never leave the layer fully empty: an all-clear canvas was sometimes composited stale after a long seek
+    g.globalAlpha = 0.02; g.fillStyle = '#f5eedf'; g.fillRect(0, 0, 2, 2); g.globalAlpha = 1;
     g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.lineWidth = 1; g.lineCap = 'butt'; g.setLineDash([]);
 
     // steam over the bowls
