@@ -3,7 +3,7 @@
    (the user asked to show the finished video at the start and the end); keys/step are effects synthesized by
    sfx/make_sfx.py (16×16 black pictures — only their sound is used). No background music in a tutorial. */
 window.MEDIA_SRC = {
-  level: -18.0,   // the narration's integrated loudness (LUFS)
+  level: -16.2,   // the narration's integrated loudness (LUFS)
   clips: {
     demo_a: { file: 'assets/user/vid/demo_a.mp4', master: 'assets/user/vid/demo_a.mp4', w: 1920, h: 1080, dur: 6.0 },
     demo_b: { file: 'assets/user/vid/demo_b.mp4', master: 'assets/user/vid/demo_b.mp4', w: 1920, h: 1080, dur: 7.0 },
