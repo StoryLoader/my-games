@@ -1,0 +1,50 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* song-myung — Google Fonts ofl/songmyung @ c30b221beb0c · SERIF */
+@font-face {
+  font-family: 'Song Myung';   /* SIL OFL 1.1 · Copyright 2018 The Song Myung Project Authors · fonts/song-myung/OFL.txt */
+  src: url('../fonts/song-myung/SongMyung-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+/* noto-serif-kr — Google Fonts ofl/notoserifkr @ c30b221beb0c · SERIF */
+@font-face {
+  font-family: 'Noto Serif KR';   /* SIL OFL 1.1 · (c) 2017-2024 Adobe (http://www.adobe.com/). · fonts/noto-serif-kr/OFL.txt */
+  src: url('../fonts/noto-serif-kr/NotoSerifKR[wght].ttf') format('truetype');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: block;
+}
+
+/* east-sea-dokdo — Google Fonts ofl/eastseadokdo @ c30b221beb0c · HANDWRITING */
+@font-face {
+  font-family: 'East Sea Dokdo';   /* SIL OFL 1.1 · Copyright (c) YoonDesign Inc. All Rights Reserved. · fonts/east-sea-dokdo/OFL.txt */
+  src: url('../fonts/east-sea-dokdo/EastSeaDokdo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Nanum Myeongjo';   /* SIL OFL 1.1 · Copyright © 2010 NHN Corporation. All rights reserved. Font designed by FONTRIX. · fonts/nanum-myeongjo/OFL.txt */
+  src: url('../fonts/nanum-myeongjo/NanumMyeongjo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Nanum Myeongjo';   /* SIL OFL 1.1 · Copyright © 2010 NHN Corporation. All rights reserved. Font designed by FONTRIX. · fonts/nanum-myeongjo/OFL.txt */
+  src: url('../fonts/nanum-myeongjo/NanumMyeongjo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Nanum Myeongjo';   /* SIL OFL 1.1 · Copyright © 2010 NHN Corporation. All rights reserved. Font designed by FONTRIX. · fonts/nanum-myeongjo/OFL.txt */
+  src: url('../fonts/nanum-myeongjo/NanumMyeongjo-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}

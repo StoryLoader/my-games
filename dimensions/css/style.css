@@ -1,0 +1,44 @@
+/* style.css — 「1차원부터 10차원까지」: a living graph-paper sketchbook, toon 3D with ink outlines (storyboard.md). Stage 1920×1080. */
+
+:root {
+  --bg: #f7f1e3;
+  --fg: #1d2033;
+  --muted: #555a72;
+  --accent: #ff5a4e;
+  --accent-2: #2e86de;
+  --d0: #e8443a; --d1: #f08a00; --d2: #d9a400; --d3: #1fa88c; --d4: #2e86de; --dx: #7d4ff0;
+
+  /* SIL OFL 1.1 fonts only (fonts/, css/fonts.css) */
+  --font: 'Pretendard', sans-serif;
+  --display: 'Black Han Sans', 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px;
+}
+:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+
+#stage { background: var(--bg); color: var(--fg); font-family: var(--font); font-variant-numeric: tabular-nums; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+#world { position: absolute; inset: 0; overflow: hidden; background: var(--bg); }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#ui { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---- type: ink on paper, the dimension's colour for emphasis ---- */
+.t { position: absolute; margin: 0; white-space: nowrap; line-height: 1.12; opacity: 0; color: var(--fg); text-shadow: 0 0 18px rgba(247, 241, 227, 0.95), 0 0 6px rgba(247, 241, 227, 0.95); }
+.hero { font-family: var(--display); font-weight: 400; letter-spacing: -0.01em; }
+.h0 { font-size: 220px; line-height: 1; }
+.h1 { font-size: 150px; line-height: 1; }
+.h2 { font-size: 100px; }
+.h3 { font-size: 68px; }
+.sub { font-family: var(--font); font-weight: 700; font-size: 40px; color: var(--muted); letter-spacing: -0.01em; }
+.sub b { color: var(--fg); font-weight: 900; }
+.kick { font-family: var(--mono); font-weight: 700; font-size: 30px; letter-spacing: 0.12em; color: var(--muted); }
+.c0 { color: var(--d0); } .c1 { color: var(--d1); } .c2 { color: var(--d2); } .c3 { color: var(--d3); } .c4 { color: var(--d4); } .cx { color: var(--dx); } .mut { color: #9a9db0; }
+.coord { font-family: var(--mono); font-weight: 700; font-size: 44px; color: var(--fg); background: none; }
+.strike { text-decoration: line-through; text-decoration-thickness: 6px; text-decoration-color: var(--d0); }
+
+/* chapter card */
+.card { left: 0; right: 0; top: 110px; text-align: center; }
+.card .no { font-family: var(--mono); font-weight: 700; font-size: 28px; letter-spacing: 0.3em; color: var(--muted); }
+.card .q { display: block; margin-top: 14px; font-family: var(--display); font-size: 92px; }

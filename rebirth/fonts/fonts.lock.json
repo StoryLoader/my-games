@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "note": "fonts installed from Google Fonts (ofl/ only) by add_font.mjs — pinned commit + sha256 of every file. Generated; do not edit.",
+  "fonts": [
+    {
+      "id": "nanum-myeongjo",
+      "family": "Nanum Myeongjo",
+      "source": "google/fonts",
+      "path": "ofl/nanummyeongjo",
+      "commit": "c30b221beb0c1da59d563feb91ec8656a1fa972a",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright © 2010 NHN Corporation. All rights reserved. Font designed by FONTRIX.",
+      "category": "SERIF",
+      "axes": [],
+      "subsets": [
+        "korean",
+        "latin",
+        "menu"
+      ],
+      "files": [
+        {
+          "dest": "fonts/nanum-myeongjo/NanumMyeongjo-Bold.ttf",
+          "sha256": "bc9ed8e60d93fe6db054b8fb988481b625f2eef8cb2317ad0e9834681b8fe3f3",
+          "bytes": 3074720,
+          "style": "normal",
+          "weight": "700"
+        },
+        {
+          "dest": "fonts/nanum-myeongjo/NanumMyeongjo-ExtraBold.ttf",
+          "sha256": "60c0077fce069ba90ae97c0a3679f6eb3712e0ca637bdd0c15b72d335ec46db7",
+          "bytes": 3180888,
+          "style": "normal",
+          "weight": "800"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/nanum-myeongjo/OFL.txt",
+        "sha256": "8eb1c1019fe7fe6d0b6e7d7bbbba1d9cbdd969d8c5f26455708f6cfb8a77284c",
+        "bytes": 4497
+      }
+    }
+  ]
+}

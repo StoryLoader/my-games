@@ -1,0 +1,5 @@
+.tts-cache/
+.snapshots/
+screenshots/
+.env
+*.mp4

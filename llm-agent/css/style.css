@@ -1,0 +1,53 @@
+/* style.css — 「LLM과 AI 에이전트, 처음부터 오늘까지」, the clay 3D version: a clean pastel studio.
+   The picture is a three.js canvas of soft clay objects (js/clay.js); this file styles the type that sits over it:
+   navy sentences, soft "clay" chips for the words that matter, the chapter pill and the year rail. Stage 1920×1080. */
+
+:root {
+  --ink: #25324f;
+  --ink-2: #5b6785;
+  --paper: #fffdf8;
+  --coral: #ff7a66;
+  --sun: #f5a800;
+  --mint: #1fb886;
+  --sky: #2f8fe8;
+  --lilac: #8a6bf0;
+
+  /* SIL OFL 1.1 fonts only (fonts/) */
+  --font: 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px;
+}
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+#stage { background: #fff3df; color: var(--ink); font-family: var(--font); font-variant-numeric: tabular-nums; overflow: hidden; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+#world { position: absolute; inset: 0; }
+#gl { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; }
+#ui, #hud { position: absolute; inset: 0; pointer-events: none; }
+#sfx { position: absolute; left: 0; top: 0; width: 4px; height: 4px; opacity: 0; overflow: hidden; }
+
+.it { position: absolute; margin: 0; white-space: nowrap; opacity: 0; line-height: 1.22; }
+.hd { font-weight: 900; letter-spacing: -0.03em; color: var(--ink); }
+.h0 { font-size: 170px; line-height: 1.04; } .h1 { font-size: 124px; line-height: 1.1; } .h2 { font-size: 92px; line-height: 1.16; } .h3 { font-size: 66px; line-height: 1.24; } .h4 { font-size: 50px; line-height: 1.3; }
+.sub { font-weight: 700; font-size: 44px; color: var(--ink-2); line-height: 1.42; white-space: normal; letter-spacing: -0.01em; }
+.sub b { color: var(--ink); font-weight: 900; }
+.note { font-weight: 700; font-size: 30px; color: rgba(37, 50, 79, 0.6); white-space: normal; line-height: 1.4; }
+.coral { color: var(--coral); } .sun { color: var(--sun); } .mint { color: var(--mint); } .sky { color: var(--sky); } .lilac { color: var(--lilac); } .dim { color: rgba(37, 50, 79, 0.45); }
+.mono { font-family: var(--mono); }
+/* a soft clay chip: the word that matters, as if pressed from clay */
+.chip { display: inline-block; padding: 0.06em 0.34em 0.1em; border-radius: 0.36em; color: #fff; background: var(--coral);
+  box-shadow: inset 0 -0.09em 0 rgba(0, 0, 0, 0.14), inset 0 0.07em 0 rgba(255, 255, 255, 0.4), 0 0.12em 0.26em rgba(37, 50, 79, 0.22); }
+.chip.sun { background: #ffc234; color: var(--ink); } .chip.mint { background: #3fcf9f; color: #fff; } .chip.sky { background: #4aa6ff; color: #fff; } .chip.lilac { background: #a488ff; color: #fff; } .chip.ink { background: var(--ink); color: #fff; } .chip.white { background: #fffdf8; color: var(--ink); }
+.band { display: inline-block; padding: 12px 40px 16px; border-radius: 44px; background: rgba(255, 253, 248, 0.93); box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.05), 0 10px 26px rgba(37, 50, 79, 0.16); }
+.band .sub, .band .note { color: var(--ink-2); }
+.kick { display: inline-block; padding: 8px 26px 10px; border-radius: 40px; background: var(--ink); color: #fff; font-weight: 800; font-size: 34px; letter-spacing: 0.01em; box-shadow: 0 8px 18px rgba(37, 50, 79, 0.25); }
+.credit { display: inline-block; padding: 7px 18px 8px; border-radius: 22px; background: rgba(255, 253, 248, 0.86); color: var(--ink-2); font-weight: 700; font-size: 24px; box-shadow: 0 4px 12px rgba(37, 50, 79, 0.14); white-space: nowrap; }
+.foot { font-weight: 700; font-size: 27px; color: var(--ink-2); white-space: normal; max-width: 1560px; line-height: 1.5; text-align: center; }
+
+/* hud */
+.chap { position: absolute; left: 56px; top: 34px; padding: 10px 28px 12px 14px; border-radius: 40px; background: var(--paper); color: var(--ink); font-weight: 800; font-size: 33px; opacity: 0;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.06), 0 8px 20px rgba(37, 50, 79, 0.16); }
+.chap i { display: inline-block; width: 46px; height: 46px; line-height: 46px; margin-right: 14px; border-radius: 50%; background: var(--coral); color: #fff; font-style: normal; font-weight: 900; font-size: 28px; text-align: center; vertical-align: 1px; }
+.yrail { position: absolute; right: 70px; top: 38px; width: 620px; height: 56px; opacity: 0; }
+.yrail .ln { position: absolute; left: 0; right: 0; top: 36px; height: 12px; border-radius: 6px; background: rgba(37, 50, 79, 0.14); }
+.yrail .tk { position: absolute; top: -2px; transform: translateX(-50%); font-weight: 800; font-size: 24px; color: var(--ink-2); }
+.yrail .mk { position: absolute; top: 26px; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%; background: var(--coral); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.16), 0 4px 10px rgba(37, 50, 79, 0.3); }

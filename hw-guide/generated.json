@@ -1,0 +1,633 @@
+{
+ "note": "files the skill's tools wrote into this project, with their sha256 — written by the tools; do not edit (check.mjs, SKILL.md → Originality)",
+ "files": {
+  ".tts-cache/03acdec0b104dc5fda29786a.pcm": {
+   "sha256": "f56f0871adab3369370e4e85348597150a6e433afd68d3ccb63e2ab42af67fc2",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/0a307bb09ef982f966ab77a2.pcm": {
+   "sha256": "3c976b9b4dee37177a41ee23b6cb90a8a8dd2de85a4683478ae4cc087e14919b",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/0bb3ff6f6420aee17a7ae25a.pcm": {
+   "sha256": "f7e39a74bc462ab775b1e7fc821c8b44ad420d9d7904d2fab4b8910d4599db37",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/0f0c735b22b7900469937d4c.pcm": {
+   "sha256": "11f6334dde88f5e1fee483c7d31adfc5f36dd332bd9fc7120dc2acb7191e42aa",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/0f3affa626f9f4667d6a58cb.pcm": {
+   "sha256": "3b5d433e518cc01c06c68c9b81197ff3ad8a8201a054db1779cf936574eeb824",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/0fa826cef97eedbe76ce0eba.pcm": {
+   "sha256": "74ab2ff7094f6554b74955b781f0f2a222587de2753fb58a8a3d047d528baf4b",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/12c1aa0ffdb78df1c95d96a3.pcm": {
+   "sha256": "3d73dbc852760030ab7ff83d136612a7f6cd97653f3f79bc3539fa13ea35482d",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/1dfc2782fd155903103da134.pcm": {
+   "sha256": "2c730c1f9f3ed10e16d30113437b0384208c14e5a592e944d9e64f9689cf39a3",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/20a1ec42bc8969e8c7a27734.pcm": {
+   "sha256": "4554035b02fe87bf52e1aa93fa6304be1068aa2d9ef6555c1a792b1617b00562",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/2999b5ec94e37a3e29e37df8.pcm": {
+   "sha256": "70225aa47790af0141ccd18bc270dbcb7a1ff2f7545a029945e56ba63a5fec36",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/32cfa2775d695ecd5f8c315a.pcm": {
+   "sha256": "68b52e9bef01f80276247c79a3f7fa998e7dbd9a7883a9fb7796e12fda58e859",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/339abf86b635a689a8adce8a.pcm": {
+   "sha256": "c185cd430866238cbc614ea2d8be004a51fc6ea96d43cf23072379220e26773c",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/387eaceeade7310aefede518.pcm": {
+   "sha256": "8ed57e4ec0e38cf5ab80fcc8dc958f2e8d86fb2cf80e48a41ca561fe136c5a03",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/3b44bbfd4ac2af7b9902eee1.pcm": {
+   "sha256": "7217091cfa55203e91b81b495b3c7c0cb8915413bebe7b22010098dbb8e42181",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/4ee0062ac874addd544ec08b.pcm": {
+   "sha256": "113752ad195d5c16f8b32aa586e6b5027616639ca2146e4fefb1dd3621a42260",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/51631f14bd4de637662b15b1.pcm": {
+   "sha256": "edb050949469d2803c554977cc2880859a0e6730b2a006f19bd5e93c11672ecf",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/516a3dd7d657e3b32822bd5f.pcm": {
+   "sha256": "bc9a38ff7bf9154852091b9f9abe73b79ecf8ca37e38bdeb34467b3a799b74e1",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/55631717ea14d7bdf12f9eb9.pcm": {
+   "sha256": "f69f41dd192d3023cc7fb370c3fb5314349da1244cd8805bab1cab60f2ce71ba",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/5651551e71c1519a83807d29.pcm": {
+   "sha256": "95f6f9bf5f371b20d5207ca98d279c3aeaeb701f128f7cd8a9c70d9ae935c71c",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/5888abafa5b618feaf950a6e.pcm": {
+   "sha256": "47f9a64ca65889c774b6d6b446fadbba55f7f8e8cf1dbbda892a777cefdd5a17",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/5b6383ee5eb809a89b9ccdf7.pcm": {
+   "sha256": "42836022ea414c59f9c703e0148f47ae24b3327635962beb851578aefcf918da",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/5cc87d03c19e44f39f30bd4c.pcm": {
+   "sha256": "572da40ba45011664cd9dbea0836b4920dda9c0edba76f7b48496ed3da018a22",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/5facb521387103dc3dd77e3b.pcm": {
+   "sha256": "bc2ecc874ec9c6846b2a7f3ba27ac1867b628921aec9f91c4b418846d19b996d",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/648a4fd66d63618c221705d1.pcm": {
+   "sha256": "e7b13044fc69a1d9d9085b4afd72cfd2d50543a1ddc80825f8c16f331ccd609c",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/65a12d5682572184a0203689.pcm": {
+   "sha256": "f0f48361f8e6ceaca091a10a4f068b0d3e83c6bc57875c894236f3895799b32d",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/669eebc02d993519dd2ff156.pcm": {
+   "sha256": "8c49ca8405956bdc793c3a9446571ca7176803e1acb1e4fb012a48b2c33208ee",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/6828715601241d4cf050d5da.pcm": {
+   "sha256": "11f42b02487ce11a295f659cdd4901cc0ce99128265a9cd7e0482e4b284bd9ff",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/68b149aa7e14323252821de5.pcm": {
+   "sha256": "2d0b68b6ac514dd017e3441b94874dbb2ee16cc3e287e9c1c1258017cee2fe89",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/6bd0d0488fa1309e9fb7ed0d.pcm": {
+   "sha256": "957f1f8adab02760eaf142793660b1bb39c90bceb0e34407185174ba8ce8311a",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/71e639f11bdd65991d84a47f.pcm": {
+   "sha256": "e1892b659ce3fbebaed757043f9b212f6684ba67e3b11e027255d7d5bf457142",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/726c399fba9199b0bca3682d.pcm": {
+   "sha256": "ac5fc251b7902a69d62b0e8fe464ac5999e9f2b77ac6e463a8982676b6804e0f",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/7be2ebd13435df3434c552f1.pcm": {
+   "sha256": "88f2a36d29bb4bd92c994f8b866e7e3be83b67f190c02fdc6437cd1d44a7dc59",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/812e2a2621fd3b479548b0f8.pcm": {
+   "sha256": "00ef5b01e1562e7c3791cb92be0d4b908cd5e12f71a032c2bba094e584e8f41c",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/857d5a53b576af42dc80f649.pcm": {
+   "sha256": "f8c823a283b3a0d63e69a564038069a8c3b550693ba4a4c7436c1b4db24a9a88",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/8c7b81dcffc27f06e50d8635.pcm": {
+   "sha256": "cd4afb5874073f3c808d8ebbe32b7b856019d9ef6cf62195ba3ef3f4a5d64d2d",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/8db36ec3897704a690a09362.pcm": {
+   "sha256": "814d56cffc0a5a6ab2b8ea2c4729afb9ce96a0dc8b0224658931c7af89085786",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/8ebc9a4207c1648d5f07530d.pcm": {
+   "sha256": "3c47260e22c654f895f27bf53977c6d25985a8f0c3c4764176a76c066ec5b08e",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/92c64dcbb1e9d959b77df132.pcm": {
+   "sha256": "96b92079a7d62073c5643d555d88d97ce6297b3364b37a9a6f04101778d381b1",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/941f4b94edd1ee5494bf8096.pcm": {
+   "sha256": "0d48a654df5dac796f268e2cc947d0c77e230e9fc91781736f65788a03f0b24a",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/9a26af795bb0fc407fbbbe30.pcm": {
+   "sha256": "d29682d22d2d5816bad5b64ad1ac492003cc7f6b41086b522c028f593b06061b",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/9d0741df132613f6d61fdd3e.pcm": {
+   "sha256": "8d75c3b5c01e65b35a329f51eb852ee10e35327cb2e383f0774d6540a8a689f4",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/9e47307fa0be708be330ad9a.pcm": {
+   "sha256": "e5a19c73bcfa078a4ee3f93ee71711af6e41ce4f8384cb01801184ccb4b7d066",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/9ea7e9ebaf45f25a64088345.pcm": {
+   "sha256": "7ad88b975ca4454e2bc4c8001f2d4ab90dfe1cdb66bd7bc10bef6051d9f0f548",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/a175b529dab9a055675249d9.pcm": {
+   "sha256": "630c801fe9a0ac414cd91c4177357891d5bafd3e258fbd403803618b86cff1f3",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/a2d37d5db53a3ee0507363e4.pcm": {
+   "sha256": "13a188fb7b65621eff904f57e19e770ef667e253d45bcf66533c4b2262942571",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/a611aa131723634a9e398bec.pcm": {
+   "sha256": "bc66e7b3dd94710e77dedb6969b74d931e7cc541c23e993ca68b66c12e0c679c",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/a627abe1c61707ba56898d19.pcm": {
+   "sha256": "018490fa82e9c6d68a3be16aa2239b04728e4d87abc38447b4319fef9990b2c9",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/b144d6d7acd0156aed85fb8f.pcm": {
+   "sha256": "20e0120363007f3c9627533689b4645d67f3179a0fd2f4bf97f03484b38ed50c",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/b9e8e0dc25993c3b9db41b5d.pcm": {
+   "sha256": "2d111be388e6321a11500b08b527be1b7bbb443c4b654e407f3cae956aafa9c1",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/bb21465f5043914549aa6dff.pcm": {
+   "sha256": "b35c3a0100693ec264ab860e7b48361a3650913381b8a2c7df404c9f0144d4fe",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/bb5b2510760ebcb99831cac0.pcm": {
+   "sha256": "b958bcc8c58e8b90e815886a1a0aebe112de5b466933ebcff2451d82c6910684",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/bda62ca8d2edcee39b48fec3.pcm": {
+   "sha256": "9b177b278bf1b5f8db754fff9364682c00b19c000585324cb90b4f25d00522b8",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/c068a2b3efe76b3465690791.pcm": {
+   "sha256": "4eb1eed74dd4fba03cf89095014d6cbb5fd3f88147d426d17b253560c5c0423a",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/c14bc1f24c994ba0a20d7a73.pcm": {
+   "sha256": "4ea67abced8d8d7ac06c1fb47209d03cad7eef5270ff9f6ed7e76b597ce070b9",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/c5fab6980798555981e74789.pcm": {
+   "sha256": "ab24869261a0fc2c8ae569620d19e2f836e6a6f11fd9ca7066f827cb7972f787",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/d34ce3680e3202bfeb72d86a.pcm": {
+   "sha256": "8bf9b91f22398c653e05b0f206537fff402a1f8d203785f77f23f944947f32d4",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/d7fc8b9ed06eea9b615d1558.pcm": {
+   "sha256": "ef073c767c5ee3cc1d01b10d323902752c5222ed6021b8f7221818031853278b",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/dc25cb886c97348d487de059.pcm": {
+   "sha256": "62ea480aeb31b6465b5703aabb7e194f12f09c806c6ef07f550a04def5aa0dca",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/dcdc0577db0764a914e0b77e.pcm": {
+   "sha256": "63f4df48e17d8d1df9600717097b3c87729efe81d8cd9c3f05538b18762faab5",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/de7ff7d09d8768190e46daf4.pcm": {
+   "sha256": "d1c626a9cb3044339c952447568431df472c78270a4feb713224eb875f135a79",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/e045ac205e3c7f318d381086.pcm": {
+   "sha256": "d61d6ce98f83b7c672abad96f2855ac1105da3afe319617a14752675021aa13e",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/e428e3373d1d3d5ca2eddfe8.pcm": {
+   "sha256": "2445688d580e85053e700c6f49cf34a21c9fc4f49ab1aa3d87587fc02f4db91a",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/e519b4189564bf074624f468.pcm": {
+   "sha256": "1c29cafb9e725e0bff26a15d20ec0b14e8a5b974439e809e5b0069b5aed46254",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/e72b71a6091ee9a3eeb9a8d5.pcm": {
+   "sha256": "bfed6baf5c7172349f34fb226184bf4e2158087d4ae2b94bc640032c1c0d3ee8",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/ebf5d5119a323eced819b3ae.pcm": {
+   "sha256": "b9ca50094f62faf4d78aa0c96c06df71d4fcb5bb61218371b3267c96ed93fe6e",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/edaef29a8aa359c0c5935b33.pcm": {
+   "sha256": "a347233c3031a0775612dad65fe4a2e2fa281cb68791fa1254a2f95259a7c5b1",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/ef9b93a72476b4a3bde08d0b.pcm": {
+   "sha256": "1bfee03eec163a77420d76c4b727fa4cd518e33fa659264ffa436b2ba901f862",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/f41055ba195b73c3f07274b8.pcm": {
+   "sha256": "8759c1517d78b99177df4188bbf69b8362eacfd659ae6e03778e07822644e5b7",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/f5d1cdc57cbefc9d7a551203.pcm": {
+   "sha256": "31c86f7797550ad9cb54f7d1c52f9e63fbb6660efc1ac3ec3b0b2478eed7f3e8",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/f783fdfa723999f6e1f4107d.pcm": {
+   "sha256": "55d20caa16ab08d19c1d856902a590c3b01fcc50f7f3e3ab1f3197d31c57f9cb",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/f7b5cbe899cd10170d322cee.pcm": {
+   "sha256": "647f907ef48eee65ed19ca923fa9c242de925360ff7ee40aaa97b4906f002a36",
+   "by": "tts.mjs"
+  },
+  ".tts-cache/fa21030edad4c916f80a564a.pcm": {
+   "sha256": "1cdead89cded732af6c9640be1636ee7aebf96e8c4aedc11b19518a298647197",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base01.wav": {
+   "sha256": "0b26ba809678bfa61143f4309a4cac872610264bd635f576621a4390a8164ff6",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base02.wav": {
+   "sha256": "343c24789300f8ef9f369c21fa0e6c71ccd5c7ae9e0de1938271d250991c8fcd",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base03.wav": {
+   "sha256": "ba55aa43b45cd9fef454ca0806be1a935055a0d8e6c70ef1b71f0bf49238e89b",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base04.wav": {
+   "sha256": "172f339491fe0821a0cad204c939d2c6dd77a75cc4149c95a501d99e3f39cd1b",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base04b.wav": {
+   "sha256": "02be42fbd69feb694f072c660ac05128b22ac04504414a1c37b904087dfb6f84",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base05.wav": {
+   "sha256": "b00affeaf00c42d3c62490a5819219354ccb7303fdf73b2fe2cf5e81bf74b17e",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base06.wav": {
+   "sha256": "ff9e6490f90fb211119ee6e7fc952c130ee78b47c36bb224637c71eeec5311a9",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base07.wav": {
+   "sha256": "26f7abe6bbebef92c9405ced2a75bc417dbefd9124a2b6d85a1bd3a5acaae30e",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base08.wav": {
+   "sha256": "b715266579fe37c368f665db1db93f2aa79bca4cfcb78eb3442a75b81238c49e",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base09.wav": {
+   "sha256": "449c92ffbe126fc777c83122dbe0935b6106eb29d73fd85a487168f395df70f6",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base09b.wav": {
+   "sha256": "67059cb7b89a12a4007e0f55c631c6a70ff82ce0a6a33630a947c9f725887d7d",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base10.wav": {
+   "sha256": "170490cff9ac6440df496d35c1e7b5556b0e841a537b5004ad6ba908b2e0728d",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base11.wav": {
+   "sha256": "d67efa9f8f523c2b1a3078f0e3494bb7c1fc43a3931f456709f51b26c77d9dac",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base12.wav": {
+   "sha256": "2ea803e2dae5a338b9e0183799c3b6912155a5b8f93a7d987ec534c3d8082601",
+   "by": "tts.mjs"
+  },
+  "audio/cues/base13.wav": {
+   "sha256": "836b5b0938ec7e2fce5181055dd5f10bf914f228547cd30bcd982190ce5a2aa3",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu01.wav": {
+   "sha256": "03758c5ad29c276fdc48ec370dad6262e9583437bd4fae76323ace34f1d062cd",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu02.wav": {
+   "sha256": "07b6da1fa73e814b4accb003d1a932e74a778b5114be4a239b668eeabf28b202",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu03.wav": {
+   "sha256": "80b5e31073c795b97bd06b9e8bf1bcaff97d5a4fa9f80dce51172093576af0a2",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu04.wav": {
+   "sha256": "924bb28d38e86c118fed8aca69d9dfd75a83daf42fd3daa4169e3467b3913cf1",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu05.wav": {
+   "sha256": "568ceab720e3d0f80222f985bbec125e3b7eff5f11ac52027c7b9b9ab8aeae9b",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu06.wav": {
+   "sha256": "85768f2182cb2febf9c46a8cf3b8259e7c8d82c61c1faf43b7fb14d4fccf4b71",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu07.wav": {
+   "sha256": "6726a8fc5e59d276b756716e28b6664f4ba240df1877cfad348db1d925623cfa",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu08.wav": {
+   "sha256": "d5553f065ef9f959d382b28e757dcdb7bc1f49e017e6b3dc1ff4f3306c0e49e6",
+   "by": "tts.mjs"
+  },
+  "audio/cues/cpu09.wav": {
+   "sha256": "438e99beab93f8146ef1f767dd436b92da4df318066e2410241bf1c357dc93bf",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin01.wav": {
+   "sha256": "cc8d4f510b7793a19453f2624f6935f81f155a4efe8dedb7ebcc1eeec3c07124",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin02.wav": {
+   "sha256": "06e45acafa9441f3c1cc0e35e44aa46e55ce2faa316e580b96498f790ac3acbc",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin03.wav": {
+   "sha256": "ebd342dccba4b27f96886e9ded72c5eb9a92616056b54a359de309b1e8064435",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin04.wav": {
+   "sha256": "adaecb92c0c6923f573712ecc407996afb0340d596565256cf6de45aac1848a6",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin05.wav": {
+   "sha256": "916789973b0c3f31ed4709cdcadc614c574414e870895a873835fe104c0cf644",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin06.wav": {
+   "sha256": "aa2c918f58b48bcb975700ad46fa01b539b0127f2f78f98ca7c71efefed70a70",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin07.wav": {
+   "sha256": "6d9902e6d7e196ead39b72d68a1919474ef66f172e3ba759d2b1d3a0a1e86f7f",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin08.wav": {
+   "sha256": "5f46c79388dd23f31d0a8b398f598715cd23473831eb155d2f5da51fe9d8e647",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin09.wav": {
+   "sha256": "38c98471a70c7b5365cb7889f3462fa6e27676760900916c7cdf18b688fbf4de",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin10.wav": {
+   "sha256": "5227ca1923f93ceb128c8809c93fa701abc8ea0b4802ae66cd7c03b5253d79ab",
+   "by": "tts.mjs"
+  },
+  "audio/cues/fin11.wav": {
+   "sha256": "676af07d8d79bf1d3a4df178cf4d1bb7d805203aafab6a93d0fad009fe779a41",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu01.wav": {
+   "sha256": "5dd11923cfb11dc5dc4b9cd580031d629823a2d707ee2a67b79aacd4fd74d3f2",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu02.wav": {
+   "sha256": "d80b872117eef737c719084995d50df37bb39d7f041894b3d72d0cd98c29ef81",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu03.wav": {
+   "sha256": "0b1ada2e08f920779ee49b937f8b84982154d3feeb093d64571026363b2a9001",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu04.wav": {
+   "sha256": "e3774f3554471056ddf5f97097ebe01a86ad306ee00cd2a83699e1a14627409c",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu05.wav": {
+   "sha256": "a63f6c6b25ed351052798464f3cfc0dfbb410473f2a04c543d91bd5d8d36603d",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu06.wav": {
+   "sha256": "1bfb728da97a0ee1749c539c33006a22b7a887eeb383ac1f639d81907639aeff",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu07.wav": {
+   "sha256": "f0ee0da321861ba4303757857b41520f2b6f07b1ceb7ab44c866989f5e1417f7",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu08.wav": {
+   "sha256": "6bc9c3deb3f9daecff52fa412cbe258c394521cbc4f6fdc282548a7bc41e9aef",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu09.wav": {
+   "sha256": "d7135bb8590c490a236df2e65a4f79d2308ae5325d33de5c95e6080d778f1ba3",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu10.wav": {
+   "sha256": "b1248677dfeaf506d525376c16936a52bb63948025c49e19dd44ffc52d3348f0",
+   "by": "tts.mjs"
+  },
+  "audio/cues/gpu11.wav": {
+   "sha256": "c0882a77ff286b944a5de93f66c89abc7de608c88fce933a8053fb0174e08a8d",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem01.wav": {
+   "sha256": "67c3eb3285cc4d21fdf59792f668c3871c7484404d1469c99fd5ae39601646a4",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem02.wav": {
+   "sha256": "dee606d0bbdeaa4ee65c41d1400fd75bf4b985d3de0dc917cfab7cfa093fa673",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem02b.wav": {
+   "sha256": "9daefc34ae69766448bb4d821013c4795f2a8255c492ee77ca0e25683d65d0ee",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem03.wav": {
+   "sha256": "8c92730628e1dad3803d5c3b554037fb93fce08964b43e5c6125f0a93cabe83f",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem04.wav": {
+   "sha256": "54e93d7ff24e7d497df9a3de55e411e18252f3a341b0e10f7fb506ae5afc5590",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem05.wav": {
+   "sha256": "78f39e312392b73bb54497431b6db376486accbed9ee0f554f71918d4ad3181a",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem06.wav": {
+   "sha256": "de2fcaf2745522775496c19615bdc09a370b0e940f185f9ddb741bf847101556",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem07.wav": {
+   "sha256": "8f8085227b190fc9236567b23406f020d4e613ac7be30fcac7595ec9094882bf",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem08.wav": {
+   "sha256": "13a134049c60a58631b17175db520eb55f2f1343e7bfdca092e489e4f8aa3bdd",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem09.wav": {
+   "sha256": "40dbadc467fc35c248f66233ec7cdc2814a48d72f5e027037db952195b4f951c",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem10.wav": {
+   "sha256": "ab83734351956c0a045708b8ef3862bc1741bb26c1efa15562b2e20a59e69b21",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem11.wav": {
+   "sha256": "27c1466839032896d311a01106b5e11bbba7189b058aa59e5e808726b3aa181c",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem12.wav": {
+   "sha256": "3527f324e9b452c640fbb90ffff61c4ec2db8f93cd7a5786d4e2709fa901d55c",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem13.wav": {
+   "sha256": "d381eb789a14fa2e75eb5f387df6b277b508e798946d36427ee7b07ccdfbf4f3",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem14.wav": {
+   "sha256": "a88939efa8afe36cdf901f3296032ea726265ba1df80cb9c4eec13d5c0c8b0a8",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem15.wav": {
+   "sha256": "bf5ee778735e7a84acd6bad815e0b32c1a98f3897d8881bd1c0b7a7b60c72fd7",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem16.wav": {
+   "sha256": "57283266c8ab9832a18cdcdb53e956e99042478b82da78dba3efb07503adf5ec",
+   "by": "tts.mjs"
+  },
+  "audio/cues/mem17.wav": {
+   "sha256": "af8bce09373c4645dd967257ea216d4970124d7b80f9dbf4531d4b16a2cb6d04",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op01.wav": {
+   "sha256": "191e7f5b053486049b69cb842bc657e0a6aea6e7679266d436b742c22857f70e",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op02.wav": {
+   "sha256": "ebe86fa3ba4e8d2786062d21540f1544108e3cb515b812d4f24ab418cd1b66e1",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op03.wav": {
+   "sha256": "2ff8d8cff06c11f19cd657494c957e8066f48485962242c431f4b459ae80a6f6",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op04.wav": {
+   "sha256": "c88e168e2ef7e231e51db21197190de6babcf07ece1cc44542995ed0749f450d",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op05.wav": {
+   "sha256": "ba088b47cacfe459638e047fa6184b0eac4c42b521924431ac808c33ef43f131",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op06.wav": {
+   "sha256": "0475da6c1169049931c0fc8987bb905e0cf60e4a460a6cd37dd72648279df43f",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op07.wav": {
+   "sha256": "5d83631037e22efabdcebb0aaaecc8ea1fab094a8dd48f4e2be0658a03cea89b",
+   "by": "tts.mjs"
+  },
+  "audio/cues/op08.wav": {
+   "sha256": "5e5e0ab5b72f176093dd6c8be12554d5aeaca7dac01d9d985c1cc2f7071496ed",
+   "by": "tts.mjs"
+  },
+  "audio/narration.mp3": {
+   "sha256": "bc76fc9068e0e172236cdda3b45cf930b6842b8e49e03bec190c6d5356e72e4f",
+   "by": "tts.mjs"
+  },
+  "audio/narration.wav": {
+   "sha256": "dc1e8e1dc5f1419cca72601294f1ffc8a5b1f7d45b5a0fe54150cb2a8e990765",
+   "by": "tts.mjs"
+  },
+  "screenshots/hw-guide_20261111-233945_10-moments-0m08.00s-to-3m10.00s_sheet-1-of-1.jpg": {
+   "sha256": "a2728e0e9f76e4aa37f1924af993e3314a277fdd55ee5e4a62374542374e17fd",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234136_14-moments-0m08.00s-to-4m00.00s_sheet-1-of-1.jpg": {
+   "sha256": "a7871f9e1d36b625e6143f654a068756aced3be31294a5ef5519332d1201eaa3",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234307_27-moments-0m40.00s-to-8m30.00s_sheet-1-of-2.jpg": {
+   "sha256": "1f2b4912f223164910a44661c3c16eafe18d172ac17b3d475f3d1e51de6584a7",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234307_27-moments-0m40.00s-to-8m30.00s_sheet-2-of-2.jpg": {
+   "sha256": "701b954bc80348954f9ba35a37e19b7023e16ec8aa8510777018d6805a81d7da",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234537_10-moments-0m03.00s-to-8m20.00s_sheet-1-of-1.jpg": {
+   "sha256": "8dea1859765e0f9fa3b6486101810cc0feb4939f9dcc96ced2b78d2d0f34ee90",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234842_8-moments-0m33.00s-to-8m26.00s_sheet-1-of-1.jpg": {
+   "sha256": "24258f842362a69412e9df8e6ec67418462067178e70a3527e8bd6fb6d00f522",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234924_3-moments-7m32.00s-to-8m00.00s_sheet-1-of-1.jpg": {
+   "sha256": "33614d5d010cb3df3e3614cc5c78472f74227bcde5a5471ddee1540c2822d271",
+   "by": "render.py"
+  },
+  "screenshots/hw-guide_20261111-234948_2-moments-7m32.00s-to-7m46.00s_sheet-1-of-1.jpg": {
+   "sha256": "87346d0ae47f22af8cebacde3cc0b50dafc590e31709b8f41f54f04143ba093b",
+   "by": "render.py"
+  },
+  "vendor/three/stage3d.js": {
+   "sha256": "13b75ca928c0797aaf700c795ac83779aae2adabbe1e0df73e37b4b413107022",
+   "by": "enable_3d.mjs"
+  },
+  "vendor/three/three.LICENSE": {
+   "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+   "by": "enable_3d.mjs"
+  },
+  "vendor/three/three.bundle.min.js": {
+   "sha256": "0b274f4be4f303da8050e4ae8decccf810b890bb7c11418073d6b4a57267e8bc",
+   "by": "enable_3d.mjs"
+  }
+ }
+}

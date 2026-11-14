@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "note": "fonts installed from Google Fonts (ofl/ only) by add_font.mjs — pinned commit + sha256 of every file. Generated; do not edit.",
+  "fonts": [
+    {
+      "id": "orbit",
+      "family": "Orbit",
+      "source": "google/fonts",
+      "path": "ofl/orbit",
+      "commit": "c30b221beb0c1da59d563feb91ec8656a1fa972a",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright 2022 The Orbit Project Authors (https://github.com/JAMO-TYPEFACE/Orbit)",
+      "category": "SANS_SERIF",
+      "axes": [],
+      "subsets": [
+        "korean",
+        "latin",
+        "latin-ext",
+        "menu"
+      ],
+      "files": [
+        {
+          "dest": "fonts/orbit/Orbit-Regular.ttf",
+          "sha256": "5d0206fb0a9e3eeac51aff8d4a6dbb7613d63fc435f1a51f96dc35cefb5f9f87",
+          "bytes": 784480,
+          "style": "normal",
+          "weight": "400"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/orbit/OFL.txt",
+        "sha256": "00f1783a4e7a52d945c0c4de689571b2db896493362651db2706b40c6fc1c330",
+        "bytes": 4478
+      }
+    }
+  ]
+}
