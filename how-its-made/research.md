@@ -30,4 +30,4 @@
 - 완성 영상 발췌 5개(assets/user/vid/demo_a~e.mp4): 이 저장소의 chip-vs-rocket 프로젝트를 render.py로 구운 것 — provenance.json.
 
 ## 소리
-- 배경음악 없음(따라 하는 튜토리얼 — 말이 또렷해야 함). 효과음만 sfx/make_sfx.py로 합성(타자 소리, 단계 종소리).
+- 배경음악 없음(따라 하는 튜토리얼 — 말이 또렷해야 함). 효과음만 sfx/make_sfx.py로 합성(타자·엔터·단계 종·전환음·팝·틱·완료음·셔터·되감기·버즈·임팩트 12종). 자세한 배치와 음량은 storyboard.md → 소리.
