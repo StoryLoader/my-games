@@ -15,15 +15,12 @@
 </head>
 <body>
   <div id="stage" data-width="1920" data-height="1080">
-    <!-- 밤의 박물관 「AI 역사관」: one long gallery the camera walks along, left to right (storyboard.md) -->
-    <div id="wall"></div>      <!-- green wall, panel mouldings, picture rail, wainscot: stays, its pattern slides with the camera -->
-    <div id="light"></div>     <!-- the gallery spotlight on the wall in front of the camera -->
-    <div id="world"></div>     <!-- the exhibits: one station per stretch of the talk, 2300 px apart -->
-    <div id="floor"></div>     <!-- oak floor with the lamp's reflection -->
-    <canvas id="fx"></canvas>  <!-- dust in the light, snow in the AI winter -->
-    <div id="rope"></div>      <!-- brass posts and a velvet rope close to the camera (moves faster: depth) -->
-    <div id="vig"></div>       <!-- vignette -->
-    <div id="hud"></div>       <!-- the chapter's question and the year rail -->
+    <!-- a pastel clay studio in three.js (storyboard.md): the 3D picture, clean type over it, the hud -->
+    <div id="world">
+      <canvas id="gl"></canvas>   <!-- the clay sets (js/clay.js, js/scenes.js) -->
+      <div id="ui"></div>         <!-- sentences and labels, in stage pixels -->
+    </div>
+    <div id="hud"></div>          <!-- the chapter's question, the year rail -->
     <div id="sfx"></div>
   </div>
 
@@ -37,6 +34,8 @@
   <script src="vendor/gsap/MotionPathPlugin.min.js"></script>
   <script src="vendor/gsap/TextPlugin.min.js"></script>
   <script src="vendor/gsap/ScrambleTextPlugin.min.js"></script>
+  <script src="vendor/three/three.bundle.min.js"></script>
+  <script src="vendor/three/stage3d.js"></script>
   <script src="js/cues.js"></script>
   <script src="js/sync.js"></script>          <!-- measured phrase times (scripts/sync.mjs): cue(id).when() uses them -->
   <script src="js/player.js"></script>
@@ -46,7 +45,8 @@
   <script src="js/media-src.js"></script>      <!-- footage: the clips this video shows (empty when none) — references/footage.md -->
   <script src="js/media.js"></script>          <!-- footage on the master clock: MEDIA.install(ctx) -->
   <script src="js/reckit.js"></script>         <!-- screen recordings without zooming: RecKit.install(ctx) -->
-  <script src="js/seg/a_intro.js"></script>     <!-- stations: opening, LLM, training -->
+  <script src="js/clay.js"></script>            <!-- clay kit: rounded objects, the mascot, text blocks (three.js) -->
+  <script src="js/seg/a_intro.js"></script>     <!-- sets: opening, LLM, training -->
   <script src="js/seg/b_history.js"></script>   <!-- stations: 1950 → 2023 -->
   <script src="js/seg/c_agent.js"></script>     <!-- stations: agents, 2023 → 2026, closing -->
   <script src="js/scenes.js"></script>

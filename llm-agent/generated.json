@@ -453,10 +453,6 @@
    "sha256": "9467868352d217cfd47fe11bc1fa81718088b676a976caef5b84460456485fc3",
    "by": "tts.mjs"
   },
-  "audio/cues/ah03.wav": {
-   "sha256": "b6618e369f3e918e1c9d75313146db5a110dce67e47a1028cfc50d068a73d07e",
-   "by": "tts.mjs"
-  },
   "audio/cues/ah04.wav": {
    "sha256": "babe46158481ef08155c2d31dce1bb952c67121a977974780df299595b3c080b",
    "by": "tts.mjs"
@@ -653,10 +649,6 @@
    "sha256": "ad765e4d1e5c62f4226dc793712f60ca36224b809982d155aff9ff9c8fad64e2",
    "by": "tts.mjs"
   },
-  "audio/cues/hc10.wav": {
-   "sha256": "e34caf252e4d19847122795a37ea6106d8dd1515c57439e8b9d6830ae5baaa7b",
-   "by": "tts.mjs"
-  },
   "audio/cues/hc11.wav": {
    "sha256": "fb803f4eb81aaf7ecd185ba27eda788b70938dc94f4bf06332de25d452075950",
    "by": "tts.mjs"
@@ -721,10 +713,6 @@
    "sha256": "f9f824dedb1bda2387a0eed286524a5c4046af6ee0f589811f33ae811bee85de",
    "by": "tts.mjs"
   },
-  "audio/cues/lm11.wav": {
-   "sha256": "47d73e73a3eef0fcdd7e0e12f37644325a731ba1e3a1e56e475d2da3878c6b77",
-   "by": "tts.mjs"
-  },
   "audio/cues/op01.wav": {
    "sha256": "ec149190550ef0083bc3e642ae9452472073a6eeff24eb1c0c9226852caa4010",
    "by": "tts.mjs"
@@ -773,14 +761,6 @@
    "sha256": "670c674718f44a97d8e403eba0e349f5bba9684a44c8b90d4f993c5506ef6574",
    "by": "tts.mjs"
   },
-  "audio/cues/tr07.wav": {
-   "sha256": "41e2862d4931c1dc00a928b79f7feb90d202d6e627a093ecddb6061f71cbb724",
-   "by": "tts.mjs"
-  },
-  "audio/cues/tr08.wav": {
-   "sha256": "f0e7d8c39ea7717cd25edbbad2b68efb343e56b2256ed915bc16279ad0574201",
-   "by": "tts.mjs"
-  },
   "audio/cues/tr09.wav": {
    "sha256": "c37639ef54579473ee5362c2eced2339e0d2cba37633115a9feaca208241b6df",
    "by": "tts.mjs"
@@ -794,11 +774,11 @@
    "by": "tts.mjs"
   },
   "audio/narration.mp3": {
-   "sha256": "9a73843b9a4fae36eadbe2932e7a565d7cb886a3dd0953f6c71040b9416f4b0e",
+   "sha256": "329fda7c09055e8b93a7c7750912d8caa2587b04b41fc9deb786b941f8055551",
    "by": "tts.mjs"
   },
   "audio/narration.wav": {
-   "sha256": "56fd8f2de1ae66dcba2cf2825ea460bff5a09afed351b51a1829c9ad474b34c4",
+   "sha256": "674d9596749b0cb490b37ea45c4d303c7abcfe2ed7da5c2fa2ad5070299cf1d6",
    "by": "tts.mjs"
   },
   "media/render-stills/bell-0-1-1p75-0_0_16_16-16/00001.jpg": {
@@ -5200,6 +5180,58 @@
   "screenshots/llm-agent_20261114-074013_3-moments-3m10.50s-to-15m12.00s_sheet-1-of-1.jpg": {
    "sha256": "d0affa4953f93ec76d3ebd21ae8fb5df74cfee01f225c33368c1a155fc600158",
    "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-084215_22-moments-0m04.00s-to-3m38.00s_sheet-1-of-1.jpg": {
+   "sha256": "594ba70146effd8f2453b37baf4ee64773b5505375fa8709ffc8c20f4bbcc514",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-085454_34-moments-0m08.00s-to-9m50.00s_sheet-1-of-2.jpg": {
+   "sha256": "c74c13f4613fa69c7df7dcd9e3153fcc62d5889fa6b24aa4277f0118f68d569c",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-085454_34-moments-0m08.00s-to-9m50.00s_sheet-2-of-2.jpg": {
+   "sha256": "cb7bf595a9c01a14fcaf953746ee5f278218b73bd4e1f5a4f4f8dcc415ede8f3",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-085659_23-moments-10m02.00s-to-14m24.00s_sheet-1-of-1.jpg": {
+   "sha256": "8ef0888feaa62f46b38cff35ce0079e26ab7be3085b9cc118518191dadc5bf18",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-085803_20-moments-4m10.00s-to-14m10.00s_sheet-1-of-1.jpg": {
+   "sha256": "0a6fc334e9ab8ef3ed2b6d43f2c2998ccfa63a881f197631b945d06f24c8b5b5",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-091034_8-moments-0m30.00s-to-14m10.00s_sheet-1-of-1.jpg": {
+   "sha256": "2c8bc5a6dbca6f1f664fc6e32557380a79ffff8e7122dda94a9123d1e7fc7875",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-091047_0m47.60s-to-0m49.40s_every-9-frames-at-60fps_sheet-1-of-1.jpg": {
+   "sha256": "21d56161b361f0577145803c0d9a1c8ca7d76bfede3f3de1bc67a9db1bf20435",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-091121_moment-3m26.00s_res-1080p_crop-800x450-at-x1000-y300_sheet-1-of-1.jpg": {
+   "sha256": "f1d87b6fc08a7804fa63f444294c7123f03123ba1fa3a25d97e4e0c974f1b86a",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-091145_moment-3m26.00s_res-1080p_crop-800x450-at-x1000-y300_sheet-1-of-1.jpg": {
+   "sha256": "be82a4256cc38700e30627a2979132b13d238a7debae4d38daebd89daaa648df",
+   "by": "render.py"
+  },
+  "screenshots/llm-agent_20261114-091225_10-moments-1m26.00s-to-14m20.00s_sheet-1-of-1.jpg": {
+   "sha256": "f3582ef8379affafa8394f772c73b1313d4b2a8974cd7cd70115a861abedcd20",
+   "by": "render.py"
+  },
+  "vendor/three/stage3d.js": {
+   "sha256": "13b75ca928c0797aaf700c795ac83779aae2adabbe1e0df73e37b4b413107022",
+   "by": "enable_3d.mjs"
+  },
+  "vendor/three/three.LICENSE": {
+   "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+   "by": "enable_3d.mjs"
+  },
+  "vendor/three/three.bundle.min.js": {
+   "sha256": "0b274f4be4f303da8050e4ae8decccf810b890bb7c11418073d6b4a57267e8bc",
+   "by": "enable_3d.mjs"
   }
  }
 }
