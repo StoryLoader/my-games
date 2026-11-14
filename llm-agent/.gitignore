@@ -1,0 +1,6 @@
+.tts-cache/
+.snapshots/
+screenshots/
+.env
+media/
+audio/cues/
