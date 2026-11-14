@@ -1,0 +1,39 @@
+{
+ "assets": [
+  {
+   "file": "assets/user/vid/demo_a.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (0:27.3–0:33.3) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+  },
+  {
+   "file": "assets/user/vid/demo_b.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (1:12.5–1:19.5) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+  },
+  {
+   "file": "assets/user/vid/demo_c.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (2:31–2:38) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+  },
+  {
+   "file": "assets/user/vid/demo_d.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (5:12–5:19) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+  },
+  {
+   "file": "assets/user/vid/demo_e.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (6:08.2–6:16.4) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+  },
+  {
+   "file": "assets/user/sfx/keys.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects. a burst of keyboard clicks, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  },
+  {
+   "file": "assets/user/sfx/step.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects. a two-note chime, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  }
+ ]
+}
