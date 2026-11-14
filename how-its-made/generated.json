@@ -40460,6 +40460,14 @@
   "screenshots/how-its-made_20261114-011135_14-moments-0m03.00s-to-6m03.00s_sheet-1-of-1.jpg": {
    "sha256": "27d78a61e31c5069cc4424e7c833a1c5e641654ca4e546e5863a23d399428861",
    "by": "render.py"
+  },
+  "thumbnail/screenshots/how-its-made_20261114-032405_page-thumbnail_1280x720_sheet-1-of-1.jpg": {
+   "sha256": "410bb247ba3187b519adb16d08c5d030faa04c1b130478491916dfdf8a2c9c4d",
+   "by": "render.py"
+  },
+  "thumbnail/thumbnail.png": {
+   "sha256": "01f5cb15410356ee51e42d2ee11ba12141814b71f592321e4c300e43db3f01ef",
+   "by": "thumbnail.mjs"
   }
  }
 }

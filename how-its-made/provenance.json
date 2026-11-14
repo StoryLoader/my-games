@@ -84,6 +84,11 @@
       "file": "assets/user/sfx/buzz.mp4",
       "source": "user",
       "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a short low double buzz, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/img/finished_frame.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a title, description and thumbnail for this video (\"영상 제목, 설명 썸네일 만들어줘\"). One frame (2.6 s) of assets/user/vid/demo_a.mp4 — the excerpt of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」 rendered in this repository from ../chip-vs-rocket — shown in the monitor of thumbnail/thumbnail.html. Not downloaded from anywhere."
     }
   ]
 }

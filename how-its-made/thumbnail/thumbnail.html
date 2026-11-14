@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>thumbnail — 이 영상은 이렇게 만들었습니다</title>
+<!-- The video's thumbnail (1280×720), drawn with the video's own look: the paper desk, the dark terminal, the monitor.
+     node <skill>/scripts/thumbnail.mjs thumbnail/thumbnail.html  → thumbnail/thumbnail.png
+     The picture in the monitor is one frame of the user's own finished video (assets/user/img, provenance.json). -->
+<style>
+@font-face { font-family: 'Pretendard'; src: url('../fonts/PretendardVariable.woff2') format('woff2'); font-weight: 45 920; font-display: block; }
+@font-face { font-family: 'D2Coding'; src: url('../fonts/d2coding/D2Coding-Ver1.3.3-20260725.ttf') format('truetype'); font-weight: 100 599; font-display: block; }
+@font-face { font-family: 'D2Coding'; src: url('../fonts/d2coding/D2CodingBold-Ver1.3.3-20260725.ttf') format('truetype'); font-weight: 600 900; font-display: block; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Pretendard', sans-serif; color: #1c2330; background-color: #f1ece3;
+  background-image: radial-gradient(rgba(28, 35, 48, 0.13) 1.4px, transparent 1.6px); background-size: 30px 30px; }
+
+.badge { position: absolute; left: 56px; top: 48px; padding: 9px 22px; border-radius: 12px; background: #1c2330; color: #fff;
+  font-family: 'D2Coding', monospace; font-weight: 700; font-size: 30px; letter-spacing: 0.04em; }
+.head { position: absolute; left: 52px; top: 122px; font-weight: 900; font-size: 132px; line-height: 1.08; letter-spacing: -0.04em; }
+.head .g { color: #1f9d57; }
+.no { position: absolute; left: 56px; top: 440px; display: inline-flex; align-items: center; gap: 16px; padding: 12px 26px 12px 20px;
+  border-radius: 18px; background: #fff; border: 5px solid #d23f3f; font-weight: 900; font-size: 50px; letter-spacing: -0.02em;
+  box-shadow: 0 10px 24px rgba(40, 30, 10, 0.18); transform: rotate(-2.5deg); }
+.no .x { display: inline-flex; width: 58px; height: 58px; align-items: center; justify-content: center; border-radius: 50%;
+  background: #d23f3f; color: #fff; font-family: 'D2Coding', monospace; font-weight: 700; font-size: 44px; }
+.no b { color: #d23f3f; }
+
+/* the terminal: the one line that was typed */
+.term { position: absolute; left: 56px; top: 566px; width: 700px; border-radius: 16px; overflow: hidden; background: #141a24;
+  box-shadow: 0 22px 46px rgba(40, 30, 10, 0.38); }
+.term .top { height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #0d1219; }
+.term .dot { width: 12px; height: 12px; border-radius: 50%; background: #5a6577; }
+.term .body { padding: 14px 20px 18px; font-family: 'D2Coding', monospace; font-size: 33px; color: #fff; white-space: nowrap; }
+.term .pr { color: #ffc24d; margin-right: 10px; }
+.term .cur { display: inline-block; width: 16px; height: 34px; margin-left: 6px; background: #e6ebf2; vertical-align: -6px; }
+
+/* the monitor with the finished video */
+.monitor { position: absolute; left: 668px; top: 96px; width: 574px; padding: 14px; border-radius: 22px; background: #10141c;
+  box-shadow: 0 30px 64px rgba(40, 30, 10, 0.42); transform: rotate(3deg); }
+.monitor .screen { position: relative; width: 546px; height: 262px; overflow: hidden; border-radius: 8px; background: #000; }
+.monitor img { position: absolute; left: 0; top: -4px; width: 546px; height: auto; display: block; }
+.stand { position: absolute; left: 906px; top: 390px; width: 100px; height: 44px; background: #10141c; transform: rotate(3deg);
+  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
+.tag { position: absolute; left: 836px; top: 448px; padding: 9px 22px; border-radius: 30px; background: #1f9d57; color: #fff;
+  font-weight: 800; font-size: 31px; letter-spacing: -0.01em; transform: rotate(3deg); box-shadow: 0 8px 18px rgba(20, 90, 50, 0.35); }
+
+/* the arrow: from the typed line up to the video */
+svg.arrow { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; pointer-events: none; }
+.step { position: absolute; right: 44px; bottom: 40px; display: flex; gap: 10px; }
+.step span { padding: 8px 18px; border-radius: 26px; background: rgba(255, 255, 255, 0.92); border: 3px solid #1c2330;
+  font-weight: 800; font-size: 27px; letter-spacing: -0.01em; }
+</style>
+</head>
+<body>
+  <div class="badge">Claude Code 따라하기</div>
+  <div class="head">글 <span class="g">한 줄</span>로<br>영상 만들기</div>
+  <div class="no"><span class="x">×</span>편집 프로그램 <b>0번</b></div>
+
+  <div class="monitor"><div class="screen"><img src="../assets/user/img/finished_frame.jpg" alt=""></div></div>
+  <div class="stand"></div>
+  <div class="tag">이렇게 완성된 6분 영상</div>
+
+  <svg class="arrow" viewBox="0 0 1280 720">
+    <path d="M 772 628 C 850 642, 930 622, 978 570" fill="none" stroke="#1c2330" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 20"/>
+    <path d="M 946 566 L 986 552 L 992 594" fill="none" stroke="#1c2330" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div class="term">
+    <div class="top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="body"><span class="pr">&gt;</span>주제 : 반도체 vs 우주선<span class="cur"></span></div>
+  </div>
+
+  <div class="step"><span>스킬 찾기</span><span>설치</span><span>주문</span></div>
+</body>
+</html>
