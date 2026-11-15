@@ -1,0 +1,62 @@
+{
+  "title": "남은 길",
+  "lang": "ko",
+  "voice": "",
+  "model": "drama-3",
+  "temperature": 0.7,
+  "leadIn": 0,
+  "gap": 0,
+  "tail": 3.95,
+  "cues": [
+    {
+      "id": "s01",
+      "say": "[long-break]",
+      "text": "",
+      "note": "넓은 황무지, 멀리 걸어가는 해골기사와 까마귀",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s02",
+      "say": "[long-break]",
+      "text": "",
+      "note": "부러진 칼끝이 땅을 긁으며 끌려간다",
+      "gapAfter": 2.45
+    },
+    {
+      "id": "s03",
+      "say": "[long-break]",
+      "text": "",
+      "note": "지친 걸음, 어깨 위의 까마귀",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s04",
+      "say": "[long-break]",
+      "text": "",
+      "note": "까마귀가 기사를 바라보고, 기사가 고개를 돌린다",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s05",
+      "say": "[long-break]",
+      "text": "",
+      "note": "까마귀가 날아올라 앞서간다",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s06",
+      "say": "[long-break]",
+      "text": "",
+      "note": "길가의 무덤 앞에서 멈춘 기사",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s07",
+      "say": "[long-break]",
+      "text": "",
+      "note": "둘이서 노을 속으로 걸어간다",
+      "gapAfter": 0
+    }
+  ],
+  "narration": false
+}

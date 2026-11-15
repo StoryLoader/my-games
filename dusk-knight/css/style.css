@@ -1,0 +1,26 @@
+/* style.css — 「남은 길」: a 30-second wordless short. The picture is a three.js canvas painted like a hand-drawn
+   anime background (js/kit.js, js/scenes.js); this file adds the film finish on top: a warm grade, a paper texture,
+   grain, a vignette, letterbox bars, the fade to black and the small title. Stage 1920×1080. */
+:root {
+  --ink: #f4e7cf;
+  --font: 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --serif: 'Gowun Batang', 'Pretendard', serif;
+  --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px;
+}
+#stage { --caption-bottom: 20px; }
+#stage { background: #000; color: var(--ink); font-family: var(--font); overflow: hidden; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+#world { position: absolute; inset: 0; overflow: hidden; }
+#gl { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; }
+#grade { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: 0.55;
+  background: linear-gradient(180deg, rgba(255, 196, 140, 0.55) 0%, rgba(255, 170, 120, 0.15) 45%, rgba(70, 50, 110, 0.45) 100%); }
+#paper { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; mix-blend-mode: multiply; opacity: 0.16; }
+#grain { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; mix-blend-mode: overlay; opacity: 0.11; image-rendering: auto; }
+#vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 78% 70% at 50% 48%, transparent 55%, rgba(30, 14, 22, 0.55) 100%); }
+#black { position: absolute; inset: 0; background: #07050a; opacity: 0; pointer-events: none; }
+#title { position: absolute; left: 0; right: 0; top: 470px; text-align: center; opacity: 0; pointer-events: none; }
+#title .t { font-family: var(--serif); font-weight: 700; font-size: 74px; letter-spacing: 0.42em; color: #f2dfc0; text-shadow: 0 0 30px rgba(255, 170, 90, 0.35); padding-left: 0.42em; }
+.bar { position: absolute; left: 0; right: 0; height: 58px; background: #000; pointer-events: none; }
+.bar.top { top: 0; } .bar.bot { bottom: 0; }
+#sfx { position: absolute; left: 0; top: 0; width: 4px; height: 4px; opacity: 0; overflow: hidden; }
