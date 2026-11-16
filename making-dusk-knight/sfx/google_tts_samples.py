@@ -3,7 +3,7 @@
 The API key is never in this file. Either the session's network proxy adds the X-Goog-Api-Key header for
 texttospeech.googleapis.com (a network secret on the environment), or the environment variable GOOGLE_TTS_API_KEY
 holds it and this script sends it in that header (never printed).
-  python3 sfx/google_tts_samples.py <out_dir>   → lists ko-KR male voices, writes 5 samples (mp3) + samples.json
+  python3 sfx/google_tts_samples.py <out_dir> [voice,voice,…]   → lists ko-KR male voices, writes samples (mp3) + samples.json
 """
 import base64, json, os, sys, urllib.request, urllib.error
 
@@ -24,7 +24,7 @@ rank = lambda n: (0 if 'Chirp3-HD' in n else 1 if 'Chirp-HD' in n else 2 if 'Neu
 names = sorted((v['name'] for v in voices), key=rank)
 print(len(names), 'male ko-KR voices:', ', '.join(names))
 # the five most natural tiers first: Chirp 3 HD voices, then Neural2 / WaveNet
-pick = names[:5]
+pick = [v for v in sys.argv[2].split(',')] if len(sys.argv) > 2 else names[:5]
 meta = []
 for i, n in enumerate(pick, 1):
     r = call('/text:synthesize', {'input': {'text': LINE}, 'voice': {'languageCode': 'ko-KR', 'name': n}, 'audioConfig': {'audioEncoding': 'MP3', 'speakingRate': 1.0}})
