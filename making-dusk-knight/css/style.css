@@ -107,7 +107,7 @@ svg.arrow.o path { stroke: #b9502a; }
 .term .ln.ask.first::before { content: '> '; color: var(--dusk); }
 .term .ln.out { color: var(--term-dim); }
 .term .ln.ok { color: var(--term-ok); }
-.term .ln.note { color: var(--term-note); }
+.term .ln.memo { color: var(--term-note); }
 .term .ln.big { font-size: 60px; color: #fff; line-height: 1.45; }
 
 /* ---- cork board and photos ---- */

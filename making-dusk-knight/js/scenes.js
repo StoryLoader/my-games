@@ -48,7 +48,7 @@ Video.define(async (ctx) => {
     live.push((t) => { const k = Math.round(1000 * (1 - out(K(t, t0, t0 + 0.6)))) / 1000; if (k !== last) { last = k; p.style.strokeDashoffset = k; } });
     return it;
   }
-  /** a terminal window. lines: [at, cls, text, typedDur?] — cls: cmd | ask | ask first | out | ok | note | big */
+  /** a terminal window. lines: [at, cls, text, typedDur?] — cls: cmd | ask | ask first | out | ok | memo | big */
   function term(x, y, w, h, title, t0, t1, lines) {
     const it = put(layer, `<div class="top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ttl">${title}</span><span class="re">재현 화면</span></div><div class="body"></div>`, x, y, t0, t1, { cls: 'win term', anim: 'win', style: `width:${w}px;height:${h}px;white-space:normal`, sound: false });
     const body = it.el.querySelector('.body');
@@ -86,7 +86,7 @@ Video.define(async (ctx) => {
   const light = $('light'), black = $('black');
 
   // ---------------- the camera ----------------
-  const V = { full: [2360, 570, 1.2], screen: [2360, 600, 0.98], over: [2250, 1100, 0.47], term: [770, 1590, 1.12], board: [770, 570, 1.2], sheet: [3700, 1120, 0.52],
+  const V = { full: [2360, 570, 1.2], screen: [2360, 600, 0.98], over: [2250, 1100, 0.47], term: [770, 1555, 1.12], board: [770, 570, 1.2], sheet: [3700, 1120, 0.52],
     splitT: [2900, 640, 0.72], splitB: [2900, 1450, 0.72], sw: [2360, 690, 0.86], work: [2360, 1560, 1.02], scrWork: [2360, 860, 0.8], wave: [2360, 700, 0.9], deskL: [1520, 1250, 0.6],
     sec: (i) => [3700, 250 + i * 300 + 150, 1.18] };
   const CAM = [];   // [t, view, moveDur]
@@ -179,19 +179,28 @@ Video.define(async (ctx) => {
   note(layer, '오늘 새로 설치할 것은 하나', 140, 1100, S('pr04') + 0.5, S('in01') - 0.05, 'sm o');
 
   // ================= 스킬 설치 =================
-  term(100, 1220, 1340, 780, '터미널 — 스킬 설치 (README의 두 줄)', S('in01') + 0.2, S('rq01') - 0.05, [
-    [A('in02', '첫째', -0.1), 'out', '# 첫째 줄: 깃허브에서 스킬 폴더를 통째로 내려받기'],
-    [A('in02', 'git clone', 0), 'cmd', 'git clone https://github.com/kstost/script-to-motion.git ~/.claude/skills/script-to-motion', 2.6],
-    [A('in03', '화면에', -0.2), 'note', '# ~ = 홈 폴더 · ~/.claude/skills = 스킬을 모아 두는 폴더'],
-    [A('in04', '둘째', -0.1), 'out', '# 둘째 줄: 스킬이 쓰는 도구 준비 (npm = Node.js와 함께 오는 도구)'],
-    [A('in04', 'npm install', -0.2), 'cmd', 'cd ~/.claude/skills/script-to-motion/scripts && npm install', 2.0],
-    [S('in05') + 0.6, 'note', '# 대사 없는 단편 → 음성 서비스 키 없이도 된다'],
-    [A('in06', '하나 만들고', -0.4), 'cmd', 'mkdir my-film && cd my-film', 1.1],
-    [A('in06', 'claude', -0.2), 'cmd', 'claude', 0.4],
-    [E('in06') - 0.4, 'ok', '→ Claude Code 실행 · 주문할 준비 끝'],
+  // the commands are possible, but there is no need: Claude Code installs the skill when asked (the user's flow, 2026-11-16)
+  term(100, 1220, 1340, 780, '터미널 — 명령어로 설치하는 방법도 있지만', S('in01') + 0.2, S('in02') - 0.05, [
+    [S('in01') + 0.5, 'out', '$ git clone https://github.com/kstost/script-to-motion.git ~/.claude/skills/script-to-motion'],
+    [S('in01') + 0.7, 'out', '$ cd ~/.claude/skills/script-to-motion/scripts && npm install'],
   ]);
-  note(layer, '스킬을 찾아 읽는 자리', 760, 1110, A('in03', '스킬만', 0), S('in04'), 'o');
-  arrow(layer, 'M 10 10 C 40 60, 60 90, 70 140', 1180, 1150, 120, 160, A('in03', '스킬만', 0.2), S('in04'), 'o');
+  { const it = note(layer, '<span class="st">명령어 두 줄</span>', 160, 1090, A('in01', '명령어로', -0.2), S('in02') - 0.05, 'big', -2);
+    strike(it.el.querySelector('.st'), A('in01', '굳이', 0)); }
+  note(layer, '→ 클로드한테 "설치해 줘"', 700, 1090, A('in01', '클로드한테', -0.2), S('in02') - 0.05, 'big o', -1);
+  term(100, 1220, 1340, 780, '터미널 — 클로드에게 맡기기', S('in02') + 0.1, S('rq01') - 0.05, [
+    [S('in02') + 0.4, 'out', '# 1. 작업할 폴더(워크스페이스)로 이동'],
+    [A('in02', '워크스페이스로', -0.2), 'cmd', 'cd ~/my-workspace', 0.9],
+    [S('in03') + 0.2, 'out', '# 2. Claude Code 실행'],
+    [A('in03', 'claude', -0.1), 'cmd', 'claude', 0.4],
+    [S('in04') + 0.2, 'out', '# 3. 깃허브 링크를 붙여 넣고 "설치해 줘"'],
+    [A('in04', '붙여 넣고', -0.4), 'ask first', 'https://github.com/kstost/script-to-motion 이 스킬 설치해 줘', 1.6],
+    [A('in05', '내려받아', -0.3), 'out', '→ 스킬 내려받기 · ~/.claude/skills/script-to-motion'],
+    [A('in05', '설치까지', -0.2), 'out', '→ 스킬이 쓰는 도구 준비'],
+    [E('in05') - 0.3, 'ok', '→ 설치 완료'],
+    [S('in06') + 0.6, 'memo', '# 대사 없는 단편 → 음성 서비스 키 없이도 된다'],
+    [S('in07') + 0.3, 'ok', '→ 같은 창에서 바로 주문하면 된다'],
+  ]);
+  note(layer, '깃허브 링크 = 스킬이 올라와 있는 인터넷 주소', 160, 1090, A('in04', '그러니까', -0.2), S('in06'), 'sm o');
 
   // ================= 주문 =================
   stepsT.push(S('rq01'));

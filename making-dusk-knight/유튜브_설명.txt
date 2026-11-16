@@ -20,27 +20,29 @@
 0:00 「남은 길」 30초 전편
 0:30 글로 만든 30초 단편
 1:08 준비와 스킬 설치
-2:45 주문서 한 장, 여섯 부분
-3:39 ① 이야기: 보이는 모습으로
-4:23 ② 화면 스타일: 느낌 대신 재료
-6:05 ③ 컷 구성: 거리와 가림
-7:00 ④ 시간표: 말 없는 영상의 시계
-7:41 ⑤ 소리: 박자는 한 곳에
-8:29 ⑥ 일하는 방식: 설계·확인·마무리
-9:10 고칠 점 말하기
-9:25 나만의 단편으로
-9:53 정리
+2:29 주문서 한 장, 여섯 부분
+3:23 ① 이야기: 보이는 모습으로
+4:07 ② 화면 스타일: 느낌 대신 재료
+5:50 ③ 컷 구성: 거리와 가림
+6:44 ④ 시간표: 말 없는 영상의 시계
+7:25 ⑤ 소리: 박자는 한 곳에
+8:13 ⑥ 일하는 방식: 설계·확인·마무리
+8:54 고칠 점 말하기
+9:10 나만의 단편으로
+9:37 정리
 
 🛠 미리 준비할 것 (설치법은 지난 영상)
 · Claude Code — 터미널에서 쓰는 인공지능 도구
 · git — 파일을 내려받는 도구
 · Node.js — 자바스크립트 프로그램을 돌려 주는 도구
 
-🧩 스킬 설치 (터미널에 두 줄)
-git clone https://github.com/kstost/script-to-motion.git ~/.claude/skills/script-to-motion
-cd ~/.claude/skills/script-to-motion/scripts && npm install
-→ 작업할 폴더를 만들고, 그 안에서 claude 를 실행하면 준비 끝
+🧩 스킬 설치 — 클로드한테 시키면 끝
+1. 터미널을 열고 작업할 폴더(워크스페이스)로 이동
+2. claude 입력 → Claude Code 실행
+3. 스킬 깃허브 링크를 붙여 넣고 "이 스킬 설치해 줘"
+   https://github.com/kstost/script-to-motion
 → 대사 없는 영상은 음성 서비스 키 없이도 만들 수 있습니다
+(직접 하고 싶다면 터미널 명령 두 줄: git clone https://github.com/kstost/script-to-motion.git ~/.claude/skills/script-to-motion → cd ~/.claude/skills/script-to-motion/scripts && npm install)
 
 📝 주문서 전문 (【】 안을 바꿔서 그대로 쓰세요)
 script-to-motion 스킬로 말(내레이션) 없는 30초 3D 애니메이션 단편을 만들어 줘.
