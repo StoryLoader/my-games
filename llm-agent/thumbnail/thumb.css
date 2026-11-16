@@ -1,0 +1,12 @@
+@font-face { font-family: 'Pretendard'; src: url('../fonts/PretendardVariable.woff2') format('woff2'); font-weight: 45 920; font-display: block; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Pretendard', sans-serif; color: #25324f; background: #fff3df; }
+#gl { position: absolute; inset: 0; width: 1280px; height: 720px; }
+.txt { position: absolute; left: 56px; top: 0; bottom: 0; width: 700px; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+.badge { align-self: flex-start; padding: 8px 22px 10px; border-radius: 999px; background: #25324f; color: #fff6e6; font-weight: 800; font-size: 34px; letter-spacing: -0.01em; }
+.head { font-weight: 900; font-size: 138px; line-height: 1.02; letter-spacing: -0.05em;
+  text-shadow: 0 6px 0 #fff, 0 -3px 0 #fff, 4px 0 0 #fff, -4px 0 0 #fff, 0 14px 26px rgba(80, 50, 30, 0.22); }
+.head em { font-style: normal; color: #ff6a52; }
+.hl { align-self: flex-start; padding: 6px 24px 12px; border-radius: 22px; background: #ffc845; font-weight: 900; font-size: 70px; letter-spacing: -0.04em;
+  box-shadow: 0 10px 0 #e0a51f, 0 22px 30px rgba(80, 50, 30, 0.25); transform: rotate(-2deg); }

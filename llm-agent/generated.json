@@ -5137,10 +5137,6 @@
    "sha256": "774919c364847ff6ffebb1c281e6f9feab9b7a283a994ad33eb234337bfa86d2",
    "by": "stills.mjs"
   },
-  "screenshots/clips/moss/film.mp4_20261115-101354_0m00.00s-to-1m20.67s_every-160-frames-at-24fps_sheet-1-of-1.jpg": {
-   "sha256": "5984666f6b6bfbb4ccec16d698f5a5db117d143117657b729db09e59aa6e8e68",
-   "by": "render.py"
-  },
   "screenshots/llm-agent_20261114-071539_25-moments-0m04.00s-to-3m44.00s_sheet-1-of-2.jpg": {
    "sha256": "7bef344e7cf17b865e88196d5758b39e83c45f855f671b24b72fbf45f3014630",
    "by": "render.py"
@@ -5224,6 +5220,14 @@
   "screenshots/llm-agent_20261114-091225_10-moments-1m26.00s-to-14m20.00s_sheet-1-of-1.jpg": {
    "sha256": "f3582ef8379affafa8394f772c73b1313d4b2a8974cd7cd70115a861abedcd20",
    "by": "render.py"
+  },
+  "thumbnail/thumbnail_a.png": {
+   "sha256": "c60a4104ada339d85e7b7101907198ad9c8903b72a7e37095df9e75cd9c517f5",
+   "by": "thumbnail.mjs"
+  },
+  "thumbnail/thumbnail_b.png": {
+   "sha256": "a8fa8ce7349414f947154e9b0db4d3b29db76518edc88f7a41b82a54a26f4a34",
+   "by": "thumbnail.mjs"
   },
   "vendor/three/stage3d.js": {
    "sha256": "13b75ca928c0797aaf700c795ac83779aae2adabbe1e0df73e37b4b413107022",
