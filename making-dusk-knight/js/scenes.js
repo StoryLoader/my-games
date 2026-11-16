@@ -86,9 +86,11 @@ Video.define(async (ctx) => {
   const light = $('light'), black = $('black');
 
   // ---------------- the camera ----------------
+  // the order sheet's parts: each as tall as its lines (header 90 + ~50 per line), so none leaves a gap or runs off the paper
+  const SEC_H = [300, 300, 300, 200, 250, 330], SEC_TOP = SEC_H.reduce((o, h, i) => (o.push(i ? o[i - 1] + SEC_H[i - 1] : 250), o), []);
   const V = { full: [2360, 570, 1.2], screen: [2360, 600, 0.98], over: [2250, 1100, 0.47], term: [770, 1555, 1.12], board: [770, 570, 1.2], sheet: [3700, 1120, 0.52],
     splitT: [2900, 640, 0.72], splitB: [2900, 1450, 0.72], sw: [2360, 690, 0.86], work: [2360, 1560, 1.02], scrWork: [2360, 860, 0.8], wave: [2360, 700, 0.9], deskL: [1520, 1250, 0.6],
-    sec: (i) => [3700, 250 + i * 300 + 150, 1.18] };
+    sec: (i) => [3700, SEC_TOP[i] + 150, 1.18] };
   const CAM = [];   // [t, view, moveDur]
   const cam = (t, v, d = 1.3) => { CAM.push([t, v, d]); if (CAM.length > 1 && d > 0.3) fx('whoosh', t); };
   function camAt(t) {
@@ -127,7 +129,7 @@ Video.define(async (ctx) => {
       '<span class="hl" data-k="done">검사 통과 → 웹에 게시 → 깃허브에 보관</span>']],
   ];
   const secs = PARTS.map(([name, col, lines], i) => {
-    const el = document.createElement('div'); el.className = 'sec'; el.style.top = (250 + i * 300) + 'px';
+    const el = document.createElement('div'); el.className = 'sec'; el.style.top = SEC_TOP[i] + 'px'; el.style.height = SEC_H[i] + 'px';
     el.innerHTML = `<div class="tab" style="background:${col}">${i + 1}</div><div class="body"><div class="h"><span class="n" style="background:${col}">${i + 1}</span>${name}</div>${lines.map((l) => `<div class="ln">${l}</div>`).join('')}</div><div class="dimmer"></div>`;
     sheet.appendChild(el);
     return { el, body: el.querySelector('.body'), tab: el.querySelector('.tab'), dim: el.querySelector('.dimmer'), lines: [...el.querySelectorAll('.ln')] };
@@ -200,7 +202,7 @@ Video.define(async (ctx) => {
     [S('in06') + 0.6, 'memo', '# 대사 없는 단편 → 음성 서비스 키 없이도 된다'],
     [S('in07') + 0.3, 'ok', '→ 같은 창에서 바로 주문하면 된다'],
   ]);
-  note(layer, '깃허브 링크 = 스킬이 올라와 있는 인터넷 주소', 160, 1090, A('in04', '그러니까', -0.2), S('in06'), 'sm o');
+  note(layer, '깃허브 링크 = 스킬이 올라와 있는 인터넷 주소', 160, 1090, A('in04', '깃허브 링크는', -0.2), S('in06'), 'sm o');
 
   // ================= 주문 =================
   stepsT.push(S('rq01'));
@@ -390,7 +392,7 @@ Video.define(async (ctx) => {
   note(board, '스스로 찍어 보고 → 고친다', 160, 650, A('wk04', '스스로', -0.2), S('wk05') + 0.3, 'w');
   cam(S('wk05'), V.sec(5), 1.4);
   hl(HL.done, A('wk05', '검사', -0.2));
-  [['검사 통과', '검사', 40], ['웹에 게시', '웹 페이지', 300], ['깃허브 보관', '깃허브', 540]].forEach(([w, ph, x], i) => put(sheet, `<span class="stamp" style="position:static;opacity:1;font-size:40px">${w}</span>`, x, 1750 + 262, A('wk05', ph, 0), S('fx01') + 0.2, { anim: 'stamp', rot: -8 + i * 5 }));
+  [['검사 통과', '검사', 40], ['웹에 게시', '웹 페이지', 300], ['깃허브 보관', '깃허브', 540]].forEach(([w, ph, x], i) => put(sheet, `<span class="stamp" style="position:static;opacity:1;font-size:40px">${w}</span>`, x, SEC_TOP[5] + 268, A('wk05', ph, 0), S('fx01') + 0.2, { anim: 'stamp', rot: -8 + i * 5 }));
 
   // ================= 고칠 점 말하기 =================
   stepsT.push(S('fx01')); focus(S('fx01'), -1); cam(S('fx01'), V.screen, 1.4);
@@ -409,7 +411,7 @@ Video.define(async (ctx) => {
   cam(S('my03'), V.sec(1), 1.3);
   put(sheet, '<div class="sticky" style="background:#cfe6f5"><span class="note">명암 3단계 · 굵은 외곽선<br>푸른 새벽빛</span></div>', 240, 550 + 70, A('my03', '명암을', -0.4), S('ed01'), { anim: 'pin', rot: -2.5 });
   cam(S('my04'), V.sheet, 1.4);
-  [2, 3, 4, 5].forEach((i, j) => put(sheet, '<span class="stamp" style="position:static;opacity:1">그대로</span>', 470, 250 + i * 300 + 16, A('my04', ['컷 구성', '시간표', '소리', '일하는'][j], -0.1), S('ed01') + 0.3, { anim: 'stamp', rot: -10 + j * 4 }));
+  [2, 3, 4, 5].forEach((i, j) => put(sheet, '<span class="stamp" style="position:static;opacity:1">그대로</span>', 470, SEC_TOP[i] + 16, A('my04', ['컷 구성', '시간표', '소리', '일하는'][j], -0.1), S('ed01') + 0.3, { anim: 'stamp', rot: -10 + j * 4 }));
   note(layer, '원리는 이야기가<br>바뀌어도 그대로', 2000, 1300, S('my04') + 1.0, S('ed01'), 'huge o', -2);
 
   // ================= 정리 =================
