@@ -613,6 +613,10 @@
    "sha256": "81d6d8e3b147447ae2f38aa65837a2e792da1fac6a7b2639a76460ba35f26711",
    "by": "tts.mjs (--record-cache)"
   },
+  ".tts-cache/f38aa78c42e597503c4f29ad.pcm": {
+   "sha256": "a79b58e6d6558cccca64c339257b1be18b05f07464fe39e147dea35803eddc64",
+   "by": "tts.mjs (--record-cache)"
+  },
   ".tts-cache/f417f588d3675b20c4bde0ab.pcm": {
    "sha256": "081ed4d628db0bb2af06ff6d8849e6d4a66b9f0802a3e113b199c8d1650d9609",
    "by": "tts.mjs (--record-cache)"
@@ -742,7 +746,7 @@
    "by": "tts.mjs"
   },
   "audio/cues/in05.wav": {
-   "sha256": "3062880f4c5f89574563a4e4fb84f9f7c133c34afdd1a4c6f515bb814bb2045e",
+   "sha256": "5b454e1b2deec57e7b6a2f1e8a9f88501e7815e2550040e675bb63de7c6f2c51",
    "by": "tts.mjs"
   },
   "audio/cues/in06.wav": {
@@ -998,11 +1002,11 @@
    "by": "tts.mjs"
   },
   "audio/narration.mp3": {
-   "sha256": "77212d0686e34f2008ba314ccc3b30e77412a41c541437c98dea5682dab3cf8d",
+   "sha256": "244295dfd417ee058f90084e67e5542deb6a4f7ab3dcf494a387a430520bcf49",
    "by": "tts.mjs"
   },
   "audio/narration.wav": {
-   "sha256": "377b74b5b82cf59ce8f81a8ec8cd3500d95cb7ff680bf3e5a89bbbba8fbc6937",
+   "sha256": "1af3dda3cd8d6cfb9ac3510af39684fa864a2eb7ac492ccfc910e0529024e7b8",
    "by": "tts.mjs"
   },
   "media/render-stills/enter-0-1-0p37-0_0_16_16-16/00001.jpg": {
