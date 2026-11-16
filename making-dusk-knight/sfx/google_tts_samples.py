@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """google_tts_samples.py — Korean male narration samples from Google Cloud Text-to-Speech (REST, v1).
-The API key is never in this file: the session's network proxy adds the X-Goog-Api-Key header for
-texttospeech.googleapis.com (saved as a network secret on the environment).
+The API key is never in this file. Either the session's network proxy adds the X-Goog-Api-Key header for
+texttospeech.googleapis.com (a network secret on the environment), or the environment variable GOOGLE_TTS_API_KEY
+holds it and this script sends it in that header (never printed).
   python3 sfx/google_tts_samples.py <out_dir>   → lists ko-KR male voices, writes 5 samples (mp3) + samples.json
 """
 import base64, json, os, sys, urllib.request, urllib.error
@@ -10,7 +11,7 @@ API = 'https://texttospeech.googleapis.com/v1'
 LINE = '방금 보신 장면은, 남은 길이라는 삼십 초짜리 쓰리디 단편의 마지막 팔 초입니다. 오늘은 이 단편을 어떤 글로 주문했는지, 그리고 왜 그렇게 써야 하는지를 하나씩 풀어 보겠습니다.'
 
 def call(path, body=None):
-    req = urllib.request.Request(API + path, data=None if body is None else json.dumps(body).encode(), headers={'Content-Type': 'application/json'})
+    req = urllib.request.Request(API + path, data=None if body is None else json.dumps(body).encode(), headers={'Content-Type': 'application/json', **({'X-Goog-Api-Key': os.environ['GOOGLE_TTS_API_KEY']} if os.environ.get('GOOGLE_TTS_API_KEY') else {})})
     try:
         with urllib.request.urlopen(req, timeout=60) as r: return json.load(r)
     except urllib.error.HTTPError as e:
