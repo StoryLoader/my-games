@@ -3,7 +3,7 @@
    ladder_v0…v3 = the same shot (8.0–12.45 s) rendered from copies of that project with look ingredients switched off
    (storyboard.md → 화면 자료); the rest are effects synthesized by sfx/make_sfx.py (16×16 black pictures — only the sound is used). */
 window.MEDIA_SRC = {
-  level: -17.3,   // the narration's loudness (this voice, measured in the earlier tutorial); re-measure after recording
+  level: -18.8,   // the narration's integrated loudness (Google TTS ko-KR-Chirp3-HD-Sadaltager takes, measured 2026-11-16)
   clips: {
     film: { file: 'assets/user/vid/film.mp4', master: 'assets/user/vid/film.mp4', w: 1920, h: 1080, dur: 30.0, lufs: -20.3 },
     ladder_v0: { file: 'assets/user/vid/ladder_v0.mp4', master: 'assets/user/vid/ladder_v0.mp4', w: 1920, h: 1080, dur: 4.46 },

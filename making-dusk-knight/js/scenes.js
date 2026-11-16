@@ -348,7 +348,7 @@ Video.define(async (ctx) => {
   note(layer, '한 곳에 두면 → 함께 움직인다', 2420, 1880, A('sd05', '한 곳에', 0.1), S('sd06'), '');
   // hear it: the film's own sound under the feet shot, with its waveform and the footfalls it was made from
   cam(S('sd06'), V.wave, 1.4);
-  const sdIn = 4.5, sdT0 = S('sd06') + 0.1, sdDur = Math.min(7.4, (S('wk01') - 0.15) - sdT0), sdSay = E('sd06') - sdT0;
+  const sdIn = 4.5, sdT0 = S('sd06') + 0.1, sdDur = Math.min(7.9, (S('wk01') - 0.12) - sdT0), sdSay = E('sd06') - sdT0;
   tiled('film', sdIn, sdDur, sdT0, sdT0 + sdDur, { audio: true, vol: [[0, 0.35], [Math.max(0.1, sdSay), 0.35], [Math.max(0.2, sdSay + 0.3), 1]] });
   note(scr, '발이 땅에 닿을 때마다 → 발소리', 60, 60, sdT0 + 0.3, sdT0 + sdDur, 'w');
   const SND = window.SOUND_DATA || { peaks: [], peaksFps: 60, steps: [] };
