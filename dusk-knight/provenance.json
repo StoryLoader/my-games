@@ -3,7 +3,7 @@
     {
       "file": "assets/user/sfx/soundtrack.mp4",
       "source": "user",
-      "note": "The user asked (2026-11-15) for a wordless short with \"코드로 합성한 자연음과 효과음\". The whole soundtrack (wind, grass, footfalls, armour clinks, the dragged sword, cloth, the crow's caws and wingbeats, a faint hum) is synthesized from code by sfx/make_sound.py in this project from the beats in js/timeline.js (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+      "note": "The user asked (2026-11-15) for a wordless short with \"코드로 합성한 자연음과 효과음\". The whole soundtrack (wind, grass, footfalls, armour clinks, the dragged sword, cloth, the crow's caws and wingbeats, a faint hum; and for 2편·3편 (added 2026-11-16 when the user asked to extend the film to 1:30) crickets, the fire, twigs, the dream battle — drums, a far host, sword clashes, the breaking sword, a heartbeat — the tear hissing in the ash, dawn birds and the planted sword) is synthesized from code by sfx/make_sound.py in this project from the beats in js/timeline.js (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
     }
   ]
 }
