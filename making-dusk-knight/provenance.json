@@ -159,6 +159,11 @@
       "file": "assets/user/img/thumb_walk.jpg",
       "source": "user",
       "note": "One frame of the user's short 「남은 길」 at 26.6 s (walking toward the sun), taken from its render (../dusk-knight, render.py 1080p) for this video's thumbnail."
+    },
+    {
+      "file": "assets/user/img/claude_symbol.svg",
+      "source": "user",
+      "note": "The Claude symbol (a trademark of Anthropic), downloaded 2026-11-16 from Wikimedia Commons, File:Claude AI symbol.svg (https://upload.wikimedia.org/wikipedia/commons/b/b0/Claude_AI_symbol.svg). The user asked for the Claude icon in front of \"주문서 그대로 공개\" on the thumbnail, to show the video is made with Claude Code."
     }
   ]
 }
