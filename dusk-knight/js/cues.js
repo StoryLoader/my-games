@@ -3,15 +3,15 @@ window.VIDEO_DATA = {
   "title": "남은 길",
   "lang": "ko",
   "audio": "audio/narration.mp3",
-  "audioDuration": 26.05,
-  "duration": 30,
+  "audioDuration": 85.05,
+  "duration": 90,
   "leadIn": 0,
-  "tail": 3.95,
+  "tail": 4.95,
   "placeholder": false,
   "narration": false,
   "voice": "",
   "model": "drama-3",
-  "scriptSig": "0a06cf71dc6d9f88",
+  "scriptSig": "df16094583ab2795",
   "cues": [
     {
       "id": "s01",
@@ -67,6 +67,118 @@ window.VIDEO_DATA = {
       "say": "[long-break]",
       "start": 25,
       "end": 26.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s08",
+      "text": "",
+      "say": "[long-break]",
+      "start": 30,
+      "end": 31.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s09",
+      "text": "",
+      "say": "[long-break]",
+      "start": 34,
+      "end": 35.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s10",
+      "text": "",
+      "say": "[long-break]",
+      "start": 38.5,
+      "end": 39.55,
+      "duration": 1.05
+    },
+    {
+      "id": "s11",
+      "text": "",
+      "say": "[long-break]",
+      "start": 43,
+      "end": 44.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s12",
+      "text": "",
+      "say": "[long-break]",
+      "start": 47.5,
+      "end": 48.55,
+      "duration": 1.05
+    },
+    {
+      "id": "s13",
+      "text": "",
+      "say": "[long-break]",
+      "start": 51.5,
+      "end": 52.55,
+      "duration": 1.05
+    },
+    {
+      "id": "s14",
+      "text": "",
+      "say": "[long-break]",
+      "start": 56,
+      "end": 57.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s15",
+      "text": "",
+      "say": "[long-break]",
+      "start": 60,
+      "end": 61.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s16",
+      "text": "",
+      "say": "[long-break]",
+      "start": 63,
+      "end": 64.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s17",
+      "text": "",
+      "say": "[long-break]",
+      "start": 68,
+      "end": 69.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s18",
+      "text": "",
+      "say": "[long-break]",
+      "start": 72,
+      "end": 73.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s19",
+      "text": "",
+      "say": "[long-break]",
+      "start": 76,
+      "end": 77.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s20",
+      "text": "",
+      "say": "[long-break]",
+      "start": 79,
+      "end": 80.05,
+      "duration": 1.05
+    },
+    {
+      "id": "s21",
+      "text": "",
+      "say": "[long-break]",
+      "start": 84,
+      "end": 85.05,
       "duration": 1.05
     }
   ]

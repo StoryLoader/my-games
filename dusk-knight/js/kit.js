@@ -56,11 +56,12 @@ window.KIT = {
       const brush = cv(512, 256, (x) => { x.fillStyle = '#808080'; x.fillRect(0, 0, 512, 256); for (let i = 0; i < 1400; i++) daub(x, rr(0, 512), rr(0, 256), rr(8, 40), rr(2, 7), rr(-0.15, 0.15), R() < 0.5 ? '#000' : '#fff', rr(0.03, 0.09)); });
       const tc = tex(cov, false), tl = tex(lit, false), tb = tex(brush, false);
       for (const t of [tc, tl, tb]) { t.wrapS = T.RepeatWrapping; }
-      const u = { sunDir: { value: new T.Vector3(0.75, 0.12, -0.66).normalize() }, uCov: { value: tc }, uLit: { value: tl }, uBrush: { value: tb }, uDrift: { value: 0 }, uDusk: { value: 0 } };
+      const u = { sunDir: { value: new T.Vector3(0.75, 0.12, -0.66).normalize() }, uCov: { value: tc }, uLit: { value: tl }, uBrush: { value: tb }, uDrift: { value: 0 }, uDusk: { value: 0 }, uNight: { value: 0 }, uDawn: { value: 0 } };
       const m = new T.ShaderMaterial({ uniforms: u, side: T.BackSide, depthWrite: false, fog: false,
         vertexShader: 'varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-        fragmentShader: `varying vec3 vDir; uniform vec3 sunDir; uniform sampler2D uCov, uLit, uBrush; uniform float uDrift, uDusk;
+        fragmentShader: `varying vec3 vDir; uniform vec3 sunDir; uniform sampler2D uCov, uLit, uBrush; uniform float uDrift, uDusk, uNight, uDawn;
           vec3 S(float r,float g,float b){ return vec3(r,g,b)/255.; }
+          float hsh(vec3 p){ return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
           void main(){
             vec3 d = normalize(vDir); float e = asin(clamp(d.y,-1.,1.)); float az = atan(d.z, d.x);
             vec3 hor = mix(S(255.,206.,140.), S(232.,146.,112.), uDusk), rose = mix(S(240.,150.,118.), S(196.,104.,110.), uDusk),
@@ -77,6 +78,18 @@ window.KIT = {
             c = mix(c, cc, clamp(cv * 1.15, 0., 0.96));
             float disc = smoothstep(0.99935, 0.99962, dot(d, sunDir));
             c = mix(c, mix(S(255.,244.,214.), S(255.,214.,160.), uDusk), disc * smoothstep(-0.004, 0.006, e));
+            // night (2편): deep indigo, the clouds turn to dark smudges, painted stars
+            vec3 nightC = mix(S(58.,46.,84.), S(28.,30.,66.), smoothstep(0.0, 0.18, e)); nightC = mix(nightC, S(9.,11.,30.), smoothstep(0.15, 0.85, e));
+            nightC = mix(nightC, S(36.,32.,62.) * 0.8, cv * 0.75);
+            vec3 sp = floor(d * 420.); float st = hsh(sp), tw = 0.6 + 0.4 * sin(uDrift * 900. + st * 60.);
+            float star = step(0.9972, st) * smoothstep(0.03, 0.2, e) * (1. - cv * 0.9) * tw;
+            nightC += vec3(1., 0.95, 0.85) * star * (0.6 + 0.8 * hsh(sp + 3.1));
+            c = mix(c, nightC, uNight);
+            // dawn (3편 끝): a cool blue sky warming to gold at the horizon, around the rising sun
+            vec3 dawnC = mix(S(255.,214.,168.), S(236.,178.,170.), smoothstep(0.0, 0.10, e)); dawnC = mix(dawnC, S(150.,170.,212.), smoothstep(0.08, 0.36, e)); dawnC = mix(dawnC, S(88.,118.,176.), smoothstep(0.32, 0.95, e));
+            dawnC = mix(dawnC, mix(S(230.,190.,200.), S(255.,236.,210.), pow(sd, 4.)), cv * 0.8);
+            dawnC += S(255.,200.,120.) * (pow(sd, 8.) * 0.45 + pow(sd, 50.) * 0.5) + S(255.,248.,226.) * disc * smoothstep(-0.004, 0.006, e);
+            c = mix(c, dawnC, uDawn);
             c *= 0.95 + 0.1 * texture2D(uBrush, vec2(az / 6.2831853 * 3., e * 2.)).r;
             gl_FragColor = vec4(c, 1.);
             #include <colorspace_fragment>

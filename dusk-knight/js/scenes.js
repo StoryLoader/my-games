@@ -36,7 +36,7 @@ Video.define(async (ctx) => {
   sc.fog = new T.Fog(0xe7a37c, 34, 210);
   const hemi = new T.HemisphereLight(0x9a82cc, 0x6e4e40, 0.9); sc.add(hemi);
   const sun = new T.DirectionalLight(0xffb574, 2.6); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.025; sc.add(sun, sun.target);
-  const sky = KIT.sky(); sc.add(sky); sc.add(KIT.hills(14)); sc.add(KIT.ground()); sc.add(KIT.road());
+  const sky = KIT.sky(); sc.add(sky); const hillsG = KIT.hills(14); sc.add(hillsG); sc.add(KIT.ground()); sc.add(KIT.road());
   if (typeof Video.progress === 'function') Video.progress(0.35);
 
   // the plain: grass, rocks, dead trees, what the battle left behind
@@ -166,7 +166,7 @@ Video.define(async (ctx) => {
   // ---------------- the camera, shot by shot ----------------
   // the cuts come from the cues in script.json; js/timeline.js keeps the same numbers for the sound generator
   const CUE_AT = Object.fromEntries(window.VIDEO_DATA.cues.map((c) => [c.id, c.start]));
-  const SH = ['s01', 's02', 's03', 's04', 's05', 's06', 's07'].map((id) => CUE_AT[id]).concat(window.VIDEO_DATA.duration);
+  const SH = ['s01', 's02', 's03', 's04', 's05', 's06', 's07'].map((id) => CUE_AT[id]).concat(CUE_AT.s08 ?? window.VIDEO_DATA.duration);   // 1편 ends where 2편 (s08) begins
   if (SH.some((v, n) => Math.abs(v - TL.shots[n]) > 1e-3)) console.warn('dusk-knight: cue starts and js/timeline.js shots disagree — re-run sfx/make_sound.py after editing either');
   const shotAt = (t) => { let i = 0; while (i + 1 < SH.length - 1 && t >= SH[i + 1]) i++; return i; };
   const look = new T.Vector3();
@@ -203,8 +203,29 @@ Video.define(async (ctx) => {
   M.clip($('sfx'), 'soundtrack', { x: 0, y: 0, w: 4, h: 4, start: 0, dur: M.SRC.soundtrack.dur, audio: true, vol: 1 });
 
   buildPaths();
+  // 2편 「남은 불」 (30–60 s) and 3편 「남은 꿈」 (60–90 s): js/acts.js, in the same world
+  const acts = window.ACTS.install({ T, KIT, sc, cam, look, sun, hemi, sky, hills: hillsG, kn, cr, perch, eyeGlow, groove, puffs, motes, grass: [grassA, grassB], rand, TL, R, outline,
+    grade: $('grade'), tint: $('tint'), grainEl: $('grain') });
+  const titleText = title.querySelector('.t'), tint = $('tint');
+  let titleKey = '';
   onFrame((t) => {
     const f24 = Math.floor(t * 24 + 1e-6), tq = f24 / 24, tc = Math.floor(t * 12 + 1e-6) / 12;
+    if (t >= 30) {
+      const st = acts.frame(t, tq, tc);
+      s3d.fit(); if (st.inDream) R.render(sc, cam); else outline.render(sc, cam);
+      const A2 = TL.act2, A3 = TL.act3;
+      const bk = t < 31.4 ? 0.92 * (1 - io(K(t, 30, 31.4))) : t < 60 ? 0.92 * io(K(t, A2.fade[0], A2.fade[1])) : t < 61 ? 0.92 * (1 - io(K(t, 60, A3.fadeIn[1]))) : t < 79.3 ? (t > 78.85 ? 1 : 0) : 0.92 * io(K(t, A3.fade[0], A3.fade[1]));
+      black.style.opacity = bk.toFixed(3);
+      const red = Math.max(io(K(t, A3.red[0], A3.red[1])) * (1 - io(K(t, A3.dream[0] + 0.05, A3.dream[0] + 0.9))), 0);
+      tint.style.opacity = red.toFixed(3);
+      const [ta, tb] = t < 60 ? A2.title : A3.title, key = t < 60 ? '남은 불' : '남은 길';
+      if (key !== titleKey) { titleKey = key; titleText.textContent = key; }
+      title.style.opacity = (io(K(t, ta, ta + 1.2))).toFixed(3); title.style.transform = `translateY(${(8 * (1 - K(t, ta, tb))).toFixed(1)}px)`;
+      if (f24 !== lastFrame) { lastFrame = f24; const r = rand(f24 * 7 + 3), d = gimg.data; for (let n = 0; n < d.length; n += 4) { const v = 128 + (r() - 0.5) * 230; d[n] = d[n + 1] = d[n + 2] = v; d[n + 3] = 255; } grain.putImageData(gimg, 0, 0); }
+      return;
+    }
+    if (titleKey !== '남은 길') { titleKey = '남은 길'; titleText.textContent = '남은 길'; tint.style.opacity = '0'; }
+    acts.reset();
     // characters on twos, the world on ones
     const kp = poseKnight(tc); poseCrow(tc);
     const i = shotAt(tq), sh = camAt(tq, i); cam.lookAt(look);

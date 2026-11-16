@@ -6,7 +6,7 @@
   "temperature": 0.7,
   "leadIn": 0,
   "gap": 0,
-  "tail": 3.95,
+  "tail": 4.95,
   "cues": [
     {
       "id": "s01",
@@ -55,6 +55,104 @@
       "say": "[long-break]",
       "text": "",
       "note": "둘이서 노을 속으로 걸어간다",
+      "gapAfter": 3.95
+    },
+    {
+      "id": "s08",
+      "say": "[long-break]",
+      "text": "",
+      "note": "별이 돋는 밤, 무너진 망루로 걸어가는 둘",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s09",
+      "say": "[long-break]",
+      "text": "",
+      "note": "망루 아래, 칼을 벽에 기대고 털썩 앉는 기사",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s10",
+      "say": "[long-break]",
+      "text": "",
+      "note": "까마귀가 마른 가지를 물어 온다, 두 번",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s11",
+      "say": "[long-break]",
+      "text": "",
+      "note": "눈의 불씨를 가지에 옮겨 붙여 작은 불을 피운다",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s12",
+      "say": "[long-break]",
+      "text": "",
+      "note": "불빛에 비친 벽의 그림자는 아직 온전한 기사",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s13",
+      "say": "[long-break]",
+      "text": "",
+      "note": "꾸벅이던 까마귀가 망토 속으로, 기사가 덮어 준다",
+      "gapAfter": 3.45
+    },
+    {
+      "id": "s14",
+      "say": "[long-break]",
+      "text": "",
+      "note": "별 아래 작은 불 하나, 제목 「남은 불」",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s15",
+      "say": "[long-break]",
+      "text": "",
+      "note": "꺼져 가는 불, 잠든 기사의 눈이 붉게 타오른다",
+      "gapAfter": 1.95
+    },
+    {
+      "id": "s16",
+      "say": "[long-break]",
+      "text": "",
+      "note": "핏빛 꿈: 적들과 맞서 싸우는 기사",
+      "gapAfter": 3.95
+    },
+    {
+      "id": "s17",
+      "say": "[long-break]",
+      "text": "",
+      "note": "막고, 밀리고, 동료의 깃발이 쓰러진다",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s18",
+      "say": "[long-break]",
+      "text": "",
+      "note": "큰 일격에 칼이 부러진다, 쓰러지는 기사",
+      "gapAfter": 2.95
+    },
+    {
+      "id": "s19",
+      "say": "[long-break]",
+      "text": "",
+      "note": "연기 속에서 까마귀가 쓰러진 기사 위에 내려앉는다",
+      "gapAfter": 1.95
+    },
+    {
+      "id": "s20",
+      "say": "[long-break]",
+      "text": "",
+      "note": "번쩍 깸, 눈물이 광대뼈를 타고 재에 떨어진다",
+      "gapAfter": 3.95
+    },
+    {
+      "id": "s21",
+      "say": "[long-break]",
+      "text": "",
+      "note": "새벽, 칼을 땅에 꽂고 해 쪽으로 걷는 둘",
       "gapAfter": 0
     }
   ],
