@@ -82396,6 +82396,14 @@
   "screenshots/making-dusk-knight_20261116-063250_moment-8m54.50s_sheet-1-of-1.jpg": {
    "sha256": "ee41d614db9e63ef1190eb432ba37b19e009c91cb951314ad66333b2dec26db2",
    "by": "render.py"
+  },
+  "thumbnail/thumbnail_a.png": {
+   "sha256": "0e76b086df1420a03a13606402ce695933fa1c52d8b4d11437c7d4af23eed08a",
+   "by": "thumbnail.mjs"
+  },
+  "thumbnail/thumbnail_b.png": {
+   "sha256": "3607639b2ed12fe0df2f41a3785f6ad9f74c8e45bf8fd3f6d392ce7311fc661c",
+   "by": "thumbnail.mjs"
   }
  }
 }

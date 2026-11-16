@@ -149,6 +149,16 @@
       "file": "assets/user/sfx/hit.mp4",
       "source": "user",
       "note": "Sound effect synthesized from code by sfx/make_sfx.py (copied from the earlier tutorial project ../how-its-made, where it was made); no recorded or downloaded sound."
+    },
+    {
+      "file": "assets/user/img/thumb_face.jpg",
+      "source": "user",
+      "note": "One frame of the user's short 「남은 길」 at 15.6 s (the face and the crow), taken from its render (../dusk-knight, render.py 1080p) for this video's thumbnail."
+    },
+    {
+      "file": "assets/user/img/thumb_walk.jpg",
+      "source": "user",
+      "note": "One frame of the user's short 「남은 길」 at 26.6 s (walking toward the sun), taken from its render (../dusk-knight, render.py 1080p) for this video's thumbnail."
     }
   ]
 }
