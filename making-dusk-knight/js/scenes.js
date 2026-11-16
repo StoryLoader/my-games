@@ -87,7 +87,7 @@ Video.define(async (ctx) => {
 
   // ---------------- the camera ----------------
   const V = { full: [2360, 570, 1.2], screen: [2360, 600, 0.98], over: [2250, 1100, 0.47], term: [770, 1590, 1.12], board: [770, 570, 1.2], sheet: [3700, 1120, 0.52],
-    splitT: [2900, 640, 0.72], splitB: [2900, 1450, 0.72], sw: [2360, 690, 0.86], work: [2360, 1560, 1.02], scrWork: [2360, 1080, 0.56], wave: [2360, 640, 0.9],
+    splitT: [2900, 640, 0.72], splitB: [2900, 1450, 0.72], sw: [2360, 690, 0.86], work: [2360, 1560, 1.02], scrWork: [2360, 860, 0.8], wave: [2360, 700, 0.9], deskL: [1520, 1250, 0.6],
     sec: (i) => [3700, 250 + i * 300 + 150, 1.18] };
   const CAM = [];   // [t, view, moveDur]
   const cam = (t, v, d = 1.3) => { CAM.push([t, v, d]); if (CAM.length > 1 && d > 0.3) fx('whoosh', t); };
@@ -146,21 +146,21 @@ Video.define(async (ctx) => {
   note(layer, '「남은 길」 · 30초 · 일곱 컷 · 대사 없음', 1600, 1110, S('op01') + 1.6, S('op03'), 'sm');
   note(scr, '싸움에서 진 해골기사 + 까마귀 한 마리', 60, 60, A('op02', '싸움에서', 0), S('op03'), 'w');
   cam(S('op03'), V.scrWork, 1.4);
-  [['3D 프로그램', 1640], ['편집 프로그램', 2130], ['녹음', 2700]].forEach(([w, x], i) => {
-    const it = note(layer, `<span class="st">${w}</span>`, x, 1210, A('op03', i === 0 ? '3D' : i === 1 ? '편집' : '열지', -0.2), S('op05'), 'big', -2 + i * 2);
+  [['3D 프로그램', 1600], ['편집 프로그램', 2150], ['녹음', 2780]].forEach(([w, x], i) => {
+    const it = note(layer, `<span class="st">${w}</span>`, x, 1170, A('op03', i === 0 ? '3D' : i === 1 ? '편집' : '열지', -0.2), S('op05'), 'huge', -2 + i * 2);
     strike(it.el.querySelector('.st'), A('op03', i === 0 ? '3D' : i === 1 ? '편집' : '열지', 0.5));
   });
-  note(layer, '대신 → 터미널에 글로 주문', 1640, 1420, S('op04') + 0.2, S('op05'), 'o');
-  cam(S('op04') + 0.1, V.over, 1.4);
+  note(layer, '대신 → 터미널에 글로 주문', 1600, 1400, S('op04') + 0.2, S('op05'), 'huge o');
+  cam(S('op04') + 0.1, V.deskL, 1.4);
   term(100, 1220, 1340, 780, '터미널 — 글자로 명령을 내리는 창', S('op04') + 0.4, S('pr01') - 0.05, [
     [A('op04', 'Claude Code', -0.1), 'out', '$ claude    # 인공지능 도구 Claude Code 실행'],
     [A('op04', '글로', -0.2), 'ask first', '손그림 애니메이션 느낌의 3D 단편을 만들어 줘. 내레이션 없음, 30초 …', 2.2],
   ]);
   cam(S('op05'), V.sheet, 1.5);
   secOn.push(-1);   // (the header is there from the start; parts fill in later)
-  note(layer, '무엇을 적었고, 왜 그렇게 적을까?', 2420, 1230, A('op05', '왜', -0.3), S('pr01') - 0.05, 'big', -2);
-  arrow(layer, 'M 20 140 C 220 120, 520 80, 760 10', 2560, 1080, 780, 160, A('op05', '왜', 0.2), S('pr01') - 0.05);
-  note(layer, '→ 이유를 알면, 내 이야기로 바꿔 쓸 수 있다', 2420, 1420, S('op06') + 0.3, S('pr01') - 0.05, 'o');
+  note(layer, '무엇을 적었고,<br>왜 그렇게 적을까?', 2000, 1150, A('op05', '왜', -0.3), S('pr01') - 0.05, 'huge', -2);
+  arrow(layer, 'M 20 200 C 300 160, 700 90, 1100 10', 2150, 940, 1120, 220, A('op05', '왜', 0.2), S('pr01') - 0.05);
+  note(layer, '→ 이유를 알면, 내 이야기로 바꿔 쓴다', 2000, 1520, S('op06') + 0.3, S('pr01') - 0.05, 'huge o');
 
   // ================= 준비 =================
   stepsT.push(S('pr01')); cam(S('pr01'), V.term, 1.4);
@@ -204,11 +204,11 @@ Video.define(async (ctx) => {
   note(layer, '적지 않은 부분은 → 인공지능이 대신 정한다', 140, 1100, S('rq04') + 0.3, S('rq05') + 0.2, 'sm o');
   cam(S('rq05'), V.board, 1.4);
   put(board, `<div class="pol" style="width:780px"><span class="pin"></span><img src="assets/user/img/knight_before.jpg"><div class="cap">첫 결과 — 상자 로봇?</div></div>`, 280, 70, A('rq05', '로봇', -0.4), S('rq06') + 0.2, { anim: 'pin', rot: -2 });
-  note(layer, 'Claude Code가 스스로 찍어 보고 → 고침', 180, 920, A('rq05', '그래서', 0), S('rq06') + 0.2, 'w');
+  note(layer, 'Claude Code가 스스로 찍어 보고 → 고침', 230, 770, A('rq05', '그래서', 0), S('rq06') + 0.2, 'big w', -1);
   cam(S('rq06'), V.sheet, 1.4);
-  note(layer, '고치면서 정한 것까지 → 주문서 한 장', 2420, 1250, S('rq06') + 0.4, S('st01'), 'big', -1);
+  note(layer, '고치면서 정한 것까지<br>→ 주문서 한 장', 2000, 1150, S('rq06') + 0.4, S('rq08'), 'huge', -1);
   PARTS.forEach(([name], i) => { const tt = i === 0 ? A('rq07', '이야기', -0.2) : A('rq07', name, -0.2); secOn[i] = tt; tabOn[i] = tt; fx('pop', tt); });
-  note(layer, '무엇을? 왜?', 2560, 1500, S('rq08') + 0.2, S('st01'), 'big o', -3);
+  note(layer, '무엇을? 왜?', 2100, 1250, S('rq08') + 0.2, S('st01'), 'huge o', -3);
 
   // ================= ① 이야기 =================
   stepsT.push(S('st01')); focus(S('st01'), 0); cam(S('st01'), V.splitT, 1.4);
@@ -304,7 +304,7 @@ Video.define(async (ctx) => {
   note(layer, '미리 막는 문장 → 고치는 횟수가 준다', 140, 1060, S('ct08') + 0.2, S('tm01') + 0.2, 'big o', -1);
 
   // ================= ④ 시간표 =================
-  stepsT.push(S('tm01')); focus(S('tm01'), 3); cam(S('tm01'), V.splitB, 1.4);
+  stepsT.push(S('tm01')); focus(S('tm01'), 3); cam(S('tm01'), V.splitB, 1.4); cam(S('tm02'), V.work, 1.3);
   const RX = 1600, RW = 1500, RY = 1330;
   put(layer, '', RX - 30, RY - 140, S('tm02') - 0.2, S('sd01') + 0.2, { cls: 'tape', style: `width:${RW + 60}px;height:300px`, anim: 'fade', sound: false });
   // A — a narrated video: sentences become a timetable
@@ -328,14 +328,14 @@ Video.define(async (ctx) => {
   });
   put(layer, '<span class="big3">= 30.00초</span>', RX + RW - 330, RY + 110, A('tm06', '정확히', -0.2), S('sd01') + 0.2, { anim: 'pop' });
   hl(HL.rest, A('tm05', '빈 대사', -0.2)); hl(HL.len, A('tm06', '길이를', 0));
-  put(layer, `<div class="doc code" style="width:1060px"><div class="l"><span class="k">"narration"</span>: <span class="v">false</span>,</div><div class="l">{ <span class="k">"id"</span>: <span class="v">"s01"</span>, <span class="k">"say"</span>: <span class="v">"[long-break]"</span>, <span class="k">"gapAfter"</span>: <span class="v">3.45</span> }</div><div class="l" style="color:var(--term-dim)">   … 컷 일곱 개, 같은 모양으로</div></div>`, RX, 1660, A('tm06', '컷 길이에', 0), S('sd01') + 0.2, { anim: 'win' });
-  note(layer, '실제 설정: 빈 대사 + 쉬는 시간 = 컷 길이', RX + 1100, 1690, A('tm06', '컷 길이에', 0.6), S('sd01') + 0.2, 'sm', -1);
-  note(layer, '도구가 알아듣는 방식으로', RX + 1100, 1880, S('tm07') + 0.3, S('sd01') + 0.2, 'o');
+  put(layer, `<div class="doc code" style="width:1060px"><div class="l"><span class="k">"narration"</span>: <span class="v">false</span>,</div><div class="l">{ <span class="k">"id"</span>: <span class="v">"s01"</span>, <span class="k">"say"</span>: <span class="v">"[long-break]"</span>, <span class="k">"gapAfter"</span>: <span class="v">3.45</span> }</div><div class="l" style="color:var(--term-dim)">   … 컷 일곱 개, 같은 모양으로</div></div>`, RX, 1540, A('tm06', '컷 길이에', 0), S('sd01') + 0.2, { anim: 'win' });
+  note(layer, '실제 설정: 빈 대사 + 쉬는 시간 = 컷 길이', RX, 1880, A('tm06', '컷 길이에', 0.6), S('tm07'), '', -1);
+  note(layer, '도구가 알아듣는 방식으로', RX, 1880, S('tm07') + 0.2, S('sd01') + 0.2, 'big o');
 
   // ================= ⑤ 소리 =================
   stepsT.push(S('sd01')); focus(S('sd01'), 4); cam(S('sd01'), V.splitB, 0.8);
   ['바람', '발소리', '칼 끌림', '까마귀 울음', '날갯짓'].forEach((w, i) => note(layer, w, 1640 + i * 300, 1200 + (i % 2) * 70, A('sd02', w === '칼 끌림' ? '칼' : w === '까마귀 울음' ? '까마귀' : w, -0.2), S('sd03'), 'big', -3 + i * 1.5));
-  hl(HL.one, A('sd03', '한', -0.1));
+  hl(HL.one, A('sd03', '한', -0.1)); cam(S('sd03'), V.work, 1.3);
   const beat = (x, y, speed, t0, t1, bad) => put(layer, `<div class="doc" style="width:700px"><div class="t">박자 파일</div><div class="l"><b>걸음 속도</b> ${bad ? '<span style="color:#c0392b;font-weight:800">0.80</span>' : '0.85'} · <b>보폭</b> 1.15</div><div class="l"><b>까마귀 울음</b> 2.6초 · 14.2초 · 24.0초 · 28.6초</div></div>`, x, y, t0, t1, { anim: 'win' });
   beat(1620, 1240, 0.85, S('sd03') + 0.3, S('sd06') + 0.2, false);
   const tgt = [['화면', '발을 움직인다', 1290], ['소리', '발소리를 낸다', 1640]];
@@ -366,7 +366,7 @@ Video.define(async (ctx) => {
   });
 
   // ================= ⑥ 일하는 방식 =================
-  stepsT.push(S('wk01')); focus(S('wk01'), 5); cam(S('wk01'), V.splitB, 1.4);
+  stepsT.push(S('wk01')); focus(S('wk01'), 5); cam(S('wk01'), V.splitB, 1.4); cam(S('wk02'), V.work, 1.3);
   hl(HL.plan, A('wk02', '설계도', -0.2));
   put(layer, `<div class="doc" style="width:1300px"><div class="t">설계도 — 「남은 길」</div>
     <div class="l"><b>세계</b> 끝없이 마른 흙 평원, 마른 풀과 돌, 땅에 꽂힌 칼과 창, 찢긴 깃발</div>
@@ -380,7 +380,7 @@ Video.define(async (ctx) => {
   note(board, '스스로 찍어 보고 → 고친다', 160, 650, A('wk04', '스스로', -0.2), S('wk05') + 0.3, 'w');
   cam(S('wk05'), V.sec(5), 1.4);
   hl(HL.done, A('wk05', '검사', -0.2));
-  [['검사 통과', '검사', 40], ['웹에 게시', '웹 페이지', 300], ['깃허브 보관', '깃허브', 540]].forEach(([w, ph, x], i) => put(sheet, `<span class="stamp" style="position:static;opacity:1;font-size:40px">${w}</span>`, x, 1750 + 228, A('wk05', ph, 0), S('fx01') + 0.2, { anim: 'stamp', rot: -8 + i * 5 }));
+  [['검사 통과', '검사', 40], ['웹에 게시', '웹 페이지', 300], ['깃허브 보관', '깃허브', 540]].forEach(([w, ph, x], i) => put(sheet, `<span class="stamp" style="position:static;opacity:1;font-size:40px">${w}</span>`, x, 1750 + 262, A('wk05', ph, 0), S('fx01') + 0.2, { anim: 'stamp', rot: -8 + i * 5 }));
 
   // ================= 고칠 점 말하기 =================
   stepsT.push(S('fx01')); focus(S('fx01'), -1); cam(S('fx01'), V.screen, 1.4);
@@ -395,19 +395,19 @@ Video.define(async (ctx) => {
   stepsT.push(S('my01')); focus(S('my01'), -1); cam(S('my01'), V.sheet, 1.4);
   cam(S('my02'), V.sec(0), 1.3);
   secs[0].lines.forEach((ln, i) => { ln.classList.add('st'); strike(ln, A('my02', '이야기만', 0.3) + i * 0.2); });
-  put(sheet, '<span class="note o" style="font-size:66px">비 오는 밤 골목, 늙은 우체부 고양이</span>', 70, 250 + 268, A('my02', '비 오는', -0.2), S('ed01'), { anim: 'hand', rot: -1.5 });
+  put(sheet, '<div class="sticky"><span class="note">비 오는 밤 골목,<br>늙은 우체부 고양이</span></div>', 300, 250 + 70, A('my02', '비 오는', -0.4), S('ed01'), { anim: 'pin', rot: 3 });
   cam(S('my03'), V.sec(1), 1.3);
-  put(sheet, '<span class="note o" style="font-size:60px">→ 명암 3단계 · 굵은 외곽선 · 푸른 새벽빛</span>', 60, 550 + 278, A('my03', '명암을', -0.2), S('ed01'), { anim: 'hand', rot: -1 });
+  put(sheet, '<div class="sticky" style="background:#cfe6f5"><span class="note">명암 3단계 · 굵은 외곽선<br>푸른 새벽빛</span></div>', 240, 550 + 70, A('my03', '명암을', -0.4), S('ed01'), { anim: 'pin', rot: -2.5 });
   cam(S('my04'), V.sheet, 1.4);
   [2, 3, 4, 5].forEach((i, j) => put(sheet, '<span class="stamp" style="position:static;opacity:1">그대로</span>', 470, 250 + i * 300 + 16, A('my04', ['컷 구성', '시간표', '소리', '일하는'][j], -0.1), S('ed01') + 0.3, { anim: 'stamp', rot: -10 + j * 4 }));
-  note(layer, '원리는 이야기가 바뀌어도 그대로', 2400, 1880, S('my04') + 1.0, S('ed01'), 'big o', -2);
+  note(layer, '원리는 이야기가<br>바뀌어도 그대로', 2000, 1300, S('my04') + 1.0, S('ed01'), 'huge o', -2);
 
   // ================= 정리 =================
-  stepsT.push(S('ed01')); cam(S('ed01'), V.splitB, 1.4);
+  stepsT.push(S('ed01')); cam(S('ed01'), V.work, 1.4);
   [['느낌 대신 재료', '재료를'], ['꾸미는 말 대신 보이는 모습', '모습을'], ['박자는 한 곳에', '한 곳에만']].forEach(([w, ph], i) =>
     put(layer, `<span class="big3">${i + 1}. ${w}</span>`, 1640, 1200 + i * 150, A('ed01', ph, -0.3), S('ed04'), { anim: 'rise', sound: 'pop' }));
   put(layer, '<span class="note big o">+ 몇 초, 몇 번째 컷으로 고칠 점 말하기</span>', 1640, 1660, A('ed02', '몇 초', -0.2), S('ed04'), { anim: 'hand' });
-  note(layer, '주문서 전문 → 영상 설명란', 2420, 1880, S('ed03') + 0.2, S('ed04'), 'big', -2);
+  note(layer, '주문서 전문 → 영상 설명란', 2350, 1880, S('ed03') + 0.2, S('ed04'), 'big', -2);
   cam(S('ed04') - 0.2, V.full, 2.6);
   const endT0 = S('ed04') - 0.6, endDur = Math.min(10.0, END + 0.2 - endT0);
   tiled('film', Math.max(0, 30 - endDur - 0.2), endDur, endT0, endT0 + endDur, { audio: true, vol: [[0, 0.25], [Math.max(0.2, E('ed04') - endT0), 0.25], [Math.max(0.4, E('ed04') - endT0 + 0.8), 0.9]] });

@@ -80,6 +80,9 @@
 /* ---- handwriting ---- */
 .note { font-family: var(--hand); font-size: 76px; line-height: 1.05; color: var(--plum); white-space: nowrap; }
 .note.big { font-size: 104px; }
+.note.huge { font-size: 150px; line-height: 1.0; }
+.sticky { padding: 26px 34px 30px; background: #f7e39a; box-shadow: 0 14px 24px rgba(60, 40, 10, 0.30); }
+.sticky .note { font-size: 64px; color: var(--ink); white-space: nowrap; }
 .note.sm { font-size: 58px; }
 .note.w { color: #fff1dc; text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55); }
 .note.o { color: #b9502a; }
