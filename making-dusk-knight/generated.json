@@ -82398,7 +82398,7 @@
    "by": "render.py"
   },
   "thumbnail/thumbnail_a.png": {
-   "sha256": "0e76b086df1420a03a13606402ce695933fa1c52d8b4d11437c7d4af23eed08a",
+   "sha256": "ec60c5f07d5814f5a23d217d93c41ecd2643540fa39d10c9d095ea8a7db7932d",
    "by": "thumbnail.mjs"
   },
   "thumbnail/thumbnail_b.png": {

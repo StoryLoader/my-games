@@ -23,3 +23,7 @@ body { position: relative; font-family: 'Pretendard', sans-serif; background: #1
 .xx { position: absolute; width: 150px; height: 150px; }
 .xx::before, .xx::after { content: ''; position: absolute; left: 62px; top: -8px; width: 26px; height: 166px; border-radius: 13px; background: #ff4b3a; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45); }
 .xx::before { transform: rotate(45deg); } .xx::after { transform: rotate(-45deg); }
+.chip .ix { position: relative; display: inline-block; width: 30px; height: 30px; margin: 0 4px 0 8px; vertical-align: -4px; border-radius: 50%; background: #ff4b3a; }
+.chip .ix::before, .chip .ix::after { content: ''; position: absolute; left: 13px; top: 6px; width: 4px; height: 18px; border-radius: 2px; background: #fff; }
+.chip .ix::before { transform: rotate(45deg); } .chip .ix::after { transform: rotate(-45deg); }
+.chip .sep { display: inline-block; width: 18px; }
