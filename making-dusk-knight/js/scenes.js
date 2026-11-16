@@ -102,9 +102,10 @@ Video.define(async (ctx) => {
   sheet.innerHTML = '<div class="hd">주문서<small>「남은 길」 · 말 없는 30초 3D 단편</small></div><div class="rule"></div>';
   const PARTS = [
     ['이야기', 'var(--c1)', [
-      '<b>주인공</b> 패배한 해골기사. <span class="hl" data-k="drag">부러진 칼을 땅에 끌며 한쪽 다리를 전다</span>',
-      '<b>친구</b> 어깨에 앉은 까마귀 · <b>빛</b> 메마른 옛 싸움터의 해질녘',
-      '<b>감정</b> 고요하고 뭉클하게 — <span class="hl" data-k="lonely">외로움 = 넓은 땅의 작은 둘</span>']],
+      '<b>주인공</b> 패배한 해골기사',
+      '<span class="hl" data-k="drag">부러진 칼을 끌며 한쪽 다리를 전다</span>',
+      '<b>친구</b> 어깨 위 까마귀 · <b>빛</b> 해질녘',
+      '<b>감정</b> <span class="hl" data-k="lonely">외로움 = 넓은 땅, 작은 둘</span>']],
     ['화면 스타일', 'var(--c2)', [
       '<b>느낌 대신 재료로</b> · <span class="hl" data-k="tone">두 단계 명암</span> · <span class="hl" data-k="line">가는 외곽선</span>',
       '<span class="hl" data-k="step">화면 1초 24장 · 인물 1초 12장</span>',
@@ -138,9 +139,9 @@ Video.define(async (ctx) => {
 
   // ================= opening: 8 seconds of the film, full screen, with its own sound =================
   cam(0, V.full, 0);
-  tiled('film', 22.0, 8.0, 0, 8.0, { audio: true, vol: 1 });
+  tiled('film', 0, 30.0, 0, 30.0, { audio: true, vol: 1 });
   // the film again, silent, while the narration introduces it
-  tiled('film', 0.4, 4.0, 8.0, S('op03'));
+  tiled('film', 0.4, 4.0, 30.0, S('op03'));
   tiled('film', 8.0, 4.4, S('op03'), S('op05') + 0.6);
   cam(S('op01') + 0.4, V.screen, 2.2);
   note(layer, '「남은 길」 · 30초 · 일곱 컷 · 대사 없음', 1600, 1110, S('op01') + 1.6, S('op03'), 'sm');
@@ -181,7 +182,7 @@ Video.define(async (ctx) => {
   term(100, 1220, 1340, 780, '터미널 — 스킬 설치 (README의 두 줄)', S('in01') + 0.2, S('rq01') - 0.05, [
     [A('in02', '첫째', -0.1), 'out', '# 첫째 줄: 깃허브에서 스킬 폴더를 통째로 내려받기'],
     [A('in02', 'git clone', 0), 'cmd', 'git clone https://github.com/kstost/script-to-motion.git ~/.claude/skills/script-to-motion', 2.6],
-    [A('in03', '화면의', -0.2), 'note', '# ~ = 홈 폴더 · ~/.claude/skills = 스킬을 모아 두는 폴더'],
+    [A('in03', '화면에', -0.2), 'note', '# ~ = 홈 폴더 · ~/.claude/skills = 스킬을 모아 두는 폴더'],
     [A('in04', '둘째', -0.1), 'out', '# 둘째 줄: 스킬이 쓰는 도구 준비 (npm = Node.js와 함께 오는 도구)'],
     [A('in04', 'npm install', -0.2), 'cmd', 'cd ~/.claude/skills/script-to-motion/scripts && npm install', 2.0],
     [S('in05') + 0.6, 'note', '# 대사 없는 단편 → 음성 서비스 키 없이도 된다'],
@@ -348,7 +349,7 @@ Video.define(async (ctx) => {
   note(layer, '한 곳에 두면 → 함께 움직인다', 2420, 1880, A('sd05', '한 곳에', 0.1), S('sd06'), '');
   // hear it: the film's own sound under the feet shot, with its waveform and the footfalls it was made from
   cam(S('sd06'), V.wave, 1.4);
-  const sdIn = 4.5, sdT0 = S('sd06') + 0.1, sdDur = Math.min(7.9, (S('wk01') - 0.12) - sdT0), sdSay = E('sd06') - sdT0;
+  const sdIn = 4.5, sdT0 = S('sd06') + 0.1, sdDur = Math.min(8.6, (S('wk01') - 0.05) - sdT0), sdSay = E('sd06') - sdT0;
   tiled('film', sdIn, sdDur, sdT0, sdT0 + sdDur, { audio: true, vol: [[0, 0.35], [Math.max(0.1, sdSay), 0.35], [Math.max(0.2, sdSay + 0.3), 1]] });
   note(scr, '발이 땅에 닿을 때마다 → 발소리', 60, 60, sdT0 + 0.3, sdT0 + sdDur, 'w');
   const SND = window.SOUND_DATA || { peaks: [], peaksFps: 60, steps: [] };
@@ -426,7 +427,7 @@ Video.define(async (ctx) => {
   const sfxBox = $('sfx');
   const LEAD = 0.03;
   const sfx = (key, t0, vol, dur) => M.clip(sfxBox, key, { x: 0, y: 0, w: 4, h: 4, start: Math.max(0, t0 - LEAD), dur: Math.min(M.SRC[key].dur, (dur || 9) + LEAD), audio: true, vol });
-  const quiet = (t) => t < 8.4 || (t > sdT0 - 0.2 && t < sdT0 + sdDur);   // never over the film's own sound
+  const quiet = (t) => t < 30.3 || (t > sdT0 - 0.2 && t < sdT0 + sdDur);   // never over the film's own sound
   keysT.forEach(([at, dur], j) => { if (quiet(at)) return; const n = Math.max(1, Math.ceil((dur - 0.1) / 0.66)); for (let i = 0; i < n; i++) sfx((i + j) % 2 ? 'keys_b' : 'keys_a', at + i * 0.66, 0.8, Math.max(0.2, at + dur - (at + i * 0.66) + 0.04)); sfx('enter', at + dur + 0.05, 0.6); });
   stepsT.forEach((t0) => { if (!quiet(t0)) sfx('step', t0, 0.55); });
   const VOL = { ok: 0.5, pop: 0.5, whoosh: 0.55, shutter: 0.9, tick: 0.45 }, RANK = ['ok', 'shutter', 'pop', 'whoosh', 'tick'];
