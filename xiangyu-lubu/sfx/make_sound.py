@@ -115,11 +115,11 @@ def clang(seed):
     r = np.random.default_rng(seed); d = T_(1.0); f0 = r.uniform(520, 700)
     s = sum(a * np.sin(2 * np.pi * f0 * m * d + r.random() * 6) * np.exp(-d * dk) for m, a, dk in ((1, 1, 4), (2.76, 0.7, 6), (5.4, 0.45, 9), (8.9, 0.3, 12)))
     return norm(s * 0.6 + norm(band(r.standard_normal(len(d)), 1200, 9000)) * np.exp(-d * 45) * 1.6)
-for k in range(9): place(drum(60 + k), at('sg09', 0.05 + k * 0.1), 0.42, pan=(k % 3 - 1) * 0.3); place(clang(80 + k), at('sg09', 0.08 + k * 0.1), 0.12, pan=(k % 2 * 2 - 1) * 0.4)
-for k in range(10): place(drum(100 + k, 55), S('sg16') + k * 0.55, 0.36)
+for k in range(9): place(drum(60 + k), at('sg09', 0.05 + k * 0.1), 0.2, pan=(k % 3 - 1) * 0.3); place(clang(80 + k), at('sg09', 0.08 + k * 0.1), 0.07, pan=(k % 2 * 2 - 1) * 0.4)
+for k in range(10): place(drum(100 + k, 55), S('sg16') + k * 0.55, 0.17)
 host = loop(9, 160, 900, 23.0)
-L += host * (span(S('sg16'), E('sg16'), 0.05) + span(S('sg36') - 3, E('sg36'), 0.035) + span(S('gy14'), E('gy16'), 0.04))
-for k in range(3): place(drum(120 + k, 58), at('gy16', 0.08 + k * 0.32), 0.45); place(clang(130 + k), at('gy16', 0.14 + k * 0.32), 0.16)
+L += host * (span(S('sg16'), E('sg16'), 0.025) + span(S('sg36') - 3, E('sg36'), 0.035) + span(S('gy14'), E('gy16'), 0.04))
+for k in range(3): place(drum(120 + k, 58), at('gy16', 0.08 + k * 0.32), 0.22); place(clang(130 + k), at('gy16', 0.14 + k * 0.32), 0.09)
 for k in range(6): place(drum(140 + k, 70), at('ki19', 0.1 + k * 0.15), 0.2)
 
 # ---------------- fire ----------------
@@ -175,6 +175,67 @@ crick = np.zeros(N); r = np.random.default_rng(240); x0 = S('gy03')
 while x0 < E('gy12'):
     d = T_(0.08); c = np.sin(2 * np.pi * 4300 * d) * np.sin(np.pi * d / 0.08) ** 2; i = int(x0 * SR); crick[i:i + len(d)] += c; x0 += 0.5 * r.uniform(0.8, 1.3)
 L += crick * 0.01
+
+# ---------------- the armies: war cries, the clash of a melee, volleys of arrows, horses ----------------
+def warcry(seed, d=2.6, n=36, pitch=180, swell=0.5):
+    """a host shouting: many voices, each a buzzy tone gliding up then down, shaped by the formants of 'a' (와아)"""
+    r = np.random.default_rng(seed); x = T_(d); out = np.zeros(len(x))
+    for k in range(n):
+        f0 = pitch * r.uniform(0.75, 1.45); st = r.uniform(0, 0.5); ln = r.uniform(d * 0.5, d - st)
+        e = np.clip((x - st) / 0.18, 0, 1) * np.clip((st + ln - x) / 0.5, 0, 1)
+        fr = f0 * (1 + 0.18 * np.clip((x - st) / 0.4, 0, 1) - 0.12 * np.clip((x - st - ln * 0.6) / (ln * 0.4), 0, 1)) * (1 + 0.012 * np.sin(2 * np.pi * r.uniform(4, 6.5) * x + k))
+        ph = 2 * np.pi * np.cumsum(fr) / SR
+        v = sum(np.sin(m * ph) / m ** 0.9 for m in range(1, 14))
+        out += v * e * r.uniform(0.5, 1.0)
+    voiced = band(out, 600, 1300) * 1.0 + band(out, 1900, 2900) * 0.45 + band(out, 250, 500) * 0.4
+    breath = band(r.standard_normal(len(x)), 500, 3500) * 0.25 * np.clip(x / 0.3, 0, 1)
+    shape = np.sin(np.pi * np.clip(x / d, 0, 1)) ** swell
+    return norm((norm(voiced) + norm(breath) * 0.3) * shape)
+def melee(seed, d=3.0, rate=7.0):
+    """a melee: a bed of shouting and shuffling with many quick iron hits"""
+    r = np.random.default_rng(seed); out = np.zeros(int(d * SR)); x = 0.0; k = 0
+    while x < d - 1.0:
+        c = clang(seed * 10 + k); i = int(x * SR); n = min(len(c), len(out) - i); out[i:i + n] += c[:n] * r.uniform(0.15, 0.6); x += r.exponential(1 / rate); k += 1
+    out += norm(band(r.standard_normal(len(out)), 150, 1200)) * 0.25
+    return norm(out) * np.minimum(1, T_(d) / 0.3) * np.minimum(1, (d - T_(d)) / 0.6)
+def volley(seed, n=40, d=1.6):
+    r = np.random.default_rng(seed); out = np.zeros(int(d * SR))
+    for k in range(n):
+        w = whoosh(r.uniform(0.25, 0.45), seed * 100 + k, 1800, 8000); i = int(r.uniform(0, d - 0.5) * SR); out[i:i + len(w)] += w * r.uniform(0.3, 1)
+    return norm(out)
+def neigh(seed):
+    r = np.random.default_rng(seed); x = T_(1.3); f = 520 + 380 * np.sin(np.pi * np.clip(x / 1.1, 0, 1)) ** 0.6 + 60 * np.sin(2 * np.pi * 9 * x) * np.clip(x - 0.3, 0, 1)
+    ph = 2 * np.pi * np.cumsum(f) / SR; v = sum(np.sin(m * ph) / m for m in range(1, 9))
+    v = band(v, 400, 3500) * np.minimum(1, x / 0.05) * np.exp(-np.maximum(0, x - 0.9) * 8)
+    return norm(v + 0.2 * band(r.standard_normal(len(x)), 1500, 5000) * np.exp(-x * 3))
+CRIES = [   # (cue, fraction of the line, gain, pan, kind) — the armies of each battle, where the narration names them
+    ('ki13', 0.55, 0.10, 0.0, 'cry'),          # 8,000 young men rise with 항우
+    ('ki19', 0.3, 0.12, -0.3, 'cry'),          # 동탁's army enters 낙양
+    ('sg03', 0.3, 0.12, 0.2, 'cry'),           # the Qin host around 거록
+    ('sg09', 0.02, 0.22, 0.0, 'cry'), ('sg09', 0.15, 0.16, 0.0, 'melee'), ('sg09', 0.6, 0.16, 0.3, 'melee'),
+    ('sg15', 0.7, 0.14, -0.4, 'cry'),           # 3만 at dawn
+    ('sg16', 0.0, 0.24, -0.2, 'cry'), ('sg16', 0.2, 0.2, 0.0, 'melee'), ('sg16', 0.25, 0.18, 0.0, 'volley'),
+    ('sg17', 0.1, 0.12, 0.2, 'melee'),
+    ('sg33', 0.4, 0.12, 0.3, 'cry'),            # 장연's host
+    ('sg34', 0.05, 0.2, 0.0, 'cry'), ('sg34', 0.1, 0.18, 0.0, 'melee'), ('sg34', 0.5, 0.18, -0.2, 'melee'), ('sg34', 0.0, 0.25, 0.3, 'neigh'),
+    ('sg35', 0.3, 0.2, 0.0, 'cry'), ('sg36', 0.0, 0.22, 0.4, 'neigh'),
+    ('sg37', 0.8, 0.08, -0.4, 'cry'),           # 기령's army
+    ('jn20', 0.2, 0.1, 0.0, 'cry'), ('jn22', 0.0, 0.16, 0.0, 'melee'), ('jn22', 0.3, 0.14, -0.3, 'volley'),
+    ('jn24', 0.2, 0.14, 0.0, 'cry'),            # 조조 surrounds 하비
+    ('gy03', 0.2, 0.12, 0.0, 'cry'),            # the Han armies around 해하
+    ('gy11', 0.0, 0.18, -0.2, 'cry'), ('gy11', 0.1, 0.16, 0.0, 'melee'), ('gy11', 0.0, 0.25, 0.3, 'neigh'),
+    ('gy13', 0.5, 0.14, 0.3, 'cry'),            # thousands of Han riders
+    ('gy16', 0.02, 0.26, 0.0, 'cry'), ('gy16', 0.1, 0.22, 0.0, 'melee'), ('gy16', 0.42, 0.22, 0.0, 'melee'), ('gy16', 0.74, 0.22, 0.0, 'melee'),
+    ('gy20', 0.5, 0.22, 0.0, 'melee'), ('gy20', 0.45, 0.14, 0.0, 'cry'),
+    ('gy24', 0.3, 0.1, 0.0, 'cry'),
+]
+for n_, (cid, f, g, pan, kind) in enumerate(CRIES):
+    if cid not in CUES: continue
+    t0 = at(cid, f); g *= 0.42   # under the voice: a battle is heard, the narration stays on top
+    if kind == 'cry': place(warcry(3000 + n_, 3.2), t0, g, pan)
+    elif kind == 'melee': place(melee(3100 + n_, 3.4), t0, g, pan)
+    elif kind == 'volley': place(volley(3200 + n_), t0, g, pan)
+    elif kind == 'neigh': place(neigh(3300 + n_), t0, g, pan)
 
 # ---------------- level ----------------
 L *= np.minimum(1, t / 0.8)[None, :]

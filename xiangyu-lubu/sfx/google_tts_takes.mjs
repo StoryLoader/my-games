@@ -49,8 +49,8 @@ function pcmOf(buf) {
   while (p + 8 <= buf.length) { const id = buf.toString('ascii', p, p + 4), n = buf.readUInt32LE(p + 4); if (id === 'data') { const d = buf.subarray(p + 8, p + 8 + n); return new Int16Array(d.buffer.slice(d.byteOffset, d.byteOffset + d.length)); } p += 8 + n + (n & 1); }
   throw new Error('no data chunk');
 }
-async function synth(markup) {
-  const body = { input: { markup }, voice: { languageCode: lang, name: voiceName }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: SR, speakingRate: 1.0 } };
+async function synth(markup, vname = voiceName) {
+  const body = { input: { markup }, voice: { languageCode: lang, name: vname }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: SR, speakingRate: 1.0 } };
   for (let a = 1; ; a++) {
     const r = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize', { method: 'POST', headers, body: JSON.stringify(body), signal: AbortSignal.timeout(120000) }).catch((e) => ({ ok: false, status: 0, text: async () => e.message }));
     if (r.ok) return pcmOf(Buffer.from((await r.json()).audioContent, 'base64'));
@@ -88,11 +88,13 @@ for (const c of script.cues) {
   const f = path.join(cacheDir, cacheKey(c) + '.pcm');
   if (fs.existsSync(f) && !only && !audit) { kept++; continue; }
   const parts = [];
+  // a character's line is spoken in that character's own voice (script.json "voices": speaker → voice name)
+  const vname = (c.speaker && script.voices && script.voices[c.speaker]) || voiceName;
   for (const s of sentences(c.say)) {
-    const pf = path.join(sentDir, 'sent-' + crypto.createHash('sha256').update(voiceName + '|' + markupOf(s)).digest('hex').slice(0, 20) + '.pcm');
+    const pf = path.join(sentDir, 'sent-' + crypto.createHash('sha256').update(vname + '|' + markupOf(s)).digest('hex').slice(0, 20) + '.pcm');
     let x;
     if (fs.existsSync(pf)) { const b = fs.readFileSync(pf); x = trim(new Int16Array(b.buffer.slice(b.byteOffset, b.byteOffset + b.length))); }
-    else { x = trim(await synth(markupOf(s))); fs.writeFileSync(pf, Buffer.from(x.buffer, x.byteOffset, x.byteLength)); chars += s.length; }
+    else { x = trim(await synth(markupOf(s), vname)); fs.writeFileSync(pf, Buffer.from(x.buffer, x.byteOffset, x.byteLength)); chars += s.length; }
     parts.push({ s, x });
     if (audit) {
       const dur = x.length / SR, ps = pausesOf(x), commas = [];

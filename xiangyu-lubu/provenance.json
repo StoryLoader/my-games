@@ -4,6 +4,46 @@
       "file": "assets/user/sfx/sfx.mp4",
       "source": "user",
       "note": "No narration-free music was asked for; the effects track (wind, ink drops, seals, the bronze cauldron's hum, hooves, drums, iron, fire, water, cracks, rope, a far chant) is synthesized from code by sfx/make_sound.py in this project from js/cues.js (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock. The user's standing rule: code-synthesized effects, no background music."
+    },
+    {
+      "file": "assets/user/img/xiangyu.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Xiang Yu.jpg (https://commons.wikimedia.org/wiki/File:Xiang_Yu.jpg) — licence: Public domain; Xiang Yu (232 BC – 202 BC) was a prominent military leader and political figure during the late Qin Dynasty. Qing dynasty"
+    },
+    {
+      "file": "assets/user/img/lubu.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Lü Bu Portrait.jpg (https://commons.wikimedia.org/wiki/File:L%C3%BC_Bu_Portrait.jpg) — licence: Public domain; Portrait of Lü Bu from a Qing Dynasty edition of the Romance of the Three Kingdoms"
+    },
+    {
+      "file": "assets/user/img/caocao.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Cao Cao scth.jpg (https://commons.wikimedia.org/wiki/File:Cao_Cao_scth.jpg) — licence: Public domain; A portrait of Cao Cao from Sancai Tuhui. circa 1607date QS:P,+1607-00-00T00:00:00"
+    },
+    {
+      "file": "assets/user/img/liubei.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Liu Bei Tang.jpg (https://commons.wikimedia.org/wiki/File:Liu_Bei_Tang.jpg) — licence: Public domain;  7th centurydate QS:P571,+650-00-00T00:00"
+    },
+    {
+      "file": "assets/user/img/dongzhuo.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Dong Zhuo Qing Dynasty Illustration.jpg (https://commons.wikimedia.org/wiki/File:Dong_Zhuo_Qing_Dynasty_Illustration.jpg) — licence: Public domain; Qing Dynasty Romance of the Three Kingdoms illustration of Dong Zhuo Qing Dynasty (1906)"
+    },
+    {
+      "file": "assets/user/img/dingyuan.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Ding Yuan Qing Illustration.jpg (https://commons.wikimedia.org/wiki/File:Ding_Yuan_Qing_Illustration.jpg) — licence: Public domain; Qing Dynasty Romance of the Three Kingdoms illustration of Ding Yuan Qing Dynasty (1906)"
+    },
+    {
+      "file": "assets/user/img/hanxin.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Hán Xìn.jpg (https://commons.wikimedia.org/wiki/File:H%C3%A1n_X%C3%ACn.jpg) — licence: Public domain;"
+    },
+    {
+      "file": "assets/user/img/diaochan.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17) to search for and use real old books and portraits. Downloaded from Wikimedia Commons: File:Diaochan Qing Dynasty Illustration.jpg (https://commons.wikimedia.org/wiki/File:Diaochan_Qing_Dynasty_Illustration.jpg) — licence: Public domain; Qing dynasty Romance of the Three Kingdoms illustration of Diaochan Qing Dynasty (1906)"
     }
   ]
 }

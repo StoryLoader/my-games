@@ -372,7 +372,7 @@ Video.define(async (ctx) => {
   shot('ki06', 'xiang', 'bronze', (k) => CP(lerp(1.0, 0.4, k), lerp(0.8, 1.2, k), lerp(9.5, 7.6, io(k)), 0, 2.7, 2), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); dingLift(t, S('ki06') + 2.4); });
   shot('ki07', 'xiang', 'bronze', (k) => CP(Math.sin(k * 1.2) * 2.4, 3.7, 7.6 - 0.8 * k, 0, 3.3, 2.4), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); lifter.visible = false; DING.visible = true; DING.scale.setScalar(1.0); DING.position.set(0, 3.2, 2.4); DING.rotation.y = 0.3 + t * 0.12; });
   shot('ki08', 'xiang', 'bronze', (k) => CP(lerp(4, 6, k), 2.0, 9, 5, 1.4, 1), (t) => { xiangReset(); youth.visible = true; uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
-  shot('ki09', 'xiang', 'bronze', (k) => CP(lerp(5, 2, io(k)), lerp(2, 9, io(k)), lerp(9, 30, io(k)), lerp(5, 0, io(k)), lerp(1.6, 1, io(k)), -10), (t) => { xiangReset(); youth.visible = uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); legion.visible = t > cue('ki09').about('만 명') - 0.2; legion.material.opacity = K(t, cue('ki09').about('만 명') - 0.2, cue('ki09').about('만 명') + 1.2); });
+  shot('ki09', 'xiang', 'bronze', (k) => CP(lerp(5, 2, io(k)), lerp(2, 9, io(k)), lerp(9, 30, io(k)), lerp(5, 0, io(k)), lerp(1.6, 1, io(k)), -10), (t) => { xiangReset(); youth.visible = uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); legion.visible = t > cue('ki09q').about('만 명') - 0.2; legion.material.opacity = K(t, cue('ki09q').about('만 명') - 0.2, cue('ki09q').about('만 명') + 1.2); });
   shot('ki10', 'xiang', 'bronze', (k) => CP(lerp(3, 5, k), 2.0, 9, 4.4, 1.6, 1), (t) => { xiangReset(); youth.visible = uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
   shot('ki11', 'xiang', 'bronze', (k) => CP(lerp(-12, -8, k), 3.0, 12, lerp(-2, 4, k), 2.0, -14), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); carriages.visible = true; carriages.position.x = (t - S('ki11')) * 1.2 - 4; youthHill.visible = true; });
   shot('ki12', 'xiang', 'bronze', (k) => CP(0, lerp(8, 5, k), 26, 0, 1.5, -10), (t) => { xiangReset(); chuFlag.visible = true; chuFlag.position.set(-2, 0, -3); spears.forEach((s) => (s.visible = false)); eightK.visible = t > S('ki13'); eightK.material.opacity = K(t, S('ki13'), S('ki13') + 2); });
@@ -482,7 +482,7 @@ Video.define(async (ctx) => {
   shot('gy16', 'gaixia', 'dawn', (k) => CP(lerp(-10, 10, k), 5, 26, 0, 1, -12), (t) => { gxReset(t); camp.visible = false; zhui.mesh.visible = yu.visible = false; lamp.material.opacity = 0; torches.forEach((m) => (m.material.opacity = 0)); hanHost.visible = true; const a = S('gy16'), L = E('gy16') - a, p = Math.floor((t - a) / (L / 3)); ride(t, 3, a + p * L / 3, a + (p + 1) * L / 3, 0); });
   const wuReset = (t) => { zhui2.mesh.visible = true; zhui2.mesh.position.set(-5.4, 0, -2.4); zhui2.mesh.scale.set(1, 1, 1); zhui2.draw(0.25, 0); ghosts.forEach((g) => (g.material.opacity = 0)); pursuers.visible = false; xyFoot.visible = true; };
   shot('gy17', 'wujiang', 'dawn', (k) => CP(lerp(-10, -2, k), 3, 24, 0, 1.5, -10), wuReset);
-  shot('gy18', 'wujiang', 'dawn', (k) => CP(lerp(-3, -1, k), 2.4, 12, -2, 2, -6), (t) => { wuReset(t); const a = cue('gy18').about('한 사람도'); ghosts.forEach((g, i) => { g.material.opacity = 0.7 * (1 - K(t, a + (i % 10) * 0.12, a + 1.4 + (i % 10) * 0.12)) * K(t, S('gy18'), S('gy18') + 1); }); });
+  shot('gy18', 'wujiang', 'dawn', (k) => CP(lerp(-3, -1, k), 2.4, 12, -2, 2, -6), (t) => { wuReset(t); const a = cue('gy18q').about('한 사람도'); ghosts.forEach((g, i) => { g.material.opacity = 0.7 * (1 - K(t, a + (i % 10) * 0.12, a + 1.4 + (i % 10) * 0.12)) * K(t, S('gy18'), S('gy18') + 1); }); });
   shot('gy19', 'wujiang', 'dawn', (k) => CP(-2.4, 2.1, lerp(7, 5.6, k), -2.4, 2.1, -2), wuReset);
   shot('gy20', 'wujiang', 'dawn', (k) => CP(lerp(-8, 0, k), 3, 22, 0, 1.4, -6), (t) => { wuReset(t); const a = K(t, S('gy20'), S('gy20') + 3); zhui2.mesh.position.set(lerp(-5.4, 2, a), 0, lerp(-2.4, -5, a)); zhui2.draw((t * 0.8) % 1, 0.3 * (a < 1 ? 1 : 0)); pursuers.visible = t > cue('gy20').about('걸어서'); });
   shot('gy21', 'wujiang', 'dawn', (k) => CP(-1.6, 2.2, lerp(8, 6.5, k), -2.4, 2.0, -2), (t) => { wuReset(t); zhui2.mesh.visible = false; pursuers.visible = true; });
@@ -522,8 +522,8 @@ Video.define(async (ctx) => {
   // ============================ the writing, cue by cue ============================
   const B = (id) => S(id), Bend = (id) => E(id) + 0.2;
   // prologue
-  insc(B('op02') + 0.4, Bend('op02'), { x: 1450, y: 150, han: '項羽', ko: '항우 · 기원전 3세기', size: 120, seal: '楚' });
-  insc(B('op03') + 0.4, Bend('op03'), { x: 300, y: 150, han: '呂布', ko: '여포 · 서기 2세기 말', size: 120, seal: '漢' });
+  insc(B('op02') + 0.4, Bend('op02'), { x: 1200, y: 150, han: '項羽', ko: '항우 · 기원전 3세기', size: 120, seal: '楚' });
+  insc(B('op03') + 0.4, Bend('op03'), { x: 520, y: 150, han: '呂布', ko: '여포 · 서기 2세기 말', size: 120, seal: '漢' });
   brush(B('op04') + 1.2, Bend('op04'), { x: 960, y: 640, text: '사백 년', size: 150, align: 'center', how: 'left' });
   brush(B('op05') + 0.6, Bend('op05') + 0.4, { x: 960, y: 200, text: '누가 이겼을까', size: 170, align: 'center' });
   brush(B('op09') + 1.0, Bend('op10'), { x: 1640, y: 120, text: '소설', size: 110, color: '#c0392b', how: 'down' });
@@ -534,8 +534,8 @@ Video.define(async (ctx) => {
   insc(B('ki04') + 0.5, Bend('ki04'), { x: 300, y: 140, han: '楚將 項燕', ko: '초나라 장수 항연', size: 96 });
   insc(B('ki06') + 0.4, Bend('ki06'), { x: 1520, y: 120, han: ['力能扛鼎'], ko: '힘은 솥을 들 만했다', size: 104, seal: '史記' });
   brush(B('ki07') + 0.2, Bend('ki07'), { x: 1500, y: 300, text: '정 · 鼎', size: 140 });
-  insc(cue('ki09').about('만 명') - 0.3, Bend('ki09'), { x: 1460, y: 130, han: ['學萬人敵'], ko: '만 명을 상대하는 법', size: 110, seal: '項' });
-  insc(B('ki11') + 1.6, Bend('ki11'), { x: 1500, y: 120, han: ['彼可取而代也'], ko: '저 자리는 내가 대신할 수 있다', size: 92 });
+  insc(cue('ki09q').about('만 명') - 0.3, Bend('ki09q'), { x: 1460, y: 130, han: ['學萬人敵'], ko: '만 명을 상대하는 법', size: 110, seal: '項' });
+  insc(B('ki11q') - 0.1, Bend('ki11q'), { x: 1500, y: 120, han: ['彼可取而代也'], ko: '저 자리는 내가 대신할 수 있다', size: 92 });
   brush(B('ki13') + 1.8, Bend('ki13'), { x: 960, y: 170, text: '8,000', size: 160, align: 'center' });
   brush(B('ki16') + 1.2, Bend('ki16'), { x: 960, y: 140, text: '오원군 구원현', size: 110, align: 'center' });
   insc(cue('ki17').about('비장') - 0.4, Bend('ki17'), { x: 1560, y: 140, han: '飛將', ko: '날아다니는 장수', size: 140, seal: '呂' });
@@ -558,20 +558,20 @@ Video.define(async (ctx) => {
   insc(cue('sg23').about('수극') - 0.2, Bend('sg24'), { x: 300, y: 140, han: '手戟', ko: '손에 들고 쓰는 짧은 창', size: 120 });
   brush(B('sg26') + 0.4, Bend('sg26'), { x: 1500, y: 160, text: '소설', size: 120, color: '#c0392b' });
   brush(B('sg27') + 1.5, Bend('sg27'), { x: 960, y: 130, text: '낙양 → 장안', size: 110, align: 'center' });
-  insc(B('sg28') + 0.3, Bend('sg28'), { x: 1560, y: 120, han: ['柰如父子何'], ko: '아버지와 아들 사이인데', size: 92, seal: '呂' });
-  insc(B('sg29') + 0.6, Bend('sg29'), { x: 300, y: 110, han: ['擲戟之時', '豈有父子情也'], ko: '창을 던질 때, 부자의 정이 있었는가', size: 84, seal: '王' });
+  insc(B('sg28q') - 0.1, Bend('sg28q'), { x: 1560, y: 120, han: ['柰如父子何'], ko: '아버지와 아들 사이인데', size: 92, seal: '呂' });
+  insc(B('sg29q') - 0.1, Bend('sg29q'), { x: 300, y: 110, han: ['擲戟之時', '豈有父子情也'], ko: '창을 던질 때, 부자의 정이 있었는가', size: 84, seal: '王' });
   brush(B('sg32') + 2.0, Bend('sg33'), { x: 960, y: 120, text: '흑산적 장연', size: 104, align: 'center' });
   brush(cue('sg34').about('하루에') - 0.2, Bend('sg34'), { x: 960, y: 120, text: '하루 서너 번 · 열흘', size: 96, align: 'center' });
   insc(B('sg36') - 0.2, Bend('sg36') + 0.4, { x: 140, y: 90, han: ['人中有呂布', '馬中有赤兔'], ko: ['사람 중에는 여포', '말 중에는 적토'], size: 104, seal: '赤兔' });
-  insc(cue('sg39').about('작은 가지') - 0.4, Bend('sg39'), { x: 1560, y: 110, han: ['射戟小支'], ko: '창의 작은 가지를 쏘다', size: 100 });
+  insc(cue('sg39q').about('작은 가지') - 0.4, Bend('sg39q'), { x: 1560, y: 110, han: ['射戟小支'], ko: '창의 작은 가지를 쏘다', size: 100 });
   insc(B('sg40') + 2.4, Bend('sg40'), { x: 300, y: 120, han: ['將軍天威也'], ko: '장군의 하늘 같은 위엄', size: 96, seal: '呂' });
   // 전
   stamp(B('jn01') + 0.1, B('jn01') + 2.6, { chars: '轉', x: 860, y: 380, size: 200 });
   insc(B('jn04') + 1.6, Bend('jn04'), { x: 1560, y: 120, han: ['坑秦卒二十餘萬'], ko: '진나라 병사 이십여만을 묻다', size: 84, light: true });
-  insc(B('jn08') + 3.5, Bend('jn08'), { x: 1540, y: 110, han: ['奪項王天下者', '必沛公也'], ko: '천하를 빼앗을 자는 유방', size: 82, seal: '范增' });
+  insc(B('jn08q') - 0.1, Bend('jn08q'), { x: 1540, y: 110, han: ['奪項王天下者', '必沛公也'], ko: '천하를 빼앗을 자는 유방', size: 82, seal: '范增' });
   insc(B('jn09') + 3.6, Bend('jn09'), { x: 1580, y: 110, han: ['火三月不滅'], ko: '불이 석 달 꺼지지 않았다', size: 100, light: true });
-  insc(B('jn10') + 3.0, Bend('jn10'), { x: 1560, y: 120, han: ['衣繡夜行'], ko: '비단옷 입고 밤길 걷기', size: 104, light: true });
-  insc(B('jn11') + 0.6, Bend('jn11'), { x: 300, y: 110, han: ['沐猴而冠'], ko: '갓 쓴 원숭이', size: 110, light: true });
+  insc(B('jn10q') - 0.1, Bend('jn10q'), { x: 1560, y: 120, han: ['衣繡夜行'], ko: '비단옷 입고 밤길 걷기', size: 104, light: true });
+  insc(B('jn11q') - 0.1, Bend('jn11q'), { x: 300, y: 110, han: ['沐猴而冠'], ko: '갓 쓴 원숭이', size: 110, light: true });
   brush(B('jn12') + 1.2, Bend('jn12'), { x: 960, y: 120, text: '烹', size: 220, cls: 'han', align: 'center', color: '#efe6d4' });
   insc(B('jn14') + 0.4, Bend('jn14'), { x: 1560, y: 120, han: ['韓信'], ko: '계책을 올려도 쓰이지 않다', size: 120 });
   insc(B('jn15') + 1.0, Bend('jn15'), { x: 300, y: 120, han: ['范增'], ko: '돌아가는 길에 죽다', size: 120 });
@@ -590,13 +590,13 @@ Video.define(async (ctx) => {
   tl.set(countEl, { textContent: '100' }, cue('gy12').about('백여')); tl.set(countEl, { textContent: '28' }, cue('gy13').about('스물여덟')); tl.set(countEl, { color: '#151315' }, B('gy13'));
   insc(B('gy15') + 0.2, Bend('gy15'), { x: 1540, y: 110, han: ['此天之亡我', '非戰之罪也'], ko: '하늘이 나를 망하게 하는 것', size: 92, seal: '項羽' });
   brush(B('gy17') + 2.0, Bend('gy17'), { x: 960, y: 110, text: '오강', size: 140, align: 'center' });
-  insc(B('gy19') + 0.4, Bend('gy19'), { x: 1560, y: 100, han: ['我何面目見之'], ko: '무슨 얼굴로 그들을 보겠는가', size: 96, seal: '項羽' });
+  insc(B('gy19') + 0.2, Bend('gy19'), { x: 1560, y: 100, han: ['我何面目見之'], ko: '무슨 얼굴로 그들을 보겠는가', size: 96, seal: '項羽' });
   brush(cue('gy22').about('서른한') - 0.1, Bend('gy22') + 0.6, { x: 960, y: 380, text: '31', size: 240, cls: 'num', align: 'center' });
   brush(B('gy24') + 3.0, Bend('gy24'), { x: 960, y: 110, text: '백문루 · 서기 198년 겨울', size: 92, align: 'center' });
-  insc(B('gy27') + 0.2, Bend('gy27'), { x: 1500, y: 70, han: ['縛虎不得不急'], ko: '호랑이는 꽉 묶을 수밖에', size: 120, seal: '曹' });
+  insc(B('gy27q') - 0.1, Bend('gy27q'), { x: 1500, y: 70, han: ['縛虎不得不急'], ko: '호랑이는 꽉 묶을 수밖에', size: 120, seal: '曹' });
   insc(B('gy29') + 0.2, Bend('gy29'), { x: 1560, y: 100, han: ['明公將步', '令布將騎'], ko: '공은 보병, 나는 기병', size: 90, seal: '呂' });
   insc(B('gy31') + 0.2, Bend('gy31'), { x: 300, y: 110, han: ['丁建陽', '董太師'], ko: '정원과 동탁', size: 100, seal: '劉' });
-  insc(B('gy32') + 2.4, Bend('gy32'), { x: 1560, y: 110, han: ['大耳兒最叵信'], ko: '귀 큰 놈이 가장 못 믿을 놈', size: 92, seal: '呂' });
+  insc(B('gy32q') - 0.1, Bend('gy32q'), { x: 1560, y: 110, han: ['大耳兒最叵信'], ko: '귀 큰 놈이 가장 못 믿을 놈', size: 92, seal: '呂' });
   brush(B('gy34') + 0.2, Bend('gy34') + 0.4, { x: 960, y: 760, text: '나이 · 기록 없음', size: 96, align: 'center', cls: 'ko' });
   // 판정
   brush(B('ep03') + 1.4, Bend('ep03'), { x: 960, y: 140, text: '판정할 기록 없음', size: 120, align: 'center' });
@@ -604,10 +604,64 @@ Video.define(async (ctx) => {
   brush(cue('ep05').about('3만') - 0.1, Bend('ep05'), { x: 1080, y: 330, text: '30,000 › 560,000', size: 104, cls: 'num' });
   brush(B('ep06') + 2.4, Bend('ep06'), { x: 300, y: 150, text: '이각·곽사, 조조에게 패', size: 72, cls: 'ko' });
   insc(B('ep10') - 0.2, Bend('ep11'), { x: 1400, y: 100, han: ['自矜功伐', '欲以力征經營天下', '五年卒亡其國'], ko: '자기 공만 자랑하고 힘으로만 다스리려 했다', size: 76, seal: '司馬遷' });
-  insc(B('ep12') + 0.4, Bend('ep12'), { x: 1400, y: 100, han: ['有虓虎之勇', '而無英奇之略', '唯利是視'], ko: '호랑이의 용맹, 계략은 없고 이익만 보았다', size: 76, seal: '陳壽' });
+  insc(B('ep12q') - 0.1, Bend('ep12q'), { x: 1400, y: 100, han: ['有虓虎之勇', '而無英奇之略', '唯利是視'], ko: '호랑이의 용맹, 계략은 없고 이익만 보았다', size: 76, seal: '陳壽' });
   brush(B('ep14') + 2.8, Bend('ep14'), { x: 960, y: 130, text: '鼎', size: 220, cls: 'han', align: 'center' });
   brush(B('ep17') + 0.6, END + 1, { x: 960, y: 150, text: '강함만으로는 천하를 얻을 수 없다', size: 92, align: 'center' });
   const fin = el('han', '項羽 · 呂布', { left: '960px', top: '820px', fontSize: '70px', transform: 'translateX(-50%)', color: '#151315' }); tl.set(fin, { opacity: 0 }, 0); tl.to(fin, { opacity: 1, duration: 1.2 }, E('ep17') + 0.3);
+
+  // ============================ real paintings and old pages (assets/user/img — provenance.json) ============================
+  // the user asked (2026-11-17) for real old books and portraits: public-domain and CC-licensed scans from Wikimedia
+  // Commons, mounted as hanging scrolls (portraits) or laid out as pages, each with its source under it.
+  const REAL = {
+    xiangyu: ['xiangyu.jpg', '항우', '청대 판화 「西楚霸王」'],
+    lubu: ['lubu.jpg', '여포', '청대 『삼국지연의』 판본 삽화'],
+    caocao: ['caocao.jpg', '조조', '명 『삼재도회』(1607) 「魏太祖像」'],
+    liubei: ['liubei.jpg', '유비', '당 염립본 『역대제왕도』(7세기)'],
+    dongzhuo: ['dongzhuo.jpg', '동탁', '청대 『삼국지연의』 삽화'],
+    dingyuan: ['dingyuan.jpg', '정원', '청대 『삼국지연의』 삽화'],
+    hanxin: ['hanxin.jpg', '한신', '옛 판화 「淮陰侯」'],
+    diaochan: ['diaochan.jpg', '초선 — 소설의 인물', '청대 『삼국지연의』 삽화'],
+    simaqian: ['simaqian.png', '사마천', '『역대성현반신상』 · 타이베이 국립고궁박물원'],
+    liubang: ['liubang.png', '유방 — 한 고조', '『성군현신전신상』'],
+    maogongding: ['maogongding.jpg', '모공정 — 실제 청동 정', '서주 말기 · 타이베이 국립고궁박물원'],
+    shiji: ['shiji_song.jpg', '『사기』', '남송 건안 황선부 간본'],
+    sgz: ['sgz_p3.jpg', '『삼국지』', '송 간본 · 중국국가도서관'],
+    yanyi: ['yanyi1591.jpg', '『삼국지통속연의』 — 소설', '명 만력 19년(1591) 간본'],
+  };
+  const HAVE = new Set(window.REAL_IMAGES || []);
+  const imgWaits = [], imgEls = [];
+  if (typeof ctx.busy === 'function') ctx.busy(() => imgEls.some((i) => !i.complete));
+  const mounted = (a, b, key, o) => {
+    const r = REAL[key]; if (!r || !HAVE.has(r[0])) return null;
+    const d = el('mount' + (o.page ? ' page' : ''), null, { left: o.x + 'px', top: o.y + 'px', width: o.w + 'px' });
+    const im = document.createElement('img'); im.src = 'assets/user/img/' + r[0]; im.alt = r[1]; d.appendChild(im); imgEls.push(im); imgWaits.push(im.decode().catch(() => {}));
+    const cap = document.createElement('div'); cap.className = 'cap'; cap.innerHTML = r[1] + '<small>' + r[2] + '</small>'; d.appendChild(cap);
+    tl.set(d, { opacity: 0, clipPath: 'inset(0 0 100% 0)', y: -10 }, 0);
+    tl.to(d, { opacity: 1, duration: 0.3 }, a); tl.fromTo(d, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 -10% 0)', duration: 1.1, ease: 'power2.out' }, a);
+    tl.to(d, { y: 0, duration: Math.max(0.5, b - a), ease: 'none' }, a);
+    tl.to(d, { opacity: 0, duration: 0.5 }, Math.max(a + 1.2, b - 0.5)); return d;
+  };
+  mounted(B('op02') + 1.0, Bend('op02') + 0.6, 'xiangyu', { x: 1440, y: 100, w: 330 });
+  mounted(B('op03') + 1.0, Bend('op03') + 0.6, 'lubu', { x: 150, y: 100, w: 300 });
+  mounted(B('op07') + 0.6, Bend('op07') + 0.4, 'shiji', { x: 900, y: 150, w: 900, page: true });
+  mounted(B('op08') + 0.6, Bend('op08') + 0.4, 'sgz', { x: 1080, y: 110, w: 620, page: true });
+  mounted(cue('op09').about('소설') - 0.4, Bend('op09') + 0.4, 'yanyi', { x: 1020, y: 120, w: 760, page: true });
+  mounted(B('ki07') + 1.2, Bend('ki07'), 'maogongding', { x: 1380, y: 300, w: 420 });
+  mounted(B('ki18') + 0.4, Bend('ki18') + 0.2, 'dingyuan', { x: 1470, y: 110, w: 330 });
+  mounted(B('ki19') + 1.2, Bend('ki20'), 'dongzhuo', { x: 150, y: 110, w: 330 });
+  mounted(B('sg14') + 0.2, Bend('sg14') + 0.2, 'liubang', { x: 1420, y: 90, w: 360 });
+  mounted(B('sg26') + 0.3, Bend('sg26'), 'diaochan', { x: 1420, y: 110, w: 330 });
+  mounted(B('sg38') + 0.2, Bend('sg38') + 0.2, 'liubei', { x: 1440, y: 90, w: 360 });
+  mounted(B('jn13') + 0.8, Bend('jn14'), 'hanxin', { x: 150, y: 100, w: 340 });
+  mounted(B('jn20') + 1.2, Bend('jn21'), 'caocao', { x: 1440, y: 90, w: 360 });
+  mounted(B('ep09') + 0.3, Bend('ep09') + 0.3, 'simaqian', { x: 1300, y: 90, w: 420 });
+  // who is speaking: when a person's own words are heard (in that person's voice), their name and seal are on screen
+  const SPK = { xiang: ['항우', '項'], lu: ['여포', '呂'], wangyun: ['왕윤', '王'], fanzeng: ['범증', '范'], mocker: ['그 사람', '說'], ferryman: ['오강의 정장', '亭'], caocao: ['조조', '曹'], liubei: ['유비', '劉'], simaqian: ['사마천', '遷'], chenshou: ['진수', '壽'], crowd: ['그 무렵 사람들의 말', '言'] };
+  const NIGHTQ = new Set(['gy05q', 'gy08', 'gy09', 'jn10q', 'jn11q']);
+  const SPEAKERS = window.SPEAKERS || {};
+  ctx.cues.forEach((c0) => { const c = { ...c0, speaker: SPEAKERS[c0.id] }; if (!c.speaker || !SPK[c.speaker]) return;
+    const d = el('speaker' + (NIGHTQ.has(c.id) ? ' light' : ''), null, {}); const sc2 = sealCanvas(SPK[c.speaker][1], 64); d.appendChild(sc2); const sp = document.createElement('span'); sp.textContent = SPK[c.speaker][0]; d.appendChild(sp);
+    tl.set(d, { opacity: 0 }, 0); tl.to(d, { opacity: 1, duration: 0.25 }, c.start - 0.05); tl.to(d, { opacity: 0, duration: 0.3 }, c.end + 0.1); });
 
   // ============================ ink drops and cracks (canvas) ============================
   const fx = $('inkfx'), fc = fx.getContext('2d'), FW = 960, FH = 540;
@@ -671,5 +725,6 @@ Video.define(async (ctx) => {
     s3d.fit(); R.render(sc, cam);
     drawFx(t);
   });
+  await Promise.all(imgWaits);
   prog(1);
 });
