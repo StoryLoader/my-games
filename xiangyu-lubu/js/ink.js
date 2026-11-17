@@ -226,6 +226,15 @@
         for (let k = 0; k < 4; k++) stroke(x, quad([cx - 30, gy - 300], [cx - 70, gy - 230 + k * 12], [cx - 84 - k * 6, gy - 140 + k * 22]), 16, 4, col, 0.45, r);
         x.restore(); granulate(x, w, h, seed + 3, 0.18); return;
       }
+      if (kind === 'bound') { // kneeling, arms bound behind, head bowed, ropes across the chest
+        x.fillStyle = col; x.globalAlpha = 0.94;
+        x.beginPath(); x.moveTo(cx - 70, gy); x.quadraticCurveTo(cx - 76, gy - 60, cx - 40, gy - 96); x.lineTo(cx + 46, gy - 100); x.quadraticCurveTo(cx + 80, gy - 60, cx + 84, gy); x.closePath(); x.fill();   // folded legs
+        x.beginPath(); x.moveTo(cx - 44, gy - 90); x.quadraticCurveTo(cx - 52, gy - 200, cx - 30, gy - 262); x.quadraticCurveTo(cx + 6, gy - 280, cx + 40, gy - 262); x.quadraticCurveTo(cx + 54, gy - 190, cx + 46, gy - 90); x.closePath(); x.fill();   // torso
+        x.beginPath(); x.ellipse(cx + 26, gy - 282, 19, 22, 0.5, 0, TAU); x.fill();   // bowed head
+        for (let k = 0; k < 6; k++) stroke(x, quad([cx - 34 + k * 6, gy - 280 + k * 6], [cx - 40 - k * 4, gy - 250 + k * 14], [cx - 52 - k * 8, gy - 240 + k * 20]), 6, 2, col, 0.6, r);   // loose hair
+        x.globalAlpha = 1; for (let k = 0; k < 4; k++) stroke(x, [[cx - 54, gy - 150 - k * 26], [cx, gy - 140 - k * 26], [cx + 54, gy - 152 - k * 26]], 6, 5, '#8a6a48', 0.95, r);   // ropes
+        x.restore(); granulate(x, w, h, seed + 3, 0.18); return;
+      }
       if (kind === 'kneel') {
         x.fillStyle = col; x.globalAlpha = 0.92; x.beginPath(); x.moveTo(cx - 50, gy); x.quadraticCurveTo(cx - 60, gy - 70, cx - 20, gy - 120); x.lineTo(cx + 20, gy - 130); x.quadraticCurveTo(cx + 48, gy - 70, cx + 56, gy); x.closePath(); x.fill();
         x.beginPath(); x.ellipse(cx + 26, gy - 136, 15, 16, 0, 0, TAU); x.fill(); x.restore(); return;

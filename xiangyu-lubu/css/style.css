@@ -32,7 +32,7 @@
 .brush { position: absolute; font-family: var(--brush); color: var(--ink); white-space: nowrap; line-height: 1; }
 .han { position: absolute; font-family: var(--han); font-weight: 700; color: var(--ink); white-space: nowrap; line-height: 1; }
 .ko { position: absolute; font-family: var(--ko); color: var(--ink); white-space: nowrap; line-height: 1.1; }
-.num { position: absolute; font-family: var(--ko); color: var(--ink); white-space: nowrap; line-height: 1; font-variant-numeric: lining-nums; }
+.num { position: absolute; font-family: var(--brush); color: var(--ink); white-space: nowrap; line-height: 1; font-variant-numeric: lining-nums; }
 .stamp { position: absolute; }
 .light-text { color: var(--paper); }
 .light-text .col, .light-text .col.ko { color: var(--paper); }

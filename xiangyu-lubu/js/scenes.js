@@ -68,7 +68,7 @@ Video.define(async (ctx) => {
   function vista(g, o = {}) {
     const seed = o.seed || 0, dark = o.dark || 1, R0 = o.ridges || RIDGES;
     const L = o.layers || [[-16, 70, 18, -1.5], [-34, 130, 34, -3], [-64, 230, 60, -6], [-115, 400, 104, -10], [-200, 680, 170, -16]];
-    L.forEach(([z, w, h, y], i) => { const m = INK.layer(R0[(seed + i) % R0.length], w, h, { opacity: (o.op || 1) * (i === 0 ? 1 : 0.95), color: o.tint || 0xffffff }); m.position.set((o.dx || 0) + ((seed * 13 + i * 29) % 17 - 8) * (i + 1) * 0.6, y + h * 0.5 * (o.lift || 0.55), z); g.add(m);
+    L.forEach(([z, w, h, y], i) => { const m = INK.layer(R0[(seed + i) % R0.length], w, h, { opacity: (o.op || 1) * (i === 0 ? 1 : i >= 3 ? 0.62 : 0.92), color: o.tint || 0xffffff }); m.position.set((o.dx || 0) + ((seed * 13 + i * 29) % 17 - 8) * (i + 1) * 0.6, y + h * 0.5 * (o.lift || 0.55), z); g.add(m);
       if (i < L.length - 1 && o.mist !== false) { const mm = INK.mist(w * 1.4, h * 0.45, 0.8); mm.renderOrder = 0; mm.position.set(0, y + h * 0.05, z + 2); g.add(mm); } });
   }
   /** a near bank (dark foreground earth with a few trees) */
@@ -104,7 +104,10 @@ Video.define(async (ctx) => {
     x.font = "700 52px 'LXGW WenKai TC', serif"; [...author].forEach((ch, i) => x.fillText(ch, w / 2 + 92, 610 + i * 62));
     x.fillStyle = '#c0392b'; x.fillRect(w / 2 - 34, h - 190, 68, 68); x.fillStyle = '#efe6d4'; x.font = "700 30px 'LXGW WenKai TC', serif"; x.fillText(red ? '小說' : '史', w / 2, h - 176);
   }));
-  const SCR = [['史記', '司馬遷', 1], ['三國志', '陳壽', 2], ['後漢書', '范曄', 3], ['三國演義', '羅貫中', 4, true]].map(([a, b, s, red], i) => { const m = INK.layer(scroll(a, b, s, red), 2.4, 7.2, { order: 2 }); m.position.set(-5.4 + i * 3.6, 3.4, -2 - (i % 2) * 0.6); BOOKS.add(m); return m; });
+  const SCR = [['史記', '司馬遷', 1], ['三國志', '陳壽', 2], ['後漢書', '范曄', 3], ['三國演義', '羅貫中', 4, true]].map(([a, b, s, red], i) => { const m = INK.layer(scroll(a, b, s, red), 2.4, 7.2, { order: 2 }); m.geometry.translate(0, -3.6, 0); m.position.set(-5.4 + i * 3.6, 7.0, -2 - (i % 2) * 0.6); BOOKS.add(m); return m; });
+  const rods = SCR.map((m) => { const r = INK.layer(INK.tex(INK.cv(256, 32, (x) => { x.fillStyle = '#3a2f2a'; x.fillRect(0, 6, 256, 20); x.fillStyle = '#151315'; x.fillRect(0, 0, 18, 32); x.fillRect(238, 0, 18, 32); })), 2.7, 0.34, { order: 3 }); r.position.copy(m.position); r.position.z += 0.02; BOOKS.add(r); return r; });
+  const unroll = (t, i, at) => { const u = io(K(t, at, at + 1.4)); SCR[i].scale.y = Math.max(0.02, u); rods[i].position.y = 7.0 - 7.2 * Math.max(0.02, u); };
+  const unrollAll = (t, times) => SCR.forEach((m, i) => unroll(t, i, times[i]));
   // 3 · XIANG — the valley of 항우: a river (강동), willows, a warm low sun
   const XI = SET('xiang', 400);
   vista(XI, { seed: 1 });
@@ -149,7 +152,7 @@ Video.define(async (ctx) => {
   const FLAMES = INK.flameFrames(9);
   const flameSprites = (g, n, place, s = 1) => Array.from({ length: n }, (_, i) => { const m = new T.Sprite(new T.SpriteMaterial({ map: FLAMES[0], transparent: true, depthWrite: false, fog: false, opacity: 0 })); const p = place(i); m.position.set(p[0], p[1], p[2]); m.scale.set(1.6 * s * (p[3] || 1), 2.4 * s * (p[3] || 1), 1); m.center.set(0.5, 0); g.add(m); m.userData.ph = i * 0.37; return m; });
   const hutFire = flameSprites(JU, 8, (i) => [-14 + (i >> 1) * 9 + (i % 2) * 0.8 - 0.4, 0.2, -2.0, 1.4]);
-  const kneelers = []; for (let i = 0; i < 7; i++) { const k = fig('kneel', 60 + i, 1.6); k.position.set(-6 + i * 2, 0, 0); JU.add(k); kneelers.push(k); }
+  const kneelers = []; for (let i = 0; i < 7; i++) { const k = fig('kneel', 60 + i, 2.0); k.position.set(-6 + i * 2, 0, 0); JU.add(k); kneelers.push(k); }
   const watchers = INK.crowd(300, (i, r) => [-30 + r() * 60, 3 + (r() < 0.5 ? 0 : 0.0), -20 - r() * 4, 1.2], { seed: 19 }); JU.add(watchers); watchers.visible = false;
   const palisade = INK.layer(INK.tex(INK.cv(1024, 128, (x) => { x.fillStyle = '#151315'; for (let i = 0; i < 128; i++) { x.globalAlpha = 0.8; x.fillRect(i * 8, 20 + (i % 3) * 4, 6, 108); } })), 60, 3.0); palisade.position.set(0, 1.5, -20.5); JU.add(palisade); palisade.visible = false;
   const throne = fig('lord', 65, 3.4); add(JU, throne, 0, 1.2, 0); throne.visible = false;
@@ -167,8 +170,10 @@ Video.define(async (ctx) => {
   const fleeing = [INK.rider('xiang', 21)]; fleeing[0].mesh.scale.setScalar(0.5); PE.add(fleeing[0].mesh);
   // 7 · HALL — 동탁's hall in 장안 (pillars, dais), the thrown 수극, the maid
   const HA = SET('hall', 1200);
+  vista(HA, { seed: 2, op: 0.45 }); sun(HA, 30, 20, -200, 10, 0xffffff, 0.8);
+  const nearPillar = INK.layer(INK.tex(INK.cv(128, 1024, (x, w, h) => { const g = x.createLinearGradient(0, 0, w, 0); g.addColorStop(0, 'rgba(21,19,21,0)'); g.addColorStop(0.3, 'rgba(21,19,21,0.85)'); g.addColorStop(0.7, 'rgba(21,19,21,0.85)'); g.addColorStop(1, 'rgba(21,19,21,0)'); x.fillStyle = g; x.fillRect(0, 0, w, h); })), 2.4, 14); nearPillar.position.set(-5.5, 6, 6); HA.add(nearPillar);
   const pillarTex = INK.tex(INK.cv(128, 1024, (x, w, h) => { const r = rand(5); x.fillStyle = '#1a1718'; x.globalAlpha = 0.92; x.fillRect(20, 0, 88, h); x.globalAlpha = 1; x.strokeStyle = 'rgba(239,230,212,0.2)'; for (let i = 0; i < 30; i++) { x.beginPath(); x.moveTo(24 + r() * 80, r() * h); x.lineTo(24 + r() * 80, r() * h); x.stroke(); } }));
-  for (let i = 0; i < 10; i++) { const p = INK.layer(pillarTex, 1.0, 11); p.position.set(-18 + i * 4, 5.5, -13 - (i % 2) * 5); HA.add(p); }
+  const pillars = []; for (let i = 0; i < 10; i++) { const p = INK.layer(pillarTex, 1.0, 11); p.position.set(-18 + i * 4, 5.5, -13 - (i % 2) * 5); HA.add(p); pillars.push(p); }
   const beam = INK.layer(INK.tex(INK.cv(1024, 64, (x) => { x.fillStyle = '#151315'; x.fillRect(0, 10, 1024, 44); })), 60, 1.4); beam.position.set(0, 10.4, -13); HA.add(beam);
   const dong = fig('lord', 71, 5.2); add(HA, dong, -2.5, 0.6, -10);
   const dais = INK.layer(INK.tex(INK.cv(512, 64, (x) => { x.fillStyle = '#151315'; x.globalAlpha = 0.85; x.fillRect(0, 0, 512, 64); })), 10, 0.8); dais.position.set(-2.5, 0.3, -10.2); HA.add(dais);
@@ -182,6 +187,7 @@ Video.define(async (ctx) => {
   vista(HE, { seed: 0, ridges: DARKRIDGE.concat(RIDGES.slice(0, 2)), dark: 1.2 });
   sun(HE, 50, 28, -230, 10, 0xffffff, 0.9);
   const zhangYan = INK.crowd(3200, (i, r) => [-40 + r() * 80, 0, -2 - r() * 26, 1.5], { seed: 41 }); HE.add(zhangYan);
+  const zhangNear = INK.crowd(500, (i, r) => { const x = -36 + r() * 72; return [x, 0, 6.5 + r() * 4 + (Math.abs(x) < 3 ? 6 : 0), 1.7]; }, { seed: 43 }); HE.add(zhangNear);
   const heFlags = [flag(HE, -10, -10, '黑', 4), flag(HE, 6, -14, '黑', 4), flag(HE, 18, -12, '張', 4)];
   // 9 · GATE — 원문사극: the camp gate with the halberd standing in it, two armies
   const GA = SET('gate', 1600);
@@ -245,6 +251,7 @@ Video.define(async (ctx) => {
   vista(XP, { seed: 0, op: 0.8 });
   const xpCity = INK.layer(INK.tex(INK.cityCanvas({ seed: 111 })), 40, 15); xpCity.position.set(0, 15 / 2 - 1.2, -30); XP.add(xpCity);
   const flood = waterPlane(XP, 0, -10, 300, 80, -1, 0xd8d2c6, 0.92);
+  const waterline = INK.layer(INK.tex(INK.cv(1024, 256, (x, w, h) => { const r = rand(4); const g = x.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(200,196,186,0.97)'); g.addColorStop(1, 'rgba(214,210,200,0.97)'); x.fillStyle = g; x.fillRect(0, 10, w, h); INK.stroke(x, [[0, 12], [w * 0.25, 8], [w * 0.5, 14], [w * 0.75, 9], [w, 12]], 6, 5, '#151315', 0.7, r); for (let i = 0; i < 120; i++) { const px = r() * w, py = 30 + r() * (h - 40); INK.stroke(x, [[px, py], [px + 40 + r() * 60, py - 2]], 2, 1, '#151315', 0.15, r); } })), 60, 1); waterline.geometry.translate(0, 0.5, 0); waterline.position.set(0, -1.2, -28.8); XP.add(waterline);
   const caoRing = INK.crowd(1600, (i, r) => [-70 + r() * 140, 0, -48 - r() * 14, 1.5], { seed: 71 }); XP.add(caoRing);
   const seizers = [fig('soldier', 113, 2.3), fig('soldier', 115, 2.3), fig('soldier', 117, 2.3)], chenGong = fig('robed', 119, 2.4);
   seizers.forEach((m, i) => add(XP, m, -2.4 + i * 2.4, 0, 2)); add(XP, chenGong, 0.2, 0, 1.6);
@@ -285,17 +292,19 @@ Video.define(async (ctx) => {
   const bmCity = INK.layer(INK.tex(INK.cityCanvas({ seed: 141 })), 40, 15); bmCity.position.set(0, 15 / 2 - 1.6, -24); BM.add(bmCity);
   waterPlane(BM, 0, -8, 300, 60, -0.8, 0xd0ccc2, 0.9);
   const snow = INK.crowd(500, (i, r) => [-30 + r() * 60, r() * 14, -4 - r() * 30, 0.12], { seed: 151, color: 0xf6f3ea, variant: 3 }); BM.add(snow);
-  const caoSeat = fig('lord', 153, 3.4), luBound = fig('kneel', 155, 2.0), liuBei = fig('robed', 157, 2.6);
-  add(BM, caoSeat, -4, 0, -2); add(BM, luBound, 2.2, 0, -1); add(BM, liuBei, -7.2, 0, -2.6);
+  const caoSeat = fig('lord', 153, 3.4), luBound = fig('bound', 155, 2.4), liuBei = fig('robed', 157, 2.6);
+  add(BM, caoSeat, -4, 0.7, -2); const bmDais = INK.layer(INK.tex(INK.cv(512, 64, (x) => { x.fillStyle = '#151315'; x.globalAlpha = 0.85; x.fillRect(0, 0, 512, 64); })), 5, 0.75); bmDais.position.set(-4, 0.37, -2.05); BM.add(bmDais); add(BM, luBound, 2.2, 0, -1); add(BM, liuBei, -7.2, 0, -2.6);
   const ropeTex = INK.tex(INK.cv(256, 256, (x) => { const r = rand(17); for (let k = 0; k < 5; k++) INK.stroke(x, [[20, 60 + k * 30], [128, 70 + k * 30 + (k % 2) * 8], [236, 60 + k * 30]], 6, 5, '#5a4a3a', 0.95, r); }));
-  const ropes = INK.layer(ropeTex, 1.4, 1.4); ropes.position.set(2.3, 1.1, -0.9); BM.add(ropes);
+  const ropes = INK.layer(ropeTex, 1.2, 1.2); ropes.position.set(2.2, 1.15, -0.85); BM.add(ropes);
   const redHorse = INK.rider('lu', 29); BM.add(redHorse.mesh);
   // 18 · FINALE — the cauldron lifted by many
   const FI = SET('finale', 3600);
   vista(FI, { seed: 5, op: 0.6 });
   const DING3 = INK.ding(); add(FI, DING3, 0, 1.4, 0);
-  const lifters = INK.crowd(160, (i, r) => { const a = i / 160 * TAU; return [Math.cos(a) * (1.6 + r() * 1.6), 0, Math.sin(a) * (1.2 + r() * 1.4), 1.6]; }, { seed: 161 }); FI.add(lifters);
-  const beamLight = INK.glow(0xfff2d0, 9, 0.5); beamLight.position.set(0, 6, -2); FI.add(beamLight);
+  const lifters = INK.crowd(160, (i, r) => { const a = i / 160 * TAU; return [Math.cos(a) * (2.6 + r() * 2.2), 0, Math.sin(a) * (2.0 + r() * 1.8), 1.5]; }, { seed: 161 }); FI.add(lifters);
+  const liftRing = Array.from({ length: 10 }, (_, i) => { const a = i / 10 * TAU + 0.3, m = fig('lift', 170 + i, 1.9); m.position.set(Math.cos(a) * 1.15, 0, Math.sin(a) * 0.9); FI.add(m); return m; });
+  const finShadow = new T.Mesh(new T.CircleGeometry(1.6, 32), new T.MeshBasicMaterial({ color: 0x151315, transparent: true, opacity: 0.25, depthWrite: false })); finShadow.rotation.x = -Math.PI / 2; finShadow.position.y = 0.01; FI.add(finShadow);
+  const beamLight = INK.glow(0xfff2d0, 9, 0.5); beamLight.position.set(0, 5, -1.5); FI.add(beamLight);
   prog(0.85);
 
   // ============================ the writing (DOM) ============================
@@ -346,12 +355,12 @@ Video.define(async (ctx) => {
   shot('op03', 'pro', 'cool', (k) => CP(lerp(2, 7.5, io(k)), 4.0, lerp(14, 12, io(k)), 9.5, 4.0, 2), inPro);
   shot('op04', 'pro', 'day', (k) => CP(0, lerp(5, 14, io(k)), lerp(26, 36, io(k)), 0, lerp(3, 0, io(k)), -4), inPro);
   shot('op05', 'pro', 'day', (k) => CP(0, 9, 34 - 2 * k, 0, 3, -4), inPro);
-  shot('op06', 'books', 'day', (k) => CP(lerp(-6, -2, k), 3.6, 11, lerp(-6, -2, k), 3.4, -2), (t) => { SCR[3].visible = false; });
-  shot('op07', 'books', 'day', (k) => CP(lerp(-6.4, -5.6, k), 3.6, 7.5, -5.4, 3.4, -2), (t) => { SCR[3].visible = false; });
-  shot('op08', 'books', 'day', (k) => CP(lerp(-1.6, 0.4, k), 3.6, 8.4, lerp(-1.6, 0.4, k), 3.4, -2), (t) => { SCR[3].visible = false; });
-  shot('op09', 'books', 'day', (k) => CP(lerp(2.5, 4.4, k), 3.6, 9.5, lerp(3.2, 4.8, k), 3.4, -2), (t) => { SCR[3].visible = true; SCR[3].material.opacity = clamp((t - S('op09')) / 1.5, 0, 1); });
-  shot('op10', 'books', 'day', (k) => CP(0, 3.8, 14, 0, 3.4, -2), (t) => { const f = K(t, S('op10') + 0.5, S('op10') + 3.5); SCR[3].visible = f < 1; SCR[3].material.opacity = 1 - f; SCR[3].position.y = 3.4 + f * 1.2; });
-  shot('op11', 'books', 'day', (k) => CP(0, 4.2, 18, 0, 3.4, -2), (t) => { SCR.forEach((m) => { m.material.opacity = 0.25; }); SCR[3].visible = false; });
+  shot('op06', 'books', 'day', (k) => CP(lerp(-3, 0, k), 4.6, 15, lerp(-3, 0, k), 4.4, -2), (t) => { SCR[3].visible = false; unrollAll(t, [1e9, 1e9, 1e9, 1e9]); });
+  shot('op07', 'books', 'day', (k) => CP(lerp(-6.4, -5.6, k), 3.6, 8.5, -5.4, 3.6, -2), (t) => { SCR[3].visible = false; unrollAll(t, [S('op07') + 0.4, 1e9, 1e9, 1e9]); });
+  shot('op08', 'books', 'day', (k) => CP(lerp(-1.6, 0.4, k), 3.6, 9.4, lerp(-1.6, 0.4, k), 3.6, -2), (t) => { SCR[3].visible = false; unrollAll(t, [0, cue('op08').about('삼국지') - 0.3, cue('op08').about('후한서') - 0.3, 1e9]); });
+  shot('op09', 'books', 'day', (k) => CP(lerp(2.5, 4.4, k), 3.6, 10.5, lerp(3.2, 4.8, k), 3.6, -2), (t) => { SCR[3].visible = true; SCR[3].material.opacity = 1; unrollAll(t, [0, 0, 0, cue('op09').about('소설') - 0.6]); });
+  shot('op10', 'books', 'day', (k) => CP(0, 3.8, 14, 0, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); const f = K(t, S('op10') + 0.5, S('op10') + 3.5); SCR[3].visible = f < 1; SCR[3].material.opacity = 1 - f; SCR[3].position.y = 7.0 + f * 1.2; rods[3].visible = f < 1; });
+  shot('op11', 'books', 'day', (k) => CP(0, 4.2, 18, 0, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); SCR.forEach((m) => { m.material.opacity = 0.25; }); SCR[3].visible = false; });
 
   // —— 기 · 항우 ——
   const xiangReset = () => { grand.material.opacity = 0; uncle.visible = youth.visible = false; lifter.visible = false; DING.visible = false; legion.visible = false; carriages.visible = false; youthHill.visible = false; eightK.visible = false; chuFlag.visible = true; spears.forEach((s) => (s.visible = true)); XI.remove(XR.mesh); };
@@ -360,14 +369,14 @@ Video.define(async (ctx) => {
   shot('ki04', 'xiang', 'bronze', (k) => CP(lerp(-1, 1, k), 2.4, 11, 1.5, 2.4, -2), (t) => { xiangReset(); grand.material.opacity = 0.75 * K(t, S('ki04'), S('ki04') + 1.5); });
   shot('ki05', 'xiang', 'bronze', (k) => CP(lerp(3, 4.6, k), 2.0, 9, 4.4, 1.6, 0), (t) => { xiangReset(); uncle.visible = youth.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
   const dingLift = (t, a) => { lifter.visible = true; DING.visible = true; const up = io(K(t, a, a + 2.2)); lifter.position.set(0, 0, 2); DING.scale.setScalar(0.8); DING.position.set(0, lerp(0.9, 3.95, up), 2.3); DING.rotation.y = 0.3 + t * 0.12; };
-  shot('ki06', 'xiang', 'bronze', (k) => CP(lerp(1.4, 0.6, k), lerp(1.2, 1.6, k), lerp(13, 10.5, io(k)), 0, 2.6, 2), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); dingLift(t, S('ki06') + 2.4); });
+  shot('ki06', 'xiang', 'bronze', (k) => CP(lerp(1.0, 0.4, k), lerp(0.8, 1.2, k), lerp(9.5, 7.6, io(k)), 0, 2.7, 2), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); dingLift(t, S('ki06') + 2.4); });
   shot('ki07', 'xiang', 'bronze', (k) => CP(Math.sin(k * 1.2) * 2.4, 3.7, 7.6 - 0.8 * k, 0, 3.3, 2.4), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); lifter.visible = false; DING.visible = true; DING.scale.setScalar(1.0); DING.position.set(0, 3.2, 2.4); DING.rotation.y = 0.3 + t * 0.12; });
   shot('ki08', 'xiang', 'bronze', (k) => CP(lerp(4, 6, k), 2.0, 9, 5, 1.4, 1), (t) => { xiangReset(); youth.visible = true; uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
   shot('ki09', 'xiang', 'bronze', (k) => CP(lerp(5, 2, io(k)), lerp(2, 9, io(k)), lerp(9, 30, io(k)), lerp(5, 0, io(k)), lerp(1.6, 1, io(k)), -10), (t) => { xiangReset(); youth.visible = uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); legion.visible = t > cue('ki09').about('만 명') - 0.2; legion.material.opacity = K(t, cue('ki09').about('만 명') - 0.2, cue('ki09').about('만 명') + 1.2); });
   shot('ki10', 'xiang', 'bronze', (k) => CP(lerp(3, 5, k), 2.0, 9, 4.4, 1.6, 1), (t) => { xiangReset(); youth.visible = uncle.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
   shot('ki11', 'xiang', 'bronze', (k) => CP(lerp(-12, -8, k), 3.0, 12, lerp(-2, 4, k), 2.0, -14), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); carriages.visible = true; carriages.position.x = (t - S('ki11')) * 1.2 - 4; youthHill.visible = true; });
   shot('ki12', 'xiang', 'bronze', (k) => CP(0, lerp(8, 5, k), 26, 0, 1.5, -10), (t) => { xiangReset(); chuFlag.visible = true; chuFlag.position.set(-2, 0, -3); spears.forEach((s) => (s.visible = false)); eightK.visible = t > S('ki13'); eightK.material.opacity = K(t, S('ki13'), S('ki13') + 2); });
-  shot('ki14', 'xiang', 'bronze', (k) => CP(lerp(-8, -2, k), 2.6, 12, lerp(-6, 0, k), 2.4, 0), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); XI.add(XR.mesh); XR.mesh.position.set(lerp(-14, 2, K(t, S('ki14'), E('ki14'))), 0, 1); XR.mesh.scale.set(1, 1, 1); XR.draw((t * 1.6) % 1, 1); });
+  shot('ki14', 'xiang', 'bronze', (k) => { const x = lerp(-9, 3, K(ctx.__t || 0, 0, 1)); CP(lerp(-6, 1, k), 2.0, 11, lerp(-4, 2.5, k), 2.0, 0); }, (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); XI.add(XR.mesh); XR.mesh.position.set(lerp(-8, 3, K(t, S('ki14'), E('ki14'))), 0, 2); XR.mesh.scale.set(1, 1, 1); XR.draw((t * 1.6) % 1, 1); });
   // —— 기 · 여포 ——
   const luReset = () => { dingYuan.visible = luStand.visible = false; dongArmy.visible = false; dingFlag.visible = false; arrow.visible = false; luoyang.visible = false; LU.remove(LR.mesh); };
   const grassWind = (t) => grassL.forEach((m, i) => { m.position.x = Math.sin(t * 0.5 + i) * 0.6; });
@@ -383,15 +392,15 @@ Video.define(async (ctx) => {
   // —— 승 · 항우 ——
   const juReset = () => { boats.forEach((b, i) => { b.position.y = 0; b.rotation.z = 0; b.visible = true; }); pots.forEach((p) => { p.material.map = potW; p.visible = true; }); huts.forEach((h) => (h.visible = true)); hutFire.forEach((f) => (f.material.opacity = 0)); kneelers.forEach((k) => (k.visible = false)); watchers.visible = palisade.visible = false; throne.visible = false; qinRing.visible = true; };
   const fireFrame = (arr, t, op) => arr.forEach((f) => { const i = Math.floor(t * 12 + f.userData.ph * 10) % FLAMES.length; f.material.map = FLAMES[i]; f.material.opacity = op; });
-  shot('sg01', 'pro', 'day', (k) => CP(0, lerp(6, 10, k), lerp(30, 38, k), 0, 3, 0), inPro);
+  shot('sg01', 'pro', 'day', (k) => CP(lerp(-4, 4, k), lerp(16, 20, k), 22, 0, 0, -6), inPro);   // crane high over the mist river
   shot('sg03', 'julu', 'bronze', (k) => CP(lerp(-6, 0, k), lerp(14, 11, k), 18, 0, 3, -60), (t) => { juReset(); });
   shot('sg04', 'julu', 'bronze', (k) => CP(lerp(-16, -10, k), 2.4, 6, -14, 1.8, -2.5), (t) => { juReset(); });
-  shot('sg05', 'julu', 'bronze', (k) => CP(-5.2, 1.8, lerp(3.5, 2.6, k), -5, 1.5, -2.5), (t) => { juReset(); });
-  shot('sg06', 'julu', 'fire', (k) => CP(lerp(-8, 6, k), 2.6, 15, lerp(-6, 6, k), 1.0, -4), (t) => { juReset(); const a = S('sg06'); boats.forEach((b, i) => { const s = io(K(t, a + 0.4 + i * 0.35, a + 2.6 + i * 0.35)); b.position.y = -1.5 * s; b.rotation.z = (i % 2 ? 1 : -1) * 0.5 * s; }); const pt = cue('sg06').about('솥을'); pots.forEach((p, i) => { p.material.map = t > pt + i * 0.18 ? potB : potW; }); const ft = cue('sg06').about('막사를'); fireFrame(hutFire, t, K(t, ft, ft + 1)); });
+  shot('sg05', 'julu', 'bronze', (k) => CP(lerp(-15, -14, k), 2.0, lerp(9, 7.5, k), -14, 1.4, -2.5), (t) => { juReset(); pots.forEach((p) => (p.visible = false)); boats.forEach((b) => (b.visible = false)); });
+  shot('sg06', 'julu', 'fire', (k) => CP(lerp(-9, 5, k), 0.55, 10, lerp(-7, 5, k), 0.6, -6), (t) => { juReset(); const a = S('sg06'); boats.forEach((b, i) => { const s = io(K(t, a + 0.4 + i * 0.35, a + 2.6 + i * 0.35)); b.position.y = -1.5 * s; b.rotation.z = (i % 2 ? 1 : -1) * 0.5 * s; }); const pt = cue('sg06').about('솥을'); pots.forEach((p, i) => { p.material.map = t > pt + i * 0.18 ? potB : potW; }); const ft = cue('sg06').about('막사를'); fireFrame(hutFire, t, K(t, ft, ft + 1)); });
   shot('sg07', 'julu', 'fire', (k) => CP(lerp(6, 2, k), 1.4, 9, 0, 1.2, -2), (t) => { juReset(); boats.forEach((b) => (b.visible = false)); pots.forEach((p) => (p.material.map = potB)); fireFrame(hutFire, t, 1); });
   shot('sg08', 'julu', 'fire', (k) => CP(0, lerp(3, 5, k), lerp(16, 22, k), 0, 2, -4), (t) => { juReset(); boats.forEach((b) => (b.visible = false)); pots.forEach((p) => (p.material.map = potB)); fireFrame(hutFire, t, 1); });
   shot('sg09', 'julu', 'bronze', (k) => CP(lerp(-8, 8, k), 6, 22, 0, 2.5, -30), (t) => { juReset(); watchers.visible = palisade.visible = true; });
-  shot('sg10', 'julu', 'bronze', (k) => CP(lerp(-3, 3, k), 1.2, 9, 0, 1.0, 0), (t) => { juReset(); qinRing.visible = false; kneelers.forEach((m, i) => { m.visible = true; m.position.x = -10 + i * 2.2 + (t - S('sg10')) * 0.4; }); });
+  shot('sg10', 'julu', 'bronze', (k) => CP(lerp(-2, 1, k), 0.7, 6.5, 0, 0.9, 0), (t) => { juReset(); qinRing.visible = false; boats.forEach((b) => (b.visible = false)); pots.forEach((p) => (p.visible = false)); huts.forEach((h) => (h.visible = false)); kneelers.forEach((m, i) => { m.visible = true; m.position.x = -10 + i * 2.2 + (t - S('sg10')) * 0.4; }); });
   shot('sg11', 'julu', 'bronze', (k) => CP(0, lerp(1, 2.2, k), lerp(12, 9, io(k)), 0, 3.0, 0), (t) => { juReset(); qinRing.visible = false; boats.forEach((b) => (b.visible = false)); pots.forEach((p) => (p.visible = false)); huts.forEach((h) => (h.visible = false)); throne.visible = true; });
   const peReset = (t) => { choke.visible = false; hanArmy.visible = true; hanParts.forEach((c, k) => { c.position.set(-6 + (k % 3) * 18, 0, -26 - (k >> 1) * 4); }); chuWedge.visible = false; fleeing[0].mesh.visible = false; hanFlags.forEach((f) => (f.visible = true)); };
   shot('sg12', 'peng', 'day', (k) => CP(lerp(-4, 4, k), 5, 26, 8, 3, -40), (t) => { peReset(t); hanArmy.visible = false; hanFlags.forEach((f) => (f.visible = false)); });
@@ -399,37 +408,38 @@ Video.define(async (ctx) => {
   shot('sg14', 'peng', 'day', (k) => CP(0, lerp(9, 16, k), 34, 6, 0, -30), (t) => { peReset(t); hanArmy.position.x = 0; });
   shot('sg15', 'peng', 'dawn', (k) => CP(-20, 5, 22, -24, 1.5, -12), (t) => { peReset(t); chuWedge.visible = true; chuWedge.position.set(-30 + K(t, S('sg15'), E('sg15')) * 4, 0, -14); });
   shot('sg16', 'peng', 'dawn', (k) => CP(lerp(-12, 4, k), 9, 32, 0, 1, -24), (t) => { peReset(t); chuWedge.visible = true; const a = K(t, S('sg16'), E('sg16') + 1); chuWedge.position.set(lerp(-26, 14, a), 0, -22); hanParts.forEach((c, k) => { const d = io(K(t, S('sg16') + 1 + k * 0.2, E('sg16') + 1)); c.position.x = -6 + (k % 3) * 18 + (k % 3 - 1) * 10 * d; c.position.z = -26 - (k >> 1) * 4 + 14 * d; }); pengSun.position.y = lerp(8, 22, K(t, S('sg15'), E('sg16'))); });
-  shot('sg17', 'peng', 'dawn', (k) => CP(lerp(-6, 6, k), 4, 22, 0, 0, -2), (t) => { peReset(t); hanArmy.visible = false; choke.visible = true; });
+  shot('sg17', 'peng', 'dawn', (k) => CP(lerp(-6, 6, k), 1.0, 13, lerp(-4, 4, k), 0.2, 2), (t) => { peReset(t); hanArmy.visible = false; choke.visible = true; });
   shot('sg18', 'peng', 'day', (k) => CP(0, 16, 38, 0, 0, -20), (t) => { peReset(t); chuWedge.visible = true; chuWedge.position.set(-18, 0, -18); });
   shot('sg19', 'peng', 'day', (k) => CP(lerp(0, 8, k), 3, 18, lerp(4, 16, k), 1.5, -20), (t) => { peReset(t); hanArmy.visible = false; const f = fleeing[0]; f.mesh.visible = true; f.mesh.position.set(lerp(2, 30, K(t, S('sg19'), E('sg19'))), 0, -18); f.draw((t * 1.8) % 1, 1); });
   shot('sg20', 'xiang', 'bronze', (k) => CP(lerp(-4, 2, k), 2.4, 12, lerp(-2, 4, k), 2.6, 0), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); XI.add(XR.mesh); XR.mesh.position.set(lerp(-8, 6, K(t, S('sg20'), E('sg20'))), 0, 1); XR.mesh.scale.set(1, 1, 1); XR.draw((t * 1.6) % 1, 1); });
   // —— 승 · 여포 ——
-  const haReset = () => { changan.visible = false; wangYun.visible = false; maid.visible = true; maid.material.opacity = 1; shouJi.visible = false; dong.visible = true; luHall.visible = true; luHall.position.set(4, 0, -2); };
+  const haReset = () => { pillars.forEach((p) => (p.visible = true)); beam.visible = dais.visible = true; changan.visible = false; wangYun.visible = false; maid.visible = true; maid.material.opacity = 1; shouJi.visible = false; dong.visible = true; luHall.visible = true; luHall.position.set(4, 0, -2); };
   shot('sg21', 'hall', 'cool', (k) => CP(lerp(-8, 0, io(k)), 4, 22, 0, 4, -10), (t) => { haReset(); });
   shot('sg22', 'hall', 'cool', (k) => CP(lerp(-2, 2, k), 3.0, 14, 0, 3.2, -6), (t) => { haReset(); });
   shot('sg23', 'hall', 'cool', (k) => CP(lerp(3, 1, k), 2.2, 6, 2, 2.0, -4), (t) => { haReset(); const th = cue('sg23').about('수극'); shouJi.visible = t > th - 0.5; const a = K(t, th - 0.5, th + 1.2); shouJi.position.set(lerp(-2.5, 4.6, a), 3.6 + Math.sin(a * Math.PI) * 0.6, lerp(-9, -1.6, a)); shouJi.rotation.set(0, 0, -t * 9); });
   shot('sg24', 'hall', 'cool', (k) => CP(5.5, 1.8, 4.5, 4, 1.6, -2), (t) => { haReset(); const a = io(K(t, S('sg24'), S('sg24') + 0.6)); luHall.position.x = 4 + 0.7 * a; shouJi.visible = true; shouJi.position.set(6.4, 0.3, -1.8); shouJi.rotation.set(0, 0, -1.2); });
   shot('sg25', 'hall', 'cool', (k) => CP(lerp(10, 8, k), 2.2, 6, 8, 1.6, -5), (t) => { haReset(); });
   shot('sg26', 'hall', 'cool', (k) => CP(8, 2.2, 5.5, 8, 1.6, -5), (t) => { haReset(); maid.material.opacity = 1 - K(t, S('sg26') + 0.6, E('sg26')); });
-  shot('sg27', 'hall', 'cool', (k) => CP(0, lerp(6, 4, k), 24, 0, 4, -40), (t) => { haReset(); changan.visible = true; dong.visible = luHall.visible = false; maid.visible = false; });
+  shot('sg27', 'hall', 'cool', (k) => CP(0, lerp(6, 4, k), 24, 0, 4, -40), (t) => { haReset(); changan.visible = true; dong.visible = luHall.visible = false; maid.visible = false; pillars.forEach((p) => (p.visible = false)); beam.visible = dais.visible = false; });
   shot('sg27b', 'hall', 'cool', (k) => CP(lerp(0, 1, k), 2.2, 9, 1, 2.0, -1.5), (t) => { haReset(); maid.visible = false; wangYun.visible = true; luHall.position.set(3.4, 0, -1.6); });
-  shot('sg30', 'hall', 'cool', (k) => CP(0, 4, lerp(26, 20, k), 0, 4, -40), (t) => { haReset(); changan.visible = true; dong.visible = luHall.visible = maid.visible = false; });
+  shot('sg30', 'hall', 'cool', (k) => CP(0, 4, lerp(26, 20, k), 0, 4, -40), (t) => { haReset(); changan.visible = true; dong.visible = luHall.visible = maid.visible = false; pillars.forEach((p) => (p.visible = false)); beam.visible = dais.visible = false; });
   shot('sg31', 'lu', 'cool', (k) => CP(lerp(-6, 6, k), 2.4, 16, lerp(-2, 10, k), 2.4, -10), (t) => { luReset(); grassWind(t); luoyang.visible = true; LU.add(LR.mesh); LR.mesh.position.set(lerp(-4, 18, K(t, S('sg31'), E('sg31'))), 0, -2); LR.mesh.scale.set(1, 1, 1); LR.draw((t * 1.7) % 1, 1); });
-  const heRider = (t, a, b, dir = 1) => { HE.add(LR.mesh); const k = K(t, a, b); LR.mesh.position.set(lerp(-26, 26, k) * dir, 0, -6 + Math.sin(k * 6) * 2); LR.mesh.scale.set(dir, 1, 1); LR.draw((t * 1.9) % 1, 1, { weaponAngle: -0.15 }); };
+  const heX = (t, a, b, dir) => lerp(-22, 22, K(t, a, b)) * dir;
+  const heRider = (t, a, b, dir = 1) => { HE.add(LR.mesh); const k = K(t, a, b); LR.mesh.position.set(heX(t, a, b, dir), 0, 5); LR.mesh.scale.set(dir, 1, 1); LR.draw((t * 1.9) % 1, 1, { weaponAngle: -0.15 }); };
   shot('sg32', 'heishan', 'cool', (k) => CP(lerp(-10, 0, k), 8, 34, 0, 3, -20), (t) => { HE.remove(LR.mesh); zhangYan.visible = true; });
   shot('sg33', 'heishan', 'cool', (k) => CP(lerp(-4, 4, k), 4, 26, 0, 2, -14), (t) => { HE.remove(LR.mesh); });
-  shot('sg34', 'heishan', 'cool', (k) => CP(lerp(-6, 6, k), 2.4, 18, lerp(-6, 6, k), 1.6, -6), (t) => { const a = S('sg34'), L = E('sg34') - a; const p = Math.floor((t - a) / (L / 3)); heRider(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); });
-  shot('sg35', 'heishan', 'cool', (k) => CP(0, lerp(4, 10, k), lerp(20, 30, k), 0, 2, -14), (t) => { heRider(t, S('sg35') - 1, E('sg36') + 1, 1); zhangYan.position.z = -K(t, S('sg35'), E('sg35')) * 8; });
-  shot('sg36', 'heishan', 'cool', (k) => CP(0, 3, 22 - 2 * k, 0, 2.6, -8), (t) => { heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
+  shot('sg34', 'heishan', 'cool', (k) => { const t = ctx.__t, a = S('sg34'), L = E('sg34') - a, p = Math.floor((t - a) / (L / 3)), x = heX(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); CP(x - (p % 2 ? -3 : 3), 1.5, 16, x, 1.5, 4); }, (t) => { const a = S('sg34'), L = E('sg34') - a; const p = Math.floor((t - a) / (L / 3)); heRider(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); });
+  shot('sg35', 'heishan', 'cool', (k) => { const x = heX(ctx.__t, S('sg35') - 1, E('sg36') + 1, 1); CP(x - 4, 1.8, 17, x, 1.8, 4); }, (t) => { heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
+  shot('sg36', 'heishan', 'cool', (k) => { const x = heX(ctx.__t, S('sg35') - 1, E('sg36') + 1, 1); CP(x + 2, 1.0, 13, x, 2.2, 4); }, (t) => { heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
   const gateShot = (t) => { shotRider.mesh.position.set(-5.2, 0, 4); shotRider.mesh.scale.set(1, 1, 1); shotRider.draw(0.3, 0, { weaponAngle: -1.2, noBow: true }); };
   shot('sg37', 'gate', 'cool', (k) => CP(lerp(-10, 0, k), 5, 30, 0, 3, -24), (t) => { gateShot(t); shaft.visible = false; });
   shot('sg38', 'gate', 'cool', (k) => CP(lerp(-2, 2, k), 3, 22, 0, 3, -24), (t) => { gateShot(t); shaft.visible = false; });
-  shot('sg39', 'gate', 'cool', (k) => CP(lerp(-7.5, -6.5, k), 3.2, lerp(12, 10, k), 0, 3.2, -24), (t) => { gateShot(t); shaft.visible = false; });
+  shot('sg39', 'gate', 'cool', (k) => CP(lerp(-7.5, -6.5, k), 3.0, lerp(13, 11, k), 0, 2.2, -24), (t) => { gateShot(t); shaft.visible = false; });
   shot('sg40', 'gate', 'cool', (k) => CP(lerp(2.8, 2.2, k), 3.3, lerp(-19.2, -20.2, k), -0.6, 3.2, -24.1), (t) => { gateShot(t); const a0 = S('sg40') + 0.5, a = K(t, a0, a0 + 0.45); shaft.visible = t > a0; shaft.position.set(lerp(-9, -0.45, a), lerp(3.35, 3.2, a), -24.1); shaft.rotation.set(0, 0, Math.PI / 2 - 0.02); });
-  shot('sg41', 'pro', 'day', (k) => CP(0, lerp(4, 7, k), lerp(26, 32, k), 0, 3.2, 0), inPro);
+  shot('sg41', 'pro', 'day', (k) => CP(0, lerp(-0.6, 0.2, k), lerp(19, 17, k), 0, 4.6, 0), inPro);   // low, looking up at both ridges
 
   // —— 전 ——
-  shot('jn01', 'pro', 'day', (k) => CP(0, 5, 30 + 4 * k, 0, 3, 0), inPro);
+  shot('jn01', 'pro', 'day', (k) => CP(lerp(-3, -5, k), 1.4, 13, -9.5, 3.6, 2), inPro);   // up from the mist at 항우
   shot('jn03', 'sinan', 'night', (k) => CP(lerp(-10, -2, k), 4, 24, 0, 1, -8), (t) => { qinPOW.position.y = 0; qinPOW.visible = true; });
   shot('jn04', 'sinan', 'night', (k) => CP(0, lerp(5, 8, k), 22, 0, 0, -8), (t) => { qinPOW.position.y = -2.2 * io(K(t, S('jn04') + 2, E('jn04'))); });
   shot('jn05', 'sinan', 'night', (k) => CP(lerp(0, 8, k), 10, 34, 0, 2, -40), (t) => { qinPOW.visible = false; });
@@ -449,16 +459,16 @@ Video.define(async (ctx) => {
   shot('jn17', 'gates', 'cool', (k) => CP(lerp(-30, -20, k), 5, 14, -20, 3, -26), (t) => { gtReset(); });
   shot('jn18', 'gates', 'cool', (k) => CP(lerp(-30, 26, k), 4, 16, lerp(-30, 26, k), 3, -28), (t) => { gtReset(); GT.add(LR.mesh); const a = K(t, S('jn18'), E('jn19')); LR.mesh.position.set(lerp(-36, 30, a), 0, -12); LR.mesh.scale.set(1, 1, 1); LR.draw((t * 1.4) % 1, 0.8); gCity.forEach((g, i) => { const shutAt = lerp(S('jn18'), E('jn19'), (i + 0.7) / 3.2); g.shut.visible = t > shutAt; g.open.visible = !g.shut.visible; }); });
   shot('jn20', 'lu', 'cool', (k) => CP(lerp(-8, 0, k), 3, 22, 4, 3, -30), (t) => { luReset(); grassWind(t); luoyang.visible = true; });
-  shot('jn22', 'lu', 'cool', (k) => CP(lerp(0, -6, k), 3, 18, -4, 2, -10), (t) => { luReset(); grassWind(t); LU.add(LR.mesh); LR.mesh.position.set(lerp(8, -16, K(t, S('jn22'), E('jn22'))), 0, -4); LR.mesh.scale.set(-1, 1, 1); LR.draw((t * 1.5) % 1, 0.9); });
+  shot('jn22', 'lu', 'cool', (k) => CP(lerp(0, -6, k), 3, 18, -4, 2, -10), (t) => { luReset(); grassWind(t); LU.add(LR.mesh); LR.mesh.position.set(lerp(8, -16, K(t, S('jn22'), E('jn22'))), 0, 5.5); LR.mesh.scale.set(-1, 1, 1); LR.draw((t * 1.5) % 1, 0.9); });
   shot('jn23', 'gates', 'cool', (k) => CP(lerp(18, 26, k), 4, 14, 24, 3, -36), (t) => { gtReset(); });
-  shot('jn24', 'xiapi', 'winter', (k) => CP(lerp(-12, 0, k), 9, 40, 0, 3, -30), (t) => { flood.position.y = -1.2; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
-  shot('jn25', 'xiapi', 'winter', (k) => CP(0, 6, 30, 0, 4, -30), (t) => { flood.position.y = -1.2; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
-  shot('jn26', 'xiapi', 'winter', (k) => CP(lerp(-6, 6, k), lerp(4, 8, k), 34, 0, 3, -30), (t) => { flood.position.y = lerp(-1.2, 2.4, io(K(t, S('jn26'), E('jn26')))); seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
-  shot('jn27', 'xiapi', 'winter', (k) => CP(lerp(-2, 2, k), 2.0, 10, 0, 1.6, 1.8), (t) => { flood.position.y = 2.4; seizers.forEach((m) => (m.visible = true)); chenGong.visible = true; flood.visible = false; });
+  shot('jn24', 'xiapi', 'winter', (k) => CP(lerp(-12, 0, k), 9, 40, 0, 3, -30), (t) => { waterline.scale.y = 0.6; flood.position.y = -1.2; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
+  shot('jn25', 'xiapi', 'winter', (k) => CP(0, 6, 30, 0, 4, -30), (t) => { waterline.scale.y = 0.6; flood.position.y = -1.2; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
+  shot('jn26', 'xiapi', 'winter', (k) => CP(lerp(-3, 3, k), lerp(1.2, 2.2, k), 20, 0, 3.2, -30), (t) => { const f = io(K(t, S('jn26'), E('jn26'))); waterline.scale.y = lerp(0.6, 5.8, f); flood.position.y = -1.2 + 0.3 * f; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
+  shot('jn27', 'xiapi', 'winter', (k) => CP(lerp(-2, 2, k), 2.0, 10, 0, 1.6, 1.8), (t) => { waterline.scale.y = 5.8; flood.position.y = 2.4; seizers.forEach((m) => (m.visible = true)); chenGong.visible = true; flood.visible = false; });
   shot('jn28', 'pro', 'day', (k) => CP(lerp(6, 9, k), 3.6, 12, 9.5, 3.8, 2), inPro);
 
   // —— 결 ——
-  shot('gy01', 'pro', 'day', (k) => CP(0, 5, 32 - 3 * k, 0, 3, 0), inPro);
+  shot('gy01', 'pro', 'day', (k) => CP(lerp(7, -7, io(k)), 3.8, 14, lerp(9.5, -9.5, io(k)), 3.8, 2), inPro);   // a pan from 여포 back to 항우
   const gxReset = (t) => { zhui.mesh.visible = true; yu.visible = true; lamp.material.opacity = 0.7; torches.forEach((m, i) => (m.material.opacity = 0.55 + 0.2 * Math.sin(t * 3 + i))); nightRiders.forEach((r) => (r.mesh.visible = false)); hanHost.visible = false; swamp.material.opacity = 0; camp.visible = true; zhui.draw(0.3, 0); };
   shot('gy03', 'gaixia', 'night', (k) => CP(0, lerp(18, 10, io(k)), 44, 0, 0, -10), gxReset);
   shot('gy04', 'gaixia', 'night', (k) => CP(lerp(-6, 6, k), 4, 26, 0, 2, -12), gxReset);
@@ -477,32 +487,32 @@ Video.define(async (ctx) => {
   shot('gy20', 'wujiang', 'dawn', (k) => CP(lerp(-8, 0, k), 3, 22, 0, 1.4, -6), (t) => { wuReset(t); const a = K(t, S('gy20'), S('gy20') + 3); zhui2.mesh.position.set(lerp(-5.4, 2, a), 0, lerp(-2.4, -5, a)); zhui2.draw((t * 0.8) % 1, 0.3 * (a < 1 ? 1 : 0)); pursuers.visible = t > cue('gy20').about('걸어서'); });
   shot('gy21', 'wujiang', 'dawn', (k) => CP(-1.6, 2.2, lerp(8, 6.5, k), -2.4, 2.0, -2), (t) => { wuReset(t); zhui2.mesh.visible = false; pursuers.visible = true; });
   shot('gy22', 'wujiang', 'dawn', (k) => CP(0, lerp(3, 12, io(k)), lerp(16, 40, io(k)), 0, 1, -20), (t) => { wuReset(t); zhui2.mesh.visible = false; xyFoot.visible = t < S('gy22') + 1.2; });
-  const bmReset = (t) => { caoSeat.visible = luBound.visible = liuBei.visible = true; ropes.visible = true; redHorse.mesh.visible = false; snow.position.y = -((t * 0.6) % 14); };
-  shot('gy23', 'baimen', 'winter', (k) => CP(lerp(-10, 0, k), 6, 34, 0, 5, -24), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = false; });
-  shot('gy24', 'baimen', 'winter', (k) => CP(0, lerp(4, 7, k), lerp(26, 22, k), 0, 7, -24), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = false; });
-  shot('gy26', 'baimen', 'winter', (k) => CP(lerp(4, 2.6, k), 1.6, 7, 2.2, 1.1, -1), bmReset);
-  shot('gy27', 'baimen', 'winter', (k) => CP(lerp(-3, -4, k), 2.4, 8, -4, 2.0, -2), bmReset);
-  shot('gy28', 'baimen', 'winter', (k) => CP(lerp(2.4, 2.0, k), 1.4, 6.5, 2.2, 1.1, -1), bmReset);
+  const bmReset = (t) => { bmDais.visible = true; caoSeat.visible = luBound.visible = liuBei.visible = true; ropes.visible = true; redHorse.mesh.visible = false; snow.position.y = -((t * 0.6) % 14); };
+  shot('gy23', 'baimen', 'winter', (k) => CP(lerp(-10, 0, k), 6, 34, 0, 5, -24), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = bmDais.visible = false; });
+  shot('gy24', 'baimen', 'winter', (k) => CP(lerp(-1, 1, k), 0.3, lerp(14, 11, io(k)), 0, lerp(6, 9, io(k)), -24), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = bmDais.visible = false; });
+  shot('gy26', 'baimen', 'winter', (k) => CP(lerp(3.4, 2.8, k), 1.25, lerp(4.4, 3.8, k), 2.2, 1.0, -1), bmReset);
+  shot('gy27', 'baimen', 'winter', (k) => CP(lerp(2.6, 2.2, k), 0.8, lerp(1.6, 1.2, k), -4, 2.9, -2), bmReset);   // from behind the bound man, up at 조조
+  shot('gy28', 'baimen', 'winter', (k) => CP(lerp(1.4, 1.8, k), 1.3, 4.2, 2.2, 1.0, -1), bmReset);
   shot('gy30', 'baimen', 'winter', (k) => CP(lerp(-4, -2, k), 2.4, 12, -4, 1.8, -2), bmReset);
-  shot('gy31', 'baimen', 'winter', (k) => CP(-7.0, 2.2, 6.5, -7.2, 2.0, -2.6), bmReset);
+  shot('gy31', 'baimen', 'winter', (k) => CP(lerp(-5.4, -5.8, k), 2.2, lerp(1.6, 1.0, k), -7.2, 2.3, -2.6), bmReset);
   shot('gy32', 'baimen', 'winter', (k) => CP(lerp(0, -2, k), 2.0, 11, -2, 1.6, -2), bmReset);
-  shot('gy33', 'baimen', 'winter', (k) => CP(lerp(4, 2.4, k), 1.6, 6.5, 2.2, 1.2, -1), (t) => { bmReset(t); ropes.scale.setScalar(1 - 0.12 * io(K(t, S('gy33') + 1, S('gy33') + 3))); });
-  shot('gy34', 'baimen', 'winter', (k) => CP(0, 2.6, 16, 0, 1.6, -4), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = false; redHorse.mesh.visible = true; redHorse.mesh.position.set(0, 0, -3); redHorse.draw(0.2, 0); redHorse.mesh.material.opacity = 1 - 0.6 * K(t, S('gy34'), E('gy34') + 1); });
+  shot('gy33', 'baimen', 'winter', (k) => CP(lerp(3.2, 2.4, k), 1.3, lerp(4.6, 3.6, k), 2.2, 1.0, -1), (t) => { bmReset(t); ropes.scale.setScalar(1 - 0.12 * io(K(t, S('gy33') + 1, S('gy33') + 3))); });
+  shot('gy34', 'baimen', 'winter', (k) => CP(0, 2.6, 16, 0, 1.6, -4), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = bmDais.visible = false; redHorse.mesh.visible = true; redHorse.mesh.position.set(0, 0, -3); redHorse.draw(0.2, 0); redHorse.mesh.material.opacity = 1 - 0.6 * K(t, S('gy34'), E('gy34') + 1); });
 
   // —— 판정 ——
   shot('ep01', 'pro', 'day', (k) => CP(0, 5, 30, 0, 3, 0), inPro);
-  shot('ep03', 'pro', 'day', (k) => CP(0, lerp(5, 12, k), lerp(30, 40, k), 0, 2, -4), inPro);
+  shot('ep03', 'pro', 'day', (k) => CP(0, lerp(9, 18, io(k)), lerp(26, 20, io(k)), 0, 0, -4), inPro);
   shot('ep05', 'pro', 'bronze', (k) => CP(lerp(-2, -7.5, io(k)), 4.0, lerp(22, 14, io(k)), -9.5, 4.0, 2), inPro);
   shot('ep06', 'pro', 'cool', (k) => CP(lerp(2, 7.5, io(k)), 4.0, lerp(22, 14, io(k)), 9.5, 4.0, 2), inPro);
-  shot('ep07', 'pro', 'day', (k) => CP(0, 6, 34, 0, 3, 0), inPro);
-  shot('ep08', 'books', 'day', (k) => CP(0, 3.8, 14 - k * 2, 0, 3.4, -2), (t) => { SCR[3].visible = false; SCR.forEach((m) => (m.material.opacity = 1)); });
-  shot('ep09', 'books', 'day', (k) => CP(lerp(-6.4, -5.8, k), 3.6, 7.5, -5.4, 3.4, -2), (t) => { SCR[3].visible = false; SCR.forEach((m) => (m.material.opacity = 1)); });
-  shot('ep12', 'books', 'day', (k) => CP(lerp(-2.4, -1.6, k), 3.6, 7.5, -1.8, 3.4, -2), (t) => { SCR[3].visible = false; SCR.forEach((m) => (m.material.opacity = 1)); });
+  shot('ep07', 'pro', 'day', (k) => CP(lerp(-2, 2, k), 1.4, 12, 0, 2.6, 0), inPro);
+  shot('ep08', 'books', 'day', (k) => CP(0, 3.8, 14 - k * 2, 0, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m) => (m.material.opacity = 1)); });
+  shot('ep09', 'books', 'day', (k) => CP(lerp(-6.4, -5.8, k), 3.6, 7.5, -5.4, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m, i) => (m.material.opacity = i === 0 ? 1 : 1 - 0.85 * K(t, S('ep10') - 1, S('ep10')))); });
+  shot('ep12', 'books', 'day', (k) => CP(lerp(-2.4, -1.6, k), 3.6, 7.5, -1.8, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m, i) => (m.material.opacity = i === 1 ? 1 : 0.15)); });
   shot('ep13', 'pro', 'day', (k) => CP(0, 5, 30 + 6 * k, 0, 3, 0), (t) => { inPro(t); const f = K(t, S('ep13'), E('ep13')); XR.mesh.material.opacity = LR.mesh.material.opacity = 1 - f; });
-  shot('ep14', 'finale', 'bronze', (k) => CP(Math.sin(k) * 2, lerp(2.4, 3.0, k), lerp(5.5, 4.4, k), 0, 1.5, 0), (t) => { lifters.visible = false; DING3.position.y = 1.4; DING3.rotation.y = t * 0.1; });
-  shot('ep15', 'finale', 'bronze', (k) => CP(lerp(-2, 2, k), 3, 8, 0, 1.6, 0), (t) => { lifters.visible = false; DING3.position.y = 1.4; DING3.rotation.y = t * 0.1; });
-  shot('ep16', 'finale', 'bronze', (k) => CP(0, lerp(3, 6, io(k)), lerp(9, 13, io(k)), 0, 1.8, 0), (t) => { lifters.visible = true; lifters.material.opacity = K(t, S('ep16'), S('ep16') + 1.2); DING3.position.y = 1.4 + 0.6 * io(K(t, S('ep16') + 1, E('ep16'))); DING3.rotation.y = t * 0.1; });
-  shot('ep17', 'finale', 'bronze', (k) => CP(0, lerp(6, 9, io(k)), lerp(13, 18, io(k)), 0, 2.2, 0), (t) => { lifters.visible = true; lifters.material.opacity = 1; DING3.position.y = 2.0; DING3.rotation.y = t * 0.1; });
+  shot('ep14', 'finale', 'bronze', (k) => CP(Math.sin(k) * 2, lerp(2.4, 3.0, k), lerp(5.5, 4.4, k), 0, 1.5, 0), (t) => { liftRing.forEach((m) => (m.visible = false)); lifters.visible = false; DING3.position.y = 1.4; DING3.rotation.y = t * 0.1; });
+  shot('ep15', 'finale', 'bronze', (k) => CP(lerp(-2, 2, k), 3, 8, 0, 1.6, 0), (t) => { liftRing.forEach((m) => (m.visible = false)); lifters.visible = false; DING3.position.y = 1.4; DING3.rotation.y = t * 0.1; });
+  shot('ep16', 'finale', 'bronze', (k) => CP(lerp(1.5, 0.5, k), lerp(0.5, 0.9, io(k)), lerp(6.5, 7.5, io(k)), 0, 2.2, 0), (t) => { lifters.visible = true; liftRing.forEach((m) => (m.visible = true)); const f = K(t, S('ep16'), S('ep16') + 1.2); lifters.material.opacity = f; liftRing.forEach((m) => (m.material.opacity = f)); DING3.position.y = lerp(1.4, 2.95, io(K(t, cue('ep16').about('함께') - 0.6, cue('ep16').about('함께') + 1.2))); DING3.rotation.y = t * 0.1; beamLight.material.opacity = 0.5 + 0.4 * K(t, cue('ep16').about('함께'), E('ep16')); });
+  shot('ep17', 'finale', 'bronze', (k) => CP(0, lerp(1.2, 6, io(k)), lerp(8, 16, io(k)), 0, 2.2, 0), (t) => { lifters.visible = true; lifters.material.opacity = 1; liftRing.forEach((m) => { m.visible = true; m.material.opacity = 1; }); DING3.position.y = 2.95; DING3.rotation.y = t * 0.1; beamLight.material.opacity = 0.9; });
 
   SHOTS.forEach((s, i) => { s.a = S(s.from); });
   const shotAt = (t) => { let s = SHOTS[0]; for (const x of SHOTS) if (t >= x.a - 0.001) s = x; return s; };
@@ -550,8 +560,8 @@ Video.define(async (ctx) => {
   insc(B('sg28') + 0.3, Bend('sg28'), { x: 1560, y: 120, han: ['柰如父子何'], ko: '아버지와 아들 사이인데', size: 92, seal: '呂' });
   insc(B('sg29') + 0.6, Bend('sg29'), { x: 300, y: 110, han: ['擲戟之時', '豈有父子情也'], ko: '창을 던질 때, 부자의 정이 있었는가', size: 84, seal: '王' });
   brush(B('sg32') + 2.0, Bend('sg33'), { x: 960, y: 120, text: '흑산적 장연', size: 104, align: 'center' });
-  brush(cue('sg34').about('하루에') - 0.2, Bend('sg34'), { x: 1480, y: 150, text: '하루 서너 번 · 열흘', size: 84, cls: 'ko' });
-  insc(B('sg36') - 0.2, Bend('sg36') + 0.4, { x: 1300, y: 90, han: ['人中有呂布', '馬中有赤兔'], ko: ['사람 중에는 여포', '말 중에는 적토'], size: 104, seal: '赤兔' });
+  brush(cue('sg34').about('하루에') - 0.2, Bend('sg34'), { x: 960, y: 120, text: '하루 서너 번 · 열흘', size: 96, align: 'center' });
+  insc(B('sg36') - 0.2, Bend('sg36') + 0.4, { x: 140, y: 90, han: ['人中有呂布', '馬中有赤兔'], ko: ['사람 중에는 여포', '말 중에는 적토'], size: 104, seal: '赤兔' });
   insc(cue('sg39').about('작은 가지') - 0.4, Bend('sg39'), { x: 1560, y: 110, han: ['射戟小支'], ko: '창의 작은 가지를 쏘다', size: 100 });
   insc(B('sg40') + 2.4, Bend('sg40'), { x: 300, y: 120, han: ['將軍天威也'], ko: '장군의 하늘 같은 위엄', size: 96, seal: '呂' });
   // 전
@@ -567,14 +577,14 @@ Video.define(async (ctx) => {
   brush(B('jn18') + 0.6, Bend('jn19'), { x: 960, y: 120, text: '원술 · 장양 · 원소', size: 96, align: 'center' });
   brush(B('jn21') + 1.0, Bend('jn21'), { x: 960, y: 130, text: '연주', size: 140, align: 'center' });
   brush(B('jn23') + 2.0, Bend('jn23'), { x: 960, y: 130, text: '하비', size: 140, align: 'center' });
-  brush(B('jn26') + 2.6, Bend('jn26'), { x: 1500, y: 150, text: '석 달', size: 150 });
+  brush(B('jn26') + 2.6, Bend('jn26'), { x: 1460, y: 130, text: '석 달', size: 190 });
   insc(B('jn27') + 0.8, Bend('jn27'), { x: 1580, y: 110, han: ['侯成', '宋憲', '魏續'], ko: '후성 · 송헌 · 위속', size: 90 });
   // 결
   stamp(B('gy01') + 0.1, B('gy01') + 2.6, { chars: '結', x: 860, y: 380, size: 200 });
   brush(B('gy03') + 1.2, Bend('gy03'), { x: 960, y: 120, text: '해하 · 기원전 202년', size: 96, align: 'center', color: '#efe6d4' });
   const chuChars = Array.from({ length: 14 }, (_, i) => { const a = i / 14 * TAU, d = el('han', '楚', { left: (960 + Math.cos(a) * 820) + 'px', top: (520 + Math.sin(a) * 420) + 'px', fontSize: (60 + (i % 3) * 20) + 'px', color: 'rgba(239,230,212,0.85)' }); tl.set(d, { opacity: 0 }, 0); tl.to(d, { opacity: 0.85, duration: 1.2 }, B('gy04') + 0.3 + i * 0.25); tl.to(d, { left: (960 + Math.cos(a) * 520) + 'px', top: (520 + Math.sin(a) * 280) + 'px', duration: 8, ease: 'none' }, B('gy04') + 0.3 + i * 0.25); tl.to(d, { opacity: 0, duration: 0.8 }, E('gy06') - 0.4); return d; });
   insc(B('gy06') + 0.3, Bend('gy06'), { x: 1560, y: 120, han: ['四面楚歌'], ko: '사방에서 초나라 노래', size: 110, light: true, seal: '楚' });
-  insc(B('gy08') - 0.2, Bend('gy09'), { x: 1180, y: 80, han: ['力拔山兮氣蓋世', '時不利兮騅不逝', '騅不逝兮可奈何', '虞兮虞兮奈若何'], ko: ['힘은 산을 뽑고 기개는 세상을 덮었건만', '때가 불리하니 추마저 나아가지 않네'], size: 66, koSize: 28, light: true, seal: '項羽', dur: 3.2 });
+  insc(B('gy08') - 0.2, Bend('gy09'), { x: 60, y: 70, han: ['力拔山兮氣蓋世', '時不利兮騅不逝', '騅不逝兮可奈何', '虞兮虞兮奈若何'], ko: ['힘은 산을 뽑고 기개는 세상을 덮었건만', '때가 불리하니 추마저 나아가지 않네'], size: 66, koSize: 28, light: true, seal: '項羽', dur: 3.2 });
   const countEl = brush(B('gy11') + 0.6, Bend('gy13'), { x: 1500, y: 160, text: '800', size: 170, cls: 'num', color: '#efe6d4' });
   tl.set(countEl, { textContent: '100' }, cue('gy12').about('백여')); tl.set(countEl, { textContent: '28' }, cue('gy13').about('스물여덟')); tl.set(countEl, { color: '#151315' }, B('gy13'));
   insc(B('gy15') + 0.2, Bend('gy15'), { x: 1540, y: 110, han: ['此天之亡我', '非戰之罪也'], ko: '하늘이 나를 망하게 하는 것', size: 92, seal: '項羽' });
@@ -582,7 +592,7 @@ Video.define(async (ctx) => {
   insc(B('gy19') + 0.4, Bend('gy19'), { x: 1560, y: 100, han: ['我何面目見之'], ko: '무슨 얼굴로 그들을 보겠는가', size: 96, seal: '項羽' });
   brush(cue('gy22').about('서른한') - 0.1, Bend('gy22') + 0.6, { x: 960, y: 380, text: '31', size: 240, cls: 'num', align: 'center' });
   brush(B('gy24') + 3.0, Bend('gy24'), { x: 960, y: 110, text: '백문루 · 서기 198년 겨울', size: 92, align: 'center' });
-  insc(B('gy27') + 0.2, Bend('gy27'), { x: 300, y: 110, han: ['縛虎不得不急'], ko: '호랑이는 꽉 묶을 수밖에', size: 96, seal: '曹' });
+  insc(B('gy27') + 0.2, Bend('gy27'), { x: 1500, y: 70, han: ['縛虎不得不急'], ko: '호랑이는 꽉 묶을 수밖에', size: 120, seal: '曹' });
   insc(B('gy29') + 0.2, Bend('gy29'), { x: 1560, y: 100, han: ['明公將步', '令布將騎'], ko: '공은 보병, 나는 기병', size: 90, seal: '呂' });
   insc(B('gy31') + 0.2, Bend('gy31'), { x: 300, y: 110, han: ['丁建陽', '董太師'], ko: '정원과 동탁', size: 100, seal: '劉' });
   insc(B('gy32') + 2.4, Bend('gy32'), { x: 1560, y: 110, han: ['大耳兒最叵信'], ko: '귀 큰 놈이 가장 못 믿을 놈', size: 92, seal: '呂' });
@@ -603,7 +613,10 @@ Video.define(async (ctx) => {
   const DROPS = [['ki01', 'ink'], ['sg01', 'ink'], ['jn01', 'ink'], ['gy01', 'ink'], ['ep01', 'ink'], ['op06', 'mist'], ['ki15', 'mist'], ['sg21', 'mist'], ['jn17', 'mist'], ['gy23', 'mist'], ['ep08', 'mist'], ['ep14', 'mist'], ['sg03', 'mist'], ['sg12', 'mist'], ['jn09', 'mist'], ['gy03', 'mist']].map(([id, kind]) => ({ t: S(id), kind, seed: id.charCodeAt(0) + id.charCodeAt(1) * 7 + (id.charCodeAt(3) || 0) }));
   const blobsOf = (seed) => { const r = rand(seed); return Array.from({ length: 22 }, () => [r() * FW, r() * FH, 0.4 + r() * 0.9, r() * TAU]); };
   DROPS.forEach((d) => (d.blobs = blobsOf(d.seed)));
-  const CRACKS = ['jn03', 'jn06', 'jn09', 'jn13'].map((id, i) => { const r = rand(500 + i); const pts = [[r() * FW * 0.2 + (i % 2 ? FW * 0.8 : 0), r() * FH]]; for (let k = 0; k < 26; k++) { const p = pts[pts.length - 1]; pts.push([p[0] + (i % 2 ? -1 : 1) * (14 + r() * 30), p[1] + (r() - 0.5) * 50]); } const br = Array.from({ length: 5 }, () => { const j = 3 + Math.floor(r() * 20), p = pts[j]; return [p, [p[0] + (r() - 0.5) * 80, p[1] + (r() - 0.5) * 90]]; }); return { t: S(id), pts, br }; });
+  // the four losses of 항우 tear the paper of the painting: jagged rips across the sky (never across the figures)
+  const CRACKS = ['jn03', 'jn06', 'jn09', 'jn13'].map((id, i) => { const r = rand(500 + i), y0 = FH * (0.05 + i * 0.06), fromL = i % 2 === 0; const pts = []; let x0 = fromL ? -10 : FW + 10, y = y0;
+    let wd = 3; while (fromL ? x0 < FW + 10 : x0 > -10) { wd = clamp(wd + (r() - 0.5) * 2.4, 1.2, 7); pts.push([x0, y, wd]); x0 += (fromL ? 1 : -1) * (14 + r() * 26); y = clamp(y + (r() - 0.5) * 18, FH * 0.02, FH * 0.3); }
+    const fib = Array.from({ length: 50 }, () => [Math.floor(r() * pts.length), (r() - 0.5) * 2, r()]); return { t: S(id), pts, fib }; });
   function drawFx(t) {
     fc.clearRect(0, 0, FW, FH);
     // a near-invisible dot every frame keeps the layer repainting (an untouched cleared canvas can show its last frame)
@@ -621,9 +634,11 @@ Video.define(async (ctx) => {
     if (t > S('jn03') - 0.1 && t < S('jn17') + 0.6) {
       const fade = 1 - K(t, S('jn17') - 0.4, S('jn17') + 0.6);
       fc.save(); fc.strokeStyle = `rgba(21,19,21,${0.8 * fade})`; fc.lineCap = 'round';
-      for (const c of CRACKS) { const g = clamp((t - c.t) / 1.2, 0, 1); if (g <= 0) continue; const n = Math.max(2, Math.floor(c.pts.length * eo(g)));
-        fc.lineWidth = 3.2; fc.beginPath(); c.pts.slice(0, n).forEach((p, i) => (i ? fc.lineTo(p[0], p[1]) : fc.moveTo(p[0], p[1]))); fc.stroke();
-        fc.lineWidth = 1.4; for (const [a, b] of c.br) { if (c.pts.indexOf(a) > n) continue; fc.beginPath(); fc.moveTo(a[0], a[1]); fc.lineTo(lerp(a[0], b[0], g), lerp(a[1], b[1], g)); fc.stroke(); } }
+      for (const c of CRACKS) { const g = clamp((t - c.t) / 1.4, 0, 1); if (g <= 0) continue; const n = Math.max(2, Math.floor(c.pts.length * eo(g)));
+        // the rip: a dark gap with torn, slightly lighter fibre edges
+        fc.fillStyle = `rgba(21,19,21,${0.92 * fade})`; fc.beginPath(); for (let q = 0; q < n; q++) { const p = c.pts[q]; q ? fc.lineTo(p[0], p[1] - p[2]) : fc.moveTo(p[0], p[1] - p[2]); } for (let q = n - 1; q >= 0; q--) { const p = c.pts[q]; fc.lineTo(p[0], p[1] + p[2]); } fc.closePath(); fc.fill();
+        fc.strokeStyle = `rgba(250,244,230,${0.75 * fade})`; fc.lineWidth = 0.8;
+        for (const [q, side, l] of c.fib) { if (q >= n) continue; const p = c.pts[q]; const yy = p[1] + side * (p[2] + 0.5); fc.beginPath(); fc.moveTo(p[0], yy); fc.lineTo(p[0] + (l - 0.5) * 6, yy + Math.sign(side) * (1.5 + l * 3)); fc.stroke(); } }
       fc.restore();
     }
     // the slash at 송의's tent (sg05) and at the palace gate (sg30, the only red stroke on 여포's side)
@@ -648,7 +663,7 @@ Video.define(async (ctx) => {
     // riders' opacity back to full unless a shot fades them
     XR.mesh.material.opacity = LR.mesh.material.opacity = 1;
     if (s.upd) s.upd(t);
-    const ox = sets[s.set].position.x; s.camf(k); cam.position.x += ox; const look = new T.Vector3(); cam.getWorldDirection(look);
+    const ox = sets[s.set].position.x; ctx.__t = t; s.camf(k); cam.position.x += ox; const look = new T.Vector3(); cam.getWorldDirection(look);
     // camf set the camera in set-local x; recompute lookAt with the set offset
     const tgt = cam.position.clone().add(look); cam.lookAt(tgt);
     key.position.set(cam.position.x - 6, 10, 8); key.target.position.set(ox, 0, 0);
