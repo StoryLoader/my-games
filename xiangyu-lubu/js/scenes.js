@@ -543,12 +543,12 @@ Video.define(async (ctx) => {
   // 승
   stamp(B('sg01') + 0.1, B('sg01') + 2.6, { chars: '承', x: 860, y: 380, size: 200 });
   brush(B('sg03') + 1.0, Bend('sg03'), { x: 960, y: 120, text: '거록 · 기원전 207년', size: 96, align: 'center' });
-  brush(cue('sg04').about('46') - 0.2, Bend('sg04'), { x: 1500, y: 160, text: '46일', size: 150 });
+  brush(cue('sg04b').about('46') - 0.2, Bend('sg04b'), { x: 1500, y: 160, text: '46일', size: 150 });
   brush(B('sg08') + 0.1, Bend('sg08') + 0.3, { x: 960, y: 150, text: '破釜沈舟', size: 200, align: 'center', cls: 'han', how: 'left' });
   brush(B('sg08') + 1.0, Bend('sg08') + 0.3, { x: 960, y: 390, text: '파부침주', size: 72, align: 'center', cls: 'ko' });
   insc(B('sg10') + 2.0, Bend('sg10'), { x: 1560, y: 120, han: ['莫敢仰視'], ko: '감히 올려다보지 못했다', size: 100, seal: '史記' });
   insc(B('sg11') + 2.0, Bend('sg11'), { x: 1480, y: 110, han: ['西楚霸王'], ko: '서초패왕', size: 124, seal: '項羽' });
-  brush(B('sg14') + 3.0, Bend('sg14'), { x: 960, y: 120, text: '560,000', size: 200, align: 'center', cls: 'num' });
+  brush(B('sg14b') + 0.4, Bend('sg14b'), { x: 960, y: 120, text: '560,000', size: 200, align: 'center', cls: 'num' });
   brush(B('sg15') + 2.0, Bend('sg15'), { x: 360, y: 140, text: '30,000', size: 170, cls: 'num', color: '#7a5a20' });
   insc(B('sg17') + 2.0, Bend('sg17'), { x: 1540, y: 110, han: ['睢水為之不流'], ko: '수수가 흐르지 못했다', size: 92 });
   brush(B('sg18') + 0.2, Bend('sg18'), { x: 520, y: 170, text: '30,000', size: 120, cls: 'num', color: '#7a5a20', align: 'center' });
