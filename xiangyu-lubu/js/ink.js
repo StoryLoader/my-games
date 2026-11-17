@@ -240,8 +240,13 @@
       // legs / robe
       if (robe) { x.fillStyle = col; x.globalAlpha = 0.9; x.beginPath(); x.moveTo(cx - 44, gy); x.quadraticCurveTo(cx - 36, gy - 150, cx - 26, gy - 250); x.lineTo(cx + 26, gy - 250); x.quadraticCurveTo(cx + 40, gy - 150, cx + 48, gy); x.closePath(); x.fill(); }
       else { stroke(x, [[cx - 12, gy - 190], [cx - 18, gy - 100], [cx - 22, gy]], 22, 14, col, 0.95, r); stroke(x, [[cx + 12, gy - 190], [cx + 18, gy - 100], [cx + 26, gy]], 22, 14, col, 0.95, r); }
-      // torso
-      x.fillStyle = col; x.globalAlpha = 0.95; x.beginPath(); x.moveTo(cx - 34, gy - 180); x.quadraticCurveTo(cx - 40, gy - 260, cx - 28, gy - 300); x.lineTo(cx + 28, gy - 300); x.quadraticCurveTo(cx + 40, gy - 260, cx + 34, gy - 180); x.closePath(); x.fill();
+      // torso: broad at the shoulders, a belt, the arms as brush strokes (sleeves for the robed)
+      x.fillStyle = col; x.globalAlpha = 0.95; x.beginPath(); x.moveTo(cx - 30, gy - 180); x.quadraticCurveTo(cx - 34, gy - 250, cx - 46, gy - 296); x.quadraticCurveTo(cx, gy - 312, cx + 46, gy - 296); x.quadraticCurveTo(cx + 34, gy - 250, cx + 30, gy - 180); x.closePath(); x.fill();
+      x.globalAlpha = 1; x.fillStyle = 'rgba(239,230,212,0.28)'; x.fillRect(cx - 30, gy - 196, 60, 6);
+      if (robe) { stroke(x, quad([cx - 44, gy - 290], [cx - 70, gy - 230], [cx - 52, gy - 170]), 34, 26, col, 0.9, r); stroke(x, quad([cx + 44, gy - 290], [cx + 70, gy - 230], [cx + 52, gy - 170]), 34, 26, col, 0.9, r); }
+      else { stroke(x, quad([cx - 42, gy - 292], [cx - 58, gy - 240], [cx - 46, gy - 180]), 18, 12, col, 0.95, r); stroke(x, quad([cx + 42, gy - 292], [cx + 52, gy - 250], [cx + 40, gy - 212]), 18, 12, col, 0.95, r);
+        if (kind === 'general') { blot(x, cx - 42, gy - 294, 18, col, 1, r); blot(x, cx + 42, gy - 294, 18, col, 1, r); x.strokeStyle = 'rgba(239,230,212,0.22)'; x.lineWidth = 2; for (let k = 0; k < 5; k++) { x.beginPath(); x.moveTo(cx - 26, gy - 210 - k * 16); x.quadraticCurveTo(cx, gy - 204 - k * 16, cx + 26, gy - 210 - k * 16); x.stroke(); } } }
+      x.globalAlpha = 0.95; x.fillStyle = col;
       // head (bent for the old man)
       const hb = kind === 'old' ? 18 : 0;
       x.beginPath(); x.ellipse(cx + hb, gy - 322 + hb * 0.5, 17, 20, 0, 0, TAU); x.fill();

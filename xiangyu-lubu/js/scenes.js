@@ -168,8 +168,8 @@ Video.define(async (ctx) => {
   // 7 · HALL — 동탁's hall in 장안 (pillars, dais), the thrown 수극, the maid
   const HA = SET('hall', 1200);
   const pillarTex = INK.tex(INK.cv(128, 1024, (x, w, h) => { const r = rand(5); x.fillStyle = '#1a1718'; x.globalAlpha = 0.92; x.fillRect(20, 0, 88, h); x.globalAlpha = 1; x.strokeStyle = 'rgba(239,230,212,0.2)'; for (let i = 0; i < 30; i++) { x.beginPath(); x.moveTo(24 + r() * 80, r() * h); x.lineTo(24 + r() * 80, r() * h); x.stroke(); } }));
-  for (let i = 0; i < 8; i++) { const p = INK.layer(pillarTex, 1.2, 10); p.position.set(-14 + i * 4, 5, -6 - (i % 2) * 6); HA.add(p); }
-  const beam = INK.layer(INK.tex(INK.cv(1024, 64, (x) => { x.fillStyle = '#151315'; x.fillRect(0, 10, 1024, 44); })), 50, 1.4); beam.position.set(0, 9.6, -8); HA.add(beam);
+  for (let i = 0; i < 10; i++) { const p = INK.layer(pillarTex, 1.0, 11); p.position.set(-18 + i * 4, 5.5, -13 - (i % 2) * 5); HA.add(p); }
+  const beam = INK.layer(INK.tex(INK.cv(1024, 64, (x) => { x.fillStyle = '#151315'; x.fillRect(0, 10, 1024, 44); })), 60, 1.4); beam.position.set(0, 10.4, -13); HA.add(beam);
   const dong = fig('lord', 71, 5.2); add(HA, dong, -2.5, 0.6, -10);
   const dais = INK.layer(INK.tex(INK.cv(512, 64, (x) => { x.fillStyle = '#151315'; x.globalAlpha = 0.85; x.fillRect(0, 0, 512, 64); })), 10, 0.8); dais.position.set(-2.5, 0.3, -10.2); HA.add(dais);
   const luHall = fig('general', 73, 2.7); add(HA, luHall, 4, 0, -2);
@@ -252,7 +252,16 @@ Video.define(async (ctx) => {
   const GX = SET('gaixia', 3000);
   vista(GX, { seed: 1, dark: 1.2, op: 0.8 });
   moon(GX, -30, 24, -230, 9);
-  const camp = INK.layer(INK.tex(INK.cv(512, 300, (x) => { const r = rand(31); x.fillStyle = '#151315'; x.globalAlpha = 0.95; x.beginPath(); x.moveTo(20, 280); x.lineTo(256, 30); x.lineTo(492, 280); x.fill(); x.globalAlpha = 1; x.fillStyle = '#e8a050'; x.globalAlpha = 0.85; x.beginPath(); x.moveTo(220, 280); x.lineTo(256, 190); x.lineTo(292, 280); x.fill(); })), 7, 4.1); camp.position.set(0, 2.05, -6); GX.add(camp);
+  const camp = INK.layer(INK.tex(INK.cv(1024, 600, (x, w, h) => { const r = rand(31);
+    // a commander's tent: a sloped canopy on poles, the front flaps tied back, lamplight inside, two banners
+    x.fillStyle = '#151315'; x.globalAlpha = 0.92; x.beginPath(); x.moveTo(60, 330); x.quadraticCurveTo(300, 250, 512, 120); x.quadraticCurveTo(724, 250, 964, 330); x.lineTo(900, 350); x.lineTo(124, 350); x.closePath(); x.fill();
+    x.globalAlpha = 0.85; x.fillRect(150, 340, 724, 230);
+    const g = x.createRadialGradient(512, 470, 10, 512, 470, 240); g.addColorStop(0, 'rgba(250,190,110,1)'); g.addColorStop(0.5, 'rgba(232,140,60,0.85)'); g.addColorStop(1, 'rgba(120,60,30,0.2)'); x.globalAlpha = 1; x.fillStyle = g; x.beginPath(); x.moveTo(400, 570); x.lineTo(440, 350); x.lineTo(584, 350); x.lineTo(624, 570); x.fill();
+    x.fillStyle = '#151315'; x.beginPath(); x.moveTo(400, 350); x.quadraticCurveTo(380, 470, 330, 570); x.lineTo(400, 570); x.lineTo(450, 350); x.fill(); x.beginPath(); x.moveTo(624, 350); x.quadraticCurveTo(644, 470, 694, 570); x.lineTo(624, 570); x.lineTo(574, 350); x.fill();
+    x.fillStyle = '#151315'; x.beginPath(); x.ellipse(500, 520, 22, 40, 0, 0, TAU); x.fill();   // a figure seated inside, against the lamp
+    for (const bx of [110, 914]) { INK.stroke(x, [[bx, 600], [bx + 2, 300], [bx + 4, 20]], 8, 6, '#151315', 0.95, r); x.fillStyle = '#2a2523'; x.beginPath(); x.moveTo(bx + 6, 30); x.lineTo(bx + 120, 44); x.quadraticCurveTo(bx + 100, 90, bx + 124, 140); x.lineTo(bx + 6, 128); x.fill(); x.fillStyle = '#efe6d4'; x.font = "700 64px 'LXGW WenKai TC', serif"; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('楚', bx + 62, 86); }
+    for (let k = 0; k < 9; k++) INK.stroke(x, INK.quad([170 + k * 80, 330], [170 + k * 80 + 6, 450], [168 + k * 80, 568]), 3, 2, 'rgba(239,230,212,0.18)', 1, r);
+  })), 9, 5.27); camp.position.set(0, 2.6, -6); GX.add(camp);
   const lamp = INK.glow(0xf0a050, 6, 0.0); lamp.position.set(0, 1.2, -5.5); GX.add(lamp);
   const torches = Array.from({ length: 70 }, (_, i) => { const a = i / 70 * TAU, rr = 38 + (i % 5) * 3; const m = INK.glow(0xf08a3a, 3.6, 0.0, true); m.position.set(Math.cos(a) * rr * 1.4, 0.8 + (i % 3) * 0.4, -6 + Math.sin(a) * rr * 0.7); GX.add(m); return m; });
   const zhui = INK.rider('xiang', 25), yu = fig('robed', 121, 2.1); add(GX, zhui.mesh, 4.5, 0, -2); add(GX, yu, -3.4, 0, -3.5);
