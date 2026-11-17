@@ -320429,6 +320429,30 @@
    "sha256": "16bc72c061af49b9b9f797e05d206c868e229a0f4bdff62982efc827f2a8dd36",
    "by": "render.py"
   },
+  "screenshots/xiangyu-lubu_20261117-112753_0m00.00s-to-18m59.72s_every-600-frames-at-60fps_sheet-1-of-5.jpg": {
+   "sha256": "94d13c3939181b62fe9037eef91a5e0b63d1f4786dcf7e8cfcd7893e2846b86a",
+   "by": "render.py"
+  },
+  "screenshots/xiangyu-lubu_20261117-112753_0m00.00s-to-18m59.72s_every-600-frames-at-60fps_sheet-2-of-5.jpg": {
+   "sha256": "68ed7d2dc08e90cfd02f8aa5fb5fe27e9b9d0d86316580dbfe758f56fe05f991",
+   "by": "render.py"
+  },
+  "screenshots/xiangyu-lubu_20261117-112753_0m00.00s-to-18m59.72s_every-600-frames-at-60fps_sheet-3-of-5.jpg": {
+   "sha256": "528deff44fa125836790f880a739c745da27678b78e93eb35cf7e364af119809",
+   "by": "render.py"
+  },
+  "screenshots/xiangyu-lubu_20261117-112753_0m00.00s-to-18m59.72s_every-600-frames-at-60fps_sheet-4-of-5.jpg": {
+   "sha256": "d0e5e22a94b9799809ac9bada6c8017e68de383630163e7f4291da9ce5e52a5c",
+   "by": "render.py"
+  },
+  "screenshots/xiangyu-lubu_20261117-112753_0m00.00s-to-18m59.72s_every-600-frames-at-60fps_sheet-5-of-5.jpg": {
+   "sha256": "7c40ab3947a8914070cf3067a7b110612725ed4e098d63299eff72f46871314b",
+   "by": "render.py"
+  },
+  "screenshots/xiangyu-lubu_20261117-115415_19-moments-0m30.40s-to-18m47.30s_sheet-1-of-1.jpg": {
+   "sha256": "4401032ba94b7d899de856af4e7de01e2ac051ac6aae5e848f8f6634ab9fa8c0",
+   "by": "render.py"
+  },
   "vendor/three/stage3d.js": {
    "sha256": "13b75ca928c0797aaf700c795ac83779aae2adabbe1e0df73e37b4b413107022",
    "by": "enable_3d.mjs"

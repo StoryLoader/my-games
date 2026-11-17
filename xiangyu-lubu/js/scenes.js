@@ -355,16 +355,16 @@ Video.define(async (ctx) => {
   shot('op03', 'pro', 'cool', (k) => CP(lerp(2, 7.5, io(k)), 4.0, lerp(14, 12, io(k)), 9.5, 4.0, 2), inPro);
   shot('op04', 'pro', 'day', (k) => CP(0, lerp(5, 14, io(k)), lerp(26, 36, io(k)), 0, lerp(3, 0, io(k)), -4), inPro);
   shot('op05', 'pro', 'day', (k) => CP(0, 9, 34 - 2 * k, 0, 3, -4), inPro);
-  shot('op06', 'books', 'day', (k) => CP(lerp(-3, 0, k), 4.6, 15, lerp(-3, 0, k), 4.4, -2), (t) => { SCR[3].visible = false; unrollAll(t, [1e9, 1e9, 1e9, 1e9]); });
-  shot('op07', 'books', 'day', (k) => CP(lerp(-6.4, -5.6, k), 3.6, 8.5, -5.4, 3.6, -2), (t) => { SCR[3].visible = false; unrollAll(t, [S('op07') + 0.4, 1e9, 1e9, 1e9]); });
-  shot('op08', 'books', 'day', (k) => CP(lerp(-1.6, 0.4, k), 3.6, 9.4, lerp(-1.6, 0.4, k), 3.6, -2), (t) => { SCR[3].visible = false; unrollAll(t, [0, cue('op08').about('삼국지') - 0.3, cue('op08').about('후한서') - 0.3, 1e9]); });
-  shot('op09', 'books', 'day', (k) => CP(lerp(2.5, 4.4, k), 3.6, 10.5, lerp(3.2, 4.8, k), 3.6, -2), (t) => { SCR[3].visible = true; SCR[3].material.opacity = 1; unrollAll(t, [0, 0, 0, cue('op09').about('소설') - 0.6]); });
-  shot('op10', 'books', 'day', (k) => CP(0, 3.8, 14, 0, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); const f = K(t, S('op10') + 0.5, S('op10') + 3.5); SCR[3].visible = f < 1; SCR[3].material.opacity = 1 - f; SCR[3].position.y = 7.0 + f * 1.2; rods[3].visible = f < 1; });
-  shot('op11', 'books', 'day', (k) => CP(0, 4.2, 18, 0, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); SCR.forEach((m) => { m.material.opacity = 0.25; }); SCR[3].visible = false; });
+  shot('op06', 'books', 'day', (k) => CP(lerp(-3, 0, k), 4.6, 15, lerp(-3, 0, k), 4.4, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r) => (r.visible = true)); SCR[3].visible = false; unrollAll(t, [S('op06') + 0.3, S('op06') + 0.9, S('op06') + 1.5, 1e9]); });
+  shot('op07', 'books', 'day', (k) => CP(lerp(-6.4, -5.6, k), 3.6, 8.5, -5.4, 3.6, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r) => (r.visible = true)); SCR[3].visible = false; unrollAll(t, [0, 0, 0, 1e9]); });
+  shot('op08', 'books', 'day', (k) => CP(lerp(-1.6, 0.4, k), 3.6, 9.4, lerp(-1.6, 0.4, k), 3.6, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r) => (r.visible = true)); SCR[3].visible = false; unrollAll(t, [0, 0, 0, 1e9]); });
+  shot('op09', 'books', 'day', (k) => CP(lerp(2.5, 4.4, k), 3.6, 10.5, lerp(3.2, 4.8, k), 3.6, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r) => (r.visible = true)); SCR[3].visible = true; SCR[3].material.opacity = 1; unrollAll(t, [0, 0, 0, cue('op09').about('소설') - 0.6]); });
+  shot('op10', 'books', 'day', (k) => CP(0, 3.8, 14, 0, 3.4, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r) => (r.visible = true)); unrollAll(t, [0, 0, 0, 0]); const f = K(t, S('op10') + 0.5, S('op10') + 3.5); SCR[3].visible = f < 1; SCR[3].material.opacity = 1 - f; SCR[3].position.y = 7.0 + f * 1.2; rods[3].visible = f < 1; });
+  shot('op11', 'books', 'day', (k) => CP(0, 4.2, 18, 0, 3.4, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r) => (r.visible = true)); unrollAll(t, [0, 0, 0, 0]); SCR.forEach((m) => { m.material.opacity = 0.25; }); SCR[3].visible = false; });
 
   // —— 기 · 항우 ——
   const xiangReset = () => { grand.material.opacity = 0; uncle.visible = youth.visible = false; lifter.visible = false; DING.visible = false; legion.visible = false; carriages.visible = false; youthHill.visible = false; eightK.visible = false; chuFlag.visible = true; spears.forEach((s) => (s.visible = true)); XI.remove(XR.mesh); };
-  shot('ki01', 'xiang', 'bronze', (k) => CP(0, lerp(14, 4, io(k)), 30, 0, lerp(6, 3, io(k)), -20), (t) => { xiangReset(); chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
+  shot('ki01', 'xiang', 'bronze', (k) => CP(lerp(-6, -3, k), lerp(14, 3, io(k)), lerp(30, 14, io(k)), -2, lerp(6, 2.2, io(k)), -2), (t) => { xiangReset(); });
   shot('ki03', 'xiang', 'bronze', (k) => CP(lerp(-6, -3, k), 2.2, 10, -1, 2.2, -2), (t) => { xiangReset(); });
   shot('ki04', 'xiang', 'bronze', (k) => CP(lerp(-1, 1, k), 2.4, 11, 1.5, 2.4, -2), (t) => { xiangReset(); grand.material.opacity = 0.75 * K(t, S('ki04'), S('ki04') + 1.5); });
   shot('ki05', 'xiang', 'bronze', (k) => CP(lerp(3, 4.6, k), 2.0, 9, 4.4, 1.6, 0), (t) => { xiangReset(); uncle.visible = youth.visible = true; chuFlag.visible = false; spears.forEach((s) => (s.visible = false)); });
@@ -380,7 +380,7 @@ Video.define(async (ctx) => {
   // —— 기 · 여포 ——
   const luReset = () => { dingYuan.visible = luStand.visible = false; dongArmy.visible = false; dingFlag.visible = false; arrow.visible = false; luoyang.visible = false; LU.remove(LR.mesh); };
   const grassWind = (t) => grassL.forEach((m, i) => { m.position.x = Math.sin(t * 0.5 + i) * 0.6; });
-  shot('ki15', 'lu', 'cool', (k) => CP(lerp(-10, 0, io(k)), 3, 24, 0, 2.4, -10), (t) => { luReset(); grassWind(t); });
+  shot('ki15', 'lu', 'cool', (k) => CP(lerp(-10, 0, io(k)), 3, 24, 0, 2.4, -10), (t) => { luReset(); grassWind(t); LU.add(LR.mesh); LR.mesh.position.set(lerp(-22, 10, K(t, S('ki15'), E('ki16'))), 0, 6); LR.mesh.scale.set(1, 1, 1); LR.draw((t * 1.7) % 1, 1); });
   shot('ki16', 'lu', 'cool', (k) => CP(lerp(-4, 4, k), 2.2, 18, lerp(-4, 4, k), 2.6, -20), (t) => { luReset(); grassWind(t); });
   shot('ki17', 'lu', 'cool', (k) => CP(lerp(-6, 6, k), 2.0, 13, lerp(-4, 8, k), 1.8, 0), (t) => { luReset(); grassWind(t); LU.add(LR.mesh); const x0 = lerp(-12, 10, K(t, S('ki17'), E('ki17'))); LR.mesh.position.set(x0, 0, 0); LR.mesh.scale.set(1, 1, 1); LR.draw((t * 1.7) % 1, 1, { weaponAngle: -0.5 }); const sh = cue('ki17').about('비장'); arrow.visible = t > sh - 2 && t < sh + 1.6; const a = K(t, sh - 2, sh + 1.6); arrow.position.set(x0 + 2 + a * 30, 2.6 + Math.sin(a * Math.PI) * 2, 0.2); arrow.rotation.z = 0.35 - a * 0.7; });
   shot('ki18', 'lu', 'cool', (k) => CP(lerp(-1, 0, k), 2.2, lerp(10, 8.5, k), -0.2, 1.8, -1), (t) => { luReset(); grassWind(t); dingYuan.visible = luStand.visible = true; dingFlag.visible = true; });
@@ -426,17 +426,17 @@ Video.define(async (ctx) => {
   shot('sg31', 'lu', 'cool', (k) => CP(lerp(-6, 6, k), 2.4, 16, lerp(-2, 10, k), 2.4, -10), (t) => { luReset(); grassWind(t); luoyang.visible = true; LU.add(LR.mesh); LR.mesh.position.set(lerp(-4, 18, K(t, S('sg31'), E('sg31'))), 0, -2); LR.mesh.scale.set(1, 1, 1); LR.draw((t * 1.7) % 1, 1); });
   const heX = (t, a, b, dir) => lerp(-22, 22, K(t, a, b)) * dir;
   const heRider = (t, a, b, dir = 1) => { HE.add(LR.mesh); const k = K(t, a, b); LR.mesh.position.set(heX(t, a, b, dir), 0, 5); LR.mesh.scale.set(dir, 1, 1); LR.draw((t * 1.9) % 1, 1, { weaponAngle: -0.15 }); };
-  shot('sg32', 'heishan', 'cool', (k) => CP(lerp(-10, 0, k), 8, 34, 0, 3, -20), (t) => { HE.remove(LR.mesh); zhangYan.visible = true; });
-  shot('sg33', 'heishan', 'cool', (k) => CP(lerp(-4, 4, k), 4, 26, 0, 2, -14), (t) => { HE.remove(LR.mesh); });
-  shot('sg34', 'heishan', 'cool', (k) => { const t = ctx.__t, a = S('sg34'), L = E('sg34') - a, p = Math.floor((t - a) / (L / 3)), x = heX(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); CP(x - (p % 2 ? -3 : 3), 1.5, 16, x, 1.5, 4); }, (t) => { const a = S('sg34'), L = E('sg34') - a; const p = Math.floor((t - a) / (L / 3)); heRider(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); });
-  shot('sg35', 'heishan', 'cool', (k) => { const x = heX(ctx.__t, S('sg35') - 1, E('sg36') + 1, 1); CP(x - 4, 1.8, 17, x, 1.8, 4); }, (t) => { heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
-  shot('sg36', 'heishan', 'cool', (k) => { const x = heX(ctx.__t, S('sg35') - 1, E('sg36') + 1, 1); CP(x + 2, 1.0, 13, x, 2.2, 4); }, (t) => { heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
+  shot('sg32', 'heishan', 'cool', (k) => CP(lerp(-10, 0, k), 8, 34, 0, 3, -20), (t) => { heFlags.forEach((f) => (f.visible = true)); HE.remove(LR.mesh); zhangYan.visible = true; });
+  shot('sg33', 'heishan', 'cool', (k) => CP(lerp(-4, 4, k), 4, 26, 0, 2, -14), (t) => { heFlags.forEach((f) => (f.visible = true)); HE.remove(LR.mesh); });
+  shot('sg34', 'heishan', 'cool', (k) => { const t = ctx.__t, a = S('sg34'), L = E('sg34') - a, p = Math.floor((t - a) / (L / 3)), x = heX(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); CP(x - (p % 2 ? -3 : 3), 1.5, 16, x, 1.5, 4); }, (t) => { heFlags.forEach((f) => (f.visible = true)); const a = S('sg34'), L = E('sg34') - a; const p = Math.floor((t - a) / (L / 3)); heRider(t, a + p * L / 3, a + (p + 1) * L / 3, p % 2 ? -1 : 1); });
+  shot('sg35', 'heishan', 'cool', (k) => { const x = heX(ctx.__t, S('sg35') - 1, E('sg36') + 1, 1); CP(x - 4, 1.8, 17, x, 1.8, 4); }, (t) => { heFlags.forEach((f) => (f.visible = true)); heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
+  shot('sg36', 'heishan', 'cool', (k) => { const x = heX(ctx.__t, S('sg35') - 1, E('sg36') + 1, 1); CP(x + 2, 1.0, 13, x, 2.2, 4); }, (t) => { heFlags.forEach((f) => (f.visible = false)); heRider(t, S('sg35') - 1, E('sg36') + 1, 1); });
   const gateShot = (t) => { shotRider.mesh.position.set(-5.2, 0, 4); shotRider.mesh.scale.set(1, 1, 1); shotRider.draw(0.3, 0, { weaponAngle: -1.2, noBow: true }); };
   shot('sg37', 'gate', 'cool', (k) => CP(lerp(-10, 0, k), 5, 30, 0, 3, -24), (t) => { gateShot(t); shaft.visible = false; });
   shot('sg38', 'gate', 'cool', (k) => CP(lerp(-2, 2, k), 3, 22, 0, 3, -24), (t) => { gateShot(t); shaft.visible = false; });
-  shot('sg39', 'gate', 'cool', (k) => CP(lerp(-7.5, -6.5, k), 3.0, lerp(13, 11, k), 0, 2.2, -24), (t) => { gateShot(t); shaft.visible = false; });
+  shot('sg39', 'gate', 'cool', (k) => CP(lerp(-7.5, -6.5, k), 2.6, lerp(14, 12, k), 0, 1.5, -24), (t) => { gateShot(t); shaft.visible = false; });
   shot('sg40', 'gate', 'cool', (k) => CP(lerp(2.8, 2.2, k), 3.3, lerp(-19.2, -20.2, k), -0.6, 3.2, -24.1), (t) => { gateShot(t); const a0 = S('sg40') + 0.5, a = K(t, a0, a0 + 0.45); shaft.visible = t > a0; shaft.position.set(lerp(-9, -0.45, a), lerp(3.35, 3.2, a), -24.1); shaft.rotation.set(0, 0, Math.PI / 2 - 0.02); });
-  shot('sg41', 'pro', 'day', (k) => CP(0, lerp(-0.6, 0.2, k), lerp(19, 17, k), 0, 4.6, 0), inPro);   // low, looking up at both ridges
+  shot('sg41', 'pro', 'day', (k) => CP(0, 3.4, lerp(27, 24, k), 0, 3.6, 2), inPro);
 
   // —— 전 ——
   shot('jn01', 'pro', 'day', (k) => CP(lerp(-3, -5, k), 1.4, 13, -9.5, 3.6, 2), inPro);   // up from the mist at 항우
@@ -459,7 +459,7 @@ Video.define(async (ctx) => {
   shot('jn17', 'gates', 'cool', (k) => CP(lerp(-30, -20, k), 5, 14, -20, 3, -26), (t) => { gtReset(); });
   shot('jn18', 'gates', 'cool', (k) => CP(lerp(-30, 26, k), 4, 16, lerp(-30, 26, k), 3, -28), (t) => { gtReset(); GT.add(LR.mesh); const a = K(t, S('jn18'), E('jn19')); LR.mesh.position.set(lerp(-36, 30, a), 0, -12); LR.mesh.scale.set(1, 1, 1); LR.draw((t * 1.4) % 1, 0.8); gCity.forEach((g, i) => { const shutAt = lerp(S('jn18'), E('jn19'), (i + 0.7) / 3.2); g.shut.visible = t > shutAt; g.open.visible = !g.shut.visible; }); });
   shot('jn20', 'lu', 'cool', (k) => CP(lerp(-8, 0, k), 3, 22, 4, 3, -30), (t) => { luReset(); grassWind(t); luoyang.visible = true; });
-  shot('jn22', 'lu', 'cool', (k) => CP(lerp(0, -6, k), 3, 18, -4, 2, -10), (t) => { luReset(); grassWind(t); LU.add(LR.mesh); LR.mesh.position.set(lerp(8, -16, K(t, S('jn22'), E('jn22'))), 0, 5.5); LR.mesh.scale.set(-1, 1, 1); LR.draw((t * 1.5) % 1, 0.9); });
+  shot('jn22', 'lu', 'cool', (k) => CP(lerp(0, -6, k), 3, 18, -4, 2, -10), (t) => { luReset(); grassWind(t); LU.add(LR.mesh); LR.mesh.position.set(lerp(2, -14, K(t, S('jn22'), E('jn22'))), 0, 5.5); LR.mesh.scale.set(-1, 1, 1); LR.draw((t * 1.5) % 1, 0.9); });
   shot('jn23', 'gates', 'cool', (k) => CP(lerp(18, 26, k), 4, 14, 24, 3, -36), (t) => { gtReset(); });
   shot('jn24', 'xiapi', 'winter', (k) => CP(lerp(-12, 0, k), 9, 40, 0, 3, -30), (t) => { waterline.scale.y = 0.6; flood.position.y = -1.2; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
   shot('jn25', 'xiapi', 'winter', (k) => CP(0, 6, 30, 0, 4, -30), (t) => { waterline.scale.y = 0.6; flood.position.y = -1.2; seizers.forEach((m) => (m.visible = false)); chenGong.visible = false; });
@@ -468,7 +468,7 @@ Video.define(async (ctx) => {
   shot('jn28', 'pro', 'day', (k) => CP(lerp(6, 9, k), 3.6, 12, 9.5, 3.8, 2), inPro);
 
   // —— 결 ——
-  shot('gy01', 'pro', 'day', (k) => CP(lerp(7, -7, io(k)), 3.8, 14, lerp(9.5, -9.5, io(k)), 3.8, 2), inPro);   // a pan from 여포 back to 항우
+  shot('gy01', 'pro', 'day', (k) => CP(0, lerp(10, 6, io(k)), lerp(26, 20, io(k)), 0, 3.2, 0), inPro);
   const gxReset = (t) => { zhui.mesh.visible = true; yu.visible = true; lamp.material.opacity = 0.7; torches.forEach((m, i) => (m.material.opacity = 0.55 + 0.2 * Math.sin(t * 3 + i))); nightRiders.forEach((r) => (r.mesh.visible = false)); hanHost.visible = false; swamp.material.opacity = 0; camp.visible = true; zhui.draw(0.3, 0); };
   shot('gy03', 'gaixia', 'night', (k) => CP(0, lerp(18, 10, io(k)), 44, 0, 0, -10), gxReset);
   shot('gy04', 'gaixia', 'night', (k) => CP(lerp(-6, 6, k), 4, 26, 0, 2, -12), gxReset);
@@ -490,9 +490,10 @@ Video.define(async (ctx) => {
   const bmReset = (t) => { bmDais.visible = true; caoSeat.visible = luBound.visible = liuBei.visible = true; ropes.visible = true; redHorse.mesh.visible = false; snow.position.y = -((t * 0.6) % 14); };
   shot('gy23', 'baimen', 'winter', (k) => CP(lerp(-10, 0, k), 6, 34, 0, 5, -24), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = bmDais.visible = false; });
   shot('gy24', 'baimen', 'winter', (k) => CP(lerp(-1, 1, k), 0.3, lerp(14, 11, io(k)), 0, lerp(6, 9, io(k)), -24), (t) => { bmReset(t); caoSeat.visible = luBound.visible = liuBei.visible = ropes.visible = bmDais.visible = false; });
-  shot('gy26', 'baimen', 'winter', (k) => CP(lerp(3.4, 2.8, k), 1.25, lerp(4.4, 3.8, k), 2.2, 1.0, -1), bmReset);
+  shot('gy26', 'baimen', 'winter', (k) => CP(lerp(1, 0, k), 1.0, 13, 0.5, 2.6, -8), bmReset);   // wide: the bound man small under the tower
   shot('gy27', 'baimen', 'winter', (k) => CP(lerp(2.6, 2.2, k), 0.8, lerp(1.6, 1.2, k), -4, 2.9, -2), bmReset);   // from behind the bound man, up at 조조
-  shot('gy28', 'baimen', 'winter', (k) => CP(lerp(1.4, 1.8, k), 1.3, 4.2, 2.2, 1.0, -1), bmReset);
+  shot('gy28', 'baimen', 'winter', (k) => CP(lerp(2.6, 2.3, k), 1.2, lerp(2.2, 1.9, k), 2.2, 1.15, -0.85), bmReset);   // the ropes, very close
+  shot('gy29', 'baimen', 'winter', (k) => CP(lerp(3.6, 3.2, k), 0.7, 1.4, -4, 3.2, -2), bmReset);   // over the bound man's shoulder, up at 조조
   shot('gy30', 'baimen', 'winter', (k) => CP(lerp(-4, -2, k), 2.4, 12, -4, 1.8, -2), bmReset);
   shot('gy31', 'baimen', 'winter', (k) => CP(lerp(-5.4, -5.8, k), 2.2, lerp(1.6, 1.0, k), -7.2, 2.3, -2.6), bmReset);
   shot('gy32', 'baimen', 'winter', (k) => CP(lerp(0, -2, k), 2.0, 11, -2, 1.6, -2), bmReset);
@@ -504,14 +505,14 @@ Video.define(async (ctx) => {
   shot('ep03', 'pro', 'day', (k) => CP(0, lerp(9, 18, io(k)), lerp(26, 20, io(k)), 0, 0, -4), inPro);
   shot('ep05', 'pro', 'bronze', (k) => CP(lerp(-2, -7.5, io(k)), 4.0, lerp(22, 14, io(k)), -9.5, 4.0, 2), inPro);
   shot('ep06', 'pro', 'cool', (k) => CP(lerp(2, 7.5, io(k)), 4.0, lerp(22, 14, io(k)), 9.5, 4.0, 2), inPro);
-  shot('ep07', 'pro', 'day', (k) => CP(lerp(-2, 2, k), 1.4, 12, 0, 2.6, 0), inPro);
-  shot('ep08', 'books', 'day', (k) => CP(0, 3.8, 14 - k * 2, 0, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m) => (m.material.opacity = 1)); });
-  shot('ep09', 'books', 'day', (k) => CP(lerp(-6.4, -5.8, k), 3.6, 7.5, -5.4, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m, i) => (m.material.opacity = i === 0 ? 1 : 1 - 0.85 * K(t, S('ep10') - 1, S('ep10')))); });
-  shot('ep12', 'books', 'day', (k) => CP(lerp(-2.4, -1.6, k), 3.6, 7.5, -1.8, 3.4, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m, i) => (m.material.opacity = i === 1 ? 1 : 0.15)); });
-  shot('ep13', 'pro', 'day', (k) => CP(0, 5, 30 + 6 * k, 0, 3, 0), (t) => { inPro(t); const f = K(t, S('ep13'), E('ep13')); XR.mesh.material.opacity = LR.mesh.material.opacity = 1 - f; });
+  shot('ep07', 'pro', 'day', (k) => CP(lerp(-1, 1, k), 4.6, 25, 0, 3.4, 2), inPro);
+  shot('ep08', 'books', 'day', (k) => CP(0, 3.8, 14 - k * 2, 0, 3.4, -2), (t) => { SCR.forEach((m) => (m.visible = true)); rods.forEach((r, i) => (r.visible = i < 3)); unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m) => (m.material.opacity = 1)); });
+  shot('ep09', 'books', 'day', (k) => CP(lerp(-3.6999999999999997, -3.1, k), 4.0, 12, -3.4, 4.0, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m, i) => { m.visible = i === 0; m.material.opacity = 1; }); rods.forEach((r, i) => (r.visible = i === 0)); });
+  shot('ep12', 'books', 'day', (k) => CP(lerp(-0.09999999999999998, 0.5, k), 4.0, 12, 0.2, 4.0, -2), (t) => { unrollAll(t, [0, 0, 0, 0]); rods[3].visible = false; SCR[3].visible = false; SCR.forEach((m, i) => { m.visible = i === 1; m.material.opacity = 1; }); rods.forEach((r, i) => (r.visible = i === 1)); });
+  shot('ep13', 'pro', 'day', (k) => CP(0, 5, 30 + 6 * k, 0, 3, 0), (t) => { inPro(t); const f = K(t, S('ep13'), E('ep13')); XR.mesh.material.opacity = LR.mesh.material.opacity = 1 - K(t, lerp(S('ep13'), E('ep13'), 0.55), E('ep13') + 0.4); });
   shot('ep14', 'finale', 'bronze', (k) => CP(Math.sin(k) * 2, lerp(2.4, 3.0, k), lerp(5.5, 4.4, k), 0, 1.5, 0), (t) => { liftRing.forEach((m) => (m.visible = false)); lifters.visible = false; DING3.position.y = 1.4; DING3.rotation.y = t * 0.1; });
   shot('ep15', 'finale', 'bronze', (k) => CP(lerp(-2, 2, k), 3, 8, 0, 1.6, 0), (t) => { liftRing.forEach((m) => (m.visible = false)); lifters.visible = false; DING3.position.y = 1.4; DING3.rotation.y = t * 0.1; });
-  shot('ep16', 'finale', 'bronze', (k) => CP(lerp(1.5, 0.5, k), lerp(0.5, 0.9, io(k)), lerp(6.5, 7.5, io(k)), 0, 2.2, 0), (t) => { lifters.visible = true; liftRing.forEach((m) => (m.visible = true)); const f = K(t, S('ep16'), S('ep16') + 1.2); lifters.material.opacity = f; liftRing.forEach((m) => (m.material.opacity = f)); DING3.position.y = lerp(1.4, 2.95, io(K(t, cue('ep16').about('함께') - 0.6, cue('ep16').about('함께') + 1.2))); DING3.rotation.y = t * 0.1; beamLight.material.opacity = 0.5 + 0.4 * K(t, cue('ep16').about('함께'), E('ep16')); });
+  shot('ep16', 'finale', 'bronze', (k) => CP(lerp(1.5, 0.5, k), lerp(0.5, 0.9, io(k)), lerp(6.5, 7.5, io(k)), 0, 1.6, 0), (t) => { lifters.visible = true; liftRing.forEach((m) => (m.visible = true)); const f = K(t, S('ep16'), S('ep16') + 1.2); lifters.material.opacity = f; liftRing.forEach((m) => (m.material.opacity = f)); DING3.position.y = lerp(1.4, 2.95, io(K(t, cue('ep16').about('함께') - 0.6, cue('ep16').about('함께') + 1.2))); DING3.rotation.y = t * 0.1; beamLight.material.opacity = 0.5 + 0.4 * K(t, cue('ep16').about('함께'), E('ep16')); });
   shot('ep17', 'finale', 'bronze', (k) => CP(0, lerp(1.2, 6, io(k)), lerp(8, 16, io(k)), 0, 2.2, 0), (t) => { lifters.visible = true; lifters.material.opacity = 1; liftRing.forEach((m) => { m.visible = true; m.material.opacity = 1; }); DING3.position.y = 2.95; DING3.rotation.y = t * 0.1; beamLight.material.opacity = 0.9; });
 
   SHOTS.forEach((s, i) => { s.a = S(s.from); });
@@ -600,7 +601,7 @@ Video.define(async (ctx) => {
   // 판정
   brush(B('ep03') + 1.4, Bend('ep03'), { x: 960, y: 140, text: '판정할 기록 없음', size: 120, align: 'center' });
   brush(B('ep05') + 0.8, Bend('ep05'), { x: 1500, y: 150, text: '70여 전', size: 130 });
-  brush(cue('ep05').about('3만') - 0.1, Bend('ep05'), { x: 1290, y: 330, text: '30,000 › 560,000', size: 64, cls: 'num' });
+  brush(cue('ep05').about('3만') - 0.1, Bend('ep05'), { x: 1080, y: 330, text: '30,000 › 560,000', size: 104, cls: 'num' });
   brush(B('ep06') + 2.4, Bend('ep06'), { x: 300, y: 150, text: '이각·곽사, 조조에게 패', size: 72, cls: 'ko' });
   insc(B('ep10') - 0.2, Bend('ep11'), { x: 1400, y: 100, han: ['自矜功伐', '欲以力征經營天下', '五年卒亡其國'], ko: '자기 공만 자랑하고 힘으로만 다스리려 했다', size: 76, seal: '司馬遷' });
   insc(B('ep12') + 0.4, Bend('ep12'), { x: 1400, y: 100, han: ['有虓虎之勇', '而無英奇之略', '唯利是視'], ko: '호랑이의 용맹, 계략은 없고 이익만 보았다', size: 76, seal: '陳壽' });
@@ -615,8 +616,8 @@ Video.define(async (ctx) => {
   DROPS.forEach((d) => (d.blobs = blobsOf(d.seed)));
   // the four losses of 항우 tear the paper of the painting: jagged rips across the sky (never across the figures)
   const CRACKS = ['jn03', 'jn06', 'jn09', 'jn13'].map((id, i) => { const r = rand(500 + i), y0 = FH * (0.05 + i * 0.06), fromL = i % 2 === 0; const pts = []; let x0 = fromL ? -10 : FW + 10, y = y0;
-    let wd = 3; while (fromL ? x0 < FW + 10 : x0 > -10) { wd = clamp(wd + (r() - 0.5) * 2.4, 1.2, 7); pts.push([x0, y, wd]); x0 += (fromL ? 1 : -1) * (14 + r() * 26); y = clamp(y + (r() - 0.5) * 18, FH * 0.02, FH * 0.3); }
-    const fib = Array.from({ length: 50 }, () => [Math.floor(r() * pts.length), (r() - 0.5) * 2, r()]); return { t: S(id), pts, fib }; });
+    let wd = 1.2; while (fromL ? x0 < FW + 10 : x0 > -10) { wd = clamp(wd + (r() - 0.5) * 0.9, 0.5, 2.2); pts.push([x0, y, wd]); x0 += (fromL ? 1 : -1) * (14 + r() * 26); y = clamp(y + (r() - 0.5) * 18, FH * 0.02, FH * 0.3); }
+    const fib = Array.from({ length: 24 }, () => [Math.floor(r() * pts.length), (r() - 0.5) * 2, r()]); return { t: S(id), pts, fib }; });
   function drawFx(t) {
     fc.clearRect(0, 0, FW, FH);
     // a near-invisible dot every frame keeps the layer repainting (an untouched cleared canvas can show its last frame)
@@ -636,7 +637,7 @@ Video.define(async (ctx) => {
       fc.save(); fc.strokeStyle = `rgba(21,19,21,${0.8 * fade})`; fc.lineCap = 'round';
       for (const c of CRACKS) { const g = clamp((t - c.t) / 1.4, 0, 1); if (g <= 0) continue; const n = Math.max(2, Math.floor(c.pts.length * eo(g)));
         // the rip: a dark gap with torn, slightly lighter fibre edges
-        fc.fillStyle = `rgba(21,19,21,${0.92 * fade})`; fc.beginPath(); for (let q = 0; q < n; q++) { const p = c.pts[q]; q ? fc.lineTo(p[0], p[1] - p[2]) : fc.moveTo(p[0], p[1] - p[2]); } for (let q = n - 1; q >= 0; q--) { const p = c.pts[q]; fc.lineTo(p[0], p[1] + p[2]); } fc.closePath(); fc.fill();
+        fc.fillStyle = `rgba(21,19,21,${0.7 * fade})`; fc.beginPath(); for (let q = 0; q < n; q++) { const p = c.pts[q]; q ? fc.lineTo(p[0], p[1] - p[2]) : fc.moveTo(p[0], p[1] - p[2]); } for (let q = n - 1; q >= 0; q--) { const p = c.pts[q]; fc.lineTo(p[0], p[1] + p[2]); } fc.closePath(); fc.fill();
         fc.strokeStyle = `rgba(250,244,230,${0.75 * fade})`; fc.lineWidth = 0.8;
         for (const [q, side, l] of c.fib) { if (q >= n) continue; const p = c.pts[q]; const yy = p[1] + side * (p[2] + 0.5); fc.beginPath(); fc.moveTo(p[0], yy); fc.lineTo(p[0] + (l - 0.5) * 6, yy + Math.sign(side) * (1.5 + l * 3)); fc.stroke(); } }
       fc.restore();
