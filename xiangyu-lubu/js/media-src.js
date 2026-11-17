@@ -3,6 +3,6 @@
 window.MEDIA_SRC = {
   level: -18.7,   // the narration's integrated loudness (Google TTS ko-KR-Chirp3-HD-Sadaltager, measured 2026-11-17)
   clips: {
-    sfx: { file: 'assets/user/sfx/sfx.mp4', master: 'assets/user/sfx/sfx.mp4', w: 16, h: 16, dur: 1139.71 },
+    sfx: { file: 'assets/user/sfx/sfx.mp4', master: 'assets/user/sfx/sfx.mp4', w: 16, h: 16, dur: 1154.98 },
   },
 };
