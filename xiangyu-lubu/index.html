@@ -15,11 +15,17 @@
 </head>
 <body>
   <div id="stage" data-width="1920" data-height="1080">
-    <!--
-      Persistent layers (background, grain, frame) go directly in #stage.
-      Each storyboard scene is a <section class="scene" id="sNN"> — full-stage, absolutely positioned,
-      shown/hidden by scene() in js/scenes.js.
-    -->
+    <!-- one ink-wash landscape in three.js (storyboard.md → 월드 바이블), the writing on it (inscriptions, brush words,
+         seals) in the DOM, then the paper itself over everything, and the ink-drop transitions on top -->
+    <div id="world">
+      <canvas id="gl"></canvas>
+      <div id="light"></div>
+      <div id="writing"></div>
+      <canvas id="paper" width="1920" height="1080"></canvas>
+      <canvas id="inkfx" width="960" height="540"></canvas>
+      <div id="vig"></div>
+      <div id="sfxbox" style="position:absolute;left:0;top:0;width:4px;height:4px;opacity:0;pointer-events:none"></div>
+    </div>
   </div>
 
   <script src="vendor/gsap/gsap.min.js"></script>
@@ -43,6 +49,7 @@
   <script src="js/media-src.js"></script>      <!-- footage: the clips this video shows (empty when none) — references/footage.md -->
   <script src="js/media.js"></script>          <!-- footage on the master clock: MEDIA.install(ctx) -->
   <script src="js/reckit.js"></script>         <!-- screen recordings without zooming: RecKit.install(ctx) -->
+  <script src="js/ink.js"></script>           <!-- the painted world: paper, ink mountains, riders, the cauldron and the halberd -->
   <script src="js/scenes.js"></script>
 </body>
 </html>

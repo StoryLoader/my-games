@@ -75,7 +75,7 @@
       const W = o.w || 2048, H = o.h || 768, r = rand(o.seed || 1), f = fbm1(o.seed || 1), f2 = fbm1((o.seed || 1) + 50);
       const peaks = o.peaks || 3, top = o.top || 0.12, base = o.base || 0.85, dark = o.dark == null ? 0.85 : o.dark;
       const yAt = (u) => { // ridge height: a few big peaks (bumps) + fbm roughness
-        let y = 0; for (let k = 0; k < peaks; k++) { const c = (k + 0.5 + (f2(k * 3.1) - 0.5) * 0.8) / peaks, wd = (o.steep || 0.12) * (0.7 + f2(k * 7.7) * 0.8); y = Math.max(y, Math.exp(-((u - c) / wd) ** 2) * (0.55 + 0.45 * f2(k * 5.3))); }
+        let y = 0; for (let k = 0; k < peaks; k++) { const c = (k + 0.5 + (f2(k * 3.1) - 0.5) * 0.8) / peaks, wd = (o.steep || 0.12) * (0.7 + f2(k * 7.7) * 0.8); y = Math.max(y, Math.exp(-(((u - c) / wd) ** 2)) * (0.55 + 0.45 * f2(k * 5.3))); }
         y = y * 0.75 + 0.25 * f(u * (o.rough || 6)) * (0.4 + y);
         return H * (top + (1 - y) * (base - top) * 0.9);
       };
@@ -217,6 +217,15 @@
       const r = rand(seed), cx = 128, gy = 500, col = o.color || INKC;
       const S = kind === 'lord' ? 1.25 : kind === 'youth' ? 0.85 : 1;
       x.save(); x.translate(cx, gy); x.scale(S, S); x.translate(-cx, -gy);
+      if (kind === 'lift') { // legs braced apart, both arms straight up holding something overhead
+        x.fillStyle = col; x.globalAlpha = 0.95;
+        stroke(x, [[cx - 14, gy - 200], [cx - 40, gy - 100], [cx - 58, gy]], 26, 16, col, 0.95, r); stroke(x, [[cx + 14, gy - 200], [cx + 40, gy - 100], [cx + 58, gy]], 26, 16, col, 0.95, r);
+        x.beginPath(); x.moveTo(cx - 38, gy - 190); x.quadraticCurveTo(cx - 44, gy - 270, cx - 32, gy - 310); x.lineTo(cx + 32, gy - 310); x.quadraticCurveTo(cx + 44, gy - 270, cx + 38, gy - 190); x.closePath(); x.fill();
+        x.beginPath(); x.ellipse(cx, gy - 334, 18, 21, 0, 0, TAU); x.fill(); x.beginPath(); x.moveTo(cx - 24, gy - 340); x.quadraticCurveTo(cx, gy - 380, cx + 24, gy - 340); x.fill();
+        stroke(x, [[cx - 30, gy - 300], [cx - 52, gy - 390], [cx - 46, gy - 470]], 18, 12, col, 0.95, r); stroke(x, [[cx + 30, gy - 300], [cx + 52, gy - 390], [cx + 46, gy - 470]], 18, 12, col, 0.95, r);
+        for (let k = 0; k < 4; k++) stroke(x, quad([cx - 30, gy - 300], [cx - 70, gy - 230 + k * 12], [cx - 84 - k * 6, gy - 140 + k * 22]), 16, 4, col, 0.45, r);
+        x.restore(); granulate(x, w, h, seed + 3, 0.18); return;
+      }
       if (kind === 'kneel') {
         x.fillStyle = col; x.globalAlpha = 0.92; x.beginPath(); x.moveTo(cx - 50, gy); x.quadraticCurveTo(cx - 60, gy - 70, cx - 20, gy - 120); x.lineTo(cx + 20, gy - 130); x.quadraticCurveTo(cx + 48, gy - 70, cx + 56, gy); x.closePath(); x.fill();
         x.beginPath(); x.ellipse(cx + 26, gy - 136, 15, 16, 0, 0, TAU); x.fill(); x.restore(); return;

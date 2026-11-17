@@ -1,29 +1,38 @@
-/* style.css — art direction for this video. Replace the tokens with the palette and type scale
-   chosen in storyboard.md. Sizes are in stage pixels (the stage is scaled as a whole). */
-
+/* style.css — 「항우 vs 여포」: ink on rice paper (storyboard.md → 월드 바이블). Stage pixels, 1920×1080. */
 :root {
-  --bg: #0e0f13;
-  --fg: #f4f2ee;
-  --muted: #8a8d96;
-  --accent: #ff5a36;
-  --accent-2: #3a7bff;
-
-  /* SIL OFL 1.1 catalogue fonts only (installed in fonts/, see player.css) — never add a system font to these stacks */
+  --paper: #efe6d4;
+  --ink: #151315;
+  --ink-2: #4a4646;
+  --bronze: #b08a3e;      /* 항우, the cauldron */
+  --red: #a3302a;         /* 여포, the red horse only */
+  --seal: #c0392b;        /* seals */
   --font: 'Pretendard', sans-serif;
-  --mono: 'D2Coding', 'Pretendard', monospace;   /* code, ids, numbers in a terminal look; has Hangul */
-  --safe: 96px;            /* keep text inside this margin */
+  --han: 'LXGW WenKai TC', 'Song Myung', serif;     /* Hanja inscriptions */
+  --ko: 'Song Myung', 'Pretendard', serif;           /* Korean glosses, numbers, titles */
+  --brush: 'Nanum Brush Script', 'Song Myung', cursive;  /* brushed Korean words */
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px;
 }
-
-#stage {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font);
-}
-/* browsers don't let form controls inherit the page font: a <button>/<input>/<select>/<textarea> in a scene would show a
-   system font — they take the scene's font like everything else */
+#stage { background: var(--paper); color: var(--ink); font-family: var(--font); --caption-bottom: 20px; }
 #stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
 
-/* aspect 16:9 · stage 1920×1080 — layout tokens written by new_project.mjs (SKILL.md → Aspect ratio).
-   --safe: minimum text margin. --safe-top/-bottom/-right: keep text and key visuals inside them. */
-:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
-#stage { --caption-bottom: 20px; }
+#world { position: absolute; inset: 0; overflow: hidden; }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#light { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: 0.6; }
+#writing { position: absolute; inset: 0; pointer-events: none; }
+#paper { position: absolute; inset: 0; width: 1920px; height: 1080px; mix-blend-mode: multiply; opacity: 0.9; pointer-events: none; }
+#inkfx { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+#vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 75% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(60,44,28,0.28) 100%); }
+
+/* ---------- writing on the painting ---------- */
+.insc { position: absolute; display: flex; flex-direction: row-reverse; gap: 22px; align-items: flex-start; }
+.insc .col { writing-mode: vertical-rl; font-family: var(--han); font-weight: 700; color: var(--ink); line-height: 1.12; letter-spacing: 0.06em; white-space: nowrap; }
+.insc .col.ko { font-family: var(--ko); font-weight: 400; color: var(--ink-2); letter-spacing: 0.12em; }
+.insc .seal { width: 64px; height: 64px; align-self: flex-end; }
+.brush { position: absolute; font-family: var(--brush); color: var(--ink); white-space: nowrap; line-height: 1; }
+.han { position: absolute; font-family: var(--han); font-weight: 700; color: var(--ink); white-space: nowrap; line-height: 1; }
+.ko { position: absolute; font-family: var(--ko); color: var(--ink); white-space: nowrap; line-height: 1.1; }
+.num { position: absolute; font-family: var(--ko); color: var(--ink); white-space: nowrap; line-height: 1; font-variant-numeric: lining-nums; }
+.stamp { position: absolute; }
+.light-text { color: var(--paper); }
+.light-text .col, .light-text .col.ko { color: var(--paper); }

@@ -1,0 +1,9 @@
+{
+  "assets": [
+    {
+      "file": "assets/user/sfx/sfx.mp4",
+      "source": "user",
+      "note": "No narration-free music was asked for; the effects track (wind, ink drops, seals, the bronze cauldron's hum, hooves, drums, iron, fire, water, cracks, rope, a far chant) is synthesized from code by sfx/make_sound.py in this project from js/cues.js (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock. The user's standing rule: code-synthesized effects, no background music."
+    }
+  ]
+}
