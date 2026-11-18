@@ -1,0 +1,19 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* hahmlet — Google Fonts ofl/hahmlet @ 7af0d90b4d53 · SERIF */
+@font-face {
+  font-family: 'Hahmlet';   /* SIL OFL 1.1 · Copyright 2020 The Hahmlet Project Authors (https://github.com/hyper-type/hahmlet) · fonts/hahmlet/OFL.txt */
+  src: url('../fonts/hahmlet/Hahmlet[wght].ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+/* gfs-didot — Google Fonts ofl/gfsdidot @ 7af0d90b4d53 · SERIF */
+@font-face {
+  font-family: 'GFS Didot';   /* SIL OFL 1.1 · Copyright (c) Takis Katsoulidis and George D. Matthiopoulos (gfs@greekfontsociety.gr), 2001. All rights reserved. · fonts/gfs-didot/OFL.txt */
+  src: url('../fonts/gfs-didot/GFSDidot-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}

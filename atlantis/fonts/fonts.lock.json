@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "note": "fonts installed from Google Fonts (ofl/ only) by add_font.mjs — pinned commit + sha256 of every file. Generated; do not edit.",
+  "fonts": [
+    {
+      "id": "hahmlet",
+      "family": "Hahmlet",
+      "source": "google/fonts",
+      "path": "ofl/hahmlet",
+      "commit": "7af0d90b4d532ffa4b041937b560c6df4e7b1e95",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright 2020 The Hahmlet Project Authors (https://github.com/hyper-type/hahmlet)",
+      "category": "SERIF",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 100,
+          "max": 900
+        }
+      ],
+      "subsets": [
+        "korean",
+        "latin",
+        "latin-ext",
+        "menu",
+        "vietnamese"
+      ],
+      "files": [
+        {
+          "dest": "fonts/hahmlet/Hahmlet[wght].ttf",
+          "sha256": "892bffe530255770a7435226154a02f519055ff6bedf64254f37f21d15a59279",
+          "bytes": 3559144,
+          "style": "normal",
+          "weight": "100 900"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/hahmlet/OFL.txt",
+        "sha256": "ddadb10d28a303e3ef3b1f7ec55d3027903b9ec566d2f87d3ee03f3c87c91711",
+        "bytes": 4477
+      }
+    },
+    {
+      "id": "gfs-didot",
+      "family": "GFS Didot",
+      "source": "google/fonts",
+      "path": "ofl/gfsdidot",
+      "commit": "7af0d90b4d532ffa4b041937b560c6df4e7b1e95",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright (c) Takis Katsoulidis and George D. Matthiopoulos (gfs@greekfontsociety.gr), 2001. All rights reserved.",
+      "category": "SERIF",
+      "axes": [],
+      "subsets": [
+        "menu",
+        "greek",
+        "greek-ext",
+        "latin",
+        "vietnamese"
+      ],
+      "files": [
+        {
+          "dest": "fonts/gfs-didot/GFSDidot-Regular.ttf",
+          "sha256": "4fc784ab824e8866eeef8ad55976b93e7e170fb1b8237fd4f8781b5b4dd297f9",
+          "bytes": 191168,
+          "style": "normal",
+          "weight": "400"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/gfs-didot/OFL.txt",
+        "sha256": "9e19c0d2e7e7adcbe9dfd0749e34dda41e7e356e0f2cc082d61d2fc9b6e0cef7",
+        "bytes": 4543
+      }
+    }
+  ]
+}
