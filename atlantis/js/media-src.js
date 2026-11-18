@@ -1,8 +1,8 @@
-/* media-src.js — the footage this video shows (js/media.js, references/footage.md). Only files the user provided:
-   each one is also listed in provenance.json. Leave `clips` empty when the video shows no footage. */
+/* media-src.js — the clips this video plays (js/media.js, references/footage.md). One clip: the effects track,
+   synthesized by sfx/make_sound.py from the cue times (a 16x16 black picture around it — only its sound is used). */
 window.MEDIA_SRC = {
-  level: -22,   // the narration's integrated loudness (LUFS); clips with `lufs` are level-matched to it
+  level: -19.2,   // the narration's integrated loudness (Google TTS ko-KR-Chirp3-HD-Algenib, measured 2026-11-18)
   clips: {
-    // rec_demo: { file: 'assets/user/vid/rec_demo.mp4', master: 'media/master/rec_demo.mp4', w: 3840, h: 1750, dur: 42.0 },
+    sfx: { file: 'assets/user/sfx/sfx.mp4', master: 'assets/user/sfx/sfx.mp4', w: 16, h: 16, dur: 660.2 },
   },
 };

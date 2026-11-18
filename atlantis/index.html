@@ -15,11 +15,17 @@
 </head>
 <body>
   <div id="stage" data-width="1920" data-height="1080">
-    <!--
-      Persistent layers (background, grain, frame) go directly in #stage.
-      Each storyboard scene is a <section class="scene" id="sNN"> — full-stage, absolutely positioned,
-      shown/hidden by scene() in js/scenes.js.
-    -->
+    <!-- the sea world in three.js (storyboard.md → 월드 바이블 「청동의 바다」), the inscriptions and the real documents
+         in the DOM, a film finish on top -->
+    <div id="world">
+      <canvas id="gl"></canvas>
+      <div id="grade"></div>
+      <div id="writing"></div>
+      <canvas id="grain" width="480" height="270"></canvas>
+      <div id="vig"></div>
+      <div id="flash"></div>
+      <div id="sfxbox" style="position:absolute;left:0;top:0;width:4px;height:4px;opacity:0;pointer-events:none"></div>
+    </div>
   </div>
 
   <script src="vendor/gsap/gsap.min.js"></script>
@@ -43,6 +49,9 @@
   <script src="js/media-src.js"></script>      <!-- footage: the clips this video shows (empty when none) — references/footage.md -->
   <script src="js/media.js"></script>          <!-- footage on the master clock: MEDIA.install(ctx) -->
   <script src="js/reckit.js"></script>         <!-- screen recordings without zooming: RecKit.install(ctx) -->
+  <script src="js/real-images.js"></script>
+  <script src="js/speakers.js"></script>
+  <script src="js/atl.js"></script>            <!-- the sea, the ring city, the ships, the black-figure amphora -->
   <script src="js/scenes.js"></script>
 </body>
 </html>

@@ -1,29 +1,35 @@
-/* style.css — art direction for this video. Replace the tokens with the palette and type scale
-   chosen in storyboard.md. Sizes are in stage pixels (the stage is scaled as a whole). */
-
+/* style.css — 「아틀란티스 전설」: the sea of bronze (storyboard.md → 월드 바이블). Stage pixels, 1920×1080. */
 :root {
-  --bg: #0e0f13;
-  --fg: #f4f2ee;
-  --muted: #8a8d96;
-  --accent: #ff5a36;
-  --accent-2: #3a7bff;
-
-  /* SIL OFL 1.1 catalogue fonts only (installed in fonts/, see player.css) — never add a system font to these stacks */
+  --deep: #0b2433; --sea: #1e5a73; --foam: #7fc4c9; --marble: #e9e4da; --ori: #c4623a; --terra: #c8733a; --glaze: #1a1412;
   --font: 'Pretendard', sans-serif;
-  --mono: 'D2Coding', 'Pretendard', monospace;   /* code, ids, numbers in a terminal look; has Hangul */
-  --safe: 96px;            /* keep text inside this margin */
+  --kr: 'Hahmlet', 'Pretendard', serif;                 /* Korean titles, numbers, inscriptions */
+  --gr: 'GFS Didot', 'Hahmlet', 'Pretendard', serif;    /* Greek capitals */
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px;
 }
-
-#stage {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font);
-}
-/* browsers don't let form controls inherit the page font: a <button>/<input>/<select>/<textarea> in a scene would show a
-   system font — they take the scene's font like everything else */
+#stage { background: var(--deep); color: var(--marble); font-family: var(--font); --caption-bottom: 20px; }
 #stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+#world { position: absolute; inset: 0; overflow: hidden; }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#grade { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; }
+#writing { position: absolute; inset: 0; pointer-events: none; }
+#grain { position: absolute; inset: 0; width: 1920px; height: 1080px; opacity: 0.12; mix-blend-mode: overlay; pointer-events: none; image-rendering: pixelated; }
+#vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 50% 50%, rgba(0,0,0,0) 55%, rgba(2,10,16,0.55) 100%); }
+#flash { position: absolute; inset: 0; pointer-events: none; background: #dfe8ff; opacity: 0; }
 
-/* aspect 16:9 · stage 1920×1080 — layout tokens written by new_project.mjs (SKILL.md → Aspect ratio).
-   --safe: minimum text margin. --safe-top/-bottom/-right: keep text and key visuals inside them. */
-:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
-#stage { --caption-bottom: 20px; }
+/* inscriptions: Greek capitals spaced like a carved stone, Korean in Hahmlet */
+.gr { position: absolute; font-family: var(--gr); font-weight: 400; letter-spacing: 0.32em; color: var(--marble); white-space: nowrap; line-height: 1; text-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 0 22px rgba(0,0,0,0.25); }
+.kr { position: absolute; font-family: var(--kr); font-weight: 600; color: var(--marble); white-space: nowrap; line-height: 1.15; text-shadow: 0 2px 10px rgba(0,0,0,0.45); }
+.kr.sub { font-weight: 400; color: #cfe2e4; }
+.big { position: absolute; font-family: var(--kr); font-weight: 800; color: var(--ori); white-space: nowrap; line-height: 1; text-shadow: 0 4px 24px rgba(0,0,0,0.45); }
+.dark { color: var(--glaze); text-shadow: none; }
+
+/* real documents: laid on a slab of old stone / parchment, with the source under them */
+.mount { position: absolute; padding: 18px; background: linear-gradient(160deg, #d8cfbd, #b9ad96); box-shadow: 0 24px 50px rgba(0,8,14,0.55), inset 0 0 0 1px rgba(255,255,255,0.35), inset 0 0 40px rgba(80,60,30,0.25); border-radius: 3px; }
+.mount img { display: block; width: 100%; height: auto; }
+.mount .cap { margin-top: 12px; font-family: var(--kr); font-size: 26px; font-weight: 600; color: #1d2328; text-align: center; line-height: 1.3; white-space: nowrap; }
+.mount .cap small { display: block; font-size: 18px; font-weight: 400; color: #4a4f52; }
+.speaker { position: absolute; left: 96px; top: 86px; display: flex; align-items: center; gap: 16px; }
+.speaker i { width: 14px; height: 70px; background: var(--ori); display: block; box-shadow: 0 0 18px rgba(196,98,58,0.6); }
+.speaker span { font-family: var(--kr); font-weight: 700; font-size: 58px; color: var(--marble); white-space: nowrap; text-shadow: 0 2px 12px rgba(0,0,0,0.6); }
+.speaker small { display: block; font-family: var(--gr); font-size: 26px; letter-spacing: 0.3em; color: #cfe2e4; }

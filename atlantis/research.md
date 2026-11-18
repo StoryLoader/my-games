@@ -53,3 +53,15 @@
 - [Atlantis: The Antediluvian World](https://en.wikipedia.org/wiki/Atlantis:_The_Antediluvian_World), [Big Think: Kircher](https://bigthink.com/?p=73479), [raremaps](https://raremaps.com/gallery/detail/78273)
 - [historyhit: Plato's Myth](https://www.historyhit.com/plato-and-the-lost-city-of-atlantis/), [GreekReporter: allegory](https://greekreporter.com/2025/09/10/plato-story-atlantis-allegory/)
 - 원문 사이트(gutenberg 등)는 이 세션 네트워크에서 직접 열리지 않아, 인용은 검색에 나온 Jowett 문장과 기존 지식으로 대조했다.
+
+## 실제 자료 (Wikimedia Commons, 2026-11-18) — provenance.json
+| 파일 | 원본 | 라이선스 |
+|---|---|---|
+| plato.jpg | File:Plato Silanion Musei Capitolini MC1377.jpg (Marie-Lan Nguyen) | CC BY 2.5 — 화면 캡션에 표기 |
+| kircher.jpg | File:Atlantis Kircher Mundus subterraneus 1678.jpg | 퍼블릭 도메인 |
+| donnelly.jpg | File:Picture of Ignatius Donnelly.jpg | 퍼블릭 도메인 |
+| donnelly_map.jpg | File:Atlantis map 1882.jpg (『Atlantis: The Antediluvian World』) | 퍼블릭 도메인 |
+| santorini.jpg | File:ISS-48 Santorini Caldera, Greece.jpg (NASA) | 퍼블릭 도메인 |
+| akrotiri.jpg | File:Ship procession fresco, part 2, Akrotiri, Greece.jpg | 퍼블릭 도메인 |
+| gibraltar.jpg | File:Strait of Gibraltar (satellite view).jpg (Axelspace) | CC BY-SA 4.0 — 화면 캡션에 표기 |
+| helike.jpg | File:Excavations at Helike.jpg (Sappho50) | CC0 |
