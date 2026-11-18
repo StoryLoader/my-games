@@ -19,7 +19,7 @@ SEG.ch1 = (ctx, K) => {
   const WIN = { x: 594, y: 70, s: 0.38, o: 1, bz: 1, ov: 0 };     // 730 × 410
   K.film.key(t0, { ...K.FULL, o: 0 }).key(t0 + 0.05, { ...WIN, o: 0 }).key(S('a01') + 0.3, WIN);
   K.film.hold(t0, S('a02') + 2, 114.8);
-  const rc = K.etch(top, '늙은 파수꾼 노을, 처음으로 잠들다', { x: 960, y: 520, size: 44, align: 'c' });
+  const rc = K.etch(top, '늙은 파수꾼 노을, 처음으로 잠들다', { x: 960, y: 552, size: 44, align: 'c' });
   K.inn(rc, A('a01', '늙은 파수꾼'), 0.7, 12); K.lit(rc, A('a01', '처음으로 잠드는'), 0.8);
   K.out(rc, S('a02') + 0.2, 0.5);
 

@@ -293460,6 +293460,18 @@
   "screenshots/nightmare-lecture_20261118-151149_51-moments-0m03.00s-to-15m04.00s_sheet-3-of-3.jpg": {
    "sha256": "b268409fd2303e96afb1e7c0f36dcba549c476ec6da12de8b80d4dfd1b3ecba2",
    "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261118-151900_42-moments-0m03.00s-to-15m04.00s_sheet-1-of-2.jpg": {
+   "sha256": "8ef5e145b5cab988bae051c6c515f983eb5a99f39dbca9b8e8e2738ed7c82dc2",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261118-151900_42-moments-0m03.00s-to-15m04.00s_sheet-2-of-2.jpg": {
+   "sha256": "87b869801b6e6f24063039fda8e7fbb74578b55d5082764bc6f6331f0a514316",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261118-152320_3-moments-2m50.00s-to-13m00.00s_sheet-1-of-1.jpg": {
+   "sha256": "1b3cdf845e9947d2a1f0a5cf2dc07cff56c66a27d21f583f720425d72f7bc513",
+   "by": "render.py"
   }
  }
 }

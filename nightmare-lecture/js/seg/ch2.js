@@ -223,6 +223,7 @@ SEG.ch2 = (ctx, K) => {
     K.write(tl1, at1, 0.6); K.write(same, at2, 0.9);
     tl.fromTo([fx, tl1, same, web], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, A('b18', '한 장씩'));
     const strip = K.el('div', null, p, { left: 160, top: 250, width: 1180, height: 170 });
+    gsap.set(strip, { autoAlpha: 0 }); tl.fromTo(strip, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: true }, A('b18', '한 장씩') + 0.1);
     for (let k = 0; k < 7; k++) {
       const c = K.el('div', 'mini', strip, { left: k * 168, top: 0, width: 150, height: 92, background: '#0b0d18' });
       K.el('div', 'lbl', strip, { left: k * 168 + 8, top: 108, fontSize: 18 }, `${(47.6 + k / 30).toFixed(3)}초`);
