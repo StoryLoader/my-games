@@ -10,6 +10,7 @@ import { T, clamp, seg, ss } from './story.js';
 import { track, lerp } from '/core/lib.js';
 
 const VIOLET = new THREE.Color('#b46cff');
+const FOVK = (window.FILM_SIZE ? window.FILM_SIZE[1] > window.FILM_SIZE[0] : innerHeight > innerWidth) ? 1.6 : 1;   // the vertical cut: a taller lens
 
 export function buildTower() {
   const scene = new THREE.Scene(), MM = mats();
@@ -128,7 +129,7 @@ export function buildTower() {
     N.face(cam); N.frame(nf, nf === 'sitWake' ? null : 1, true);
     fill.position.copy(N.root.position).add(new THREE.Vector3(.4, 1.5, 2)); fill.intensity = 1.2;
     // camera (one impact shake at the burst)
-    cam.fov = C.fov; cam.updateProjectionMatrix(); cam.up.set(0, 1, 0);
+    cam.fov = C.fov * FOVK; cam.updateProjectionMatrix(); cam.up.set(0, 1, 0);
     cam.position.set(...C.p(lt)); cam.lookAt(...C.l(lt));
     if (burst && t < T.burst + .5) { const k = Math.exp(-(t - T.burst) / .12); cam.position.x += Math.sin(t * 90) * .06 * k; cam.position.y += Math.cos(t * 77) * .05 * k; }
     shards.userData.update(t); swarm.userData.update(t);

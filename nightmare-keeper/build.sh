@@ -9,7 +9,7 @@ LIB=/root/lemo-opuscar
 HERE=$(cd "$(dirname "$0")" && pwd)
 export LIB
 [ -f "$LIB/core/render/video.mjs" ] || { echo "set LIB to the library folder"; exit 1; }
-PY="$LIB/.venv/bin/python"; NAME=nightmare-keeper; FPS=30
+PY="$LIB/.venv/bin/python"; NAME=nightmare-keeper-shorts; FPS=30; SIZE=${SIZE:-1080x1920}   # the vertical cut (Shorts); SIZE=1920x1080 for the wide one
 node "$HERE/tools/export.mjs"                                                  # story.js → timeline.json
 python3 "$HERE/tools/tts_google.py" "$HERE/lines.json" "$HERE/voices"          # Korean voices (cached)
 (cd "$LIB" && HF_HUB_DISABLE_XET=1 "$PY" core/tts/asr_check.py "$HERE/lines.json" "$HERE/voices" --lang ko)
@@ -19,7 +19,7 @@ python3 "$HERE/tools/tts_google.py" "$HERE/lines.json" "$HERE/voices"          #
 "$PY" "$HERE/tools/srt_cues.py" "$HERE/out_cues.json" && "$PY" "$LIB/core/render/srt.py" "$HERE/out_cues.json" "$HERE/subtitles_ko.srt" && rm "$HERE/out_cues.json"
 [ -n "$STOP_BEFORE_VIDEO" ] && { echo "stopped before the picture"; exit 0; }
 mkdir -p "$HERE/out"
-(cd "$LIB" && node core/render/video.mjs "$HERE" --fps $FPS --workers 2 --out "$HERE/out/video.mp4")
+(cd "$LIB" && node core/render/video.mjs "$HERE" --fps $FPS --workers 2 --size $SIZE --out "$HERE/out/video.mp4")
 (cd "$LIB" && sh core/render/mux.sh "$HERE/out/video.mp4" "$HERE/mix.wav" "$HERE/$NAME.mp4" $FPS 0)
-(cd "$LIB" && node core/render/still.mjs "$HERE" 96.5 --out "$HERE/out/poster") && cp "$HERE/out/poster/t_96.5.jpg" "$HERE/poster.jpg"
+(cd "$LIB" && node core/render/still.mjs "$HERE" 96.5 --size $SIZE --out "$HERE/out/poster") && cp "$HERE/out/poster/t_96.5.jpg" "$HERE/poster.jpg"
 echo "done: $HERE/$NAME.mp4"

@@ -9,6 +9,7 @@ import { makeChar, moths, bigMoth, SPX } from './chars.js';
 import { T, clamp, seg, ss } from './story.js';
 import { track, lerp } from '/core/lib.js';
 
+const FS = window.FILM_SIZE || [innerWidth, innerHeight], PORT = FS[1] > FS[0], FOVK = PORT ? 1.65 : 1;   // the vertical cut: a taller lens; the map shots turn so the town's long axis runs down the frame
 const AMBER = new THREE.Color('#ffae55'), VIOLET = new THREE.Color('#b46cff'), DAWN_SKY = new THREE.Color('#e0a07a');
 const eio = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
 
@@ -169,6 +170,13 @@ export function buildTown() {
     handover: { p: track([[0, [25.6, 2.4, 5.6]], [7, [26.4, 2.8, 6.4]]]), l: track([[0, [26.4, .9, .5]], [7, [26.8, 1.0, .4]]]), fov: 32 },
     dawn: { p: track([[0, [26.6, 3.2, 7.2]], [11.5, [8, 34, 38]]]), l: track([[0, [26.6, 1.0, .4]], [11.5, [14, 1, -4]]]), fov: 34 },
   };
+  // vertical cut: the two map shots look straight down with west at the top (the town is long east–west)
+  const CAMV = {
+    mapOpen: { p: track([[0, [3, 76, -4.0]], [2.4, [2, 71, -4.0]], [7.5, [-8, 20, 18]]]), l: track([[0, [3.01, 0, -4]], [2.4, [1.01, 0, -5]], [7.5, [-21, 6, -10]]]), fov: 34 },
+    infect: { p: track([[0, [3, 70, -4.0]], [8, [3, 62, -4.0]]]), l: track([[0, [3.01, 0, -4]], [8, [3.01, 0, -4]]]), fov: 36 },
+    talk: { p: track([[0, [24.2, 7.2, 13.8]], [10, [24.6, 7.0, 13.2]]]), l: track([[0, [27.1, 2.5, -1.0]], [10, [27.1, 2.5, -1.0]]]), fov: 34 },
+    handover: { p: track([[0, [25.8, 2.6, 6.0]], [7, [26.4, 3.0, 6.8]]]), l: track([[0, [26.2, 1.25, .5]], [7, [26.5, 1.35, .4]]]), fov: 32 },
+  };
   const up = new THREE.Vector3();
   const walk = (t, rate = 9) => ['w0', 'w1', 'w2', 'w3'][Math.floor(t * rate) % 4];
   const idle = t => (Math.floor(t * 1.4) % 2 ? 'idle1' : 'idle0');
@@ -234,12 +242,12 @@ export function buildTown() {
     N.root.position.set(nx, ny, nz); Hr.root.position.set(hx, 0, hz);
 
     // —— camera ——
-    const C = CAM[id] || CAM.title; cam.fov = C.fov; cam.updateProjectionMatrix();
-    if (id === 'patrol') { const x = N.root.position.x; cam.position.set(x + 1.6, 5.4, 7.6); cam.lookAt(x + 1.0, .9, 1.6); }
-    else if (id === 'chase') { const x = N.root.position.x; cam.position.set(x + 1.8, 5.2, 7.4); cam.lookAt(x + .9, .9, 1.4); }
+    const C = (PORT && CAMV[id]) || CAM[id] || CAM.title; cam.fov = C.fov * FOVK; cam.updateProjectionMatrix();
+    if (id === 'patrol') { const x = N.root.position.x; if (PORT) { cam.position.set(x + .5, 5.2, 7.4); cam.lookAt(x + .3, .6, 1.6); } else { cam.position.set(x + 1.6, 5.4, 7.6); cam.lookAt(x + 1.0, .9, 1.6); } }
+    else if (id === 'chase') { const x = N.root.position.x; if (PORT) { cam.position.set(x + .5, 5.0, 7.2); cam.lookAt(x + .3, .6, 1.4); } else { cam.position.set(x + 1.8, 5.2, 7.4); cam.lookAt(x + .9, .9, 1.4); } }
     else {
       const top = id === 'mapOpen' ? 1 - ss(seg(lt, 2.4, 6.8)) : id === 'infect' ? 1 : 0;
-      cam.up.set(0, 1, 0).lerp(up.set(0, 0, -1), top).normalize();
+      cam.up.set(0, 1, 0).lerp(PORT ? up.set(-1, 0, 0) : up.set(0, 0, -1), top).normalize();
       cam.position.set(...C.p(lt)); cam.lookAt(...C.l(lt));
       if (id === 'kneel' && t > T.kneel && t < T.kneel + .25) { }
     }

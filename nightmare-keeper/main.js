@@ -7,7 +7,7 @@ import { buildTown } from './town.js';
 import { buildTower } from './tower.js';
 import { drawOverlay, overlayReady, texts } from './ui.js';
 
-const W = 1920, H = 1080, Q = new URLSearchParams(location.search);
+const [W, H] = window.FILM_SIZE || [innerWidth, innerHeight], Q = new URLSearchParams(location.search);   // 1920×1080, or 1080×1920 for the vertical cut (--size 1080x1920)
 const SS = +(Q.get('ss') ?? 1);
 const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H);
