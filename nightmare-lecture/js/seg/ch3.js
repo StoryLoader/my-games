@@ -79,7 +79,7 @@ SEG.ch3 = (ctx, K) => {
     if (changeAt) {
       K.lit(oe, changeAt, 0.6);
       const strike = K.el('div', null, pd, { left: 120, top: y + 26, width: 460, height: 3, background: '#ff9a7a', boxShadow: '0 0 8px rgba(255,120,90,.8)', transformOrigin: '0 50%' });
-      tl.fromTo(strike, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, changeAt - 0.2);
+      tl.fromTo(strike, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.out', immediateRender: true }, changeAt - 0.2);
       K.sfx('scratch', changeAt - 0.2, 0.5);
     }
   });
@@ -148,7 +148,7 @@ SEG.ch3 = (ctx, K) => {
     gsap.set(chip, { autoAlpha: 0 });
     const ne = K.etch(top, n, { x: 250, y: y + 2, size: 46, cls: k === 2 ? 'v' : k === 3 ? 't' : '' });
     const me = K.el('div', 'lbl', top, { left: 400, top: y + 22, fontSize: 24 }, m);
-    tl.fromTo(chip, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)', immediateRender: false }, at);
+    tl.fromTo(chip, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)', immediateRender: true }, at);
     K.write(ne, at + 0.1, 0.5); K.inn(me, at + 0.3, 0.5, 6); K.sfx('clink', at, 0.45); pEls.push(chip, ne, me);
   });
   const nowhere = K.el('div', 'lbl', top, { left: 130, top: 690, fontSize: 24, color: '#a6f2e7' }, '어느 장소에도 없는 색');
@@ -162,7 +162,7 @@ SEG.ch3 = (ctx, K) => {
   K.write(c1, S('c13') + 0.1, 0.7); K.write(c2, A('c13', '거대한 나방') - 0.2, 0.7); K.write(c3, A('c13', '노을의 망토와') - 0.2, 0.8);
   const tc = K.el('div', null, top, { left: 130, top: 470, width: 70, height: 70, borderRadius: '50%', background: '#3cc8b6' });
   gsap.set(tc, { autoAlpha: 0 });
-  tl.fromTo(tc, { autoAlpha: 0, boxShadow: '0 0 0px rgba(60,200,182,0)' }, { autoAlpha: 1, boxShadow: '0 0 60px rgba(60,200,182,1)', duration: 0.8, immediateRender: false }, A('c13', '청록색입니다') - 0.3);
+  tl.fromTo(tc, { autoAlpha: 0, boxShadow: '0 0 0px rgba(60,200,182,0)' }, { autoAlpha: 1, boxShadow: '0 0 60px rgba(60,200,182,1)', duration: 0.8, immediateRender: true }, A('c13', '청록색입니다') - 0.3);
   K.sfx('bell', A('c13', '청록색입니다') - 0.2, 0.5);
   fade([c1, c2, c3, tc], S('c14') - 0.1);
 
@@ -187,12 +187,14 @@ SEG.ch3 = (ctx, K) => {
   // c16–c17 — sound: the film's real soundtrack as a waveform, the three moments where the music stops
   const wv = K.plate(sc, { x: 110, y: 560, w: 1700, h: 340, name: '영화의 소리 · 2분 7초' });
   K.inn(wv, S('c16') + 0.2, 0.8, 40);
-  const sv = K.svg(wv);
-  sv.setAttribute('viewBox', '0 0 1700 340'); sv.setAttribute('width', 1700); sv.setAttribute('height', 340);
+  // the film's real loudness (js/film/env.js), drawn once into a canvas and revealed left to right
   const ENV = window.FILM_ENV || [], X = (f) => 40 + (f / 127) * 1620;
-  let d = '';
-  ENV.forEach((v, i) => { const x = X(i / 10), h = 6 + v * 120; d += `M ${x.toFixed(1)} ${(170 - h).toFixed(1)} L ${x.toFixed(1)} ${(170 + h).toFixed(1)} `; });
-  K.thread(sv, d, S('c16') + 0.6, 2.2, { w: 1.3, color: '#ffd9a3' });
+  const wc = K.el('canvas', null, wv, { left: 0, top: 0, width: 1700, height: 340 }); wc.width = 1700; wc.height = 340;
+  const wg = wc.getContext('2d'), grad = wg.createLinearGradient(0, 40, 0, 300);
+  grad.addColorStop(0, 'rgba(255,226,173,.25)'); grad.addColorStop(0.5, 'rgba(255,214,160,.95)'); grad.addColorStop(1, 'rgba(255,226,173,.25)');
+  wg.fillStyle = grad; wg.shadowColor = 'rgba(255,170,80,.7)'; wg.shadowBlur = 8;
+  ENV.forEach((v, i) => { const x = X(i / 10), h = 6 + v * 120; wg.fillRect(x - 0.6, 170 - h, 1.2, 2 * h); });
+  tl.fromTo(wc, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 2.2, ease: 'power1.inOut', immediateRender: true }, S('c16') + 0.6);
   K.sfx('shimmer', S('c16') + 0.6, 0.4);
   const so = K.etch(top, '연출 지침서 · 소리를 가장 먼저', { x: 110, y: 160, size: 46 });
   K.write(so, A('c16', '소리를 가장 먼저') - 0.3, 0.9);
@@ -206,7 +208,7 @@ SEG.ch3 = (ctx, K) => {
     K.film.play(at - 0.4, nb, ff);
     const mk = K.el('div', null, wv, { left: X(f) - 2, top: 20, width: 4, height: 300, background: 'linear-gradient(180deg, rgba(200,170,255,0), #c9b0ff, rgba(200,170,255,0))', boxShadow: '0 0 14px rgba(167,123,255,.9)' });
     gsap.set(mk, { autoAlpha: 0 });
-    tl.fromTo(mk, { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 1, scaleY: 1, duration: 0.5, ease: 'power3.out', immediateRender: false }, at);
+    tl.fromTo(mk, { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 1, scaleY: 1, duration: 0.5, ease: 'power3.out', immediateRender: true }, at);
     const lab = K.etch(wv, w, { x: X(f), y: k === 1 ? -100 : -54, size: 30, align: 'c', cls: 'sans v' });
     K.write(lab, at + 0.1, 0.6); K.sfx('stop', at + 0.05, 0.5);
   });

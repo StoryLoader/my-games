@@ -19,14 +19,14 @@ SEG.close = (ctx, K) => {
     const lb = K.el('div', 'lbl', stack, { left: 250, top: SY(i) - 18, fontSize: 26 }, `<b style="font-family:var(--serif);margin-right:10px">${i + 1}</b>${nm}`);
     return { p, lb };
   });
-  tl.fromTo(stack, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power3.out', immediateRender: false }, t0 + 0.2);
+  tl.fromTo(stack, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, t0 + 0.2);
   const q = K.etch(top, '한 문장은 어떻게 영상이 되었나', { x: 960, y: 60, size: 46, align: 'c' });
   K.inn(q, A('d01', '처음 물음으로'), 0.6, 8); K.lit(q, A('d01', '한 문장의 부탁이'), 0.6);
   // d02 — three guides, three jobs
   const JOBS = [[5, '그림의 규칙을 지키게', A('d02', '스타일 지침서는')], [3, '이야기 · 카메라 · 소리를 설계하게', A('d02', '연출 지침서는')], [4, '틀림없이 만들고 검사하게', A('d02', '기술 지침서는')]];
   JOBS.forEach(([i, w, at]) => {
     K.warm(pl[i].p, at - 0.1, 1, 0.6);
-    const e = K.etch(stack, w, { x: 1480, y: SY(i) - 26, size: 38, cls: 'sans' });
+    const e = K.etch(stack, w, { x: 960, y: SY(i) - 30, size: 40, align: 'c' });
     K.write(e, at, 0.7); K.sfx('chime', at, 0.45);
   });
   const div = K.el('div', 'lbl c', top, { left: 960, top: 130, fontSize: 26 }, '일곱 겹이 역할을 나눠 맡았다');

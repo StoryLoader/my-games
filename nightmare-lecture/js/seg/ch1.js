@@ -54,7 +54,7 @@ SEG.ch1 = (ctx, K) => {
   const def = K.etch(sc, '특정한 일을 할 때 꺼내 읽는 작업 설명서 묶음', { x: 960, y: 690, size: 44, align: 'c', cls: 'sans' });
   K.inn(def, A('a03', '특정한 일을'), 0.6, 10); K.lit(def, A('a03', '작업 설명서'), 0.7);
   const ask = K.etch(sc, '부탁', { x: 330, y: 420, size: 56, align: 'c' });
-  tl.fromTo(ask, { autoAlpha: 0, x: -120 }, { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, A('a03', '설치해 두면'));
+  tl.fromTo(ask, { autoAlpha: 0, x: -120 }, { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out', immediateRender: true }, A('a03', '설치해 두면'));
   K.lit(ask, A('a03', '부탁이'), 0.5);
   const sv3 = K.svg(sc); K.thread(sv3, 'M 400 450 C 520 460, 640 470, 760 450', A('a03', '해당할 때'), 0.8, { w: 4 });
   sheets.forEach((p, i) => K.warm(p, A('a03', '알아서') + i * 0.08, 1, 0.8));
@@ -85,8 +85,8 @@ SEG.ch1 = (ctx, K) => {
     gsap.set(s.el, { x: s.ux });
   });
   K.el('div', 'rackwood', rack, { left: 70, top: 770, width: 1780, height: 40, opacity: 0.96 });
-  tl.fromTo(rack, { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power3.out', immediateRender: false }, A('a04', '라이브러리의 이름') - 0.3);
-  slides.forEach((s) => tl.fromTo(s.el, { y: 60, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.6)', immediateRender: false }, A('a04', '라이브러리의 이름') + s.idx * 0.012));
+  tl.fromTo(rack, { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, A('a04', '라이브러리의 이름') - 0.3);
+  slides.forEach((s) => tl.fromTo(s.el, { y: 60, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.6)', immediateRender: true }, A('a04', '라이브러리의 이름') + s.idx * 0.012));
   K.sfx('rattle', A('a04', '라이브러리의 이름'));
   const libL = K.el('div', 'lbl', sc, { left: 110, top: 590 }, '레모 오퍼스카 라이브러리');
   K.inn(libL, A('a04', '라이브러리의 이름'), 0.6, 8);
@@ -106,7 +106,7 @@ SEG.ch1 = (ctx, K) => {
   // a05 — one slide lifted out: a guide and an example film
   const one = K.plate(sc, { x: 520, y: 150, w: 880, h: 440 });
   gsap.set(one, { transformPerspective: 1400 });
-  tl.fromTo(one, { autoAlpha: 0, scale: 0.12, x: 300, y: 330, rotationX: 40 }, { autoAlpha: 1, scale: 1, x: 0, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: false }, S('a05'));
+  tl.fromTo(one, { autoAlpha: 0, scale: 0.12, x: 300, y: 330, rotationX: 40 }, { autoAlpha: 1, scale: 1, x: 0, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: true }, S('a05'));
   K.sfx('lift', S('a05'));
   const lines = [];
   for (let r = 0; r < 8; r++) { const l = K.el('div', 'fauxline', one, { left: 54, top: 120 + r * 34, width: [330, 290, 350, 260, 320, 300, 340, 220][r] }); lines.push(K.el('div', 'lit', l)); }
@@ -174,7 +174,7 @@ SEG.ch1 = (ctx, K) => {
   // a10–a11 — how to ask: the pattern, then the example filled in
   const pl = K.plate(sc, { x: 250, y: 220, w: 1420, h: 340, name: '쓰는 법' });
   gsap.set(pl, { transformPerspective: 1400 });
-  tl.fromTo(pl, { autoAlpha: 0, y: 200, rotationX: 50 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.0, ease: 'power3.out', immediateRender: false }, S('a10') + 0.2);
+  tl.fromTo(pl, { autoAlpha: 0, y: 200, rotationX: 50 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, S('a10') + 0.2);
   K.warm(pl, S('a10') + 0.6, 1, 1); K.sfx('lift', S('a10') + 0.2);
   const pat = K.etch(pl, '“<i>스타일 이름</i>으로, <em>주제</em>를 만들어 줘.”', { x: 710, y: 60, size: 56, align: 'c' });
   K.write(pat, A('a10', '스타일 이름과'), 1.2);
@@ -194,7 +194,7 @@ SEG.ch1 = (ctx, K) => {
     const k = K.etch(p, ko, { x: 190, y: 66, size: 44, align: 'c' });
     const e = K.el('div', 'lbl c', p, { left: 190, top: 140, fontSize: 22 }, en);
     K.inn(p, at, 0.6, 30); K.write(k, at + 0.3, 0.7); K.inn(e, at + 0.5, 0.5, 6); K.sfx('clink', at, 0.8);
-    tl.fromTo(st, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2.5)', immediateRender: false }, A('a12', '별 모양') + i * 0.15);
+    tl.fromTo(st, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2.5)', immediateRender: true }, A('a12', '별 모양') + i * 0.15);
     K.warm(p, A('a12', '이미지 생성 도구'), 1, 0.8);
     tl.fromTo([p, st], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, S('b01') + 0.2);
   });

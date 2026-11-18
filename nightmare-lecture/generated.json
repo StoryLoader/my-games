@@ -293448,6 +293448,18 @@
   "media/stills/sfx-0-1-906p16-0_0_16_16-16/09062.jpg": {
    "sha256": "a27ac535cffb71c6cb8998b7daf4a2fbb579961e7a649b29ad9357d5927f0191",
    "by": "stills.mjs"
+  },
+  "screenshots/nightmare-lecture_20261118-151149_51-moments-0m03.00s-to-15m04.00s_sheet-1-of-3.jpg": {
+   "sha256": "4be9537b7a087a2b24baaba72cc48a7da66157a0679999f21353c72bcc9a881f",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261118-151149_51-moments-0m03.00s-to-15m04.00s_sheet-2-of-3.jpg": {
+   "sha256": "f3b337ce8dcdd68182f5627646a1a48cef4661aae27549843d935b2d90bf1bab",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261118-151149_51-moments-0m03.00s-to-15m04.00s_sheet-3-of-3.jpg": {
+   "sha256": "b268409fd2303e96afb1e7c0f36dcba549c476ec6da12de8b80d4dfd1b3ecba2",
+   "by": "render.py"
   }
  }
 }

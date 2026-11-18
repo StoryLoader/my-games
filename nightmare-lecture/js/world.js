@@ -71,13 +71,15 @@ window.SEG = window.SEG || {};   // the chapter builders (js/seg/*.js) register 
     };
     // engrave: the letters are cut left to right (a clip), then fill with light
     K.write = (el, at, dur = 0.9, litToo = true) => {
-      tl.fromTo(el, { autoAlpha: 1, clipPath: 'inset(-30% 100% -30% -2%)' }, { clipPath: 'inset(-30% -2% -30% -2%)', duration: dur, ease: 'power1.inOut', immediateRender: false }, at);
+      tl.set(el, { autoAlpha: 1 }, at);
+      tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: dur, ease: 'power1.inOut', immediateRender: true }, at);
+      tl.set(el, { clipPath: 'none' }, at + dur + 0.02);                       // the glow may spill past the box once cut
       if (litToo) K.lit(el, at + dur * 0.35, dur * 0.9);
       return el;
     };
     K.lit = (el, at, dur = 0.6) => { tl.fromTo(el.querySelector('.l'), { opacity: 0 }, { opacity: 1, duration: dur, ease: 'power2.out', immediateRender: false }, at); return el; };
     K.dim = (el, at, dur = 0.6) => { tl.fromTo(el.querySelector('.l'), { opacity: 1 }, { opacity: 0, duration: dur, ease: 'power2.in', immediateRender: false }, at); return el; };
-    K.inn = (el, at, dur = 0.7, dy = 24) => { tl.fromTo(el, { autoAlpha: 0, y: dy }, { autoAlpha: 1, y: 0, duration: dur, ease: 'power3.out', immediateRender: false }, at); return el; };
+    K.inn = (el, at, dur = 0.7, dy = 24) => { tl.fromTo(el, { autoAlpha: 0, y: dy }, { autoAlpha: 1, y: 0, duration: dur, ease: 'power3.out', immediateRender: true }, at); return el; };
     K.out = (el, at, dur = 0.5) => { tl.fromTo(el, { autoAlpha: 1 }, { autoAlpha: 0, duration: dur, ease: 'power2.in', immediateRender: false }, at); return el; };
     K.set = (el, at, vars) => { tl.set(el, vars, at); return el; };
 
@@ -99,7 +101,7 @@ window.SEG = window.SEG || {};   // the chapter builders (js/seg/*.js) register 
       const n = K.etch(box, o.num, { x: 960, y: 230, size: 40, align: 'c', cls: 'sans', ls: '.32em' });
       const q = K.etch(p, o.q, { x: 670, y: 120, size: 80, align: 'c', cls: 'q' });
       q.querySelector('.l').innerHTML = o.q.replace(o.key, `<em>${o.key}</em>`);
-      tl.fromTo(p, { autoAlpha: 0, y: 420, rotationX: 58, transformPerspective: 1400 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: false }, o.at);
+      tl.fromTo(p, { autoAlpha: 0, y: 420, rotationX: 58, transformPerspective: 1400 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: true }, o.at);
       K.warm(p, o.at + 0.5, 1, 1.0);
       K.inn(n, o.at + 0.4, 0.6); K.lit(n, o.at + 0.6, 0.6);
       K.write(q, o.at + 0.7, 1.2);

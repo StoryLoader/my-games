@@ -27,7 +27,7 @@ SEG.ch2 = (ctx, K) => {
   });
   const tIn = S('b03') - 0.2;
   plates.forEach(({ p, lb }, i) => {
-    tl.fromTo(p, { autoAlpha: 0, y: -260 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out', immediateRender: false }, tIn + (6 - i) * 0.22);
+    tl.fromTo(p, { autoAlpha: 0, y: -260 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out', immediateRender: true }, tIn + (6 - i) * 0.22);
     K.sfx('clink', tIn + (6 - i) * 0.22 + 0.6, 0.55);
     K.inn(lb, A('b03', '일곱 겹을') + i * 0.12, 0.5, 6);
     K.warm(p, A('b03', '프롬프트') + 0.4, 0.8, 1.0);
@@ -49,7 +49,7 @@ SEG.ch2 = (ctx, K) => {
     const rp = K.plate(sc, { x: 210, y: 150, w: 1500, h: 660, num: i + 1, name: `${NAMES[i][0]} · ${NAMES[i][1]}` });
     gsap.set(rp, { transformPerspective: 1500 });
     const up = S(a) - 0.35, down = i < 6 ? S(LAYERS[i + 1][0]) - 0.45 : E('b24') + 0.25;
-    tl.fromTo(rp, { autoAlpha: 0, y: SY(i) - 480, rotationX: 70, scale: 0.65 }, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1, duration: 1.0, ease: 'power3.out', immediateRender: false }, up);
+    tl.fromTo(rp, { autoAlpha: 0, y: SY(i) - 480, rotationX: 70, scale: 0.65 }, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1, duration: 1.0, ease: 'power3.out', immediateRender: true }, up);
     tl.fromTo(rp, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1 }, { autoAlpha: 0, y: SY(i) - 480, rotationX: 70, scale: 0.65, duration: 0.7, ease: 'power3.in', immediateRender: false }, down);
     K.warm(rp, up + 0.4, 1, 1.0);
     K.sfx('lift', up, 0.9); K.sfx('clink', down + 0.6, 0.5);
@@ -74,7 +74,7 @@ SEG.ch2 = (ctx, K) => {
       gsap.set(dot, { autoAlpha: 0 });
       const n = K.etch(p, '①②③'[k], { x, y: 456, size: 40, align: 'c' });
       const e = K.etch(p, w, { x, y: 300, size: 58, align: 'c' });
-      tl.fromTo(dot, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1.6, duration: 0.5, ease: 'back.out(3)', immediateRender: false }, at - 0.2);
+      tl.fromTo(dot, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1.6, duration: 0.5, ease: 'back.out(3)', immediateRender: true }, at - 0.2);
       K.inn(n, at - 0.2, 0.4, 6); K.lit(n, at, 0.4); K.write(e, at - 0.15, 0.8); K.sfx('chime', at, 0.55);
     });
   }
@@ -110,7 +110,7 @@ SEG.ch2 = (ctx, K) => {
     K.thread(sv, 'M 200 330 L 1300 330', A('b09', '먼저 사용자에게'), 1.0, { w: 3, dash: '3 10' });
     const bead = K.el('div', null, p, { left: -18, top: 312, width: 36, height: 36, borderRadius: '50%', background: 'radial-gradient(circle, #fffbe8, #ffc06a 45%, rgba(255,150,60,0) 72%)' });
     gsap.set(bead, { autoAlpha: 0, x: 200 });
-    tl.fromTo(bead, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, ST[0][2] - 0.3);
+    tl.fromTo(bead, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: true }, ST[0][2] - 0.3);
     const stEls = [];
     ST.forEach(([w, x, at], k) => {
       if (k) tl.fromTo(bead, { x: ST[k - 1][1] }, { x, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, at - 0.5);
@@ -136,7 +136,7 @@ SEG.ch2 = (ctx, K) => {
     const why = K.el('div', 'lbl c', p, { left: 750, top: 500 }, '예시의 줄거리를 따라 하지 않도록');
     gsap.set([fr, seal], { autoAlpha: 0 });
     K.inn(fr, S('b11'), 0.5, 10); K.write(frL, S('b11') + 0.1, 0.6);
-    tl.fromTo(seal, { autoAlpha: 0, scale: 2.2, rotation: -30 }, { autoAlpha: 1, scale: 1, rotation: 0, duration: 0.45, ease: 'power4.in', immediateRender: false }, A('b11', '트리트먼트를') - 0.2);
+    tl.fromTo(seal, { autoAlpha: 0, scale: 2.2, rotation: -30 }, { autoAlpha: 1, scale: 1, rotation: 0, duration: 0.45, ease: 'power4.in', immediateRender: true }, A('b11', '트리트먼트를') - 0.2);
     K.sfx('seal', A('b11', '트리트먼트를') + 0.25);
     K.write(lk, A('b11', '다 쓴 뒤에만') - 0.2, 0.9); K.inn(why, A('b11', '따라 하지 않게'), 0.6, 6);
   }
@@ -226,7 +226,7 @@ SEG.ch2 = (ctx, K) => {
     for (let k = 0; k < 7; k++) {
       const c = K.el('div', 'mini', strip, { left: k * 168, top: 0, width: 150, height: 92, background: '#0b0d18' });
       K.el('div', 'lbl', strip, { left: k * 168 + 8, top: 108, fontSize: 18 }, `${(47.6 + k / 30).toFixed(3)}초`);
-      tl.fromTo(c, { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, A('b18', '한 장씩') + 0.2 + k * 0.18);
+      tl.fromTo(c, { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: true }, A('b18', '한 장씩') + 0.2 + k * 0.18);
       K.sfx('tick', A('b18', '한 장씩') + 0.2 + k * 0.18, 0.35);
     }
     const mp4 = K.etch(p, '→ 영상 파일', { x: 750, y: 470, size: 48, align: 'c', cls: 'sans' });

@@ -35,7 +35,7 @@ SEG.open = (ctx, K) => {
   K.film.key(t2 + 0.2, WIN).key(t2 + 1.4, WIN2);
   const plate = K.plate(sc, { x: 250, y: 430, w: 1420, h: 300, name: '한 문장' });
   gsap.set(plate, { transformPerspective: 1400 });
-  tl.fromTo(plate, { autoAlpha: 0, y: 260, rotationX: 55 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.2, ease: 'power3.out', immediateRender: false }, t2 + 0.2);
+  tl.fromTo(plate, { autoAlpha: 0, y: 260, rotationX: 55 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.2, ease: 'power3.out', immediateRender: true }, t2 + 0.2);
   K.warm(plate, t2 + 0.8, 1, 1.2); K.sfx('lift', t2 + 0.2);
   const who = K.el('div', 'lbl', plate, { left: 60, top: 34 }, '나 → 클로드 코드');
   K.inn(who, A('op02', '클로드 코드에게') - 0.2, 0.6, 8);

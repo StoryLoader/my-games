@@ -101,7 +101,7 @@
 /* —— etched type: a groove in the glass (dim) and the same letters full of lantern light (lit) —— */
 .etch { position: absolute; white-space: nowrap; font-family: var(--serif); font-weight: 700; line-height: 1.18; }
 .etch > span { display: block; }
-.etch .g { color: rgba(196, 210, 246, .16); text-shadow: 0 1px 0 rgba(255,255,255,.10), 0 -1px 0 rgba(0,0,0,.5); }
+.etch .g { color: rgba(196, 210, 246, .26); text-shadow: 0 1px 0 rgba(255,255,255,.10), 0 -1px 0 rgba(0,0,0,.5); }
 .etch .l { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; color: var(--amber-hot);
   text-shadow: 0 0 2px rgba(255,236,200,.9), 0 0 16px rgba(255,170,80,.7), 0 0 42px rgba(255,140,50,.35); }
 .etch.v .l { color: #e6d8ff; text-shadow: 0 0 2px rgba(240,230,255,.9), 0 0 16px rgba(167,123,255,.75), 0 0 42px rgba(140,90,255,.4); }
