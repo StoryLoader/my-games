@@ -293472,6 +293472,46 @@
   "screenshots/nightmare-lecture_20261118-152320_3-moments-2m50.00s-to-13m00.00s_sheet-1-of-1.jpg": {
    "sha256": "1b3cdf845e9947d2a1f0a5cf2dc07cff56c66a27d21f583f720425d72f7bc513",
    "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-01-of-10.jpg": {
+   "sha256": "340b18db7986ba77b2e28d22d60ad37adfe05990b7b2b8df4ea2914e03bb233b",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-02-of-10.jpg": {
+   "sha256": "8c650a8c158ef3f3348a706ccb38cf690e24044ee3a39bace0beaa1ee4e7f6c5",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-03-of-10.jpg": {
+   "sha256": "fa1af2bc93ee13c8b3538db83fba98a46f7c7796de939f05ac347f3960652b58",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-04-of-10.jpg": {
+   "sha256": "1a2422c9b1ebdbb53806921e7098ce307202cf07b99a022615b9cd992f51c1c0",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-05-of-10.jpg": {
+   "sha256": "e333b6ec97e7a3b95cf48d953af390a92b9edb264ed6c2571527ea9b20365569",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-06-of-10.jpg": {
+   "sha256": "1e0fa4cebf253f42f762310f5055362670339c62b63c7069f7abf61597cda35c",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-07-of-10.jpg": {
+   "sha256": "35da8043eaea8b417f344f0880600dbf4bac65db01173c53d1279b778b560b6d",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-08-of-10.jpg": {
+   "sha256": "ad6429609b29c489dc3afc288caa358bd8a2279558dc9b1aba00e7fa3e4166af",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-09-of-10.jpg": {
+   "sha256": "75decc057d2be402269416551526b7b4e503f350856f6ee0f40f2164f01b6479",
+   "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-10-of-10.jpg": {
+   "sha256": "9b7aa8618bee67d968231dc833e33da183ea7499dd695c2ce2863ba20e56569a",
+   "by": "render.py"
   }
  }
 }

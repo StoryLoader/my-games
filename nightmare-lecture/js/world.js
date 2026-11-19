@@ -104,7 +104,7 @@ window.SEG = window.SEG || {};   // the chapter builders (js/seg/*.js) register 
       const n = K.etch(box, o.num, { x: 960, y: 230, size: 40, align: 'c', cls: 'sans', ls: '.32em' });
       const q = K.etch(p, o.q, { x: 670, y: 120, size: 80, align: 'c', cls: 'q' });
       q.querySelector('.l').innerHTML = o.q.replace(o.key, `<em>${o.key}</em>`);
-      tl.fromTo(p, { autoAlpha: 0, y: 420, rotationX: 58, transformPerspective: 1400 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: true }, o.at);
+      tl.fromTo(p, { autoAlpha: 0, y: 110, rotationX: 18, transformPerspective: 1400 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: true }, o.at);
       K.warm(p, o.at + 0.5, 1, 1.0);
       K.inn(n, o.at + 0.4, 0.6); K.lit(n, o.at + 0.6, 0.6);
       K.write(q, o.at + 0.7, 1.2);

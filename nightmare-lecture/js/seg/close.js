@@ -35,18 +35,19 @@ SEG.close = (ctx, K) => {
   K.inn(div, A('d02', '역할을 나눠'), 0.6, 6);
   // d03 — the agent guide ties it in order
   K.warm(pl[2].p, A('d03', '에이전트 안내문은') - 0.1, 1, 0.6);
-  const ord = K.etch(top, '계획 먼저 → 예시는 나중에 → 검사는 마지막', { x: 960, y: 900, size: 48, align: 'c' });
+  tl.fromTo(div, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, S('d03') - 0.2);
+  const ord = K.etch(top, '계획 먼저 → 예시는 나중에 → 검사는 마지막', { x: 960, y: 118, size: 44, align: 'c' });
   K.write(ord, A('d03', '계획을 먼저') - 0.2, 1.8); K.sfx('etch', A('d03', '계획을 먼저'));
-  tl.fromTo([q, div, ord], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('d04') - 0.1);
+  tl.fromTo([q, ord], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('d04') - 0.1);
   tl.fromTo(stack, { autoAlpha: 1 }, { autoAlpha: 0.15, duration: 0.8, immediateRender: false }, S('d04'));
 
   // d04 — the window wakes above the lantern; the dive into it; the highlight with the film's own sound
   const WIN = { x: 552, y: 120, s: 0.425, o: 1, bz: 1, ov: 0 };
   K.film.key(S('d04') + 0.2, { ...WIN, o: 0 }).key(S('d04') + 1.2, WIN);
   K.film.hold(S('d04') + 0.2, K.H0, K.HIN);
-  const hd4 = K.etch(top, '가장 인상 깊은 장면', { x: 960, y: 690, size: 42, align: 'c' }); K.write(hd4, S('d04') + 0.5, 0.8);
+  const hd4 = K.etch(top, '가장 인상 깊은 장면', { x: 960, y: 612, size: 42, align: 'c' }); K.write(hd4, S('d04') + 0.5, 0.8);
   tl.fromTo(hd4, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.35, immediateRender: false }, A('d04', '소년 하루가') - 0.45);
-  const lt = K.etch(top, '소년 하루가 노을의 손등불을 받아 드는 순간', { x: 960, y: 690, size: 42, align: 'c' });
+  const lt = K.etch(top, '소년 하루가 노을의 손등불을 받아 드는 순간', { x: 960, y: 612, size: 42, align: 'c' });
   K.inn(lt, A('d04', '소년 하루가') - 0.2, 0.6, 8); K.lit(lt, A('d04', '받아 드는'), 0.6);
   const d0 = Math.max(E('d04') - 0.9, A('d04', '순간입니다'));
   tl.fromTo(lt, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, d0);

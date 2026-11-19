@@ -49,8 +49,8 @@ SEG.ch2 = (ctx, K) => {
     const rp = K.plate(sc, { x: 210, y: 150, w: 1500, h: 660, num: i + 1, name: `${NAMES[i][0]} · ${NAMES[i][1]}` });
     gsap.set(rp, { transformPerspective: 1500 });
     const up = S(a) - 0.35, down = i < 6 ? S(LAYERS[i + 1][0]) - 0.45 : E('b24') + 0.25;
-    tl.fromTo(rp, { autoAlpha: 0, y: SY(i) - 480, rotationX: 70, scale: 0.65 }, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1, duration: 1.0, ease: 'power3.out', immediateRender: true }, up);
-    tl.fromTo(rp, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1 }, { autoAlpha: 0, y: SY(i) - 480, rotationX: 70, scale: 0.65, duration: 0.7, ease: 'power3.in', immediateRender: false }, down);
+    tl.fromTo(rp, { autoAlpha: 0, y: (SY(i) - 480) * 0.4 + 60, rotationX: 22, scale: 0.86 }, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1, duration: 1.0, ease: 'power3.out', immediateRender: true }, up);
+    tl.fromTo(rp, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1 }, { autoAlpha: 0, y: (SY(i) - 480) * 0.4 + 60, rotationX: 22, scale: 0.86, duration: 0.7, ease: 'power3.in', immediateRender: false }, down);
     K.warm(rp, up + 0.4, 1, 1.0);
     K.sfx('lift', up, 0.9); K.sfx('clink', down + 0.6, 0.5);
     // the stack waits, dimmed, with this layer's plate lit
@@ -67,7 +67,7 @@ SEG.ch2 = (ctx, K) => {
     A('b18', '웹 페이지로'), S('b21') - 0.2, A('b24', '예시 영상을 만든') - 0.3];
   RP.forEach(({ rp, up }, i) => {
     if (FIRST[i] - up < 2.6) return;
-    const n = K.el('div', 'lbl c', rp, { left: 750, top: 150, fontSize: 30 }, `${i + 1} / 7`);
+    const n = K.el('div', 'lbl c', rp, { left: 750, top: 92, fontSize: 30 }, `${i + 1} / 7`);
     const nm = K.etch(rp, NAMES[i][0], { x: 750, y: 220, size: 104, align: 'c' });
     const wd = K.etch(rp, WHAT[i], { x: 750, y: 380, size: 44, align: 'c', cls: 'sans' });
     K.inn(n, up + 0.5, 0.5, 6); K.write(nm, up + 0.55, 0.9); K.write(wd, up + 1.0, 0.8);
@@ -143,14 +143,14 @@ SEG.ch2 = (ctx, K) => {
     K.write(keep, A('b10', '그대로 지키되') - 0.3, 0.8); K.inn(keepL, A('b10', '그림의 규칙'), 0.5, 6);
     K.write(nw, A('b10', '전부 새로') - 0.3, 0.9); K.inn(nwL, A('b10', '이야기와 장면과'), 0.5, 6);
     K.sfx('etch', A('b10', '그대로 지키되')); K.sfx('etch', A('b10', '전부 새로'));
-    tl.fromTo([r10, keep, keepL, nw, nwL, mid], { autoAlpha: 1, y: 0 }, { autoAlpha: 0.0, y: -30, duration: 0.5, immediateRender: false }, S('b11') - 0.1);
+    tl.fromTo([r10, keep, keepL, nw, nwL, mid], { autoAlpha: 1, y: 0 }, { autoAlpha: 0.0, y: -30, duration: 0.45, immediateRender: false }, S('b11') - 0.6);
     const fr = K.el('div', 'mini', p, { left: 560, top: 150, width: 380, height: 220 });
     const seal = K.el('div', 'seal', p, { left: 690, top: 200 });
     const frL = K.etch(p, '예시 영상', { x: 750, y: 70, size: 46, align: 'c' });
     const lk = K.etch(p, '트리트먼트를 다 쓴 뒤에만 연다', { x: 750, y: 420, size: 44, align: 'c', cls: 'sans' });
     const why = K.el('div', 'lbl c', p, { left: 750, top: 500 }, '예시의 줄거리를 따라 하지 않도록');
     gsap.set([fr, seal], { autoAlpha: 0 });
-    K.inn(fr, S('b11'), 0.5, 10); K.write(frL, S('b11') + 0.1, 0.6);
+    K.inn(fr, S('b11') + 0.1, 0.5, 10); K.write(frL, S('b11') + 0.15, 0.6);
     tl.fromTo(seal, { autoAlpha: 0, scale: 2.2, rotation: -30 }, { autoAlpha: 1, scale: 1, rotation: 0, duration: 0.45, ease: 'power4.in', immediateRender: true }, A('b11', '트리트먼트를') - 0.2);
     K.sfx('seal', A('b11', '트리트먼트를') + 0.25);
     K.write(lk, A('b11', '다 쓴 뒤에만') - 0.2, 0.9); K.inn(why, A('b11', '따라 하지 않게'), 0.6, 6);
@@ -159,7 +159,7 @@ SEG.ch2 = (ctx, K) => {
   // 4 · directing guide: the order of judging; the story rule; sound; camera; six things, four must differ
   {
     const p = P(3);
-    const ORD = [['소리', 120, 210, 120], ['리듬', 96, 520, 170], ['카메라', 80, 830, 220], ['연출', 66, 1140, 262]];
+    const ORD = [['소리', 120, 210, 170], ['리듬', 96, 520, 220], ['카메라', 80, 830, 270], ['연출', 66, 1140, 312]];
     const oEls = [];
     ORD.forEach(([w, size, x, y], k) => {
       const at = k === 0 ? A('b12', '가장 먼저 소리') + 0.3 : A('b12', k === 1 ? '리듬' : k === 2 ? '카메라' : '감정의 흐름');
@@ -197,7 +197,7 @@ SEG.ch2 = (ctx, K) => {
     const ac = K.etch(p, '보이는 동작마다 맞는 소리', { x: 750, y: 90, size: 46, align: 'c', cls: 'sans' });
     K.inn(ac, A('b14', '보이는 동작마다'), 0.5, 8); K.lit(ac, A('b14', '맞는 소리를'), 0.5);
     const g1 = K.el('div', 'lbl c', p, { left: 740, top: 420 }, '정적'), g2 = K.el('div', 'lbl c', p, { left: 1045, top: 420 }, '정적');
-    const tn = K.etch(p, '→ 꺾이는 지점', { x: 1180, y: 250, size: 34, cls: 'sans v' });
+    const tn = K.etch(p, '→ 꺾이는 지점', { x: 1110, y: 170, size: 34, cls: 'sans v' });
     K.inn(g1, A('b14', '정적을') - 0.2, 0.5, 6); K.inn(g2, A('b14', '두 번') - 0.1, 0.5, 6); K.inn(tn, A('b14', '이야기가 꺾이는'), 0.5, 6); K.lit(tn, A('b14', '감정이'), 0.5);
     tl.fromTo([sv, ac, g1, g2, tn], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, S('b15') - 0.1);
     // camera: four moves
@@ -212,12 +212,13 @@ SEG.ch2 = (ctx, K) => {
     K.inn(r4, A('b15', '모든 샷에'), 0.5, 8); K.lit(r4, A('b15', '이유가'), 0.5); mEls.push(r4);
     tl.fromTo(mEls, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, S('b16') - 0.1);
     // six things, at least four different from the example film
+    const h16 = K.etch(p, '완성한 영상 ↔ 예시 영상', { x: 750, y: 30, size: 40, align: 'c', cls: 'sans' }); K.write(h16, S('b16') + 0.1, 0.7);
     const SIX = [['이야기 구조', '이야기 구조'], ['첫 장면', '첫 장면'], ['대표 장면', '대표 장면'], ['카메라 경로', '카메라가'], ['음악의 흐름', '음악의 흐름'], ['결말', '결말']];
     SIX.forEach(([w, ph], k) => {
       const x = 300 + (k % 3) * 450, y = k < 3 ? 120 : 270;
       const e = K.etch(p, w, { x, y, size: 54, align: 'c', cls: k < 4 ? 'v' : '' });
-      K.write(e, A('b16', ph) - 0.15, 0.6, false);
-      if (k < 4) K.lit(e, A('b16', '넷 이상') + k * 0.2, 0.5);
+      K.write(e, A('b16', ph) - 0.15, 0.6);
+      if (k >= 4) K.dim(e, A('b16', '넷 이상') + 0.3, 0.6);
     });
     const f4 = K.etch(p, '여섯 가운데 넷 이상 — 예시 영상과 다르게', { x: 750, y: 450, size: 44, align: 'c', cls: 'sans v' });
     K.inn(f4, A('b16', '넷 이상'), 0.5, 8); K.lit(f4, A('b16', '예시 영상과'), 0.5);
@@ -262,8 +263,8 @@ SEG.ch2 = (ctx, K) => {
       K.thread(sv, `M 300 200 C 330 ${y}, 360 ${y}, 420 ${y} L ${1380 - k * 60} ${y}`, at - 0.1, 0.9, { w: 2.2, color: ['#ffcf8a', '#ffe9c4', '#c9b0ff', '#9fe6db', '#f2f2f2'][k] });
       K.write(lab, at - 0.15, 0.5);
     });
-    const asr = K.etch(p, '음성 인식으로 대본과 대조 ✓', { x: 1380, y: 400, size: 34, align: 'r', cls: 'sans t' });
-    const lu = K.etch(p, '기준 음량에 맞춤', { x: 1380, y: 460, size: 34, align: 'r', cls: 'sans' });
+    const asr = K.etch(p, '음성 인식으로 대본과 대조 ✓', { x: 1380, y: 548, size: 34, align: 'r', cls: 'sans t' });
+    const lu = K.etch(p, '기준 음량에 맞춤', { x: 1380, y: 598, size: 34, align: 'r', cls: 'sans' });
     K.inn(asr, A('b19', '음성 인식으로'), 0.5, 6); K.lit(asr, A('b19', '맞는지 확인'), 0.5);
     K.inn(lu, A('b19', '기준 음량'), 0.5, 6); K.lit(lu, A('b19', '기준 음량') + 0.3, 0.5);
   }
@@ -326,8 +327,10 @@ SEG.ch2 = (ctx, K) => {
   // 7 · the example film's notes: sealed until the treatment is written
   {
     const p = P(6);
-    for (let r = 0; r < 7; r++) K.el('div', 'fauxline', p, { left: 300, top: 180 + r * 40, width: [900, 820, 860, 700, 880, 760, 600][r] });
+    const lines7 = K.el('div', null, p, { left: 0, top: 0, width: 1500, height: 660 });
+    for (let r = 0; r < 7; r++) K.el('div', 'fauxline', lines7, { left: 300, top: 180 + r * 40, width: [900, 820, 860, 700, 880, 760, 600][r] });
     const seal = K.el('div', 'seal', p, { left: 690, top: 250 });
+    gsap.set([lines7, seal], { autoAlpha: 0 }); K.inn(lines7, A('b24', '예시 영상을 만든'), 0.5, 0); K.inn(seal, A('b24', '예시 영상을 만든') + 0.2, 0.4, 0);
     const hd = K.etch(p, '예시 영상을 만든 코드의 설명', { x: 750, y: 70, size: 48, align: 'c' });
     K.write(hd, A('b24', '예시 영상을 만든') - 0.2, 0.9);
     const lk = K.etch(p, '트리트먼트를 다 쓴 뒤에야 열린다', { x: 750, y: 500, size: 42, align: 'c', cls: 'sans' });

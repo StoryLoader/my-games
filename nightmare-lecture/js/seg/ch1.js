@@ -106,7 +106,7 @@ SEG.ch1 = (ctx, K) => {
   // a05 — one slide lifted out: a guide and an example film
   const one = K.plate(sc, { x: 520, y: 150, w: 880, h: 440 });
   gsap.set(one, { transformPerspective: 1400 });
-  tl.fromTo(one, { autoAlpha: 0, scale: 0.12, x: 300, y: 330, rotationX: 40 }, { autoAlpha: 1, scale: 1, x: 0, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: true }, S('a05'));
+  tl.fromTo(one, { autoAlpha: 0, scale: 0.12, x: 300, y: 330, rotationX: 12 }, { autoAlpha: 1, scale: 1, x: 0, y: 0, rotationX: 0, duration: 1.1, ease: 'power3.out', immediateRender: true }, S('a05'));
   K.sfx('lift', S('a05'));
   const lines = [];
   for (let r = 0; r < 8; r++) { const l = K.el('div', 'fauxline', one, { left: 54, top: 120 + r * 34, width: [330, 290, 350, 260, 320, 300, 340, 220][r] }); lines.push(K.el('div', 'lit', l)); }
@@ -159,24 +159,24 @@ SEG.ch1 = (ctx, K) => {
   const gName = K.etch(sc, '게임', { x: gx(gG), y: 548, size: 30, align: 'c', cls: 'sans v' });
   K.inn(gName, atG, 0.5, 8); K.lit(gName, atG + 0.2, 0.5);
   tl.fromTo(slideG.el, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, atG + 1.0);
+  tl.fromTo(gName, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, atG + 1.0);
   const WING = { x: 560, y: 70, s: 0.4, o: 1, bz: 1, ov: 0 };    // 768 × 432
   const sx = gx(gG) - 8;                                             // the slide's screen x once the camera is back at 1×
   K.film.key(atG + 1.0, { x: sx, y: 640, s: 0.008, o: 0, bz: 1, ov: 0 }).key(atG + 1.1, { x: sx, y: 640, s: 0.008, o: 1, bz: 1, ov: 0 }).key(atG + 2.2, WING);
   K.film.play(atG + 1.0, S('a10') + 0.5, 21.6);
   K.sfx('whoosh', atG + 1.0, 0.7);
-  const gl = K.etch(top, '2.5D 픽셀 아트', { x: 960, y: 520, size: 52, align: 'c' });
+  const gl = K.etch(top, '2.5D 픽셀 아트', { x: 960, y: 566, size: 52, align: 'c' });
   K.write(gl, atG + 1.9, 0.9);
-  const g2 = K.el('div', 'lbl c', top, { left: 960, top: 588 }, '납작한 픽셀 인물 · 입체 미니어처 세트');
+  const g2 = K.el('div', 'lbl c', top, { left: 960, top: 640 }, '납작한 픽셀 인물 · 입체 미니어처 세트');
   K.inn(g2, A('a09', '납작한 인물') - 0.3, 0.6, 8);
   K.film.key(S('a10') - 0.2, WING).key(S('a10') + 0.5, { ...WING, o: 0 });
   tl.fromTo([gl, g2], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('a10') - 0.1);
   tl.fromTo(rack, { autoAlpha: 1 }, { autoAlpha: 0.25, duration: 0.8, immediateRender: false }, S('a10'));
-  tl.fromTo(gName, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('a10'));
 
   // a10–a11 — how to ask: the pattern, then the example filled in
   const pl = K.plate(sc, { x: 250, y: 220, w: 1420, h: 340, name: '쓰는 법' });
   gsap.set(pl, { transformPerspective: 1400 });
-  tl.fromTo(pl, { autoAlpha: 0, y: 200, rotationX: 50 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, S('a10') + 0.2);
+  tl.fromTo(pl, { autoAlpha: 0, y: 70, rotationX: 14 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, S('a10') + 0.2);
   K.warm(pl, S('a10') + 0.6, 1, 1); K.sfx('lift', S('a10') + 0.2);
   const pat = K.etch(pl, '“<i>스타일 이름</i>으로, <em>주제</em>를 만들어 줘.”', { x: 710, y: 60, size: 56, align: 'c' });
   K.write(pat, S('a10') + 0.9, 1.2);
@@ -205,8 +205,8 @@ SEG.ch1 = (ctx, K) => {
   K.out(need, S('b01') + 0.2, 0.5);
 
   // b01 — closing the chapter: the whole box glows once and settles; what the chapter said, in three words
-  const RECAP = [['스킬', 620], ['아흔아홉 가지 스타일', 960], ['열다섯 갈래', 1300]].map(([w, x], k) => {
-    const e = K.etch(sc, w, { x, y: 380, size: 52, align: 'c' }); K.write(e, S('b01') + 0.5 + k * 0.45, 0.8); return e; });
+  const RECAP = [['스킬', 520], ['아흔아홉 가지 스타일', 960], ['열다섯 갈래', 1400]].map(([w, x], k) => {
+    const e = K.etch(sc, w, { x, y: 380, size: 46, align: 'c' }); K.write(e, S('b01') + 0.5 + k * 0.45, 0.8); return e; });
   tl.fromTo(RECAP, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b02') - 0.6);
   tl.fromTo(rack, { autoAlpha: 0.25 }, { autoAlpha: 1, duration: 0.9, immediateRender: false }, S('b01') + 0.4);
   slides.forEach((s) => tl.fromTo(s.tint, { opacity: 0.6 }, { opacity: 1, duration: 0.35, yoyo: true, repeat: 1, immediateRender: false }, S('b01') + 1.0 + s.idx * 0.02));

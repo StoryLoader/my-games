@@ -17,8 +17,8 @@ SEG.ch3 = (ctx, K) => {
   const qhd = K.el('div', 'lbl c', sc, { left: 960, top: 170 }, '클로드의 질문 · 한 번에 모아서');
   K.inn(qhd, S('c03') + 0.2, 0.6, 6);
   const QS = [['어떤 이야기로?', 520, '어떤 이야기로'], ['목소리는?', 960, '목소리와'], ['음악은?', 1400, '음악은']];
-  const q0 = K.etch(sc, '부탁을 받은 클로드', { x: 960, y: 90, size: 46, align: 'c' }); K.write(q0, S('c03') + 0.1, 0.8);
-  const qEls = [q0, ...QS.map(([w, x, ph]) => { const e = K.etch(sc, w, { x, y: 240, size: 58, align: 'c' }); K.write(e, A('c03', ph) - 0.2, 0.7); K.sfx('chime', A('c03', ph), 0.4); return e; })];
+  const q0 = K.etch(sc, '부탁을 받은 클로드', { x: 960, y: 80, size: 46, align: 'c' }); K.write(q0, S('c03') + 0.5, 0.8);
+  const qEls = [q0, ...QS.map(([w, x, ph]) => { const e = K.etch(sc, w, { x, y: 262, size: 58, align: 'c' }); K.write(e, A('c03', ph) - 0.2, 0.7); K.sfx('chime', A('c03', ph), 0.4); return e; })];
   const STORIES = ['악몽에서 깨어나기', '악몽을 가져오는 존재', '악몽을 지키는 파수꾼'];
   const sEls = STORIES.map((w, k) => {
     const p = K.plate(sc, { x: 230 + k * 500, y: 450, w: 460, h: 190 });
@@ -179,7 +179,7 @@ SEG.ch3 = (ctx, K) => {
   const mvEls = [];
   MOVES.forEach(([w, f, at, from], k) => {
     const a = from != null ? from : at - 0.4, b = k < 3 ? MOVES[k + 1][2] - 0.4 : E('c15') + 0.6;
-    K.film.play(a, b, f);
+    K.film.play(a, b, f, k === 0 ? 0.4 : 1);   // the map shot is short: shown slowed (picture only), it never runs into the tower
     const e = K.etch(top, w, { x: 110, y: 290 + k * 92, size: 38, cls: 'sans' });
     K.write(e, at - 0.2, 0.7); if (k < 3) K.dim(e, b, 0.4); mvEls.push(e);
     K.sfx('whoosh', at - 0.3, 0.3);
@@ -202,7 +202,7 @@ SEG.ch3 = (ctx, K) => {
   K.write(so, S('c16') + 0.2, 0.9);
   const q3 = K.etch(top, '음악이 멈추는 순간 × 3', { x: 110, y: 250, size: 46, cls: 'v' });
   K.write(q3, A('c16', '세 번') - 0.4, 0.8);
-  const WS = { x: 1260, y: 110, s: 0.3, o: 1, bz: 1, ov: 0 };
+  const WS = { x: 1260, y: 56, s: 0.3, o: 1, bz: 1, ov: 0 };
   const MOM = [[47.6, '① 등불이 깨지는 순간', A('c17', '첫째'), 46.4], [95.4, '② 나방이 오지 않을 때', A('c17', '둘째'), 93.8], [102.3, '③ 심장 소리 하나', A('c17', '셋째'), 101.2]];
   K.film.key(MOM[0][2] - 0.4, { ...WS, o: 0 }).key(MOM[0][2], WS).key(E('c17'), WS).key(E('c17') + 0.5, { ...WS, o: 0 });
   MOM.forEach(([f, w, at, ff], k) => {
@@ -230,10 +230,10 @@ SEG.ch3 = (ctx, K) => {
     if (k === 3 || k === 13) tl.fromTo(b, { boxShadow: '0 0 0 rgba(0,0,0,0)' }, { boxShadow: '0 0 0 3px #a77bff, 0 0 30px rgba(167,123,255,.8)', duration: 0.5, immediateRender: false }, A('c19', '내레이션 두 줄'));
     return [b, ck];
   }).flat();
-  const w1 = K.etch(top, '파수꾼', { x: 700, y: 600, size: 96, align: 'c' });
-  const w2 = K.etch(top, '파<i>숙</i>군', { x: 1220, y: 600, size: 96, align: 'c', cls: 'v' });
-  const neq = K.etch(top, '≠', { x: 960, y: 600, size: 96, align: 'c', cls: 'sans' });
-  const eqs = K.etch(top, '글자는 달라도, 소리는 같다 ✓', { x: 960, y: 760, size: 42, align: 'c', cls: 'sans t' });
+  const w1 = K.etch(top, '파수꾼', { x: 700, y: 545, size: 96, align: 'c' });
+  const w2 = K.etch(top, '파<i>숙</i>군', { x: 1220, y: 545, size: 96, align: 'c', cls: 'v' });
+  const neq = K.etch(top, '≠', { x: 960, y: 545, size: 96, align: 'c', cls: 'sans' });
+  const eqs = K.etch(top, '글자는 달라도, 소리는 같다 ✓', { x: 960, y: 672, size: 40, align: 'c', cls: 'sans t' });
   K.write(w1, A('c19', '파수꾼이라는') - 0.2, 0.6); K.write(neq, A('c19', '받침을'), 0.4); K.write(w2, A('c19', '기역 받침을') - 0.2, 0.7);
   K.write(eqs, A('c19', '대본과 같은 말') - 0.3, 0.9); K.sfx('chime', A('c19', '통과시켰습니다'), 0.5);
   fade([vh, ...bars, w1, w2, neq, eqs], S('c20') - 0.1);
