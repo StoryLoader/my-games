@@ -19,11 +19,14 @@ Video.define(async (ctx) => {
   K.HIN = 109.4; K.HDUR = 13.0;
   K.FULL = { x: 0, y: 0, s: 1, o: 1, bz: 0, ov: 1 };
 
-  // the film's own sound, unchanged (level-matched to the narration by media.js)
-  M.clip(K.$('sfxbox'), 'film', { x: 0, y: 0, w: 4, h: 4, start: K.F0, dur: K.FILM, audio: true, vol: 1 });
-  M.clip(K.$('sfxbox'), 'film', { x: 0, y: 0, w: 4, h: 4, start: K.H0, in: K.HIN, dur: K.HDUR, audio: true, vol: [[0, 0], [0.3, 1], [12.3, 1], [13.0, 0]] });
-  // the lecture's own effects (sfx/make_sound.py, synthesized from code)
-  if (M.SRC.sfx) M.clip(K.$('sfxbox'), 'sfx', { x: 0, y: 0, w: 4, h: 4, start: 0, dur: M.SRC.sfx.dur, audio: true, vol: 0.6 });
+  // the film's own sound (unchanged, level-matched to the narration by media.js) and the lecture's effects:
+  // in a normal browser they are already in the one soundtrack (js/audio-master.js, sfx/mix_master.py);
+  // render.py and the review tools get them as clips with the narration
+  if (!window.LIVE_MIX) {
+    M.clip(K.$('sfxbox'), 'film', { x: 0, y: 0, w: 4, h: 4, start: K.F0, dur: K.FILM, audio: true, vol: 1 });
+    M.clip(K.$('sfxbox'), 'film', { x: 0, y: 0, w: 4, h: 4, start: K.H0, in: K.HIN, dur: K.HDUR, audio: true, vol: [[0, 0], [0.3, 1], [12.3, 1], [13.0, 0]] });
+    if (M.SRC.sfx) M.clip(K.$('sfxbox'), 'sfx', { x: 0, y: 0, w: 4, h: 4, start: 0, dur: M.SRC.sfx.dur, audio: true, vol: 0.6 });
+  }
 
   SEG.open(ctx, K);
   SEG.ch1(ctx, K);

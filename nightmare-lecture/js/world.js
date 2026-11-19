@@ -2,7 +2,7 @@
  *   const K = KIT(ctx)
  *   K.el(tag, cls, parent, css, html)          an element (absolute by default)
  *   K.etch(parent, text, { x, y, size, align, cls, w, lh, font })   etched type: dim groove + the same letters full of light
- *   K.write(el, at, dur) / K.lit(el, at, dur) / K.dim(el, at, dur) / K.inn(el, at, dur, dy) / K.out(el, at, dur)
+ *   K.write(el, at, dur) (focus-in, then lit) / K.lit(el, at, dur) / K.dim(el, at, dur) / K.inn(el, at, dur, dy) / K.out(el, at, dur)
  *   K.plate(parent, { x, y, w, h, num, name })  an etched glass plate in brass clips
  *   K.cam.key(t, { x, y, s, b })               the camera over #world: world point (x, y) at the centre, scale s, blur b
  *   K.film.key(t, { x, y, s, o, bz, ov })      where the live film sits on screen (top-left x, y; scale s of 1920×1080;
@@ -53,6 +53,7 @@ window.SEG = window.SEG || {};   // the chapter builders (js/seg/*.js) register 
       if (html != null) e.innerHTML = html;
       if (parent) parent.appendChild(e);
       if (!e.style.position && !(cls || '').match(/\b(etch|plate|lbl|slide|mini|rackwood)\b/)) e.style.position = 'absolute';
+      if (/\blbl\b/.test(cls || '') && /\bc\b/.test(cls || '')) gsap.set(e, { xPercent: -50 });
       return e;
     };
     K.etch = (parent, text, o = {}) => {
@@ -62,8 +63,10 @@ window.SEG = window.SEG || {};   // the chapter builders (js/seg/*.js) register 
       if (o.weight) e.style.fontWeight = o.weight;
       if (o.ls != null) e.style.letterSpacing = o.ls;
       e.style.textAlign = o.align === 'c' ? 'center' : o.align === 'r' ? 'right' : 'left';
-      if (o.align === 'c') e.style.transform = 'translateX(-50%)';
-      if (o.align === 'r') e.style.transform = 'translateX(-100%)';
+      // centring by xPercent (never a CSS transform): GSAP keeps it as a percentage of the live width, so a tween on y
+      // can't freeze an offset measured before the web font arrived
+      if (o.align === 'c') gsap.set(e, { xPercent: -50 });
+      if (o.align === 'r') gsap.set(e, { xPercent: -100 });
       const g = K.el('span', 'g', e, null, text), l = K.el('span', 'l', e, null, text);
       g.style.position = 'relative'; l.style.position = 'absolute';
       gsap.set(e, { autoAlpha: 0 });
@@ -71,10 +74,10 @@ window.SEG = window.SEG || {};   // the chapter builders (js/seg/*.js) register 
     };
     // engrave: the letters are cut left to right (a clip), then fill with light
     K.write = (el, at, dur = 0.9, litToo = true) => {
-      tl.set(el, { autoAlpha: 1 }, at);
-      tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: dur, ease: 'power1.inOut', immediateRender: true }, at);
-      tl.set(el, { clipPath: 'none' }, at + dur + 0.02);                       // the glow may spill past the box once cut
-      if (litToo) K.lit(el, at + dur * 0.35, dur * 0.9);
+      const d = Math.max(0.35, dur * 0.8);
+      tl.fromTo(el, { autoAlpha: 0, y: 12, filter: 'blur(9px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: d, ease: 'power2.out', immediateRender: true }, at);
+      tl.set(el, { filter: 'none' }, at + d + 0.02);
+      if (litToo) K.lit(el, at + d * 0.35, dur * 0.9);
       return el;
     };
     K.lit = (el, at, dur = 0.6) => { tl.fromTo(el.querySelector('.l'), { opacity: 0 }, { opacity: 1, duration: dur, ease: 'power2.out', immediateRender: false }, at); return el; };

@@ -112,7 +112,6 @@
 /* small brass-coloured labels engraved beside things */
 .lbl { position: absolute; font: 600 28px/1.2 var(--font); letter-spacing: .14em; color: var(--brass-hi); white-space: nowrap;
   text-shadow: 0 1px 0 rgba(0,0,0,.7); }
-.lbl.c { transform: translateX(-50%); }
 
 /* —— the projection window around the live film —— */
 #filmwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; visibility: hidden; }
@@ -127,7 +126,6 @@
   background: linear-gradient(120deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.06) 42%, rgba(255,255,255,0) 50%); }
 
 /* —— chapter card: a plate drawn out of the stack —— */
-#card .num { position: absolute; left: 960px; top: 300px; transform: translateX(-50%); font: 700 40px/1 var(--serif); color: var(--brass-hi); letter-spacing: .3em; }
 
 /* overlays */
 #dust { position: absolute; left: 0; top: 0; pointer-events: none; mix-blend-mode: screen; }

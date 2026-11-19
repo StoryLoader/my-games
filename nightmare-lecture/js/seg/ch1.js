@@ -190,7 +190,7 @@ SEG.ch1 = (ctx, K) => {
   STAR.forEach(([ko, en], i) => {
     const x = 330 + i * 470, at = A('a12', '세 가지') + i * 0.35;
     const p = K.plate(sc, { x, y: 300, w: 380, h: 230 });
-    const st = K.el('div', 'star abs', sc, { left: x + 190, top: 236, fontSize: 64, transform: 'translateX(-50%)', fontFamily: 'var(--serif)' }, `<svg viewBox='0 0 100 100' width='1em' height='1em' style='vertical-align:-0.1em'><path d='M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0 Z' fill='currentColor'/></svg>`);
+    const st = K.el('div', 'star abs', sc, { left: x + 158, top: 236, fontSize: 64, width: 64, textAlign: 'center', fontFamily: 'var(--serif)' }, `<svg viewBox='0 0 100 100' width='1em' height='1em' style='vertical-align:-0.1em'><path d='M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0 Z' fill='currentColor'/></svg>`);
     const k = K.etch(p, ko, { x: 190, y: 66, size: 44, align: 'c' });
     const e = K.el('div', 'lbl c', p, { left: 190, top: 140, fontSize: 22 }, en);
     K.inn(p, at, 0.6, 30); K.write(k, at + 0.3, 0.7); K.inn(e, at + 0.5, 0.5, 6); K.sfx('clink', at, 0.8);
