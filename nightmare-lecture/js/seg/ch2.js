@@ -137,11 +137,13 @@ SEG.ch2 = (ctx, K) => {
     const nwL = K.el('div', 'lbl c', p, { left: 1100, top: 320 }, '이야기 · 장면 · 카메라의 움직임');
     const mid = K.el('div', null, p, { left: 749, top: 110, width: 2, height: 300, background: 'linear-gradient(180deg, rgba(220,230,255,0), rgba(220,230,255,.4), rgba(220,230,255,0))' });
     gsap.set(mid, { autoAlpha: 0 });
-    K.inn(mid, A('b10', '스타일마다'), 0.6, 0);
+    K.inn(mid, S('b10') + 0.4, 0.6, 0);
+    const r10 = K.etch(p, '중요한 규칙 하나', { x: 750, y: 40, size: 42, align: 'c', cls: 'sans' });
+    K.write(r10, S('b10') + 0.3, 0.7);
     K.write(keep, A('b10', '그대로 지키되') - 0.3, 0.8); K.inn(keepL, A('b10', '그림의 규칙'), 0.5, 6);
     K.write(nw, A('b10', '전부 새로') - 0.3, 0.9); K.inn(nwL, A('b10', '이야기와 장면과'), 0.5, 6);
     K.sfx('etch', A('b10', '그대로 지키되')); K.sfx('etch', A('b10', '전부 새로'));
-    tl.fromTo([keep, keepL, nw, nwL, mid], { autoAlpha: 1, y: 0 }, { autoAlpha: 0.0, y: -30, duration: 0.5, immediateRender: false }, S('b11') - 0.1);
+    tl.fromTo([r10, keep, keepL, nw, nwL, mid], { autoAlpha: 1, y: 0 }, { autoAlpha: 0.0, y: -30, duration: 0.5, immediateRender: false }, S('b11') - 0.1);
     const fr = K.el('div', 'mini', p, { left: 560, top: 150, width: 380, height: 220 });
     const seal = K.el('div', 'seal', p, { left: 690, top: 200 });
     const frL = K.etch(p, '예시 영상', { x: 750, y: 70, size: 46, align: 'c' });
@@ -171,6 +173,8 @@ SEG.ch2 = (ctx, K) => {
     K.inn(st, A('b12', '보기 좋은 그림은'), 0.6, 8); K.lit(st, A('b12', '출발점'), 0.6); oEls.push(st);
     tl.fromTo(oEls, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b13') + 0.3);
     // story
+    const r13 = K.etch(p, '분야마다 지킬 규칙 · 이야기', { x: 750, y: 70, size: 44, align: 'c', cls: 'sans' });
+    K.write(r13, S('b13') + 0.5, 0.8); tl.fromTo(r13, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, A('b13', '구조 후보를') - 0.35);
     const s3 = K.etch(p, '구조 후보 셋 → 하나', { x: 750, y: 70, size: 44, align: 'c', cls: 'sans' });
     K.inn(s3, A('b13', '구조 후보를'), 0.6, 8); K.lit(s3, A('b13', '하나를 골라서'), 0.5);
     const TRI = [['주인공 하나', 330], ['목표 하나', 750], ['꺾임 하나', 1170]];
@@ -248,7 +252,7 @@ SEG.ch2 = (ctx, K) => {
     tl.fromTo([strip, mp4], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b19') - 0.1);
     // one timetable
     const tt = K.etch(p, '시간표 하나', { x: 120, y: 60, size: 58 });
-    K.write(tt, A('b19', '시간표가 하나'), 0.8);
+    K.write(tt, S('b19') + 0.2, 0.8);
     const sv = K.svg(p);
     K.thread(sv, 'M 120 200 L 1380 200', A('b19', '시간표가 하나') + 0.4, 1.0, { w: 4 });
     const TR = [['그림', '그림과'], ['목소리', '목소리와'], ['음악', '음악과'], ['효과음', '효과음과'], ['자막', '자막을']];
@@ -277,6 +281,7 @@ SEG.ch2 = (ctx, K) => {
     const fig = K.el('div', null, p, { left: 160, top: 160, width: 28, height: 44, background: 'linear-gradient(180deg, #f1d2b4 0 30%, #3cc8b6 30% 100%)', imageRendering: 'pixelated', boxShadow: '0 0 0 3px #1a1426' });
     const glow = K.el('div', null, p, { left: 160, top: 290, width: 34, height: 34, borderRadius: '50%', background: 'radial-gradient(circle, #fff1cf, #ffb35a 45%, rgba(255,150,60,0) 72%)' });
     gsap.set([fig, glow], { autoAlpha: 0 });
+    const r22 = K.etch(p, '그림의 규칙', { x: 110, y: 50, size: 52 }); K.write(r22, S('b22') + 0.2, 0.7);
     const fL = K.etch(p, '인물은 툭툭 끊기듯', { x: 660, y: 150, size: 42, cls: 'sans' });
     const gL = K.etch(p, '카메라와 빛은 부드럽게', { x: 660, y: 282, size: 42, cls: 'sans' });
     const a22 = A('b22', '툭툭'), b22 = A('b22', '부드럽게');
@@ -299,7 +304,7 @@ SEG.ch2 = (ctx, K) => {
     gsap.set(sw, { autoAlpha: 0 });
     const swL = K.etch(p, '주인공에게만, 어디에도 없는 색 하나', { x: 780, y: 520, size: 38, cls: 'sans t' });
     K.inn(sw, A('b22', '주인공에게는'), 0.5, 0); K.write(swL, A('b22', '색 한 가지') - 0.3, 0.8);
-    tl.fromTo([fig, glow, fL, gL, cold, tL, sw, swL], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b23') - 0.1);
+    tl.fromTo([r22, fig, glow, fL, gL, cold, tL, sw, swL], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b23') - 0.1);
     // the camera table, shown with the film's own shots
     const hd = K.etch(p, '언제나 위에서 내려다본다', { x: 110, y: 70, size: 48 });
     K.write(hd, A('b23', '위에서 내려다'), 0.9);

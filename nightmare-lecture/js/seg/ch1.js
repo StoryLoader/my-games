@@ -110,6 +110,8 @@ SEG.ch1 = (ctx, K) => {
   K.sfx('lift', S('a05'));
   const lines = [];
   for (let r = 0; r < 8; r++) { const l = K.el('div', 'fauxline', one, { left: 54, top: 120 + r * 34, width: [330, 290, 350, 260, 320, 300, 340, 220][r] }); lines.push(K.el('div', 'lit', l)); }
+  const two = K.etch(sc, '스타일 하나에 들어 있는 두 가지', { x: 960, y: 70, size: 46, align: 'c' }); K.write(two, S('a05') + 0.4, 0.8);
+  tl.fromTo(two, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, S('a06') - 0.2);
   const gT = K.etch(one, '지침서 한 편', { x: 54, y: 40, size: 44 });
   const fr = K.el('div', 'mini', one, { left: 470, top: 120, width: 360, height: 220 });
   K.el('div', null, fr, { left: 160, top: 80, width: 0, height: 0, borderLeft: '50px solid rgba(255,220,170,.85)', borderTop: '30px solid transparent', borderBottom: '30px solid transparent' });
@@ -126,7 +128,7 @@ SEG.ch1 = (ctx, K) => {
   K.sfx('rattle', S('a06') + 0.1, 0.7);
   const n15 = K.etch(sc, '15', { x: 960, y: 200, size: 220, align: 'c' });
   const n15L = K.el('div', 'lbl c', sc, { left: 960, top: 420 }, '갈래 · 화면이 어떻게 생겼는지에 따라');
-  K.inn(n15, A('a06', '열다섯') - 0.2, 0.5, 0); K.lit(n15, A('a06', '열다섯'), 0.4); K.inn(n15L, A('a06', '열다섯') + 0.4, 0.5, 8);
+  K.inn(n15, A('a06', '열다섯') - 0.2, 0.5, 0); K.lit(n15, A('a06', '열다섯'), 0.4); K.inn(n15L, S('a06') + 0.4, 0.5, 8);
   tl.fromTo([n15, n15L], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, S('a07'));
 
   // a07–a08 — the camera tracks along the box; each named group rises and its name is cut above it
