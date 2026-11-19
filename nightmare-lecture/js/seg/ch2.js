@@ -336,5 +336,8 @@ SEG.ch2 = (ctx, K) => {
   plates.forEach(({ p }, i) => tl.fromTo(p.querySelector('.warm'), { opacity: 0.8 }, { opacity: 1, duration: 0.4, immediateRender: false }, S('c01') + 0.4 + (6 - i) * 0.12));
   K.beam.key(S('c01'), { v: 1 }).key(S('c01') + 2, { v: 1.25 });
   K.sfx('shimmer', S('c01') + 0.4, 0.8);
+  const C1 = [['지킬 것', 620, '무엇은 지키고'], ['새로 지을 것', 960, '새로 지을지'], ['일의 순서', 1300, '어떤 순서로']].map(([w, x, ph]) => {
+    const e = K.etch(top, w, { x, y: 70, size: 50, align: 'c' }); K.write(e, A('c01', ph) - 0.2, 0.7); return e; });
+  tl.fromTo(C1, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, end - 0.4);
   tl.fromTo(stack, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, end);
 };
