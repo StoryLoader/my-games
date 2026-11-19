@@ -57,9 +57,22 @@ SEG.ch2 = (ctx, K) => {
     tl.fromTo(plates[i].p.querySelector('.warm'), { opacity: 0.8 }, { opacity: 1, duration: 0.4, immediateRender: false }, up);
     return { rp, up, down };
   });
-  tl.fromTo(stack, { autoAlpha: 1 }, { autoAlpha: 0.18, duration: 0.6, immediateRender: false }, RP[0].up);
-  tl.fromTo(stack, { autoAlpha: 0.18 }, { autoAlpha: 1, duration: 0.8, immediateRender: false }, RP[6].down + 0.4);
+  tl.fromTo(stack, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, RP[0].up);
+  tl.fromTo(stack, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: false }, RP[6].down + 0.4);
   const P = (i) => RP[i].rp;
+  // each plate, as it rises, shows what it is at once (its number, name and what it does), until its own content begins
+  const WHAT = ['클로드가 가장 먼저 읽는 파일', '라이브러리와 도구를 준비하는 작은 프로그램', '일의 순서를 정하는 안내문', '좋은 영상을 가르는 기준',
+    '영상을 실제로 만드는 방법', '2.5D 픽셀 아트의 그림 규칙', '예시 영상을 만든 코드의 설명'];
+  const FIRST = [A('b04', '가장 먼저'), A('b06', '두 번째 겹은') + 1.1, A('b08', '일의 순서'), A('b12', '무엇을 먼저 볼지'),
+    A('b18', '웹 페이지로'), S('b21') - 0.2, A('b24', '예시 영상을 만든') - 0.3];
+  RP.forEach(({ rp, up }, i) => {
+    if (FIRST[i] - up < 2.6) return;
+    const n = K.el('div', 'lbl c', rp, { left: 750, top: 150, fontSize: 30 }, `${i + 1} / 7`);
+    const nm = K.etch(rp, NAMES[i][0], { x: 750, y: 220, size: 104, align: 'c' });
+    const wd = K.etch(rp, WHAT[i], { x: 750, y: 380, size: 44, align: 'c', cls: 'sans' });
+    K.inn(n, up + 0.5, 0.5, 6); K.write(nm, up + 0.55, 0.9); K.write(wd, up + 1.0, 0.8);
+    tl.fromTo([n, nm, wd], { autoAlpha: 1 }, { autoAlpha: 0, y: -24, duration: 0.45, ease: 'power2.in', immediateRender: false }, FIRST[i] - 0.45);
+  });
 
   // 1 · skill file: three steps on a thread of light
   {
@@ -152,8 +165,8 @@ SEG.ch2 = (ctx, K) => {
       const e = K.etch(p, w, { x, y, size });
       K.inn(n, at - 0.1, 0.4, 6); K.write(e, at - 0.15, 0.6); K.sfx('chime', at, 0.5 - k * 0.08); oEls.push(n, e);
     });
-    const jd = K.el('div', 'lbl', p, { left: 120, top: 70, fontSize: 26 }, '잘 만들어졌는지 따지는 순서');
-    K.inn(jd, A('b12', '무엇을 먼저 볼지'), 0.6, 6); oEls.push(jd);
+    const jd = K.etch(p, '잘 만들어졌는지 따지는 순서', { x: 110, y: 56, size: 42, cls: 'sans' });
+    K.write(jd, A('b12', '무엇을 먼저 볼지') - 0.2, 0.8); oEls.push(jd);
     const st = K.etch(p, '보기 좋은 그림은 출발점일 뿐', { x: 750, y: 470, size: 46, align: 'c', cls: 'sans' });
     K.inn(st, A('b12', '보기 좋은 그림은'), 0.6, 8); K.lit(st, A('b12', '출발점'), 0.6); oEls.push(st);
     tl.fromTo(oEls, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b13') + 0.3);
@@ -209,8 +222,8 @@ SEG.ch2 = (ctx, K) => {
   // 5 · technique guide: the picture is a function of time; one timetable moves everything
   {
     const p = P(4);
-    const web = K.el('div', 'lbl', p, { left: 110, top: 70, fontSize: 26 }, '영상 = 웹 페이지 · 브라우저가 코드로 그린다');
-    K.inn(web, A('b18', '웹 페이지로'), 0.6, 6);
+    const web = K.etch(p, '영상 = 웹 페이지 · 브라우저가 코드로 그린다', { x: 110, y: 56, size: 42, cls: 'sans' });
+    K.write(web, A('b18', '웹 페이지로') - 0.2, 0.8);
     const fx = K.etch(p, '화면 = f (시간)', { x: 110, y: 150, size: 96 });
     K.write(fx, A('b18', '시간의 함수') - 0.4, 1.0); K.sfx('etch', A('b18', '시간의 함수'));
     // the film itself, drawn at the same moment twice

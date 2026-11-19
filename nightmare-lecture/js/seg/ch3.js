@@ -15,9 +15,10 @@ SEG.ch3 = (ctx, K) => {
 
   // c03–c04 — one round of questions; three story candidates, the third chosen
   const qhd = K.el('div', 'lbl c', sc, { left: 960, top: 170 }, '클로드의 질문 · 한 번에 모아서');
-  K.inn(qhd, A('c03', '한 번에 모아서'), 0.6, 6);
+  K.inn(qhd, S('c03') + 0.2, 0.6, 6);
   const QS = [['어떤 이야기로?', 520, '어떤 이야기로'], ['목소리는?', 960, '목소리와'], ['음악은?', 1400, '음악은']];
-  const qEls = QS.map(([w, x, ph]) => { const e = K.etch(sc, w, { x, y: 240, size: 58, align: 'c' }); K.write(e, A('c03', ph) - 0.2, 0.7); K.sfx('chime', A('c03', ph), 0.4); return e; });
+  const q0 = K.etch(sc, '부탁을 받은 클로드', { x: 960, y: 90, size: 46, align: 'c' }); K.write(q0, S('c03') + 0.1, 0.8);
+  const qEls = [q0, ...QS.map(([w, x, ph]) => { const e = K.etch(sc, w, { x, y: 240, size: 58, align: 'c' }); K.write(e, A('c03', ph) - 0.2, 0.7); K.sfx('chime', A('c03', ph), 0.4); return e; })];
   const STORIES = ['악몽에서 깨어나기', '악몽을 가져오는 존재', '악몽을 지키는 파수꾼'];
   const sEls = STORIES.map((w, k) => {
     const p = K.plate(sc, { x: 230 + k * 500, y: 450, w: 460, h: 190 });
@@ -60,8 +61,8 @@ SEG.ch3 = (ctx, K) => {
   // c07–c08 — the example film overlapped: struck, then changed
   const pd = K.plate(sc, { x: 170, y: 190, w: 700, h: 600, name: '예시 영상' });
   const po = K.plate(sc, { x: 1050, y: 190, w: 700, h: 600, name: '이번 영상' });
-  K.inn(pd, A('c07', '예시 영상의 노트') - 0.2, 0.7, 30); K.inn(po, A('c07', '예시 영상의 노트'), 0.7, 30);
-  K.sfx('lift', A('c07', '예시 영상의 노트'));
+  K.inn(pd, S('c07') + 0.2, 0.7, 30); K.inn(po, S('c07') + 0.45, 0.7, 30);
+  K.sfx('lift', S('c07') + 0.2);
   const ROWS = [
     ['늙은 등대지기', '늙은 파수꾼', '늙은 등대지기', null, null],
     ['어린 손녀', '아이 → 소년', '어린 손녀', A('c08', '소년으로'), null],
@@ -140,6 +141,7 @@ SEG.ch3 = (ctx, K) => {
   fade([g2, g3, am, vi, ar], S('c12') - 0.1);
   // c12 — the palette, as glowing chips; the film holds the patrol (cold street, amber windows, the teal cloak)
   K.film.hold(S('c12') - 0.1, S('c13') - 0.1, 26.2);
+  const ph = K.etch(top, '스타일 지침서의 색 규칙', { x: 110, y: 96, size: 44 }); K.write(ph, S('c12') + 0.1, 0.8);
   const PAL = [['남청', '마을의 밤', '#1f2c58', '남청색 마을'], ['호박', '창문의 불빛', '#ffb35a', '호박색 창문'], ['보라', '악몽', '#a77bff', '악몽은 보랏빛'], ['청록', '노을의 망토', '#3cc8b6', '청록색이고요']];
   const pEls = [];
   PAL.forEach(([n, m, col, ph], k) => {
@@ -153,7 +155,7 @@ SEG.ch3 = (ctx, K) => {
   });
   const nowhere = K.el('div', 'lbl', top, { left: 130, top: 690, fontSize: 24, color: '#a6f2e7' }, '어느 장소에도 없는 색');
   K.inn(nowhere, A('c12', '어느 장소에도'), 0.5, 6); pEls.push(nowhere);
-  fade(pEls, S('c13') - 0.1);
+  fade([ph, ...pEls], S('c13') - 0.1);
   // c13 — the clue: the moth's eye-spots in the cloak's teal
   K.film.hold(S('c13') - 0.1, S('c14') - 0.1, 88.6);
   const c1 = K.etch(top, '반전의 단서', { x: 110, y: 200, size: 56, cls: 't' });
@@ -197,7 +199,7 @@ SEG.ch3 = (ctx, K) => {
   tl.fromTo(wc, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 2.2, ease: 'power1.inOut', immediateRender: true }, S('c16') + 0.6);
   K.sfx('shimmer', S('c16') + 0.6, 0.4);
   const so = K.etch(top, '연출 지침서 · 소리를 가장 먼저', { x: 110, y: 160, size: 46 });
-  K.write(so, A('c16', '소리를 가장 먼저') - 0.3, 0.9);
+  K.write(so, S('c16') + 0.2, 0.9);
   const q3 = K.etch(top, '음악이 멈추는 순간 × 3', { x: 110, y: 250, size: 46, cls: 'v' });
   K.write(q3, A('c16', '세 번') - 0.4, 0.8);
   const WS = { x: 1260, y: 110, s: 0.3, o: 1, bz: 1, ov: 0 };
@@ -216,7 +218,7 @@ SEG.ch3 = (ctx, K) => {
 
   // c18–c19 — fifteen lines checked by speech recognition; the two with 파수꾼
   const vh = K.etch(top, '내레이션과 대사 15줄 · 음성 인식으로 대조', { x: 960, y: 170, size: 46, align: 'c' });
-  K.write(vh, A('c18', '열다섯 줄을') - 0.3, 1.0);
+  K.write(vh, S('c18') + 0.2, 1.0);
   const IDS = ['n1', 'n2', 'n3', 'n4', 'k1', 'n5', 'n6', 'k2', 'n7', 'k3', 'h1', 'n8', 'h2', 'n9', 'h3'];
   const bars = IDS.map((id, k) => {
     const x = 180 + k * 106;
@@ -237,14 +239,15 @@ SEG.ch3 = (ctx, K) => {
   fade([vh, ...bars, w1, w2, neq, eqs], S('c20') - 0.1);
 
   // c20 — 60 per second recommended, 30 made (no graphics card)
+  const h20 = K.etch(sc, '마지막으로 밝혀 둘 점', { x: 960, y: 170, size: 52, align: 'c' }); K.write(h20, S('c20') + 0.1, 0.9);
   const s60 = K.etch(sc, '1초에 60장', { x: 620, y: 330, size: 110, align: 'c' });
   const s30 = K.etch(sc, '30장', { x: 1360, y: 330, size: 110, align: 'c', cls: 'v' });
   const arr = K.etch(sc, '→', { x: 1060, y: 330, size: 110, align: 'c', cls: 'sans' });
   const why = K.etch(sc, '그래픽 카드 없음 · 한 장을 그리는 데 몇 초씩', { x: 960, y: 560, size: 44, align: 'c', cls: 'sans' });
   const rec = K.el('div', 'lbl c', sc, { left: 960, top: 480 }, '스타일 지침서의 권장');
-  K.write(s60, A('c20', '1초에 60장') - 0.3, 0.8); K.inn(rec, A('c20', '권합니다') - 0.3, 0.5, 6);
+  K.inn(rec, A('c20', '스타일 지침서는'), 0.5, 6); K.write(s60, A('c20', '1초에 60장') - 0.3, 0.8);
   K.dim(s60, A('c20', '하지만'), 0.6);
   K.inn(why, A('c20', '그래픽 카드가'), 0.5, 8); K.lit(why, A('c20', '몇 초씩'), 0.5);
   K.inn(arr, A('c20', '1초에 30장') - 0.5, 0.4, 0); K.lit(arr, A('c20', '1초에 30장') - 0.4, 0.4); K.write(s30, A('c20', '1초에 30장') - 0.3, 0.7);
-  fade([s60, s30, arr, why, rec], end - 0.3);
+  fade([h20, s60, s30, arr, why, rec], end - 0.3);
 };

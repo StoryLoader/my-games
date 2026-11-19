@@ -177,7 +177,7 @@ SEG.ch1 = (ctx, K) => {
   tl.fromTo(pl, { autoAlpha: 0, y: 200, rotationX: 50 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, S('a10') + 0.2);
   K.warm(pl, S('a10') + 0.6, 1, 1); K.sfx('lift', S('a10') + 0.2);
   const pat = K.etch(pl, '“<i>스타일 이름</i>으로, <em>주제</em>를 만들어 줘.”', { x: 710, y: 60, size: 56, align: 'c' });
-  K.write(pat, A('a10', '스타일 이름과'), 1.2);
+  K.write(pat, S('a10') + 0.9, 1.2);
   const ex1 = K.etch(pl, '“<i>수채화 스타일</i>로, <em>우리 동네 이야기</em>를', { x: 710, y: 160, size: 56, align: 'c' });
   const ex2 = K.etch(pl, '<em>45초짜리</em>로 만들어 줘.”', { x: 710, y: 236, size: 56, align: 'c' });
   K.dim(pat, A('a11', '예를 들면'), 0.6);
@@ -202,7 +202,10 @@ SEG.ch1 = (ctx, K) => {
   K.inn(need, A('a12', '이미지 생성 도구'), 0.6, 10); K.lit(need, A('a12', '이미지 생성 도구') + 0.3, 0.6);
   K.out(need, S('b01') + 0.2, 0.5);
 
-  // b01 — closing the chapter: the whole box glows once and settles
+  // b01 — closing the chapter: the whole box glows once and settles; what the chapter said, in three words
+  const RECAP = [['스킬', 620], ['아흔아홉 가지 스타일', 960], ['열다섯 갈래', 1300]].map(([w, x], k) => {
+    const e = K.etch(sc, w, { x, y: 380, size: 52, align: 'c' }); K.write(e, S('b01') + 0.5 + k * 0.45, 0.8); return e; });
+  tl.fromTo(RECAP, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false }, S('b02') - 0.6);
   tl.fromTo(rack, { autoAlpha: 0.25 }, { autoAlpha: 1, duration: 0.9, immediateRender: false }, S('b01') + 0.4);
   slides.forEach((s) => tl.fromTo(s.tint, { opacity: 0.6 }, { opacity: 1, duration: 0.35, yoyo: true, repeat: 1, immediateRender: false }, S('b01') + 1.0 + s.idx * 0.02));
   K.sfx('shimmer', S('b01') + 1.0, 0.7);
