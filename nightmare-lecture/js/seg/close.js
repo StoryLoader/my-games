@@ -21,6 +21,8 @@ SEG.close = (ctx, K) => {
   });
   tl.fromTo(stack, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power3.out', immediateRender: true }, t0 + 0.2);
   const q = K.etch(top, '한 문장은 어떻게 영상이 되었나', { x: 960, y: 60, size: 46, align: 'c' });
+  const d1 = K.etch(top, '문서의 규칙 → 실제 장면', { x: 960, y: 60, size: 46, align: 'c' });
+  K.write(d1, S('d01') + 0.3, 0.8); tl.fromTo(d1, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, A('d01', '처음 물음으로') - 0.5);
   K.inn(q, A('d01', '처음 물음으로'), 0.6, 8); K.lit(q, A('d01', '한 문장의 부탁이'), 0.6);
   // d02 — three guides, three jobs
   const JOBS = [[5, '그림의 규칙을 지키게', A('d02', '스타일 지침서는')], [3, '이야기 · 카메라 · 소리를 설계하게', A('d02', '연출 지침서는')], [4, '틀림없이 만들고 검사하게', A('d02', '기술 지침서는')]];
