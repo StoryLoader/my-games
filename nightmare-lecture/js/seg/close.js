@@ -45,9 +45,9 @@ SEG.close = (ctx, K) => {
   const WIN = { x: 552, y: 120, s: 0.425, o: 1, bz: 1, ov: 0 };
   K.film.key(S('d04') + 0.2, { ...WIN, o: 0 }).key(S('d04') + 1.2, WIN);
   K.film.hold(S('d04') + 0.2, K.H0, K.HIN);
-  const hd4 = K.etch(top, '가장 인상 깊은 장면', { x: 960, y: 612, size: 42, align: 'c' }); K.write(hd4, S('d04') + 0.5, 0.8);
+  const hd4 = K.etch(top, '가장 인상 깊은 장면', { x: 960, y: 632, size: 42, align: 'c' }); K.write(hd4, S('d04') + 0.5, 0.8);
   tl.fromTo(hd4, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.35, immediateRender: false }, A('d04', '소년 하루가') - 0.45);
-  const lt = K.etch(top, '소년 하루가 노을의 손등불을 받아 드는 순간', { x: 960, y: 612, size: 42, align: 'c' });
+  const lt = K.etch(top, '소년 하루가 노을의 손등불을 받아 드는 순간', { x: 960, y: 632, size: 42, align: 'c' });
   K.inn(lt, A('d04', '소년 하루가') - 0.2, 0.6, 8); K.lit(lt, A('d04', '받아 드는'), 0.6);
   const d0 = Math.max(E('d04') - 0.9, A('d04', '순간입니다'));
   tl.fromTo(lt, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, d0);

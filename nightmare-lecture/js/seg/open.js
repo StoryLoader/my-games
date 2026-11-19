@@ -37,10 +37,10 @@ SEG.open = (ctx, K) => {
   gsap.set(plate, { transformPerspective: 1400 });
   tl.fromTo(plate, { autoAlpha: 0, y: 80, rotationX: 16 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.2, ease: 'power3.out', immediateRender: true }, t2 + 0.2);
   K.warm(plate, t2 + 0.8, 1, 1.2); K.sfx('lift', t2 + 0.2);
-  const who = K.el('div', 'lbl', plate, { left: 60, top: 34 }, '나 → 클로드 코드');
+  const who = K.el('div', 'lbl', plate, { left: 60, top: 22 }, '나 → 클로드 코드');
   K.inn(who, A('op02', '클로드 코드에게') - 0.2, 0.6, 8);
-  const r1 = K.etch(plate, '“2.5D 픽셀 아트 스타일로,', { x: 60, y: 84, size: 60 });
-  const r2 = K.etch(plate, '나이트메어를 주제로, 2분짜리 영상 만들어 줘.”', { x: 60, y: 166, size: 60 });
+  const r1 = K.etch(plate, '“2.5D 픽셀 아트 스타일로,', { x: 60, y: 92, size: 58 });
+  const r2 = K.etch(plate, '나이트메어를 주제로, 2분짜리 영상 만들어 줘.”', { x: 60, y: 170, size: 58 });
   const rule = K.el('div', null, plate, { left: 60, top: 268, width: 1300, height: 1, background: 'linear-gradient(90deg, rgba(220,230,255,0), rgba(220,230,255,.35), rgba(220,230,255,0))' });
   gsap.set(rule, { autoAlpha: 0 }); K.inn(rule, A('op02', '몇 가지 질문') - 0.3, 0.5, 0);
   K.write(r1, A('op02', '2.5D') - 0.1, 1.3); K.write(r2, A('op02', '나이트메어') - 0.1, 1.6);
@@ -49,7 +49,7 @@ SEG.open = (ctx, K) => {
   const ans = [['이야기', '악몽을 지키는 파수꾼'], ['목소리', '내레이션 + 인물 대사'], ['음악', '코드로 작곡']];
   ans.forEach(([k, v], i) => {
     const x = [237, 710, 1183][i];
-    const kk = K.el('div', 'lbl c', plate, { left: x, top: 292 }, k);
+    const kk = K.el('div', 'lbl c', plate, { left: x, top: 282, fontSize: 24 }, k);
     const vv = K.etch(plate, v, { x, y: 336, size: 36, align: 'c', cls: 'sans' });
     const at = A('op02', '몇 가지 질문') + i * 0.55;
     K.inn(kk, at, 0.5, 10); K.inn(vv, at + 0.1, 0.6, 10); K.lit(vv, at + 0.3, 0.6); K.sfx('tick', at + 0.1, 0.7);

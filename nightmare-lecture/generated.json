@@ -293512,6 +293512,10 @@
   "screenshots/nightmare-lecture_20261119-004146_0m00.00s-to-15m06.00s_every-240-frames-at-60fps_sheet-10-of-10.jpg": {
    "sha256": "9b7aa8618bee67d968231dc833e33da183ea7499dd695c2ce2863ba20e56569a",
    "by": "render.py"
+  },
+  "screenshots/nightmare-lecture_20261119-010010_20-moments-0m24.00s-to-14m44.00s_sheet-1-of-1.jpg": {
+   "sha256": "30555a2d984c1efcd51e652f6fc5bfaeef305da7d31fb2fadbafdcce86c5e08f",
+   "by": "render.py"
   }
  }
 }
