@@ -1,4 +1,4 @@
-// 악몽을 지키는 파수꾼 2 — 반딧불의 밤 — page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS
+// 악몽을 지키는 파수꾼 2 — A 할머니의 첫 꿈 — page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS
 // (the library's 2.5D Pixel Art engine; this film is the tilt-shift cut: the band follows the subject's screen height)
 import * as THREE from 'three';
 import { makePost } from './post_ts.js';
@@ -25,7 +25,7 @@ renderer.domElement.style.width = W + 'px'; renderer.domElement.style.height = H
 await overlayReady();
 
 const TILT = !Q.has('notilt'), _v = new THREE.Vector3();
-const TILT_FIXED = { release: .5, title: .55 };
+const TILT_FIXED = { turn: .5, wake: .5, title: .55 };
 function tiltCenter(S, shot) {
   if (TILT_FIXED[shot.id] != null) return TILT_FIXED[shot.id];
   const f = S.focus && S.focus(); if (!f) return .45;
@@ -50,12 +50,11 @@ window.TEXTS = texts;
 // sound events for the mixer (tools/export.mjs → timeline.json): the same times the picture uses
 window.EV = [
   ...VO.map(v => ({ t: v.t, type: 'voice', id: v.id, dlg: !!v.dlg })),
-  ...T.collect.map(t => ({ t, type: 'collect' })),
-  ...T.rattle.map(t => ({ t, type: 'rattle' })),
-  { t: T.crack, type: 'crack' }, { t: T.escape, type: 'escape' }, { t: T.crouch, type: 'setDown' }, { t: T.land, type: 'land' },
-  ...T.heart.map(t => ({ t, type: 'wing' })),
-  { t: T.transform, type: 'transform' }, { t: T.flyOff, type: 'flyOff' }, { t: T.openDoor, type: 'openDoor' },
-  { t: T.wake, type: 'wake' }, { t: T.noeulOut[0], type: 'doorOpen' }, { t: T.sitBy, type: 'sit' },
+  { t: T.bloom, type: 'bloom' }, { t: T.turn, type: 'turn' },
+  ...T.collect.map(t => ({ t, type: 'collect' })), { t: T.full, type: 'crack' },
+  { t: T.shut, type: 'shutters' }, { t: T.rattle[0], type: 'rattle' }, { t: T.keyhole, type: 'keyhole' }, { t: T.dive, type: 'dive' }, { t: T.catch, type: 'catch' },
+  { t: T.touch, type: 'touch' }, { t: T.walk[0], type: 'walk' }, { t: T.untie, type: 'untie' }, { t: T.pull, type: 'pull' }, { t: T.bell, type: 'bell' },
+  ...T.snores.map(t => ({ t, type: 'snore' })), { t: T.doorOut[0], type: 'doorTower' }, { t: T.stretch[0], type: 'stretch' },
   ...(sets.town ? sets.town.events : []), ...(sets.tower ? sets.tower.events : []),
 ].sort((a, b) => a.t - b.t);
 window.READY = true;

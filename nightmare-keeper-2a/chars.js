@@ -74,6 +74,8 @@ function drawNoeul(P, E, p) {
   else if (p.blink) { P.set(Math.round(fx + 2), ey, C.skin(.2, 0, 0)); P.set(Math.round(fx - 1), ey, C.skin(.2, 0, 0)); }
   else { P.set(Math.round(fx + 2), ey, INK); P.set(Math.round(fx - 1), ey, INK); P.set(Math.round(fx + 2), ey - 1, hex('#e8f0ff')); }
   P.set(Math.round(fx + 1), ey - 2, C.hairW(.95, 0, 0)); P.set(Math.round(fx + 2), ey - 2, C.hairW(.95, 0, 0));   // brows
+  if (p.frown) { P.set(Math.round(fx + 1), ey - 1, C.hairW(.95, 0, 0)); P.set(Math.round(fx - 1), ey - 2, C.hairW(.95, 0, 0)); P.set(Math.round(fx), ey - 1, C.skin(.25, 0, 0)); }   // A: a bad dream presses in
+  if (p.snore) { P.set(Math.round(fx + 2), ey + 3, INK); P.set(Math.round(fx + 3), ey + 3, INK); P.set(Math.round(fx + 2), ey + 4, hex('#5a2a2a')); }      // A: mouth open
   P.set(Math.round(fx + 4), ey + 1, C.skin(.35, 0, 0)); P.set(Math.round(fx + 1), ey + 3, C.skin(.3, 0, 0)); P.set(Math.round(fx + 2), ey + 3, C.skin(.3, 0, 0));
   // arms + lantern
   const arm = p.arm || 'low', lit = p.lit ?? 1, moths = p.moths || 0;
@@ -83,6 +85,8 @@ function drawNoeul(P, E, p) {
   if (arm === 'fwd') { sleeve([[21, top + 2], [22, top + 3], [23, top + 3], [24, top + 4], [25, top + 5], [26, top + 5]]); P.rect(27, top + 5, 2, 2, C.skin(.55, 0, 0)); lantern(P, E, 26, top + 8, lit, moths); }
   if (arm === 'kneel') { lantern(P, E, 25, top + 8, lit, moths); P.rect(24, top + 6, 2, 2, C.skin(.5, 0, 0)); sleeve([[21, top + 2], [22, top + 3], [23, top + 4], [23, top + 5]]); }
   if (arm === 'rest') { P.rect(18, top + 12, 4, 2, C.skin(.45, 0, 0)); }   // hands folded in the lap (asleep)
+  if (arm === 'stretch') { sleeve([[21, top + 1], [22, top - 1], [22, top - 3], [23, top - 5], [23, top - 7]]); P.rect(22, top - 9, 3, 2, C.skin(.6, 0, 0));
+    sleeve([[11, top + 1], [10, top - 1], [10, top - 3], [9, top - 5], [9, top - 7]]); P.rect(8, top - 9, 3, 2, C.skin(.5, 0, 0)); }   // A: the morning stretch
 }
 
 // —— 하루 —— p: {arm:'side'|'point'|'reach'|'hold', lit, moths, blink, look, step}
@@ -110,6 +114,9 @@ function drawHaru(P, E, p) {
   if (arm === 'side') { sl([[20, top + 2], [21, top + 4], [21, top + 6], [21, top + 8]]); P.rect(21, top + 10, 2, 2, C.skin(.55, 0, 0)); }
   if (arm === 'point') { sl([[20, top + 1], [21, top], [22, top - 2], [23, top - 4]]); P.rect(23, top - 6, 2, 2, C.skin(.6, 0, 0)); }
   if (arm === 'reach') { sl([[20, top + 2], [22, top + 3], [24, top + 4], [26, top + 4]]); P.rect(27, top + 4, 2, 2, C.skin(.6, 0, 0)); }
+  if (arm === 'cup') { sl([[20, top + 2], [21, top + 3], [22, top + 4]]); P.rect(22, top + 4, 4, 3, C.skin(.6, 0, 0)); P.rect(23, top + 3, 2, 1, C.skin(.75, 0, 0));
+    if (p.glint) { const v = C.violet(.85, 0, 0); P.set(24, top + 2, v); E && E.set(24, top + 2, v); } }   // A: the caught moth glints between his fingers
+  if (arm === 'sideS') { sl([[20, top + 2], [21, top + 4], [21, top + 5]]); P.rect(21, top + 6, 2, 2, C.skin(.55, 0, 0)); }
   const lk = [p.lit ?? 1, p.moths || 0, p.fill || 0, p.crk || 0];
   if (arm === 'hold') { sl([[20, top + 2], [21, top + 4], [22, top + 5]]); P.rect(21, top + 6, 3, 2, C.skin(.55, 0, 0)); lantern(P, E, 20, top + 8, ...lk); }
   if (arm === 'hup') { sl([[20, top + 1], [21, top - 1], [22, top - 3]]); P.rect(22, top - 5, 2, 2, C.skin(.6, 0, 0)); lantern(P, E, 21, top - 4, ...lk); }
@@ -125,6 +132,8 @@ const NOEUL = {
   up: { arm: 'up' }, up1: { arm: 'up', bob: 1 }, fwd: { arm: 'fwd' }, look: { arm: 'low', look: 1 },
   kneel: { kneel: 1, arm: 'kneel' }, kneelShut: { kneel: 1, arm: 'kneel', closed: 1 },
   empty: { arm: 'none' }, kneelEmpty: { kneel: 1, arm: 'none' }, sleep: { sit: 1, arm: 'rest', closed: 1 }, sitWake: { sit: 1, arm: 'rest' },
+  sleep1: { sit: 1, arm: 'rest', closed: 1, bob: 1 }, frown: { sit: 1, arm: 'rest', closed: 1, frown: 1 }, frown1: { sit: 1, arm: 'rest', closed: 1, frown: 1, bob: 1 },
+  snore: { sit: 1, arm: 'rest', closed: 1, snore: 1, bob: -1 }, stretch: { arm: 'stretch', closed: 1, bob: -1 }, stretch1: { arm: 'stretch', blink: 1 },
 };
 const HARU = {
   hw0: { step: 0, arm: 'hold' }, hw1: { step: 1, arm: 'hold', bob: -1 }, hw2: { step: 2, arm: 'hold' }, hw3: { step: 3, arm: 'hold', bob: -1 },
@@ -134,6 +143,44 @@ const HARU = {
   idle0: { arm: 'side' }, idle1: { arm: 'side', bob: 1 }, blink: { arm: 'side', blink: 1 }, point: { arm: 'point', look: 1 },
   reach: { arm: 'reach' }, hold: { arm: 'hold' }, hold1: { arm: 'hold', bob: 1 },
   w0: { step: 0, arm: 'side' }, w1: { step: 1, arm: 'side', bob: -1 }, w2: { step: 2, arm: 'side' }, w3: { step: 3, arm: 'side', bob: -1 },
+  point1: { arm: 'point', look: 1, bob: 1 }, reachL: { arm: 'reach', look: 0 }, look: { arm: 'side', look: 1 },
+  dive: { crouch: 1, arm: 'reach' }, cup: { crouch: 1, arm: 'cup', glint: 1, look: 1 }, cup1: { crouch: 1, arm: 'cup', glint: 0, look: 1, bob: 1 },
+  sitUp: { sit: 1, arm: 'sideS' }, sitUpB: { sit: 1, arm: 'sideS', blink: 1 }, sitUpL: { sit: 1, arm: 'sideS', look: 1 },
+};
+// —— villagers (A: they run out at the bell in their night clothes and caps; at dawn they sleep on the tower steps) ——
+const VPAL = [
+  ['#5e6f8f', '#8fa3c4', '#c4d2e8', '#e8eef8', '#a83a3a'], ['#7a5a6a', '#a8849a', '#d8b8c8', '#f2e0ea', '#2f5f8f'], ['#5a6a4a', '#86986e', '#b8c89c', '#e0ead0', '#8a4a2a'],
+  ['#7a6a4a', '#a8946c', '#d8c49a', '#f4ead4', '#3a5a3a'], ['#4a5a6a', '#6c8496', '#9cb4c4', '#d4e2ea', '#6a3a7a'], ['#6a4a4a', '#946c6c', '#c49c9c', '#ecd4d0', '#2a4a6a'],
+  ['#5a5a7a', '#8484a8', '#b4b4d4', '#e2e2f4', '#9a6a2a'], ['#6a5a3a', '#988458', '#c8b488', '#f0e4c8', '#4a2a4a'],
+].map(c => ({ robe: ramp(c.slice(0, 4), .22), cap: ramp([c[4], c[4], '#f2efe6'], .22), hair: ramp(['#120d0c', '#2a1d16', '#4a3626'], .22) }));
+function drawVillager(P, E, p, pal) {
+  const by = (p.bob || 0) + (p.sit ? 9 : 0), top = 18 + by, bot = p.sit ? 44 : 41;
+  if (p.sit) { P.rect(17, 44, 11, 3, pal.robe(.45, 0, 0)); P.rect(17, 44, 11, 1, pal.robe(.65, 0, 0)); P.rect(27, 45, 2, 2, C.skin(.45, 0, 0)); }
+  else { const st = p.step ?? -1, legs = st < 0 ? [[13, 0], [17, 0]] : [[[11, 0], [19, -1]], [[13, -1], [17, 0]], [[19, -1], [11, 0]], [[17, 0], [13, -1]]][st];
+    legs.forEach(([lx, ly], i) => { for (let y = 40; y < 47 + ly; y++) for (let x = lx; x < lx + 4; x++) P.set(x, y, pal.robe(i ? .3 : .45, x, y)); P.rect(lx, 47 + ly, 4, 1, C.skin(.4, 0, 0)); }); }
+  P.poly([[11, top], [21, top], [23, bot], [9, bot]], (x, y) => { const s = (x - 9) / 14; return pal.robe(.72 - s * .38 + (y % 5 === 0 ? -.08 : 0), x, y); });
+  P.rect(11, top + 9, 12, 1, pal.robe(.3, 0, 0));
+  const fx = 18, fy = top - 6;
+  P.ellipse(fx, fy, 4.6, 5, (x, y, dx, dy) => C.skin(.6 - dx * .1 - dy * .26 + (dx > .55 ? -.2 : 0), x, y));
+  for (let x = fx - 5; x <= fx - 3; x++) for (let y = fy - 2; y < fy + 3; y++) P.set(x, y, pal.hair(.5, x, y));
+  // the nightcap: a drooping cone with a pale bobble
+  P.poly([[fx - 6, fy - 2], [fx + 4, fy - 3], [fx + 2, fy - 7], [fx - 3, fy - 8], [fx - 10, fy - 1]], (x, y) => pal.cap(.5 + (y % 3 === 0 ? .2 : 0), x, y));
+  P.ellipse(fx - 10, fy, 1.6, 1.6, () => pal.cap(.99, 0, 0));
+  const ey = Math.round(fy);
+  if (p.closed) { P.set(fx + 2, ey, INK); P.set(fx + 1, ey, INK); P.set(fx - 1, ey, INK); }
+  else if (p.blink) { P.set(fx + 2, ey, C.skin(.2, 0, 0)); }
+  else { P.set(fx + 2, ey, INK); P.set(fx - 1, ey, INK); }
+  P.set(fx + 4, ey + 1, C.skin(.35, 0, 0));
+  const sl = pts => pts.forEach(([x, y]) => { P.set(x, y, pal.robe(.6, x, y)); P.set(x, y + 1, pal.robe(.35, x, y)); });
+  const held = (x, y, lit) => { if (p.bucket) { P.rect(x, y + 1, 5, 5, hex('#5a3a22')); P.rect(x, y + 1, 5, 1, hex('#8a6038')); P.rect(x + 1, y + 2, 3, 1, hex('#3a5a8a')); P.set(x + 2, y, C.iron(.6, 0, 0)); } else lantern(P, E, x, y, lit); };
+  if (p.arm === 'hold') { sl([[21, top + 2], [22, top + 4], [22, top + 6], [23, top + 8]]); P.rect(22, top + 10, 2, 2, C.skin(.55, 0, 0)); held(21, top + 12, 1); }
+  if (p.arm === 'up') { sl([[21, top + 1], [22, top - 1], [23, top - 3]]); P.rect(23, top - 5, 2, 2, C.skin(.6, 0, 0)); held(22, top - 4, 1); }
+  if (p.arm === 'lap') { sl([[20, top + 3], [20, top + 5]]); P.rect(16, top + 8, 4, 2, C.skin(.5, 0, 0)); held(16, top + 9, .35); }
+}
+const VILL = {
+  vw0: { step: 0, arm: 'hold' }, vw1: { step: 1, arm: 'hold', bob: -1 }, vw2: { step: 2, arm: 'hold' }, vw3: { step: 3, arm: 'hold', bob: -1 },
+  vhold: { arm: 'hold' }, vhold1: { arm: 'hold', bob: 1 }, vup: { arm: 'up' }, vup1: { arm: 'up', bob: 1 },
+  vsleep: { sit: 1, arm: 'lap', closed: 1 }, vsleep1: { sit: 1, arm: 'lap', closed: 1, bob: 1 },
 };
 // lantern frames that depend on a level: <name>@<lit>@<moths> are generated on demand (levels quantised so the atlas stays small)
 const LEVELS = [1, .82, .64, .46, .3, .14, .05];
@@ -159,10 +206,12 @@ function expandFill(base, keys) {   // 2편: the boy's lantern by how full of mo
   return out;
 }
 
-export function makeChar(kind) {
+export function makeChar(kind, v = 0) {
+  const vil = kind === 'villager', bucket = vil && (v % 4 === 3);
   const TB = kind === 'noeul' ? expand(NOEUL, ['idle0', 'idle1', 'w0', 'w1', 'w2', 'w3', 'up', 'up1', 'fwd', 'look'])
+    : vil ? Object.fromEntries(Object.entries(VILL).map(([k, p]) => [k, { ...p, bucket }]))
     : expandFill(HARU, ['hold', 'hold1', 'hw0', 'hw1', 'hw2', 'hw3', 'hup', 'hup1', 'hfwd', 'hfwdB', 'crouch', 'crouch1', 'lap', 'lap1']);
-  const A = atlas(TB, kind === 'noeul' ? drawNoeul : drawHaru);
+  const A = atlas(TB, kind === 'noeul' ? drawNoeul : vil ? (P, E, p) => drawVillager(P, E, p, VPAL[v % VPAL.length]) : drawHaru);
   const mesh = billboard(A.tex, FW * SPX, FH * SPX, { em: A.em, emCol: '#ffffff', emI: 2.2 });
   // a light held at the sprite must not burn it out (the style's pitfall): cap the lit colour
   mesh.material.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>', 'outgoingLight = min(outgoingLight, diffuseColor.rgb * 1.35 + totalEmissiveRadiance);\n#include <opaque_fragment>'); };
@@ -170,6 +219,7 @@ export function makeChar(kind) {
   const sh = blob(.36, .55); sh.position.y = .015; root.add(sh);
   // the lantern's centre (sprite pixels) per arm; the boy's from his own drawing (top = 30, +5 crouching, +6 sitting)
   const lanternOf = kind === 'noeul' ? { low: [24.5, 32], up: [26.5, 16], fwd: [28.5, 29], kneel: [27.5, 45] }
+    : vil ? { hold: [23.5, 33.5], up: [24.5, 17.5], lap: [18.5, 39.5] }
     : { hold: [22, 41], hup: [23, 29], hfwd: [26, 39], palm: [28, 44], lap: [19, 44] };
   const SET = kind === 'noeul' ? LEVELS : FILLS;
   const q = v => SET.reduce((a, b) => Math.abs(b - v) < Math.abs(a - v) ? b : a);
@@ -239,4 +289,4 @@ export function bigMoth() {
   const mesh = billboard(tex, W * SPX * 1.6, H * SPX * 1.6, { em, emCol: '#ffffff', emI: 1.8, ay: .5 });
   return { mesh, frame(i) { tex.offset.x = em.offset.x = i ? .5 : 0; } };
 }
-export { FW, FH, NOEUL, HARU };
+export { FW, FH, NOEUL, HARU, VILL };

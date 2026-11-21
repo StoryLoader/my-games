@@ -1,4 +1,4 @@
-// 2D overlay of 「악몽을 지키는 파수꾼 2」: title, place cards, dialogue box (typed), narration subtitles, fades between sets.
+// 2D overlay of 「악몽을 지키는 파수꾼 2 — 할머니의 첫 꿈」: title, place cards, dialogue box (typed), narration subtitles, fades between sets.
 // Adapted from the library's 2.5D Pixel Art engine (ui.js): the metal is silver (a moonlit town), the type Korean
 // (Gowun Batang for titles and cards, Nanum Myeongjo for subtitles and dialogue), no credit line of any kind.
 import { VO, SHOTS, T, CARDS, FADES, clamp, seg, ss } from './story.js';
@@ -44,7 +44,9 @@ function titleCard(t, c) {
   if (PORT) { const ws = c.text.split(' '), tail = ws[ws.length - 1].length <= 2 ? 2 : 1, l1 = ws.slice(0, -tail).join(' '), l2 = ws.slice(-tail).join(' '), y0 = H * .40;
     g.font = "700 112px 'Gowun Batang'"; const gr2 = g.createLinearGradient(0, y0 - 60, 0, y0 + 200); gr2.addColorStop(0, '#ffffff'); gr2.addColorStop(.55, SILVER); gr2.addColorStop(1, SILVER_D); g.fillStyle = gr2;
     glowText(() => { spaced(l1, W / 2, y0, 14); g.font = "700 150px 'Gowun Batang'"; spaced(l2, W / 2, y0 + 170, 30); g.font = "700 112px 'Gowun Batang'"; }, 'rgba(170,140,255,.55)', 36);
-    ornament(W / 2, y0 + 290, 260 * (.3 + .7 * a), a); g.restore(); return; }
+    ornament(W / 2, y0 + 290, 260 * (.3 + .7 * a), a);
+    if (c.sub) { g.font = F_CARD; g.fillStyle = PAPER; glowText(() => spaced(c.sub, W / 2, y0 + 400, 10), 'rgba(255,200,110,.5)', 26); }
+    g.restore(); return; }
   g.fillStyle = gr; glowText(() => spaced(c.text, W / 2, 500, 18), 'rgba(170,140,255,.55)', 36);
   ornament(W / 2, 590, 300 * (.3 + .7 * a), a);
   g.restore();

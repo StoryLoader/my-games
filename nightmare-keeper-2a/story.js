@@ -11,8 +11,8 @@ export const SHOTS = [
   { id: 'rope', set: 'tower', a: 34.0, b: 42.0 },         // the bell rope, knotted to the pedestal; up to the ceiling (plant)
   { id: 'catch', set: 'town', a: 42.0, b: 55.0 },         // on the mound: he raises the lantern; wave after wave swirls in; it fills (the meter)
   { id: 'keyhole', set: 'tower', a: 55.0, b: 66.0 },      // shutters shut, glass hammered; one moth through the keyhole; he dives and catches it
-  { id: 'crisis', set: 'tower', a: 66.0, b: 78.0 },       // the window bulges violet, the gold fades; his hand on her shoulder; silence; he looks up
-  { id: 'pull', set: 'tower', a: 78.0, b: 80.2 },         // he unties the knot and pulls
+  { id: 'crisis', set: 'tower', a: 66.0, b: 75.6 },       // the window bulges violet, the gold fades; his hand on her shoulder; silence; he looks up
+  { id: 'pull', set: 'tower', a: 75.6, b: 80.2 },         // he walks to the rope, unties the knot and pulls
   { id: 'bell', set: 'town', a: 80.2, b: 84.2 },          // the bell swings for the first time in seventy years (one shake)
   { id: 'wake', set: 'town', a: 84.2, b: 99.0 },          // the map again: windows light amber one by one, lanterns pour out, the moths scatter (signature)
   { id: 'snore', set: 'tower', a: 99.0, b: 106.4 },       // quiet again; the gold is whole; she snores
