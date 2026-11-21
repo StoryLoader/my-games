@@ -15,6 +15,7 @@ CAST = {   # who → (voice, speaking rate). The library's storybook narrator is
     'narrator': ('ko-KR-Chirp3-HD-Algenib', 0.88),   # the calm male narrator the user chose earlier
     'noeul': ('fish:1d90ba56b4274ff8ab7bbaf7f7b7f8a8', 0.92),   # the old keeper: Fish Audio "걸걸한 할머니" (the user's choice, 2026-11-18)
     'haru': ('ko-KR-Chirp3-HD-Leda', 1.0),           # the boy: a light, young voice
+    'bomi': ('ko-KR-Chirp3-HD-Zephyr', 0.95),        # 봄이, the little girl (B 「열두 번째 등불」): a bright voice, clearly not 하루's
 }
 lines_path, out = sys.argv[1], sys.argv[2]
 os.makedirs(os.path.join(out, '.cache'), exist_ok=True)
