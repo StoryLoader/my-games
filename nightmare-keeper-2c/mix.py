@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""mix.py — sound of 「악몽을 지키는 파수꾼 2 — 반딧불의 밤」: ambience beds per place, foley at the picture's event times (events.json,
+"""mix.py — sound of 「악몽을 지키는 파수꾼 2 — C 칠십 년 치 꿈」: ambience beds per place, foley at the picture's event times (events.json,
 exported from the page's window.EV), the score (music/score.wav), the voices (voices/*.wav at the times in timeline.json).
 All effects are synthesized here (the library's core/audio/sfx.py helpers + numpy); nothing recorded or downloaded.
 
@@ -30,109 +30,104 @@ def loopnoise(d, lo, hi, seed, brownish=False):
     x = bp(r, lo, hi, 2)[:int(d * SR)]; return x / (np.abs(x).max() + 1e-9)
 
 # —— ambience beds (gain curves follow the places) ——
-SH = {s['id']: (s['a'], s['b']) for s in TL['SHOTS']}
-TOWER = [SH['shelf'], (SH['towerRelease'][0], SH['wake'][1])]
-in_tower = curve([[0, 0]] + sum([[[a - .3, 0], [a, 1], [b, 1], [b + .3, 0]] for a, b in TOWER], []) + [[DUR, 0]])
-dawn = curve([[0, 0], [T['dawn'] - 1.4, 0], [T['dawn'] + 4, 1], [DUR, 1]])          # birds before the cut (J-cut)
-hush = curve([[0, 1], [T['crack'] - .1, 1], [T['crack'] + .4, .35], [T['transform'] - .5, .35], [T['transform'] + 2, 1], [DUR, 1]])
-fade = curve([[0, 0], [1.2, 1], [T['fadeOut'][0], 1], [DUR, 0]])
+SHOTS = TL['SHOTS']
+def where(kind):
+    keys = [[0, 0]]
+    for s in SHOTS:
+        on = 1 if kind(s) else 0; keys += [[s['a'] + .01, on], [s['b'] - .01, on]]
+    return curve(keys + [[DUR, 0]])
+in_tower = where(lambda s: s['set'] == 'tower')
+night_town = where(lambda s: s['set'] == 'town' and s['b'] <= 95.5)
+morning = where(lambda s: s['a'] >= 95.3)
+fade = curve([[0, 0], [1.0, 1], [T['fadeOut'][0], 1], [DUR, 0]])
 for c, s in ((0, 1), (1, 2)):
     wind = loopnoise(DUR, 120, 900, s, True) * (.7 + .3 * np.sin(t_all * .37 + s))
-    amb[:, c] += wind * .05 * (1 - in_tower) * (1 - .55 * dawn) * hush * fade
+    amb[:, c] += wind * .05 * night_town * fade
     room = loopnoise(DUR, 50, 260, s + 4, True)
-    amb[:, c] += room * .05 * in_tower
-# crickets in the town at night, quieter in the palm silence; gone at dawn; birds at dawn
+    amb[:, c] += room * .05 * in_tower * fade
+    breeze = loopnoise(DUR, 300, 2400, s + 8, True)
+    amb[:, c] += breeze * .014 * morning * fade
+# crickets in the town at night; a stove's crackle in the tower; birds in the morning
 cr = np.zeros(N)
 for k in range(int(DUR / .21)):
     t0 = k * .21 + .03 * np.sin(k)
     if (k % 7) in (5, 6): continue
     i = int(t0 * SR); x = tt(.05); bb = np.sin(2 * np.pi * 4300 * x) * np.sin(np.pi * x / .05) ** 2; cr[i:i + len(bb)] += bb[:max(0, min(len(bb), N - i))]
-g = (1 - in_tower) * (1 - dawn) * hush
-amb[:, 0] += cr * .012 * g; amb[:, 1] += np.roll(cr, 3000) * .010 * g
+amb[:, 0] += cr * .012 * night_town; amb[:, 1] += np.roll(cr, 3000) * .010 * night_town
+stove = np.zeros((N, 2))
+for k in range(int(DUR * 3)):
+    t0 = rng.random() * DUR; x = tt(.02); add(stove, hp(noise(.02), 2000) * np.exp(-x * 200) * .05 * rng.random(), t0, 1, .5)
+amb += stove * in_tower[:, None]
 def bird(seed):
     r = np.random.default_rng(seed); n = r.integers(3, 6); out = np.zeros(int(1.2 * SR))
     for j in range(n):
         x = tt(.09); f = 3200 + r.random() * 1500; ch = np.sin(2 * np.pi * np.cumsum(f * (1 + .25 * np.sin(np.pi * x / .09))) / SR) * np.sin(np.pi * x / .09)
         i = int(j * .16 * SR); out[i:i + len(ch)] += ch
     return out
-for k in range(22): add(amb, bird(k) * .045 * (.6 if k < 2 else 1), T['dawn'] - 1.0 + k * .7 + (k % 3) * .23, 1, -.6 + (k % 5) * .3)
-# fireflies: a faint glassy twinkle while they fly (release, the tower, one at dawn)
-def twinkle(v=1.0, f=5200):
-    x = tt(.25); return np.sin(2 * np.pi * f * x) * np.exp(-x * 22) * np.minimum(1, x / .004) * v
-for a, b, dens in [(T['flyOff'], 62.0, 1.6), (68.8, 85.4, 4.5), (87.6, 103.6, 4.0)]:
-    n = int((b - a) * dens)
-    for j in range(n): add(amb, twinkle(.03 * rng.uniform(.4, 1), rng.uniform(4200, 7200)), a + rng.random() * (b - a), 1, rng.uniform(-.8, .8))
+for k in range(34): add(amb, bird(k) * .045, 95.6 + k * .75 + (k % 3) * .21, 1, -.6 + (k % 5) * .3)
+for k in range(5): add(amb, bird(k + 40) * .02, 121.8 + k * .7, 1, .4)
 
 # —— foley ——
 def step(v=1.0, soft=False):
     x = tt(.14); y = lp(noise(.14), 1800 if not soft else 900) * np.exp(-x * 45) + np.sin(2 * np.pi * 90 * x) * np.exp(-x * 40) * .5
     return y * v * (.5 if soft else 1)
-def walks(a, b, rate=9, soft=False, pan=0):
-    k0 = int(np.ceil(a * rate))
-    for k in range(k0, int(b * rate)):
-        if k % 2 == 0: add(fol, step(.12 + .03 * (k % 4 == 0), soft), k / rate, 1, pan)
-cs = T['collect']; pw = T['patrolWalk']
-spans = [(pw[0], cs[0] - .9)] + [(cs[i] + .9, cs[i + 1] - .9) for i in range(len(cs) - 1)] + [(cs[-1] + .9, pw[1])]
-for a, b in spans: walks(a, b)
-walks(T['noeulOut'][0] + .2, T['noeulOut'][1], rate=7, soft=True, pan=-.2)
-def wings(d=1.6, v=1.0, rate=28):
-    nz = noise(d); x = np.arange(len(nz)) / SR; am = .5 + .5 * np.sin(2 * np.pi * rate * x) ** 2; y = bp(nz, 300, 2400) * am * np.sin(np.pi * np.clip(x / d, 0, 1)) ** .6
-    return y * v
-def glass_tick(v=1.0, f=3800):
-    x = tt(.08); return (np.sin(2 * np.pi * f * x) * np.exp(-x * 70) + hp(noise(.08), 4000) * np.exp(-x * 120) * .4) * v
-def crack(v=1.0):   # a glass crack: a sharp tick, then a crinkle running along it
-    d = .9; x = tt(d); y = np.zeros(len(x))
-    for j in range(26):
-        i = int((j / 26) ** 1.6 * .5 * SR + rng.uniform(0, .01) * SR); g_ = glass_tick(rng.uniform(.2, .8) * (1 - j / 34), rng.uniform(3500, 7800)); y[i:i + len(g_)] += g_[:max(0, len(y) - i)]
-    y += hp(noise(d), 3000) * np.exp(-x * 14) * .5
-    return y * v
-def chime(v=1.0):   # the dialogue box: a soft two-note chime
+def walks(a, b, rate=9, soft=False, pan=0, v=.12):
+    for k in range(int(np.ceil(a * rate)), int(b * rate)):
+        if k % 2 == 0: add(fol, step(v + .03 * (k % 4 == 0), soft), k / rate, 1, pan)
+def chime(v=1.0):   # the dialogue box
     x = tt(1.2); return (np.sin(2 * np.pi * 1318 * x) * np.exp(-x * 5) + .6 * np.sin(2 * np.pi * 1975 * x) * np.exp(-x * 6) * (x > .07)) * v
-def bell(v=1.0, f=587):   # a small warm bell (a window turning gold)
-    x = tt(2.6); return (np.sin(2 * np.pi * f * x) + .45 * np.sin(2 * np.pi * f * 2.0 * x) * np.exp(-x * 1.8) + .2 * np.sin(2 * np.pi * f * 3.01 * x) * np.exp(-x * 3)) * np.exp(-x * 1.5) * np.minimum(1, x / .003) * v
-def clink(v=1.0):
-    x = tt(.4); return (np.sin(2 * np.pi * 2100 * x) * np.exp(-x * 25) + np.sin(2 * np.pi * 3400 * x) * np.exp(-x * 35) * .5) * v
-def set_down(v=1.0):   # the lantern set on stone
-    x = tt(.5); return (lp(noise(.5), 700) * np.exp(-x * 30) + np.sin(2 * np.pi * 120 * x) * np.exp(-x * 25) * .6) * v + np.pad(clink(v * .5), (0, len(x) - int(round(.4 * SR))))
-def creak(d=.8, v=1.0, f0=420, f1=640, metal=True):   # a small hinge
+def snore(v=1.0, d=.95):   # a rattling snore: low noise, amplitude-modulated (the soft palate), rising then falling
+    x = tt(d); am = .55 + .45 * np.sign(np.sin(2 * np.pi * (26 + 6 * x / d) * x)); env = np.sin(np.pi * np.clip(x / d, 0, 1)) ** 1.2
+    y = (bp(noise(d), 80, 700, 2) * am + np.sin(2 * np.pi * np.cumsum(70 + 30 * np.sin(np.pi * x / d)) / SR) * .4 * am) * env
+    return y * v
+def inhale(v=1.0, d=.7):
+    x = tt(d); return bp(noise(d), 600, 3000, 2) * np.sin(np.pi * x / d) ** 2 * v
+def pop(v=1.0, f0=320):   # 퐁: a bubble — a quick upward glide and a click
+    d = .28; x = tt(d); f = f0 * (1 + 2.2 * (1 - np.exp(-x * 30))); y = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-x * 14) * np.minimum(1, x / .004)
+    y += hp(noise(d), 3000) * np.exp(-x * 120) * .3
+    return y * v
+def glide(f0, f1, d, v=1.0):   # a slide whistle
+    x = tt(d); f = f0 * (f1 / f0) ** (x / d); vib = 1 + .01 * np.sin(2 * np.pi * 6 * x); y = np.sin(2 * np.pi * np.cumsum(f * vib) / SR)
+    y += .15 * np.sin(2 * 2 * np.pi * np.cumsum(f) / SR) + bp(noise(d), 800, 3000) * .05
+    return y * np.sin(np.pi * np.clip(x / d, 0, 1)) ** .5 * v
+def shimmer(d=1.6, v=1.0, f0=1800):
+    x = tt(d); f = f0 + 900 * x / d; y = sum(np.sin(2 * np.pi * np.cumsum(f * k) / SR) / k for k in (1, 1.5, 2.01))
+    return y * np.sin(np.pi * x / d) * v * .3
+def wings(d=1.6, v=1.0, rate=28):
+    nz = noise(d); x = np.arange(len(nz)) / SR; am = .5 + .5 * np.sin(2 * np.pi * rate * x) ** 2
+    return bp(nz, 300, 2400) * am * np.sin(np.pi * np.clip(x / d, 0, 1)) ** .6 * v
+def bell(v=1.0, f=587, d=2.6):
+    x = tt(d); return (np.sin(2 * np.pi * f * x) + .45 * np.sin(2 * np.pi * f * 2.0 * x) * np.exp(-x * 1.8) + .2 * np.sin(2 * np.pi * f * 3.01 * x) * np.exp(-x * 3)) * np.exp(-x * 1.5) * np.minimum(1, x / .003) * v
+def creak(d=.8, v=1.0, f0=420, f1=640, metal=True):
     x = tt(d); f = f0 + (f1 - f0) * (x / d) + 25 * np.sin(2 * np.pi * 7 * x)
     y = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * (rng.random(len(x)) > (.6 if metal else .8))
-    y = bp(y.astype(float), 600 if metal else 250, 3200 if metal else 1500)
-    return y * np.sin(np.pi * x / d) ** .7 * v
-def bloom(v=1.0):   # the first firefly: a soft warm swell with a shimmer on top
-    d = 2.6; x = tt(d); f = 900 + 2600 * (1 - np.exp(-x * 2)); y = sum(np.sin(2 * np.pi * np.cumsum(f * k) / SR) / k for k in (1, 1.5, 2.01))
-    return (y * .3 + lp(noise(d), 500) * .5) * np.sin(np.pi * np.clip(x / d, 0, 1)) ** 1.5 * v
-def rustle(v=1.0, d=.7):
-    x = tt(d); return bp(noise(d), 800, 5000) * (.5 + .5 * np.sin(2 * np.pi * 6 * x) ** 2) * np.sin(np.pi * x / d) * v
-def sigh(v=1.0):
-    x = tt(1.6); return bp(noise(1.6), 300, 1400) * np.sin(np.pi * x / 1.6) ** 2 * v
-def lid(v=1.0, f=4200):   # a small glass lid lifting off
-    x = tt(.3); g_ = glass_tick(1, f); return np.pad(g_, (0, len(x) - len(g_))) * v + hp(noise(.3), 3000) * np.exp(-x * 30) * v * .15
-
-PENT = [587, 659, 740, 880, 988, 1175]
+    return bp(y.astype(float), 600 if metal else 250, 3200 if metal else 1500) * np.sin(np.pi * x / d) ** .7 * v
+PENT = [587, 659, 740, 880, 988, 1175, 1319]
 for e in EV:
     t, ty, pan = e['t'], e['type'], e.get('pan', 0)
-    if ty == 'collect': add(fol, clink(.05), t - .85); add(fol, wings(1.8, .06), t - .7, 1, -.3); add(fol, whoosh(.5, .045), t + .3, 1, .2)
-    elif ty == 'rattle':
-        x = t; end = T['crack'] if t == T['rattle'][-1] else T['rattle'][-1]
-        while x < end - .05: u = (x - T['rattle'][0]) / (T['crack'] - T['rattle'][0]); add(fol, glass_tick(.02 + .06 * u, 3400 + 700 * (int(x * 7) % 3)), x, 1, -.15 + .3 * ((x * 3) % 1)); x += .45 - .37 * u
-        add(fol, wings(end - t, .025 + .02 * (t > T['rattle'][0]), 32), t)
-    elif ty == 'crack': add(fol, crack(.22), t); add(fol, thump(.08, 70), t)
-    elif ty == 'escape': add(fol, wings(.9, .05, 24), t, 1, .3)
-    elif ty == 'setDown': add(fol, set_down(.1), t + .25); add(fol, rustle(.02, .5), t - .1)
-    elif ty == 'land': add(fol, wings(.45, .04, 18), t - .4, 1, .1)
-    elif ty == 'wing': add(fol, wings(.5, .05, 3.2), t, 1, .1); add(fol, heartbeat(.12), t + .05)
-    elif ty == 'transform': add(fol, bloom(.16), t - .3); add(fol, bell(.06, 1175), t)
-    elif ty == 'flyOff': add(fol, whoosh(.6, .03), t, 1, -.2)
-    elif ty == 'openDoor': add(fol, creak(.7, .05), t - .15); add(fol, wings(2.4, .07, 30), t + .4, 1, .2); add(fol, whoosh(1.2, .05), t + .5)
-    elif ty == 'winGold': add(fol, bell(.035, PENT[e['i'] % len(PENT)] / (1 if e['i'] < 99 else 2)), t, 1, pan * .8)
-    elif ty == 'shelfOpen': add(fol, lid(.03, 3800 + 900 * (int(t * 17) % 4)), t, 1, pan * .7)
-    elif ty == 'wake': add(fol, rustle(.04, .9), t); add(fol, sigh(.03), t + .4)
-    elif ty == 'doorOpen': add(fol, creak(1.2, .045, 180, 260, metal=False), t - .3, 1, -.3)
-    elif ty == 'sit': add(fol, rustle(.04, .8), t, 1, -.1)
+    if ty == 'snore': add(fol, inhale(.04), t - .85, 1, -.1); add(fol, snore(.22), t - .05, 1, -.1)
+    elif ty == 'bigSnore': add(fol, inhale(.07, 1.0), t - 1.1, 1, -.1); add(fol, snore(.42, 1.4), t - .1, 1, -.1); add(fol, thump(.3, 55), t + .35)
+    elif ty == 'pop': add(fol, pop(.2, [320, 360, 400, 300, 420, 340, 380, 440, 330, 460][e['i'] % 10]), t, 1, -.2 + .1 * (e['i'] % 5))
+    elif ty == 'popSmall':
+        for j in range(6): add(fol, pop(.08, 300 + 40 * ((e['i'] + j * 3) % 9)), t + j * .04, 1, -.6 + .2 * j)
+    elif ty == 'play': add(fol, shimmer(1.4, .07), t - .2, 1, .2)
+    elif ty == 'jump': add(fol, glide(500, 1500, .5, .09), t - .05, 1, .1)
+    elif ty == 'thud': add(fol, glide(1400, 380, .45, .08), t - .5, 1, .1); add(fol, thump(.35, 70), t, 1, .1); add(fol, step(.25), t + .02, 1, .1)
+    elif ty == 'hatLand': add(fol, pop(.1, 700), t, 1, .1); add(fol, wings(.4, .04, 18), t - .35, 1, .1)
+    elif ty == 'stream': add(fol, wings(6.5, .09, 34), t, 1, .3); add(fol, whoosh(2.4, .06), t + 1.2, 1, .2); add(fol, whoosh(2.4, .05), t + 3.6, 1, .4)
+    elif ty == 'blueRise': add(fol, bell(.06, 294, 4.0), t); add(fol, shimmer(3.0, .05, 900), t + .2)
+    elif ty == 'blueOut': add(fol, whoosh(1.6, .05), t + .4, 1, .3)
+    elif ty == 'spin': add(fol, shimmer(1.8, .07, 1400), t)
+    elif ty == 'winColor': add(fol, bell(.035, PENT[e['i'] % len(PENT)]), t, 1, pan * .8); add(fol, pop(.05, 500 + 30 * (e['i'] % 7)), t - .05, 1, pan * .8)
+    elif ty == 'winKeep': add(fol, bell(.02, 294 if e['i'] % 2 else 330, 2.0), t, 1, pan * .8)
+    elif ty == 'spout': add(fol, wings(4.5, .08, 30), t, 1, -.2); add(fol, whoosh(1.6, .07), t + .2, 1, -.3)
+    elif ty == 'doorOpen': add(fol, creak(1.2, .05, 180, 260, metal=False), t - .2, 1, -.1)
+    elif ty == 'villagerWalk': walks(t, e['t1'], rate=7, soft=True, pan=.3 - .1 * e['i'], v=.1)
     elif ty == 'voice' and e.get('dlg'): add(fol, chime(.03), t - .35)
-# the tower's shelf: one big breath of air as the lanterns open (sustained, under the lids)
-add(fol, bp(noise(5.0), 200, 1400) * np.sin(np.pi * tt(5.0) / 5.0) ** 2 * .02, 87.4)
+walks(T['run'][0], T['run'][1], rate=10, v=.13)            # the alley run
+walks(T['jump'] - .9, T['jump'], rate=10, v=.12, pan=.1)   # the run-up to the jump
+walks(T['noeulOut'][0] + .1, T['noeulOut'][1], rate=7, soft=True, pan=-.1)
+# 노을's snores carry on softly under the shadow plays (off screen): the T.snores list already covers 20–45 s
 
 # —— voices: compress, match RMS, characters low-passed ~7 kHz so they sit in the world ——
 lines = {}
@@ -142,7 +137,7 @@ for v in VO:
     y = compress(y.astype(np.float64), thr=.2, ratio=3)
     if v.get('dlg'): y = lp(y, 7000)
     y *= .12 / (np.sqrt(np.mean(y ** 2)) + 1e-9)
-    add(voc, y, v['t'], 1, .12 if v.get('dlg') and v['id'].startswith('h') else (-.08 if v.get('dlg') else 0))
+    add(voc, y, v['t'], 1, {'h': .12, 'k': -.08, 'v': .18 if v['id'] == 'v1' else -.18}.get(v['id'][0], 0) if v.get('dlg') else 0)
     lines[v['id']] = (v['t'], v['t'] + len(y) / SR)
 
 # —— music ——
