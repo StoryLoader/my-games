@@ -56,5 +56,6 @@ function events() {
 window.EV = events();
 window.TEXTS = VO.map(v => ({ t: v.t, text: v.text, who: v.who }));
 window.render = render; window.DUR = LOOK ? 5 : DUR; window.POST = post;
+window.PREWARM = LOOK ? [] : SHOTS.map(s => (s[1] + s[2]) / 2);
 render(LOOK ? 1.5 : 10.5);
 window.READY = true;
