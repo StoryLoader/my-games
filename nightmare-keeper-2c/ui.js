@@ -1,4 +1,4 @@
-// 2D overlay of 「악몽을 지키는 파수꾼 2」: title, place cards, dialogue box (typed), narration subtitles, fades between sets.
+// 2D overlay of 「악몽을 지키는 파수꾼 2」 (C 「칠십 년 치 꿈」): title, place cards, dialogue box (typed), narration subtitles, fades between sets.
 // Adapted from the library's 2.5D Pixel Art engine (ui.js): the metal is silver (a moonlit town), the type Korean
 // (Gowun Batang for titles and cards, Nanum Myeongjo for subtitles and dialogue), no credit line of any kind.
 import { VO, SHOTS, T, CARDS, FADES, clamp, seg, ss } from './story.js';
@@ -11,7 +11,7 @@ const F_TITLE = "700 104px 'Gowun Batang'", F_LABEL = "700 34px 'Gowun Batang'",
 const F_SUB = "700 48px 'Nanum Myeongjo'", F_DLG = "700 46px 'Nanum Myeongjo'", F_NAME = "700 34px 'Nanum Myeongjo'";
 
 export async function overlayReady() {
-  await Promise.all([F_TITLE, F_LABEL, F_SUB, F_NAME].map(f => document.fonts.load(f, '악몽을 지키는 파수꾼')));
+  await Promise.all([F_TITLE, F_LABEL, F_SUB, F_NAME, "700 64px 'Gowun Batang'"].map(f => document.fonts.load(f, '악몽을 지키는 파수꾼 칠십 년 치 꿈')));
   DURS = await (await fetch('voices/dur.json')).json();
 }
 
@@ -44,7 +44,9 @@ function titleCard(t, c) {
   if (PORT) { const ws = c.text.split(' '), tail = ws[ws.length - 1].length <= 2 ? 2 : 1, l1 = ws.slice(0, -tail).join(' '), l2 = ws.slice(-tail).join(' '), y0 = H * .40;
     g.font = "700 112px 'Gowun Batang'"; const gr2 = g.createLinearGradient(0, y0 - 60, 0, y0 + 200); gr2.addColorStop(0, '#ffffff'); gr2.addColorStop(.55, SILVER); gr2.addColorStop(1, SILVER_D); g.fillStyle = gr2;
     glowText(() => { spaced(l1, W / 2, y0, 14); g.font = "700 150px 'Gowun Batang'"; spaced(l2, W / 2, y0 + 170, 30); g.font = "700 112px 'Gowun Batang'"; }, 'rgba(170,140,255,.55)', 36);
-    ornament(W / 2, y0 + 290, 260 * (.3 + .7 * a), a); g.restore(); return; }
+    ornament(W / 2, y0 + 290, 260 * (.3 + .7 * a), a);
+    if (c.sub) { const b = ss(seg(t, c.a + .9, c.a + 1.8)) * (1 - ss(seg(t, c.b - .8, c.b))); g.globalAlpha = b; g.font = "700 64px 'Gowun Batang'"; g.fillStyle = '#ffe2f0'; glowText(() => spaced(c.sub, W / 2, y0 + 400, 16), 'rgba(255,140,200,.6)', 30); }
+    g.restore(); return; }
   g.fillStyle = gr; glowText(() => spaced(c.text, W / 2, 500, 18), 'rgba(170,140,255,.55)', 36);
   ornament(W / 2, 590, 300 * (.3 + .7 * a), a);
   g.restore();
@@ -78,7 +80,7 @@ function dialog(t, v) {
   for (const [cx, cy] of [[x, y], [x + bw, y], [x, y + bh], [x + bw, y + bh]]) { g.fillStyle = SILVER_L; g.beginPath(); g.moveTo(cx, cy - 7); g.lineTo(cx + 7, cy); g.lineTo(cx, cy + 7); g.lineTo(cx - 7, cy); g.fill(); }
   g.font = F_NAME; const nw = g.measureText(v.who).width + 64;
   g.fillStyle = 'rgba(8,10,22,.96)'; g.fillRect(x + 36, y - 26, nw, 50); g.strokeStyle = 'rgba(214,222,238,.9)'; g.lineWidth = 1.5; g.strokeRect(x + 36.5, y - 25.5, nw - 1, 49);
-  g.fillStyle = v.who === '노을' ? '#9fe0d0' : '#e6e9f4'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(v.who, x + 68, y);
+  g.fillStyle = v.who === '노을' ? '#9fe0d0' : v.who === '하루' ? '#e6e9f4' : '#f0dcb8'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(v.who, x + 68, y);
   g.font = F_DLG; g.fillStyle = PAPER;
   const d = DURS[v.id] || 3, chars = [...v.sub], n = chars.length, shown = Math.floor(n * clamp((t - v.t + .05) / (d * .92)));
   const lines = wrapKo(v.sub, bw - (PORT ? 120 : 160)); let k = shown;

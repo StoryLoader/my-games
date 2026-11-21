@@ -1,4 +1,4 @@
-// 악몽을 지키는 파수꾼 2 — 반딧불의 밤 — page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS
+// 악몽을 지키는 파수꾼 2 — C 「칠십 년 치 꿈」 — page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS
 // (the library's 2.5D Pixel Art engine; this film is the tilt-shift cut: the band follows the subject's screen height)
 import * as THREE from 'three';
 import { makePost } from './post_ts.js';
@@ -25,7 +25,7 @@ renderer.domElement.style.width = W + 'px'; renderer.domElement.style.height = H
 await overlayReady();
 
 const TILT = !Q.has('notilt'), _v = new THREE.Vector3();
-const TILT_FIXED = { release: .5, title: .55 };
+const TILT_FIXED = { map: .5, title: .55 };
 function tiltCenter(S, shot) {
   if (TILT_FIXED[shot.id] != null) return TILT_FIXED[shot.id];
   const f = S.focus && S.focus(); if (!f) return .45;
@@ -50,12 +50,6 @@ window.TEXTS = texts;
 // sound events for the mixer (tools/export.mjs → timeline.json): the same times the picture uses
 window.EV = [
   ...VO.map(v => ({ t: v.t, type: 'voice', id: v.id, dlg: !!v.dlg })),
-  ...T.collect.map(t => ({ t, type: 'collect' })),
-  ...T.rattle.map(t => ({ t, type: 'rattle' })),
-  { t: T.crack, type: 'crack' }, { t: T.escape, type: 'escape' }, { t: T.crouch, type: 'setDown' }, { t: T.land, type: 'land' },
-  ...T.heart.map(t => ({ t, type: 'wing' })),
-  { t: T.transform, type: 'transform' }, { t: T.flyOff, type: 'flyOff' }, { t: T.openDoor, type: 'openDoor' },
-  { t: T.wake, type: 'wake' }, { t: T.noeulOut[0], type: 'doorOpen' }, { t: T.sitBy, type: 'sit' },
   ...(sets.town ? sets.town.events : []), ...(sets.tower ? sets.tower.events : []),
 ].sort((a, b) => a.t - b.t);
 window.READY = true;

@@ -75,6 +75,8 @@ function drawNoeul(P, E, p) {
   else { P.set(Math.round(fx + 2), ey, INK); P.set(Math.round(fx - 1), ey, INK); P.set(Math.round(fx + 2), ey - 1, hex('#e8f0ff')); }
   P.set(Math.round(fx + 1), ey - 2, C.hairW(.95, 0, 0)); P.set(Math.round(fx + 2), ey - 2, C.hairW(.95, 0, 0));   // brows
   P.set(Math.round(fx + 4), ey + 1, C.skin(.35, 0, 0)); P.set(Math.round(fx + 1), ey + 3, C.skin(.3, 0, 0)); P.set(Math.round(fx + 2), ey + 3, C.skin(.3, 0, 0));
+  if (p.snore) { P.set(Math.round(fx + 1), ey + 3, INK); P.set(Math.round(fx + 2), ey + 3, INK); P.set(Math.round(fx + 1), ey + 4, INK); P.set(Math.round(fx + 2), ey + 4, hex('#5a2630')); }   // C: mouth open (snoring)
+  if (p.puzzled) { P.set(Math.round(fx + 1), ey - 3, C.hairW(.95, 0, 0)); P.set(Math.round(fx + 3), ey - 2, C.hairW(.95, 0, 0)); }                                                  // C: one brow up
   // arms + lantern
   const arm = p.arm || 'low', lit = p.lit ?? 1, moths = p.moths || 0;
   const sleeve = pts => pts.forEach(([x, y]) => { P.set(x, y, C.cloak(.55, x, y)); P.set(x, y + 1, C.cloak(.3, x, y)); });
@@ -125,6 +127,9 @@ const NOEUL = {
   up: { arm: 'up' }, up1: { arm: 'up', bob: 1 }, fwd: { arm: 'fwd' }, look: { arm: 'low', look: 1 },
   kneel: { kneel: 1, arm: 'kneel' }, kneelShut: { kneel: 1, arm: 'kneel', closed: 1 },
   empty: { arm: 'none' }, kneelEmpty: { kneel: 1, arm: 'none' }, sleep: { sit: 1, arm: 'rest', closed: 1 }, sitWake: { sit: 1, arm: 'rest' },
+  // C: snoring in the chair (breath in / mouth open), puzzled at the door
+  sleepIn: { sit: 1, arm: 'rest', closed: 1, bob: -1 }, snore: { sit: 1, arm: 'rest', closed: 1, snore: 1 },
+  puzzled: { arm: 'none', look: 1, puzzled: 1 }, puzzledB: { arm: 'none', look: 1, puzzled: 1, blink: 1 },
 };
 const HARU = {
   hw0: { step: 0, arm: 'hold' }, hw1: { step: 1, arm: 'hold', bob: -1 }, hw2: { step: 2, arm: 'hold' }, hw3: { step: 3, arm: 'hold', bob: -1 },
@@ -134,6 +139,8 @@ const HARU = {
   idle0: { arm: 'side' }, idle1: { arm: 'side', bob: 1 }, blink: { arm: 'side', blink: 1 }, point: { arm: 'point', look: 1 },
   reach: { arm: 'reach' }, hold: { arm: 'hold' }, hold1: { arm: 'hold', bob: 1 },
   w0: { step: 0, arm: 'side' }, w1: { step: 1, arm: 'side', bob: -1 }, w2: { step: 2, arm: 'side' }, w3: { step: 3, arm: 'side', bob: -1 },
+  // C: the slapstick (a hop with the lantern up, sitting dazed on the floor), the grin at the end
+  jump: { step: 1, arm: 'hup', bob: -2 }, sitL: { sit: 1, arm: 'lap' }, sitLB: { sit: 1, arm: 'lap', blink: 1 },
 };
 // lantern frames that depend on a level: <name>@<lit>@<moths> are generated on demand (levels quantised so the atlas stays small)
 const LEVELS = [1, .82, .64, .46, .3, .14, .05];
@@ -161,7 +168,7 @@ function expandFill(base, keys) {   // 2편: the boy's lantern by how full of mo
 
 export function makeChar(kind) {
   const TB = kind === 'noeul' ? expand(NOEUL, ['idle0', 'idle1', 'w0', 'w1', 'w2', 'w3', 'up', 'up1', 'fwd', 'look'])
-    : expandFill(HARU, ['hold', 'hold1', 'hw0', 'hw1', 'hw2', 'hw3', 'hup', 'hup1', 'hfwd', 'hfwdB', 'crouch', 'crouch1', 'lap', 'lap1']);
+    : expandFill(HARU, ['hold', 'hold1', 'hw0', 'hw1', 'hw2', 'hw3', 'hup', 'hup1', 'hfwd', 'hfwdB', 'crouch', 'crouch1', 'lap', 'lap1', 'jump', 'sitL', 'sitLB']);
   const A = atlas(TB, kind === 'noeul' ? drawNoeul : drawHaru);
   const mesh = billboard(A.tex, FW * SPX, FH * SPX, { em: A.em, emCol: '#ffffff', emI: 2.2 });
   // a light held at the sprite must not burn it out (the style's pitfall): cap the lit colour
@@ -238,5 +245,86 @@ export function bigMoth() {
   const tex = texOf(P.done()), em = texOf(E.done()); for (const t of [tex, em]) t.repeat.set(.5, 1);
   const mesh = billboard(tex, W * SPX * 1.6, H * SPX * 1.6, { em, emCol: '#ffffff', emI: 1.8, ay: .5 });
   return { mesh, frame(i) { tex.offset.x = em.offset.x = i ? .5 : 0; } };
+}
+
+// —— C: villagers — palette variants of one adult figure (3/4 view facing right), with a prop ——
+const VK = {
+  man: { coat: ['#2a1a10', '#4a2e1a', '#6b4426', '#8a5c34'], hair: ['#120d0c', '#2a1c16', '#3e2a20'], style: 'short', legs: '#2e2a30', prop: null, h: 0 },
+  woman: { coat: ['#3a0e14', '#6a1a24', '#962a34', '#c04a4a'], hair: ['#1a0e0a', '#3a2216', '#5a3a26'], style: 'bun', legs: null, skirt: ['#22202e', '#33304a'], prop: null, h: 2 },
+  baker: { coat: ['#8a8478', '#b8b0a0', '#dcd6c8', '#f4efe2'], hair: ['#3a2a1a', '#5a4026', '#7a5634'], style: 'cap', legs: '#3a3440', prop: 'basket', h: 0 },
+  flower: { coat: ['#1a3a2a', '#2a5a3e', '#3e7a52', '#5a9a6a'], hair: ['#2a1a10', '#4a2e1a', '#6b4426'], style: 'long', legs: null, skirt: ['#5a2e4a', '#7a3e62'], prop: 'flowers', h: 3 },
+  oldman: { coat: ['#1a2236', '#28324e', '#384668', '#4e5e84'], hair: ['#8e8c98', '#b9b7c2', '#dddbe4'], style: 'cap2', legs: '#26242c', prop: null, h: 1 },
+  girl: { coat: ['#6a4a10', '#9a6e1a', '#c8962a', '#e8bc4a'], hair: ['#120d0c', '#2a1c16', '#3e2a20'], style: 'pig', legs: null, skirt: ['#2a2a4a', '#3a3a66'], prop: null, h: 9 },
+};
+function drawVillager(V) {
+  const coat = ramp(V.coat, .22), hair = ramp(V.hair, .22), sk = V.skirt ? ramp(V.skirt, .22) : null;
+  return (P, E, p) => {
+    const by = (p.bob || 0) + V.h, top = 19 + by, bot = 45;
+    if (sk) { P.poly([[11, top + 12], [21, top + 12], [24, bot], [8, bot]], (x, y) => sk(.6 - (x - 8) / 20 * .4, x, y)); }
+    const st = p.step ?? -1, legs = st < 0 ? [[13, 0], [17, 0]] : [[[11, 0], [19, -1]], [[13, -1], [17, 0]], [[19, -1], [11, 0]], [[17, 0], [13, -1]]][st];
+    legs.forEach(([lx, ly], i) => { for (let y = (sk ? bot : top + 15); y < 48 + ly; y++) for (let x = lx; x < lx + 4; x++) P.set(x, y, V.legs && y < 46 + ly ? hex(V.legs) : C.boot(i ? .5 : .8, x, y)); P.rect(lx, 47 + ly, 5, 1, C.boot(.1, 0, 0)); });
+    const cb = sk ? top + 15 : top + 16;
+    P.poly([[10, top], [22, top], [23, cb], [9, cb]], (x, y) => { const s = (x - 9) / 14; let v = .7 - s * .45 + (y === top ? .15 : 0); if ((x + (y >> 2)) % 6 === 0) v -= .12; return coat(v, x, y); });
+    if (V.prop === 'basket' || V.style === 'cap') for (let y = top + 3; y < cb - 1; y++) for (let x = 13; x < 19; x++) P.set(x, y, hex(y === top + 3 ? '#e8e4da' : '#d6d0c2'));   // the baker's apron
+    const fx = 18, fy = 13 + by;
+    P.ellipse(fx, fy, 4.6, 5, (x, y, dx, dy) => C.skin(.6 - dx * .1 - dy * .28 + (dx > .55 ? -.2 : 0), x, y));
+    const hs = V.style;
+    for (let x = Math.floor(fx - 5); x <= fx + 3; x++) for (let y = Math.floor(fy - 5.5); y < fy - 2.5 + (x < fx - 2 ? (hs === 'short' || hs === 'cap' || hs === 'cap2' ? 3 : 6) : 0); y++) P.set(x, y, hair(.55 + (x - fx) * .04 - (y - fy) * .03, x, y));
+    if (hs === 'bun') P.ellipse(fx - 5, fy - 4.5, 2.6, 2.4, (x, y, dx, dy) => hair(.7 - dy * .3, x, y));
+    if (hs === 'long') for (let y = Math.floor(fy); y < fy + 8; y++) for (let x = Math.floor(fx - 6); x < fx - 3; x++) P.set(x, y, hair(.45, x, y));
+    if (hs === 'pig') { P.ellipse(fx - 6, fy + 1, 1.8, 2.6, (x, y) => hair(.5, x, y)); P.rect(Math.floor(fx - 7), Math.floor(fy + 3), 2, 1, hex('#e84a6a')); }
+    if (hs === 'cap') { P.ellipse(fx - .5, fy - 6, 5.2, 2.6, (x, y, dx, dy) => hex(dy < 0 ? '#f6f2ea' : '#dcd6ca')); }
+    if (hs === 'cap2') { P.rect(Math.floor(fx - 5), Math.floor(fy - 6), 9, 2, hex('#2a2a36')); P.rect(Math.floor(fx + 2), Math.floor(fy - 5), 4, 1, hex('#1a1a24')); }
+    const ey = Math.round(fy);
+    if (p.blink) { P.set(fx + 2, ey, C.skin(.2, 0, 0)); P.set(fx - 1, ey, C.skin(.2, 0, 0)); }
+    else { P.set(fx + 2, ey, INK); P.set(fx - 1, ey, INK); }
+    if (hs === 'short' || hs === 'cap') { P.set(fx + 1, ey + 3, hair(.3, 0, 0)); P.set(fx + 2, ey + 3, hair(.3, 0, 0)); P.set(fx + 3, ey + 3, hair(.3, 0, 0)); }   // moustache
+    else { P.set(fx + 1, ey + 3, C.skin(.3, 0, 0)); P.set(fx + 2, ey + 3, C.skin(.3, 0, 0)); }
+    if (hs === 'cap2') { P.set(fx + 1, ey + 3, hair(.8, 0, 0)); P.set(fx + 2, ey + 4, hair(.8, 0, 0)); P.set(fx + 1, ey + 4, hair(.7, 0, 0)); P.set(fx, ey + 4, hair(.7, 0, 0)); }   // white beard
+    const sl = pts => pts.forEach(([x, y]) => { P.set(x, y, coat(.5, x, y)); P.set(x, y + 1, coat(.3, x, y)); });
+    sl([[21, top + 2], [22, top + 4], [22, top + 6], [23, top + 8]]); P.rect(23, top + 10, 2, 2, C.skin(.55, 0, 0));
+    if (V.prop === 'basket') { const bx = 21, by2 = top + 11; P.rect(bx, by2, 8, 4, hex('#7a4e24')); P.rect(bx, by2, 8, 1, hex('#a87038')); P.line(bx + 1, by2 - 1, bx + 6, by2 - 1, hex('#5a3a1a')); P.rect(bx + 1, by2 - 2, 3, 2, hex('#d89a4a')); P.rect(bx + 4, by2 - 2, 3, 2, hex('#c8843a')); P.set(bx + 2, by2 - 2, hex('#f0c070')); }
+    if (V.prop === 'flowers') { const bx = 23, by2 = top + 4; P.line(bx, by2 + 6, bx + 1, by2 + 1, hex('#3a7a3a')); P.line(bx + 2, by2 + 6, bx + 3, by2 + 2, hex('#3a7a3a')); [[bx, by2, '#ff7ab0'], [bx + 2, by2 - 1, '#ffd36a'], [bx + 4, by2 + 1, '#ff9ad0'], [bx + 1, by2 + 2, '#ffffff'], [bx + 3, by2 + 1, '#c9a0ff']].forEach(([x, y, c]) => { P.rect(x, y, 2, 2, hex(c)); }); }
+  };
+}
+const VILL = { idle0: {}, idle1: { bob: 1 }, blink: { blink: 1 }, w0: { step: 0 }, w1: { step: 1, bob: -1 }, w2: { step: 2 }, w3: { step: 3, bob: -1 } };
+export function makeVillager(kind) {
+  const A = atlas(VILL, drawVillager(VK[kind]));
+  const mesh = billboard(A.tex, FW * SPX, FH * SPX, {});
+  const root = new THREE.Group(); root.add(mesh);
+  const sh = blob(.36, .5); sh.position.y = .015; root.add(sh);
+  return { root, mesh, frame(name) { const i = A.names.indexOf(name); A.tex.offset.x = i / A.n; }, face(cam, flip = false) { root.rotation.y = Math.atan2(cam.position.x - root.position.x, cam.position.z - root.position.z); mesh.scale.x = flip ? -1 : 1; } };
+}
+
+// —— C: dream moths — the same moth drawn in greys and tinted per moth (o.r, o.g, o.b), glowing ——
+let _mothW = null;
+function mothAtlasW() {
+  if (_mothW) return _mothW;
+  const P = new PX(32, 16), G = ramp(['#3a3a3a', '#6a6a6a', '#a0a0a0', '#d0d0d0', '#ffffff'], .22);
+  for (const f of [0, 1]) {
+    const ox = f * 16, wy = f ? 2 : 0;
+    P.ellipse(ox + 5, 7 - wy, 4.2, f ? 2.4 : 3.6, (x, y, dx, dy) => G(.6 + dy * .2 - Math.abs(dx) * .2, x, y));
+    P.ellipse(ox + 11, 7 - wy, 4.2, f ? 2.4 : 3.6, (x, y, dx, dy) => G(.6 + dy * .2 - Math.abs(dx) * .2, x, y));
+    P.ellipse(ox + 5.5, 10, 2.6, 2, (x, y) => G(.45, x, y)); P.ellipse(ox + 10.5, 10, 2.6, 2, (x, y) => G(.45, x, y));
+    P.set(ox + 4, 6 - wy, G(.99, 0, 0)); P.set(ox + 12, 6 - wy, G(.99, 0, 0));
+    for (let y = 5; y < 12; y++) P.set(ox + 8, y, G(.2, 0, 0)), P.set(ox + 7, y, G(.3, 0, 0));
+    P.set(ox + 6, 4, G(.25, 0, 0)); P.set(ox + 9, 4, G(.25, 0, 0));
+  }
+  return (_mothW = texOf(P.done()));
+}
+export function colorMoths(n, fn) {
+  const g = new THREE.BufferGeometry(), pos = new Float32Array(n * 3), a = new Float32Array(n), sz = new Float32Array(n), fr = new Float32Array(n), col = new Float32Array(n * 3);
+  for (const [k, arr, d] of [['position', pos, 3], ['a', a, 1], ['sz', sz, 1], ['fr', fr, 1], ['col', col, 3]]) g.setAttribute(k, new THREE.BufferAttribute(arr, d));
+  const m = new THREE.ShaderMaterial({
+    uniforms: { map: { value: mothAtlasW() }, glow: { value: 1.7 } }, transparent: true, depthWrite: false,
+    vertexShader: `attribute float a, sz, fr; attribute vec3 col; varying float vA, vF; varying vec3 vC; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.); gl_Position = projectionMatrix * mv; gl_PointSize = sz * 1080. * projectionMatrix[1][1] * .5 / -mv.z; vA = a; vF = fr; vC = col; }`,
+    fragmentShader: `uniform sampler2D map; uniform float glow; varying float vA, vF; varying vec3 vC; void main(){ vec2 uv = gl_PointCoord; uv.y = 1. - uv.y; uv.x = (floor(uv.x * 16.) + .5) / 32. + step(.5, vF) * .5; uv.y = (floor(uv.y * 16.) + .5) / 16.;
+      vec4 c = texture2D(map, uv); if (c.a < .5 || vA < .01) discard; gl_FragColor = vec4(c.rgb * vC * glow, vA); }`,
+  });
+  const p = new THREE.Points(g, m); p.frustumCulled = false; p.renderOrder = 4;
+  const o = { x: 0, y: 0, z: 0, a: 1, s: .3, f: 0, r: 1, g: 1, b: 1 };
+  p.userData.update = t => { for (let i = 0; i < n; i++) { o.a = 1; o.s = .3; o.f = 0; o.r = o.g = o.b = 1; fn(i, t, o); pos[i * 3] = o.x; pos[i * 3 + 1] = o.y; pos[i * 3 + 2] = o.z; a[i] = o.a; sz[i] = o.s; fr[i] = o.f; col[i * 3] = o.r; col[i * 3 + 1] = o.g; col[i * 3 + 2] = o.b; }
+    for (const k of ['position', 'a', 'sz', 'fr', 'col']) g.attributes[k].needsUpdate = true; };
+  return p;
 }
 export { FW, FH, NOEUL, HARU };
