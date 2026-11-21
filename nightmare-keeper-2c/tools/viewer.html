@@ -72,7 +72,7 @@
   aud.addEventListener('loadedmetadata', () => { if (want != null) { try { aud.currentTime = want; } catch (e) {} } });
   aud.addEventListener('ended', stop);
   aud.addEventListener('error', () => { if (withSound) { clock0 = now(); wall0 = performance.now(); withSound = false; say('소리 파일을 불러오지 못해 소리 없이 재생합니다', 6000); } });
-  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR; st.textContent = '재생 · 약 2분 · 소리를 켜 주세요'; last = -1; draw(2.0); last = -1; draw(16.5);   /* both sets (tower, town) drawn once while loading, so no cut stalls; the cover is the title */ seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused'); requestAnimationFrame(loop); }
+  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR; st.textContent = '재생 · 약 2분 · 소리를 켜 주세요'; last = -1; for (const w of [0.8, 24.0, 60.0, 97.5, 16.5]) { last = -1; draw(w); }   /* while loading, one frame of each kind (a pop, a wall play, the chimney, the villagers) so no first appearance stalls; the cover is the title */ seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused'); requestAnimationFrame(loop); }
     else setTimeout(wait, 100); };
   wait();
   addEventListener('keydown', e => { if (e.code === 'Space' && ready) { e.preventDefault(); playing ? stop() : start(); } });
