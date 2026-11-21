@@ -52,8 +52,8 @@ function arrive(A, t) {
   const u = seg(t, T.walk[0], T.walk[1]), xs = lerp(-40, 400, u), cam = { x: clamp(xs - 30, 60, 380), y: 1830, z: 2.3 };
   const walking = t < T.walk[1] - .6;
   site(A, t, { cam, figs: [
-    { pose: walking ? walkPose(t + .17) : 'stand', x: xs - 110, y: GY, s: 1.08, dir: 1, ch: 'mujin', t, seed: 51 },
-    { pose: walking ? walkPose(t) : (t > 28.4 && t < 32.6 ? 'draw' : 'stand'), x: xs, y: GY, s: 1.0, dir: 1, ch: 'seoha', t, seed: 61 },
+    { pose: walking ? walkPose(t + .17) : 'stand', x: xs - 150, y: GY, s: 1.6, dir: 1, ch: 'mujin', t, seed: 51 },
+    { pose: walking ? walkPose(t) : (t > 28.4 && t < 32.6 ? 'draw' : 'stand'), x: xs, y: GY, s: 1.5, dir: 1, ch: 'seoha', t, seed: 61 },
   ] });
   // footprints behind them (a dry dab per step)
   for (let k = 0; k < 18; k++) { const fx = lerp(-40, 400, k / 18); if (fx > xs - 20) break; blot(A.cw, fx - 10, GY + 4, 3, .25, 0, .4, k); }
@@ -127,19 +127,23 @@ function dig(A, t) {
   const k = lerp(1, 1.12, seg(t, 63.6, 74.4)), shake = (Math.exp(-Math.max(0, t - T.bite) * 6) * (t > T.bite ? 1 : 0) + Math.exp(-Math.max(0, t - T.tear) * 5) * (t > T.tear ? 1 : 0)) * 14;
   A.xf(k, 540 - 540 * k, 1200 - 1200 * k);
   // the ground and the trunk's foot at the left
-  mass(A.cw, [[-200, 1500], [1300, 1490], [1300, 2100], [-200, 2100]], .14, 6, 5, [0, 1500, 0, 2000, 1, .3]);
-  draw(A.ink, mk([[-200, 1500], [1300, 1488]], { w: 8, tone: .45, dry: .6, prof: 'even', seed: 6 }));
-  mass(A.cw, [[60, 1520], [110, 900], [90, 300], [130, -100], [380, -100], [330, 400], [350, 1000], [420, 1520]], .5, 10, 7, [60, 0, 420, 0, 1.2, .6]);
-  draw(A.ink, mk([[80, 1520], [110, 1000], [100, 400], [130, -100]], { w: 70, tone: .85, darkDir: [-1, 0], side: .9, brWet: true, body: .35, dry: .45, wet: .9, prof: 'rise', seed: 8 }));
-  for (const [a, b] of [[60, -1], [420, 1]]) draw(A.ink, mk([[a, 1500], [a + b * 120, 1540], [a + b * 260, 1560]], { w: 50, tone: .7, darkDir: [0, 1], side: .8, brWet: true, body: .3, dry: .5, wet: .8, prof: 'cone', seed: 9 + a }));
+  mass(A.cw, [[-200, 1760], [1300, 1750], [1300, 2300], [-200, 2300]], .14, 6, 5, [0, 1760, 0, 2200, 1, .3]);
+  draw(A.ink, mk([[-200, 1760], [1300, 1748]], { w: 8, tone: .45, dry: .6, prof: 'even', seed: 6 }));
+  mass(A.cw, [[60, 1780], [110, 1100], [90, 400], [130, -100], [380, -100], [330, 500], [350, 1100], [420, 1780]], .5, 10, 7, [60, 0, 420, 0, 1.2, .6]);
+  draw(A.ink, mk([[80, 1780], [110, 1100], [100, 400], [130, -100]], { w: 70, tone: .85, darkDir: [-1, 0], side: .9, brWet: true, body: .35, dry: .45, wet: .9, prof: 'rise', seed: 8 }));
+  draw(A.ink, mk([[400, 1780], [345, 1100], [330, 500], [380, -100]], { w: 40, tone: .8, darkDir: [1, 0], side: .9, brWet: true, body: .3, dry: .5, wet: .6, prof: 'even', seed: 10 }));   // bark, the lit edge dark
+  for (const [bx, by, br] of [[230, 1340, 22], [180, 700, 16], [290, 420, 12]]) blot(A.cw, bx, by, br, .6, 0, .6, bx);   // knots
+  draw(A.ink, mk([[96, 990], [240, 1030], [372, 1000]], { w: 14, tone: .85, dry: .35, prof: 'even', seed: 12 }));   // the rope round the trunk
+  strips(A.ink, 240, 1780, 2.6, t, 0, 21);
+  for (const [a, b] of [[60, -1], [420, 1]]) draw(A.ink, mk([[a, 1760], [a + b * 120, 1800], [a + b * 260, 1820]], { w: 50, tone: .7, darkDir: [0, 1], side: .8, brWet: true, body: .3, dry: .5, wet: .8, prof: 'cone', seed: 9 + a }));
   // the excavator: bucket comes down to the roots, bites, tears them up
   const down = ss(seg(t, T.engine, T.bite)), pull = ss(seg(t, T.tear, T.tear + 1.2));
-  const boomA = lerp(-2.0, -2.22, down) + pull * .2, armA = lerp(3.7, 4.32, down) - pull * .4, bA = lerp(1.6, 2.4, down) - pull * .5;
-  const ex = excavator(A.ink, 880, 2120 + shake * .2, 2.6, boomA, armA, bA);
+  const boomA = lerp(-1.6, -2.15, down) + pull * .25, armA = lerp(4.0, 3.8, down) - pull * .35, bA = lerp(1.0, 1.7, down) - pull * .6;
+  const ex = excavator(A.ink, 860, 1800 + shake * .2, 2.0, boomA, armA, bA);
   if (t > T.tear) {   // torn roots hanging from the bucket
     for (let j = 0; j < 5; j++) { const [x, y] = ex.teeth[j]; draw(A.ink, mk([[x, y], [x - 10 + j * 4, y + 60 + j * 14], [x - 20 + j * 8, y + 130 + j * 20]], { w: 9, tone: .8, dry: .55, prof: 'cone', seed: 300 + j })); }
   }
-  if (t > T.crack[0]) { cracks(A, 300, 1505, seg(t, T.crack[0], T.crack[1])); blot(A.cw, 300, 1520, 40 + 220 * ss(seg(t, T.crack[0], T.crack[1] + 1)), .5, 0, .3, 7); }
+  if (t > T.crack[0]) { cracks(A, 300, 1765, seg(t, T.crack[0], T.crack[1])); blot(A.cw, 300, 1780, 40 + 220 * ss(seg(t, T.crack[0], T.crack[1] + 1)), .5, 0, .3, 7); }
   return screenO({ shake: [(vnoise(t * 40) - .5) * shake, (vnoise(t * 37 + 9) - .5) * shake] });
 }
 // —— 8 agwi: they rise from the crack in ink blooms; the manager cowers; 무진 (from behind) holds them; one is split ——
