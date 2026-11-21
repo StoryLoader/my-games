@@ -1,7 +1,7 @@
 #!/bin/sh
-# 악몽을 지키는 파수꾼 — one command: timeline → voices (Google TTS) + speech check → score → events → mix → subtitles → picture → master
+# 악몽을 지키는 파수꾼 2 — 반딧불의 밤 — one command: timeline → voices (Google TTS) + speech check → score → events → mix → subtitles → picture → master
 #   sh build.sh                       everything (the picture takes ~2 h on CPU WebGL; minutes on a GPU)
-#   STOP_BEFORE_VIDEO=1 sh build.sh   sound and subtitles only
+#   STOP_BEFORE_VIDEO=1 sh build.sh   sound and subtitles only (the HTML page: tools/build_viewer.sh <out>; the video only when asked)
 # Needs the Lemo-Opuscar library (core, voice and music tiers: setup.sh deps voice music), ffmpeg 7+, and for new voice
 # takes network access to texttospeech.googleapis.com with a key (the takes are cached in voices/.cache/).
 set -e
@@ -9,7 +9,7 @@ LIB=/root/lemo-opuscar
 HERE=$(cd "$(dirname "$0")" && pwd)
 export LIB
 [ -f "$LIB/core/render/video.mjs" ] || { echo "set LIB to the library folder"; exit 1; }
-PY="$LIB/.venv/bin/python"; NAME=nightmare-keeper-shorts; FPS=30; SIZE=${SIZE:-1080x1920}   # the vertical cut (Shorts); SIZE=1920x1080 for the wide one
+PY="$LIB/.venv/bin/python"; NAME=nightmare-keeper-2-shorts; FPS=30; SIZE=${SIZE:-1080x1920}   # the vertical cut (Shorts); SIZE=1920x1080 for the wide one
 node "$HERE/tools/export.mjs"                                                  # story.js → timeline.json
 python3 "$HERE/tools/tts_google.py" "$HERE/lines.json" "$HERE/voices"          # Korean voices (cached)
 (cd "$LIB" && HF_HUB_DISABLE_XET=1 "$PY" core/tts/asr_check.py "$HERE/lines.json" "$HERE/voices" --lang ko)
@@ -21,5 +21,5 @@ python3 "$HERE/tools/tts_google.py" "$HERE/lines.json" "$HERE/voices"          #
 mkdir -p "$HERE/out"
 (cd "$LIB" && node core/render/video.mjs "$HERE" --fps $FPS --workers 2 --size $SIZE --out "$HERE/out/video.mp4")
 (cd "$LIB" && sh core/render/mux.sh "$HERE/out/video.mp4" "$HERE/mix.wav" "$HERE/$NAME.mp4" $FPS 0)
-(cd "$LIB" && node core/render/still.mjs "$HERE" 96.5 --size $SIZE --out "$HERE/out/poster") && cp "$HERE/out/poster/t_96.5.jpg" "$HERE/poster.jpg"
+(cd "$LIB" && node core/render/still.mjs "$HERE" 11 --size $SIZE --out "$HERE/out/poster") && cp "$HERE/out/poster/t_11.jpg" "$HERE/poster.jpg"
 echo "done: $HERE/$NAME.mp4"
