@@ -19,7 +19,11 @@ export function buildPrinter() {
   const stripGeo = new THREE.PlaneGeometry(1, 1);
   const strip = add(scene, stripGeo, grey(0.9), { cast: false }); strip.position.set(0, 0, 0.001);
   let stripTex = null;
-  function setStrip(P) { stripTex = P.tex.clone(); stripTex.needsUpdate = true; strip.material = printMat(stripTex, { bias: 0.5, key: 'slot' }); }
+  const stripMats = new Map();   // one texture + material per print, made once (switching prints never re-uploads or re-compiles)
+  function setStrip(P) {
+    if (!stripMats.has(P)) { const tx = P.tex.clone(); tx.needsUpdate = true; stripMats.set(P, { tx, m: printMat(tx, { bias: 0.5, key: 'slot' }) }); }
+    const e = stripMats.get(P); stripTex = e.tx; strip.material = e.m;
+  }
   function emerge(L) {   // L: length out of the slot (m)
     L = Math.max(0.0005, Math.min(STRIP_H, L));
     strip.scale.set(STRIP_W, L, 1); strip.position.y = L / 2 + 0.003;

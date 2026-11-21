@@ -158,10 +158,10 @@ print('min voice-over-music', round(worst, 1), 'dB')
 mix = hp(mix.T, 40, 2).T
 mix = np.tanh(mix * 1.4) / 1.4
 out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'mix.wav')
-def write(x):
+def write(x, out=out):
     with wave.open(out, 'wb') as w:
         w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.clip(x, -1, 1) * 32767).astype('<i2').tobytes())
-def measure():
+def measure(out=out):
     r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', out, '-af', 'ebur128=peak=true', '-f', 'null', '-'], capture_output=True, text=True).stderr
     s = r[r.rfind('Summary:'):]; I = float(s.split('I:')[1].split('LUFS')[0]); P = float(s.split('Peak:')[1].split('dBFS')[0]); return I, P
 def tplimit(x, ceil, look=.004):   # a true-peak limiter: the gain follows the 4× oversampled peak, held and smoothed so it never lets one through
@@ -177,3 +177,9 @@ for _ in range(4):
     write(mix); I, P = measure()
     if abs(I + 16) < .3 and P <= -3: break
 print(out, round(N / SR, 2), 's', 'integrated', I, 'LUFS', 'true peak', P, 'dBTP')
+# the viewer's copy: −13.7 LUFS here, which the mp3 encoder brings to −14 LUFS; true peak ≤ −2 dBTP
+vout = os.path.join(HERE, 'mix_viewer.wav'); v = mix.copy()
+for _ in range(5):
+    v *= 10 ** ((-13.7 - I) / 20); v = tplimit(v, 10 ** (-2.4 / 20)); write(v, vout); I, P = measure(vout)
+    if abs(I + 13.7) < .15: break
+print(vout, 'integrated', I, 'LUFS', 'true peak', P, 'dBTP')

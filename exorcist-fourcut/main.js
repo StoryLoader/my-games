@@ -21,7 +21,7 @@ renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace; renderer.toneMapping = THREE.NoToneMapping;
 const pipe = new Pipe(renderer), present = new Present(renderer, INK, PAPER);
 const rtA = pipe.target(), rtB = pipe.target();
-await Promise.all(['40px "Black Han Sans"', '700 40px D2Coding', '800 40px "Nanum Myeongjo"', '700 40px Pretendard'].map(f => document.fonts.load(f, '네컷사진관24찾습니다')));
+await Promise.all(['40px "Black Han Sans"', '700 40px D2Coding', '800 40px "Nanum Myeongjo"'].map(f => document.fonts.load(f, '네컷사진관24찾습니다')));
 
 // —— sets, prints ——
 const booth = buildBooth(), printer = buildPrinter(), alley = buildAlley();
