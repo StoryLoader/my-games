@@ -210,7 +210,8 @@ function climbPath(u) {   // along the raised arm: base → pivot → elbow → 
 }
 function climb(A, t) {
   const u = eio(seg(t, T.climbTilt[0], T.climbTilt[1]));
-  const cam = { x: lerp(560, 640, u), y: lerp(1820, 760, u), z: lerp(1.25, 1.5, u) };
+  // the blade comes down through the top of the frame on the right while 무진's line (m5) is up on the left; then it centres for her stand
+  const cam = { x: lerp(410, 640, eio(seg(t, 105.8, T.stand))), y: lerp(1820, 760, u), z: lerp(1.25, 1.5, u) };
   const cu = ss(seg(t, 102.0, T.stand)), p = climbPath(cu);
   site(A, t, { cam, exc: EXC_RAISED, figs: [
     { pose: 'front', x: 420, y: GY, s: 1.08, dir: 1, ch: 'mujin', t, seed: 51 },
@@ -300,6 +301,7 @@ export function subPos(id, t) {
   if (t < 52.8) return [50, 120, 44, 430];
   if (t < 95.9) return [70, 260, 50];
   if (t < 100.6) return [70, 1560, 50];
+  if (t < 106.4) return [60, 230, 46, 560];
   if (t < 113) return [70, 230, 50];
   if (t < 121) return [70, 1620, 54];
   return [70, 260, 50];

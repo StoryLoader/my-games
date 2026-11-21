@@ -14,6 +14,14 @@ export function subtitle(A, text, x, y, a = 1, o = {}) {
   const size = o.size || 48, c = A.cd, w = A.cw;
   const lines = wrapKo(text, size, o.maxW || 860, c);
   const wetK = clamp(1 - a) * .8;
+  // where the inscription falls on painted ink (foliage, an arm), the ink is lifted round the letters first, as if the space had been left
+  for (const ctx of [A.cw, A.cd, A.cc]) {
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = clamp(a * .85);
+    ctx.filter = `blur(${Math.round(size * .14)}px)`; ctx.font = `${size}px SongMyung`; ctx.textBaseline = 'alphabetic';
+    ctx.lineWidth = size * .5; ctx.lineJoin = 'round'; ctx.strokeStyle = '#000'; ctx.fillStyle = '#000';
+    lines.forEach((ln, i) => { ctx.strokeText(ln, x + size * .7, y + i * size * 1.32); ctx.fillText(ln, x + size * .7, y + i * size * 1.32); });
+    ctx.restore();
+  }
   for (const [ctx, k] of [[w, wetK], [c, 1 - wetK * .6]]) {
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = clamp(a * k * .92); ctx.fillStyle = '#000';
     ctx.font = `${size}px SongMyung`; ctx.textBaseline = 'alphabetic';
