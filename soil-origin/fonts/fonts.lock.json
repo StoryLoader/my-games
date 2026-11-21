@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "note": "fonts installed from Google Fonts (ofl/ only) by add_font.mjs — pinned commit + sha256 of every file. Generated; do not edit.",
+  "fonts": [
+    {
+      "id": "east-sea-dokdo",
+      "family": "East Sea Dokdo",
+      "source": "google/fonts",
+      "path": "ofl/eastseadokdo",
+      "commit": "5bb28733cec313b63fbd415b574b5ae35c8aa8b8",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright (c) YoonDesign Inc. All Rights Reserved.",
+      "category": "HANDWRITING",
+      "axes": [],
+      "subsets": [
+        "korean",
+        "latin",
+        "menu"
+      ],
+      "files": [
+        {
+          "dest": "fonts/east-sea-dokdo/EastSeaDokdo-Regular.ttf",
+          "sha256": "8cebb39d375134fdbcedef9bf4ec4f6c3f02c39ed0aacd6e83f7a0f435e593b2",
+          "bytes": 3178684,
+          "style": "normal",
+          "weight": "400"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/east-sea-dokdo/OFL.txt",
+        "sha256": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
+        "bytes": 4354
+      }
+    }
+  ]
+}

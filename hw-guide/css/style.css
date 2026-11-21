@@ -1,0 +1,59 @@
+/* style.css — 「컴퓨터 하드웨어 한 번에 총정리」: a bright product studio (storyboard.md → 월드 바이블). Stage 1920×1080. */
+
+:root {
+  --bg: #f3f5f8;
+  --fg: #1b2130;
+  --muted: #6b7486;
+  --accent: #ff6b4a;
+  --accent-2: #3d8bff;
+  --cpu: #ff6b4a; --ram: #3d8bff; --ssd: #19b48a; --gpu: #7a5cff; --vram: #9b86ff; --psu: #f0a000; --cool: #1fb3d6; --board: #7d9a74;
+
+  /* SIL OFL 1.1 catalogue fonts only (installed in fonts/, see player.css) */
+  --font: 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px;
+}
+:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+
+#stage { background: var(--bg); color: var(--fg); font-family: var(--font); font-variant-numeric: tabular-nums; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+#stage .bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 42% 40%, #ffffff 0%, #f3f5f8 55%, #e4e8ee 100%); }
+#world { position: absolute; inset: 0; overflow: hidden; }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#labels, #ui { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---- type: clean, dark ink on the white studio ---- */
+.t { position: absolute; margin: 0; white-space: nowrap; line-height: 1.05; opacity: 0; }
+.hero { font-weight: 800; letter-spacing: -0.035em; color: var(--fg); }
+.h1 { font-size: 150px; }
+.h2 { font-size: 104px; }
+.h3 { font-size: 72px; }
+.sub { font-weight: 600; font-size: 40px; color: var(--muted); letter-spacing: -0.01em; }
+.sub b { color: var(--fg); font-weight: 800; }
+.unit { font-size: 0.42em; font-weight: 700; margin-left: 0.1em; letter-spacing: 0; }
+.kick { font-family: var(--mono); font-size: 30px; letter-spacing: 0.22em; color: var(--muted); }
+.c-cpu { color: var(--cpu); } .c-ram { color: var(--ram); } .c-ssd { color: var(--ssd); } .c-gpu { color: var(--gpu); } .c-vram { color: var(--vram); } .c-psu { color: var(--psu); } .c-cool { color: var(--cool); } .c-board { color: var(--board); } .c-mut { color: #a3abb9; }
+.vs { font-weight: 300; color: #b8bfcb; margin: 0 0.25em; }
+
+/* ---- labels that ride on 3D parts: a dot, a hairline, the name, the kitchen role ---- */
+.lab { position: absolute; left: 0; top: 0; opacity: 0; }
+.lab .dot { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.85); }
+.lab .stem { position: absolute; left: -1px; bottom: 7px; width: 2px; height: 46px; background: currentColor; opacity: 0.55; }
+.lab .txt { position: absolute; left: 0; bottom: 60px; transform: translateX(-50%); text-align: center; white-space: nowrap; }
+.lab .nm { display: block; font-weight: 800; font-size: 40px; letter-spacing: -0.02em; color: currentColor; text-shadow: 0 2px 0 #fff, 0 0 18px rgba(255, 255, 255, 0.95); }
+.lab .rl { display: block; margin-top: 6px; font-weight: 700; font-size: 28px; color: var(--fg); text-shadow: 0 0 14px rgba(255, 255, 255, 1), 0 0 4px #fff; }
+.lab.big .nm { font-size: 56px; }
+.lab .pct { display: block; font-weight: 800; font-size: 64px; letter-spacing: -0.03em; color: currentColor; text-shadow: 0 2px 0 #fff, 0 0 20px rgba(255, 255, 255, 1); }
+
+/* ---- chapter card: the question, set large on the studio air ---- */
+.card { left: 0; right: 0; top: 118px; text-align: center; }
+.card .no { font-family: var(--mono); font-size: 28px; letter-spacing: 0.32em; color: var(--muted); }
+.card .q { display: block; margin-top: 22px; font-weight: 800; font-size: 88px; letter-spacing: -0.035em; color: var(--fg); text-shadow: 0 0 30px rgba(255, 255, 255, 0.9); }
+.card .q em { font-style: normal; }
+
+/* ---- waves (AC → DC) ---- */
+.wave svg { display: block; overflow: visible; }
+
+/* the finish (look.css provides .grade/.vignette; this studio keeps it very light) */

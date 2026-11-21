@@ -1,0 +1,19 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* orbit — Google Fonts ofl/orbit @ c30b221beb0c · SANS_SERIF */
+@font-face {
+  font-family: 'Orbit';   /* SIL OFL 1.1 · Copyright 2022 The Orbit Project Authors (https://github.com/JAMO-TYPEFACE/Orbit) · fonts/orbit/OFL.txt */
+  src: url('../fonts/orbit/Orbit-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+/* black-han-sans — Ultra-heavy display (검은고딕): punchy headlines, news flashes, warnings, promo slams. Headlines only — ~2,580 common syllables and partial ASCII, so always stack Pretendard after it. */
+@font-face {
+  font-family: 'Black Han Sans';   /* SIL OFL 1.1 · © 2015 The Black Han Sans Project Authors (Zess Type) · fonts/black-han-sans/OFL.txt */
+  src: url('../fonts/black-han-sans/BlackHanSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}

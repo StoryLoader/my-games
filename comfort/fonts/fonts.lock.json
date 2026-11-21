@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "note": "fonts installed from Google Fonts (ofl/ only) by add_font.mjs — pinned commit + sha256 of every file. Generated; do not edit.",
+  "fonts": [
+    {
+      "id": "gowun-dodum",
+      "family": "Gowun Dodum",
+      "source": "google/fonts",
+      "path": "ofl/gowundodum",
+      "commit": "c30b221beb0c1da59d563feb91ec8656a1fa972a",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright 2021 The Gowun Dodum Project Authors (https://github.com/yangheeryu/Gowun-Dodum)",
+      "category": "SANS_SERIF",
+      "axes": [],
+      "subsets": [
+        "korean",
+        "latin",
+        "latin-ext",
+        "menu",
+        "vietnamese"
+      ],
+      "files": [
+        {
+          "dest": "fonts/gowun-dodum/GowunDodum-Regular.ttf",
+          "sha256": "a6e457933227483a11758fd0947bc74422a106d46f0bf057fdaa5af94a30067d",
+          "bytes": 7229088,
+          "style": "normal",
+          "weight": "400"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/gowun-dodum/OFL.txt",
+        "sha256": "a7c73f9521cd646bbdfb6684c99a62311bbd7bce11898dc11ef0b3c69eda1aca",
+        "bytes": 4395
+      }
+    }
+  ]
+}

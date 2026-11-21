@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "note": "fonts installed from Google Fonts (ofl/ only) by add_font.mjs — pinned commit + sha256 of every file. Generated; do not edit.",
+  "fonts": [
+    {
+      "id": "nanum-brush-script",
+      "family": "Nanum Brush Script",
+      "source": "google/fonts",
+      "path": "ofl/nanumbrushscript",
+      "commit": "7af0d90b4d532ffa4b041937b560c6df4e7b1e95",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright © 2010 NHN Corporation. All rights reserved. Font designed by Sandoll Communications Inc.",
+      "category": "HANDWRITING",
+      "axes": [],
+      "subsets": [
+        "korean",
+        "latin",
+        "menu"
+      ],
+      "files": [
+        {
+          "dest": "fonts/nanum-brush-script/NanumBrushScript-Regular.ttf",
+          "sha256": "27ceaf578c96f594cdf07fe0181b251790acbb746a164e45c1f6473f89911a31",
+          "bytes": 3564804,
+          "style": "normal",
+          "weight": "400"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/nanum-brush-script/OFL.txt",
+        "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+        "bytes": 4534
+      }
+    },
+    {
+      "id": "song-myung",
+      "family": "Song Myung",
+      "source": "google/fonts",
+      "path": "ofl/songmyung",
+      "commit": "7af0d90b4d532ffa4b041937b560c6df4e7b1e95",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright 2018 The Song Myung Project Authors",
+      "category": "SERIF",
+      "axes": [],
+      "subsets": [
+        "korean",
+        "menu"
+      ],
+      "files": [
+        {
+          "dest": "fonts/song-myung/SongMyung-Regular.ttf",
+          "sha256": "7f90ab20250911560212cc5819c7b205f9c6644bb96b65095d89fcae096bbf58",
+          "bytes": 2035300,
+          "style": "normal",
+          "weight": "400"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/song-myung/OFL.txt",
+        "sha256": "40bd3f35477284c021978816e9d3b8723ff2283fd7065fafaa5bb3004e41b237",
+        "bytes": 4348
+      }
+    },
+    {
+      "id": "lxgw-wenkai-tc",
+      "family": "LXGW WenKai TC",
+      "source": "google/fonts",
+      "path": "ofl/lxgwwenkaitc",
+      "commit": "7af0d90b4d532ffa4b041937b560c6df4e7b1e95",
+      "license": "SIL OFL 1.1",
+      "copyright": "Copyright 2024 The LXGW WenKai Project Authors (https://github.com/lxgw/LxgwWenkaiTC)",
+      "category": "HANDWRITING",
+      "axes": [],
+      "subsets": [
+        "chinese-traditional",
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "lisu",
+        "menu",
+        "vietnamese"
+      ],
+      "files": [
+        {
+          "dest": "fonts/lxgw-wenkai-tc/LXGWWenKaiTC-Bold.ttf",
+          "sha256": "5c9feadfd928f3ae3860e7d001ad3d0d0c55b0157fff08cd4d51b51aca677f23",
+          "bytes": 12881104,
+          "style": "normal",
+          "weight": "700"
+        }
+      ],
+      "licenseFile": {
+        "dest": "fonts/lxgw-wenkai-tc/OFL.txt",
+        "sha256": "4fff27d35db0e22cd81d58da6f20e09f415cf354a3338e3cf1fc0eb9222c7174",
+        "bytes": 4390
+      }
+    }
+  ]
+}

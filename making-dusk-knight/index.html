@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>「남은 길」은 이렇게 만들었습니다</title>
+  <link rel="stylesheet" href="fonts/noto-sans-kr/noto-sans-kr-700.css">
+  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="css/fxkit.css">
+  <link rel="stylesheet" href="css/typefx.css">
+  <link rel="stylesheet" href="css/reckit.css">
+  <link rel="stylesheet" href="css/look.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="stage" data-width="1920" data-height="1080">
+    <div id="world">
+      <div id="desk">
+        <canvas id="deskpaper" width="1100" height="550"></canvas>
+        <div id="board" class="obj"></div>
+        <div id="screen" class="obj"><div id="scr"></div></div>
+        <canvas id="wave" class="obj" width="1600" height="96"></canvas>
+        <div id="sheet" class="obj"></div>
+        <div id="layer"></div>
+        <div id="light"></div>
+      </div>
+      <canvas id="grain" width="480" height="270"></canvas>
+      <div id="vig"></div>
+      <div id="black"></div>
+    </div>
+    <div id="sfx"></div>
+  </div>
+
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/SplitText.min.js"></script>
+  <script src="vendor/gsap/CustomEase.min.js"></script>
+  <script src="vendor/gsap/CustomBounce.min.js"></script>
+  <script src="vendor/gsap/CustomWiggle.min.js"></script>
+  <script src="vendor/gsap/DrawSVGPlugin.min.js"></script>
+  <script src="vendor/gsap/MorphSVGPlugin.min.js"></script>
+  <script src="vendor/gsap/MotionPathPlugin.min.js"></script>
+  <script src="vendor/gsap/TextPlugin.min.js"></script>
+  <script src="vendor/gsap/ScrambleTextPlugin.min.js"></script>
+  <script src="js/cues.js"></script>
+  <script src="js/sync.js"></script>          <!-- measured phrase times (scripts/sync.mjs): cue(id).when() uses them -->
+  <script src="js/player.js"></script>
+  <script src="js/fxkit.js"></script>          <!-- optional effects kit: FXKit.install(ctx) — references/fx-kit.md -->
+  <script src="js/typefx.js"></script>         <!-- expressive typography: TypeFX.install(ctx) — references/type-fx.md -->
+  <script src="js/art/core.js"></script>       <!-- illustration modules: add js/art/<group>.js below — references/art-library.md -->
+  <script src="js/media-src.js"></script>      <!-- footage: the clips this video shows (empty when none) — references/footage.md -->
+  <script src="js/media.js"></script>          <!-- footage on the master clock: MEDIA.install(ctx) -->
+  <script src="js/reckit.js"></script>         <!-- screen recordings without zooming: RecKit.install(ctx) -->
+  <script src="js/sound-data.js"></script>      <!-- the film's soundtrack levels and footfall times (⑤ 소리) -->
+  <script src="js/scenes.js"></script>
+</body>
+</html>
