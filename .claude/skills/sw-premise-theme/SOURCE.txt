@@ -1,0 +1,3 @@
+Source: https://github.com/jtydhr88/screenwriting-skills (commit 51115f1), path jtydhr88__screenwriting-skills/plugins/screenwriting/skills/sw-premise-theme
+License: MIT (Copyright (c) 2026 Terry Jia)
+Installed unmodified on 2026-11-21 for story planning (user request).

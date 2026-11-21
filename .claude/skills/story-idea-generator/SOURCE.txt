@@ -1,0 +1,3 @@
+Source: https://github.com/jwynia/agent-skills (commit e02ec7e), path jwynia__agent-skills/skills/creative/fiction/core/story-idea-generator
+License: MIT (per the skill's metadata)
+Installed unmodified on 2026-11-21 for story planning (user request).
