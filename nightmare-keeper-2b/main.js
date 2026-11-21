@@ -1,4 +1,4 @@
-// 악몽을 지키는 파수꾼 2 — 반딧불의 밤 — page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS
+// 악몽을 지키는 파수꾼 2 — B 「열두 번째 등불」 — page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS
 // (the library's 2.5D Pixel Art engine; this film is the tilt-shift cut: the band follows the subject's screen height)
 import * as THREE from 'three';
 import { makePost } from './post_ts.js';
@@ -25,7 +25,7 @@ renderer.domElement.style.width = W + 'px'; renderer.domElement.style.height = H
 await overlayReady();
 
 const TILT = !Q.has('notilt'), _v = new THREE.Vector3();
-const TILT_FIXED = { release: .5, title: .55 };
+const TILT_FIXED = { title: .55 };
 function tiltCenter(S, shot) {
   if (TILT_FIXED[shot.id] != null) return TILT_FIXED[shot.id];
   const f = S.focus && S.focus(); if (!f) return .45;
@@ -50,12 +50,16 @@ window.TEXTS = texts;
 // sound events for the mixer (tools/export.mjs → timeline.json): the same times the picture uses
 window.EV = [
   ...VO.map(v => ({ t: v.t, type: 'voice', id: v.id, dlg: !!v.dlg })),
-  ...T.collect.map(t => ({ t, type: 'collect' })),
-  ...T.rattle.map(t => ({ t, type: 'rattle' })),
-  { t: T.crack, type: 'crack' }, { t: T.escape, type: 'escape' }, { t: T.crouch, type: 'setDown' }, { t: T.land, type: 'land' },
-  ...T.heart.map(t => ({ t, type: 'wing' })),
-  { t: T.transform, type: 'transform' }, { t: T.flyOff, type: 'flyOff' }, { t: T.openDoor, type: 'openDoor' },
-  { t: T.wake, type: 'wake' }, { t: T.noeulOut[0], type: 'doorOpen' }, { t: T.sitBy, type: 'sit' },
+  ...T.count.map((t, i) => ({ t, type: 'tap', i })),
+  { t: T.click1, type: 'click' }, { t: T.open3, type: 'click' },                // the same lid, the same note: a sound clue
+  { t: T.blink, type: 'blink' },
+  { t: T.flour[0], type: 'flour', d: T.flour[1] - T.flour[0] },
+  { t: 45.2, type: 'steps', d: 1.6, soft: 0 }, { t: T.scratch, type: 'scratch' },
+  { t: T.thread[0], type: 'thread', d: T.thread[1] - T.thread[0] }, { t: T.hide, type: 'cloth' }, { t: T.candleOut, type: 'blowOut' },
+  { t: T.winOpen, type: 'window' }, { t: T.bomiIn[0], type: 'steps', d: T.bomiIn[1] - T.bomiIn[0], soft: 1 },
+  { t: T.bell, type: 'bell' }, { t: T.uncover, type: 'uncover' }, { t: T.standUp, type: 'steps', d: T.reveal - T.standUp, soft: 0 },
+  { t: T.vision, type: 'vision' }, { t: T.setDown, type: 'setDown' }, { t: T.sit, type: 'sit' }, { t: T.dogShadow[0], type: 'dog' },
+  { t: T.eyeOpen, type: 'eye' },
   ...(sets.town ? sets.town.events : []), ...(sets.tower ? sets.tower.events : []),
 ].sort((a, b) => a.t - b.t);
 window.READY = true;

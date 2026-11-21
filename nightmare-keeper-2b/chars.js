@@ -72,6 +72,7 @@ function drawNoeul(P, E, p) {
   const ey = Math.round(fy);
   if (p.closed) { P.set(Math.round(fx + 2), ey, INK); P.set(Math.round(fx + 1), ey, INK); P.set(Math.round(fx - 1), ey, INK); }
   else if (p.blink) { P.set(Math.round(fx + 2), ey, C.skin(.2, 0, 0)); P.set(Math.round(fx - 1), ey, C.skin(.2, 0, 0)); }
+  else if (p.wink) { P.set(Math.round(fx + 2), ey, INK); P.set(Math.round(fx + 2), ey - 1, hex('#e8f0ff')); P.set(Math.round(fx - 1), ey, INK); P.set(Math.round(fx - 2), ey, INK); P.set(Math.round(fx + 3), ey + 2, C.skin(.25, 0, 0)); }   // B: one eye open, a small smile
   else { P.set(Math.round(fx + 2), ey, INK); P.set(Math.round(fx - 1), ey, INK); P.set(Math.round(fx + 2), ey - 1, hex('#e8f0ff')); }
   P.set(Math.round(fx + 1), ey - 2, C.hairW(.95, 0, 0)); P.set(Math.round(fx + 2), ey - 2, C.hairW(.95, 0, 0));   // brows
   P.set(Math.round(fx + 4), ey + 1, C.skin(.35, 0, 0)); P.set(Math.round(fx + 1), ey + 3, C.skin(.3, 0, 0)); P.set(Math.round(fx + 2), ey + 3, C.skin(.3, 0, 0));
@@ -116,7 +117,51 @@ function drawHaru(P, E, p) {
   if (arm === 'hfwd') { sl([[20, top + 2], [22, top + 3], [24, top + 4]]); P.rect(25, top + 4, 2, 2, C.skin(.6, 0, 0)); lantern(P, E, 24, top + 6, ...lk); }
   if (arm === 'palm') { sl([[20, top + 2], [21, top + 3], [22, top + 3]]); P.rect(23, top + 3, 3, 1, C.skin(.62, 0, 0)); P.set(25, top + 2, C.skin(.5, 0, 0)); lantern(P, E, 26, 41, ...lk); }
   if (arm === 'lap') { sl([[20, top + 2], [20, top + 4]]); P.rect(17, top + 5, 4, 2, C.skin(.5, 0, 0)); lantern(P, E, 17, top + 5, ...lk); }
+  if (arm === 'cover') {   // B: hiding, the lantern held low under a dark cloth (a thin line of light at its foot)
+    sl([[20, top + 2], [21, top + 4], [22, top + 5]]); P.rect(21, top + 6, 3, 2, C.skin(.5, 0, 0));
+    lantern(P, E, 20, top + 8, 1, 0, 0, 0); P.poly([[19, top + 6], [26, top + 6], [27, top + 15], [18, top + 15]], (x, y) => C.dress(.25 + ((x + y) % 3 === 0 ? .1 : 0), x, y));
+    for (let x = 19; x < 26; x++) { const c = C.glass(.5, x, 0); P.set(x, top + 15, c); E && E.set(x, top + 15, c); } }
 }
+
+// —— 봄이 (B 「열두 번째 등불」) —— a small girl (about 0.9 m): mustard scarf, plum coat over her night dress, dark bob with a fringe.
+// p: {step, arm:'side'|'up'|'hug', sit, closed, blink, lantern: 0|1 (the 12th lantern in her arms: violet), open: cap off}
+const B = {
+  scarf: ramp(['#5a3a08', '#8a5e12', '#c08a22', '#e3b444', '#f6d77a'], .22),
+  coat: ramp(['#1e1222', '#33203a', '#4a2f52', '#64426c'], .22),
+  hair: ramp(['#140c0a', '#2a1a14', '#40281c'], .22),
+  sock: ramp(['#9a94a8', '#c9c4d6'], .22),
+};
+function drawBomi(P, E, p) {
+  const dn = p.sit ? 8 : 0, top = 30 + dn + (p.bob || 0), sb = 42 + dn;
+  if (p.sit) { P.rect(18, sb, 8, 3, B.coat(.45, 0, 0)); P.rect(18, sb, 8, 1, B.coat(.65, 0, 0)); P.rect(26, sb + 1, 2, 2, B.sock(.6, 0, 0)); }
+  else { const st = p.step ?? -1, legs = st < 0 ? [[14, 0], [17, 0]] : [[[13, 0], [18, -1]], [[14, -1], [17, 0]], [[18, -1], [13, 0]], [[17, 0], [14, -1]]][st];
+    legs.forEach(([lx, ly]) => { for (let y = sb; y < 47 + ly; y++) for (let x = lx; x < lx + 3; x++) P.set(x, y, B.sock(.45 + (x === lx ? -.15 : .1), x, y)); P.rect(lx, 47 + ly, 4, 1, C.boot(.5, 0, 0)); }); }
+  // coat (a little A-line)
+  P.poly([[12, top + 2], [20, top + 2], [22, sb], [10, sb]], (x, y) => { const s = (x - 10) / 12; return B.coat(.68 - s * .38 + ((x + y) % 7 === 0 ? -.08 : 0), x, y); });
+  // the mustard scarf, one end hanging
+  P.rect(11, top, 11, 3, B.scarf(.7, 0, 0)); for (let x = 11; x < 22; x++) P.set(x, top, B.scarf(.9 - (x - 11) * .03, x, top));
+  P.rect(13, top + 3, 3, 6, B.scarf(.55, 0, 0)); P.set(13, top + 9, B.scarf(.4, 0, 0)); P.set(15, top + 9, B.scarf(.4, 0, 0));
+  // head
+  const fx = 18, fy = top - 6;
+  P.ellipse(fx, fy, 4.4, 4.8, (x, y, dx, dy) => C.skin(.64 - dx * .1 - dy * .26 + (dx > .55 ? -.2 : 0), x, y));
+  for (let x = Math.floor(fx - 5); x <= fx + 3; x++) for (let y = Math.floor(fy - 5); y < fy - 2 + (x < fx - 2 ? 6 : x > fx + 1 ? 0 : 0); y++) P.set(x, y, B.hair(.6 + (x - fx) * .05, x, y));   // bob, fringe
+  for (let y = Math.floor(fy - 2); y < fy + 4; y++) { P.set(Math.floor(fx - 5), y, B.hair(.35, 0, y)); P.set(Math.floor(fx - 4), y, B.hair(.5, 0, y)); }
+  const ey = Math.round(fy) + 1;
+  if (p.closed) { P.set(fx + 2, ey, INK); P.set(fx + 1, ey, INK); P.set(fx - 1, ey, INK); }
+  else if (p.blink) { P.set(fx + 2, ey, C.skin(.25, 0, 0)); P.set(fx - 1, ey, C.skin(.25, 0, 0)); }
+  else { P.set(fx + 2, ey, INK); P.set(fx + 2, ey - 1, INK); P.set(fx - 1, ey, INK); P.set(fx - 1, ey - 1, INK); P.set(fx + 2, ey - 1, hex('#d8d0ff')); }
+  P.set(fx + 3, ey + 2, hex('#e8907a')); P.set(fx - 2, ey + 2, hex('#e8907a'));
+  const arm = p.arm || 'side', sleeve = pts => pts.forEach(([x, y]) => { P.set(x, y, B.coat(.6, x, y)); P.set(x, y + 1, B.coat(.35, x, y)); });
+  const lan = (x, y) => lantern(P, E, x, y, 0, 1, 1, 0);   // the 12th lantern: violet (her nightmare is inside)
+  if (arm === 'side') { sleeve([[20, top + 3], [21, top + 5], [21, top + 7]]); P.rect(21, top + 9, 2, 2, C.skin(.55, 0, 0)); }
+  if (arm === 'up') { sleeve([[20, top + 2], [21, top], [22, top - 2], [23, top - 4]]); P.rect(23, top - 6, 2, 2, C.skin(.6, 0, 0)); }
+  if (arm === 'hug') { lan(18, top + 3); sleeve([[20, top + 3], [22, top + 4], [23, top + 6]]); P.rect(22, top + 7, 2, 2, C.skin(.6, 0, 0)); P.rect(16, top + 6, 2, 2, C.skin(.5, 0, 0)); }
+}
+const BOMI = {
+  stand: { arm: 'side' }, standB: { arm: 'side', blink: 1 }, w0: { step: 0 }, w1: { step: 1, bob: -1 }, w2: { step: 2 }, w3: { step: 3, bob: -1 }, up: { arm: 'up' }, up1: { arm: 'up', bob: -1 },
+  hug: { arm: 'hug', open: 1 }, hugB: { arm: 'hug', open: 1, blink: 1 }, hug1: { arm: 'hug', open: 1, bob: 1 },
+  sitHug: { sit: 1, arm: 'hug', open: 1 }, sitHugB: { sit: 1, arm: 'hug', open: 1, blink: 1 }, sleep: { sit: 1, arm: 'hug', open: 1, closed: 1 }, sleep1: { sit: 1, arm: 'hug', open: 1, closed: 1, bob: 1 },
+};
 
 const NOEUL = {
   idle0: { arm: 'low' }, idle1: { arm: 'low', bob: 1 }, blink: { arm: 'low', blink: 1 },
@@ -124,7 +169,7 @@ const NOEUL = {
   w0: { step: 0, arm: 'low', hem: 1 }, w1: { step: 1, arm: 'low', bob: -1 }, w2: { step: 2, arm: 'low', hem: -1 }, w3: { step: 3, arm: 'low', bob: -1 },
   up: { arm: 'up' }, up1: { arm: 'up', bob: 1 }, fwd: { arm: 'fwd' }, look: { arm: 'low', look: 1 },
   kneel: { kneel: 1, arm: 'kneel' }, kneelShut: { kneel: 1, arm: 'kneel', closed: 1 },
-  empty: { arm: 'none' }, kneelEmpty: { kneel: 1, arm: 'none' }, sleep: { sit: 1, arm: 'rest', closed: 1 }, sitWake: { sit: 1, arm: 'rest' },
+  empty: { arm: 'none' }, kneelEmpty: { kneel: 1, arm: 'none' }, sleep: { sit: 1, arm: 'rest', closed: 1 }, sitWake: { sit: 1, arm: 'rest' }, wink: { sit: 1, arm: 'rest', wink: 1 },
 };
 const HARU = {
   hw0: { step: 0, arm: 'hold' }, hw1: { step: 1, arm: 'hold', bob: -1 }, hw2: { step: 2, arm: 'hold' }, hw3: { step: 3, arm: 'hold', bob: -1 },
@@ -134,6 +179,10 @@ const HARU = {
   idle0: { arm: 'side' }, idle1: { arm: 'side', bob: 1 }, blink: { arm: 'side', blink: 1 }, point: { arm: 'point', look: 1 },
   reach: { arm: 'reach' }, hold: { arm: 'hold' }, hold1: { arm: 'hold', bob: 1 },
   w0: { step: 0, arm: 'side' }, w1: { step: 1, arm: 'side', bob: -1 }, w2: { step: 2, arm: 'side' }, w3: { step: 3, arm: 'side', bob: -1 },
+  // B 「열두 번째 등불」
+  hide: { crouch: 1, arm: 'cover' }, hideB: { crouch: 1, arm: 'cover', blink: 1 }, uncover: { crouch: 1, arm: 'hfwd', look: 1 },
+  sitSide: { sit: 1, arm: 'side' }, sitSideB: { sit: 1, arm: 'side', blink: 1 }, sitDoze: { sit: 1, arm: 'side', closed: 1, bob: 1 }, sitSleep: { sit: 1, arm: 'side', closed: 1 },
+  crouchLook: { crouch: 1, arm: 'side' }, crouchPoint: { crouch: 1, arm: 'reach' }, shock: { arm: 'reach', look: 1 },
 };
 // lantern frames that depend on a level: <name>@<lit>@<moths> are generated on demand (levels quantised so the atlas stays small)
 const LEVELS = [1, .82, .64, .46, .3, .14, .05];
@@ -161,8 +210,9 @@ function expandFill(base, keys) {   // 2편: the boy's lantern by how full of mo
 
 export function makeChar(kind) {
   const TB = kind === 'noeul' ? expand(NOEUL, ['idle0', 'idle1', 'w0', 'w1', 'w2', 'w3', 'up', 'up1', 'fwd', 'look'])
-    : expandFill(HARU, ['hold', 'hold1', 'hw0', 'hw1', 'hw2', 'hw3', 'hup', 'hup1', 'hfwd', 'hfwdB', 'crouch', 'crouch1', 'lap', 'lap1']);
-  const A = atlas(TB, kind === 'noeul' ? drawNoeul : drawHaru);
+    : kind === 'bomi' ? BOMI
+    : expandFill(HARU, ['hold', 'hold1', 'hw0', 'hw1', 'hw2', 'hw3', 'hup', 'hup1', 'hfwd', 'hfwdB', 'crouch', 'crouch1', 'lap', 'lap1', 'uncover']);
+  const A = atlas(TB, kind === 'noeul' ? drawNoeul : kind === 'bomi' ? drawBomi : drawHaru);
   const mesh = billboard(A.tex, FW * SPX, FH * SPX, { em: A.em, emCol: '#ffffff', emI: 2.2 });
   // a light held at the sprite must not burn it out (the style's pitfall): cap the lit colour
   mesh.material.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>', 'outgoingLight = min(outgoingLight, diffuseColor.rgb * 1.35 + totalEmissiveRadiance);\n#include <opaque_fragment>'); };
@@ -239,4 +289,16 @@ export function bigMoth() {
   const mesh = billboard(tex, W * SPX * 1.6, H * SPX * 1.6, { em, emCol: '#ffffff', emI: 1.8, ay: .5 });
   return { mesh, frame(i) { tex.offset.x = em.offset.x = i ? .5 : 0; } };
 }
-export { FW, FH, NOEUL, HARU };
+// —— 뭉치, the dog (B): a pixel silhouette drawn into a 2D canvas (the wall shadow and the vision in the lantern).
+// f: run frame 0..3; x, y: the dog's left foot line; s: pixel size; col: fill
+export function dogPixels(g, x, y, s, f, col) {
+  g.fillStyle = col; const R = (a, b, w, h) => g.fillRect(Math.round(x + a * s), Math.round(y - b * s), Math.ceil(w * s), Math.ceil(h * s));
+  const bob = f % 2 ? 1 : 0;
+  R(2, 8 + bob, 10, 4); R(1, 9 + bob, 1, 2);            // body, chest
+  R(11, 11 + bob, 4, 4); R(14, 9 + bob, 2, 2);          // head, snout
+  R(11, 13 + bob, 1, 2); R(13, 13 + bob, 1, 2);         // ears
+  R(-1, 10 + bob + (f % 2 ? 1 : 0), 3, 1); R(-2, 11 + bob + (f % 2 ? 2 : 0), 1, 1);   // tail, wagging
+  const L = [[[2, 1], [5, 0], [9, 0], [11, 1]], [[3, 0], [4, 1], [10, 1], [10, 0]], [[1, 1], [6, 0], [8, 0], [12, 1]], [[3, 1], [4, 0], [10, 0], [11, 1]]][f % 4];
+  L.forEach(([lx, up]) => R(lx, 4 + bob + up, 1, 4 - up + (up ? 0 : 0)));
+}
+export { FW, FH, NOEUL, HARU, BOMI };

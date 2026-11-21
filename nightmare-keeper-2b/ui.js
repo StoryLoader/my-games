@@ -44,9 +44,12 @@ function titleCard(t, c) {
   if (PORT) { const ws = c.text.split(' '), tail = ws[ws.length - 1].length <= 2 ? 2 : 1, l1 = ws.slice(0, -tail).join(' '), l2 = ws.slice(-tail).join(' '), y0 = H * .40;
     g.font = "700 112px 'Gowun Batang'"; const gr2 = g.createLinearGradient(0, y0 - 60, 0, y0 + 200); gr2.addColorStop(0, '#ffffff'); gr2.addColorStop(.55, SILVER); gr2.addColorStop(1, SILVER_D); g.fillStyle = gr2;
     glowText(() => { spaced(l1, W / 2, y0, 14); g.font = "700 150px 'Gowun Batang'"; spaced(l2, W / 2, y0 + 170, 30); g.font = "700 112px 'Gowun Batang'"; }, 'rgba(170,140,255,.55)', 36);
-    ornament(W / 2, y0 + 290, 260 * (.3 + .7 * a), a); g.restore(); return; }
+    ornament(W / 2, y0 + 290, 260 * (.3 + .7 * a), a);
+    if (c.sub) { g.globalAlpha = a * ss(seg(t, c.a + .5, c.a + 1.5)); g.font = "700 66px 'Gowun Batang'"; g.fillStyle = PAPER; glowText(() => spaced(c.sub, W / 2, y0 + 385, 10), 'rgba(170,140,255,.45)', 20); }   // B: the film's own name under the series title
+    g.restore(); return; }
   g.fillStyle = gr; glowText(() => spaced(c.text, W / 2, 500, 18), 'rgba(170,140,255,.55)', 36);
   ornament(W / 2, 590, 300 * (.3 + .7 * a), a);
+  if (c.sub) { g.font = "700 56px 'Gowun Batang'"; g.fillStyle = PAPER; glowText(() => spaced(c.sub, W / 2, 668, 8), 'rgba(170,140,255,.45)', 18); }
   g.restore();
 }
 // —— place card (top left, RPG location label) ——
@@ -78,7 +81,7 @@ function dialog(t, v) {
   for (const [cx, cy] of [[x, y], [x + bw, y], [x, y + bh], [x + bw, y + bh]]) { g.fillStyle = SILVER_L; g.beginPath(); g.moveTo(cx, cy - 7); g.lineTo(cx + 7, cy); g.lineTo(cx, cy + 7); g.lineTo(cx - 7, cy); g.fill(); }
   g.font = F_NAME; const nw = g.measureText(v.who).width + 64;
   g.fillStyle = 'rgba(8,10,22,.96)'; g.fillRect(x + 36, y - 26, nw, 50); g.strokeStyle = 'rgba(214,222,238,.9)'; g.lineWidth = 1.5; g.strokeRect(x + 36.5, y - 25.5, nw - 1, 49);
-  g.fillStyle = v.who === '노을' ? '#9fe0d0' : '#e6e9f4'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(v.who, x + 68, y);
+  g.fillStyle = v.who === '노을' ? '#9fe0d0' : v.who === '봄이' ? '#f2d27a' : '#e6e9f4'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(v.who, x + 68, y);
   g.font = F_DLG; g.fillStyle = PAPER;
   const d = DURS[v.id] || 3, chars = [...v.sub], n = chars.length, shown = Math.floor(n * clamp((t - v.t + .05) / (d * .92)));
   const lines = wrapKo(v.sub, bw - (PORT ? 120 : 160)); let k = shown;
@@ -125,7 +128,7 @@ export function drawOverlay(t) {
 export function texts(t) {
   const out = [];
   for (const c of CARDS) { const vis = t >= c.a + .3 && t <= c.b - .3; if (!vis) continue;
-    if (c.kind === 'title') out.push(PORT ? { id: 'title', text: c.text, x0: 60, y0: H * .40 - 90, x1: W - 60, y1: H * .40 + 320 } : { id: 'title', text: c.text, x0: 360, y0: 430, x1: 1560, y1: 600 });
+    if (c.kind === 'title') out.push(PORT ? { id: 'title', text: c.text + (c.sub ? ' ' + c.sub : ''), x0: 60, y0: H * .40 - 90, x1: W - 60, y1: H * .40 + 420 } : { id: 'title', text: c.text, x0: 360, y0: 430, x1: 1560, y1: 600 });
     else out.push(PORT ? { id: 'place' + c.a, text: c.label + ' ' + c.text, x0: 40, y0: 230, x1: 720, y1: 400 } : { id: 'place' + c.a, text: c.label + ' ' + c.text, x0: 80, y0: 60, x1: 760, y1: 230 }); }
   for (const v of VO) { const [a0, a1] = v.dlg ? dlgWindow(v) : subWindow(v); if (t < a0 + .3 || t > a1 - .3) continue;
     out.push(PORT ? { id: v.id, text: v.sub, x0: 45, y0: v.dlg ? H * .735 - 30 : H * .775 - 80, x1: W - 45, y1: v.dlg ? H * .735 + 250 : H * .775 + 180, pass: true } : { id: v.id, text: v.sub, x0: v.dlg ? 370 : 160, y0: v.dlg ? 790 : 900, x1: v.dlg ? 1550 : 1760, y1: v.dlg ? 1020 : 1010, pass: true }); }
