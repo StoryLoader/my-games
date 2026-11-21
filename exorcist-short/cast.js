@@ -112,8 +112,8 @@ function obangTie(g, P, px, py, SO) {
 // —— character options for heads.js ——
 export const CH = {
   seoha: { goggles: false, headset: false, body: coatBody, tie: obangTie, tieX: -66, tieY: 34,
-    hair: { q: { side: [[-78, -44, -58, -58, -80, 132, -12], [52, -40, 60, -30, 58, 112, 10]] }, front: { side: [[-76, -40, -58, -54, -74, 130, -8], [76, -40, 58, -54, 74, 130, 8]] } } },
-  mujin: { male: true, iris: .82, goggles: false, headset: false, bald: true, ponytail: false, body: robeBody, age: true, eyeK: .76, eyeH: .7, eyeDy: 2, browW: 2.6,
+    hair: { q: { side: [[-78, -44, -58, -58, -80, 132, -12], [52, -40, 60, -30, 58, 112, 10]], halo: [-14, -20, 66, 54, Math.PI * 1.22, Math.PI * 1.72, 4.5, 7] }, front: { side: [[-76, -40, -58, -54, -74, 130, -8], [76, -40, 58, -54, 74, 130, 8]], halo: [0, -18, 68, 54, Math.PI * 1.2, Math.PI * 1.8, 4.5, 8] }, side: { halo: [0, -20, 60, 54, Math.PI * 1.18, Math.PI * 1.72, 4.5, 7] } } },
+  mujin: { autoShade: [-1, -.55], male: true, iris: .82, goggles: false, headset: false, bald: true, ponytail: false, body: robeBody, age: true, eyeK: .76, eyeH: .7, eyeDy: 2, browW: 2.6,
     views: {
       q: { face: [[4, 116], [30, 112], [46, 98], [54, 82], [56, 64], [58, 48], [61, 32], [55, 18], [58, 2], [57, -36], [44, -70], [18, -92], [-14, -100], [-48, -94], [-74, -70], [-90, -34], [-92, 4], [-86, 38], [-74, 66], [-58, 92], [-30, 110]],
         neck: [[-48, 62], [20, 92], [26, 142], [-56, 142]] },

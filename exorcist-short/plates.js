@@ -193,10 +193,11 @@ export function tunnelAhead(g, e, t, cx, cy, speed = 1, lit = 0, wide = 1) {
     const z = ((i - (t * speed * 1.4) % 1) / n), s = 1 / (z * 6 + .15), rw = 260 * s * wide, rh = 220 * s;
     if (z <= 0 || s > 40) continue;
     const a = Math.min(1, z * 3) * Math.min(1, (1 - z) * 4);
-    g.strokeStyle = rgba(mix('#2a2a34', '#a8b0b0', lit), .35 * a); g.lineWidth = Math.max(1, 3 * s);
+    g.strokeStyle = rgba(mix('#5a5a70', '#c8d0d0', lit), .75 * a); g.lineWidth = Math.max(1.5, 4 * s);
+    g.fillStyle = rgba(mix('#16161e', '#8a9898', lit), .25 * a); g.beginPath(); g.roundRect(cx - rw, cy - rh, rw * 2, rh * 1.6, rh * .5); g.fill();
     g.beginPath(); g.roundRect(cx - rw, cy - rh, rw * 2, rh * 1.6, rh * .5); g.stroke();
     const lx = cx - rw * .9, ly = cy - rh * .1;
-    lamp(g, e, lx, ly, 7 * s, '#ffb050', .8 * a); lamp(g, e, cx + rw * .9, ly, 7 * s, '#ffb050', .6 * a);
+    lamp(g, e, lx, ly, 10 * s, '#ffb050', a); lamp(g, e, cx + rw * .9, ly, 10 * s, '#ffb050', .8 * a);
   }
   for (const side of [-1, 1]) { g.strokeStyle = rgba('#c8ccd0', .55); g.lineWidth = 6; g.beginPath(); g.moveTo(cx + side * 12, cy + 120); g.lineTo(cx + side * 520, cy + 1400); g.stroke(); }
   g.fillStyle = rgba('#ffe8b0', .18); g.beginPath(); g.moveTo(cx - 40, cy + 120); g.lineTo(cx + 40, cy + 120); g.lineTo(cx + 700, cy + 1400); g.lineTo(cx - 700, cy + 1400); g.fill();   // headlight on the rails

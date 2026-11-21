@@ -194,7 +194,7 @@ export function bust(S) {
     c.globalCompositeOperation = 'source-over';
   });
 }
-function talismanHand(c, P, x, y, rot) {
+export function talismanHand(c, P, x, y, rot) {
   c.save(); c.translate(x, y); c.rotate(rot);
   // sleeve + shirt cuff (the forearm rises from the bottom edge)
   cel(c, poly([[-150, 640], [-136, 250], [60, 236], [140, 620]]), { f: P.coat.f, s: P.coat.s, so: [-30, 0], h: P.coat.h, ho: [8, 0], l: P.coat.l, lw: 4 });
@@ -252,7 +252,7 @@ export function impact(S, inv = false) {
     g.drawImage(MC, 0, 0); e.fillStyle = '#000'; e.fillRect(0, 0, W, H);
   } else { lamp(g, e, FX - 60, FY - 120, 22, '#ffb347', .9); }
 }
-function fist(c, P, x, y, s) {
+export function fist(c, P, x, y, s) {
   c.save(); c.translate(x, y); c.scale(s, s);
   // forearm (robe sleeve) back to his shoulder
   cel(c, poly([[60, 60], [210, 40], [330, 260], [140, 300]]), { f: P.robe.f, s: P.robe.s, so: [-20, -10], h: P.robe.h, ho: [8, 4], l: P.robe.l, lw: 4 });   // sleeve: the arm runs back behind the fist to his shoulder

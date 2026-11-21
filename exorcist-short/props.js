@@ -56,17 +56,17 @@ export function phone(c, e, x, y, rot, t, P) {
   c.save(); c.beginPath(); c.roundRect(-w / 2, -h / 2, w, h, r); c.clip();
   c.fillStyle = '#e9eef6'; c.fillRect(-w / 2, -h / 2, w, h);
   c.fillStyle = '#c9d6e8'; c.fillRect(-w / 2, -h / 2, w, 150);
-  c.fillStyle = '#2a3448'; c.font = '800 40px Pretendard'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('누나', 0, -h / 2 + 96);
+  c.fillStyle = '#2a3448'; c.font = '800 48px Pretendard'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('누나', 0, -h / 2 + 96);
   c.font = '600 28px Pretendard'; c.fillText('‹', -w / 2 + 44, -h / 2 + 96);
   const bub = (txt, yy, mine, tm) => {
-    c.font = '600 36px Pretendard'; const tw = c.measureText(txt).width + 48, bx = mine ? w / 2 - 28 - tw : -w / 2 + 28;
-    c.fillStyle = mine ? '#ffe36a' : '#ffffff'; c.beginPath(); c.roundRect(bx, yy, tw, 70, 26); c.fill();
-    c.fillStyle = '#1e2230'; c.textAlign = 'left'; c.fillText(txt, bx + 24, yy + 36);
+    c.font = '700 46px Pretendard'; const tw = c.measureText(txt).width + 56, bx = mine ? w / 2 - 24 - tw : -w / 2 + 24;
+    c.fillStyle = mine ? '#ffe36a' : '#ffffff'; c.beginPath(); c.roundRect(bx, yy, tw, 86, 30); c.fill();
+    c.fillStyle = '#121620'; c.textAlign = 'left'; c.fillText(txt, bx + 28, yy + 44);
     if (tm) { c.font = '600 22px Pretendard'; c.fillStyle = '#7a8496'; c.textAlign = mine ? 'right' : 'left'; c.fillText(tm, mine ? bx - 10 : bx + tw + 10, yy + 52); }
   };
-  bub('어디야? 늦었는데', -h / 2 + 220, false, '00:24');
-  bub('막차 탐 ㅋㅋ', -h / 2 + 330, true);
-  bub('종점까지 자 버릴 듯', -h / 2 + 416, true, '00:31');
+  bub('어디야? 늦었는데', -h / 2 + 210, false, '00:24');
+  bub('막차 탐 ㅋㅋ', -h / 2 + 340, true);
+  bub('종점까지 자 버릴 듯', -h / 2 + 446, true, '00:31');
   c.restore();
   c.restore();
   if (e) { e.save(); e.translate(x, y); e.rotate(rot); e.fillStyle = rgba('#d8e6ff', .28); e.beginPath(); e.roundRect(-w / 2, -h / 2, w, h, r); e.fill(); e.restore(); }
@@ -90,9 +90,10 @@ export function driverBacklit(c, x, y, s, o = {}) {
   const capOff = o.capOff, bow = o.bow || 0, k = o.alpha ?? 1;
   c.save(); c.translate(x, y); c.scale(s, s); c.globalAlpha = k;
   const SIL = { f: '#0e0c18', rim: { c: '#ffd9a0', d: [-4, -2] }, l: '#2a1a30', lw: 2 };
-  cel(c, [[-150, 700], [-160, 260], [-120, 120], [-40, 90], [40, 90], [120, 120], [160, 260], [150, 700]], SIL);   // body
+  cel(c, [[-190, 720], [-206, 300], [-196, 180], [-130, 116], [-50, 96], [50, 96], [130, 116], [196, 180], [206, 300], [190, 720]], SIL);   // body: a uniform jacket, square shoulders
+  for (const sd of [-1, 1]) cel(c, [[sd * 200, 190], [sd * 236, 300], [sd * 230, 560], [sd * 196, 570], [sd * 186, 320]], SIL);   // arms
   c.save(); c.translate(0, 80); c.rotate(-bow * .35); c.translate(0, -80);
-  const Hd = new Path2D(); Hd.ellipse(10, -10, 62, 72, 0, 0, TAU); cel(c, Hd, SIL);
+  const Hd = new Path2D(); Hd.ellipse(10, -6, 54, 64, 0, 0, TAU); cel(c, Hd, SIL);
   cel(c, poly([[-12, 40], [36, 40], [30, 92], [-8, 92]]), SIL);
   if (!capOff) { cel(c, [[-70, -40], [-60, -104], [10, -122], [80, -100], [92, -40], [130, -30], [126, -14], [-74, -22]], SIL); }
   c.restore();

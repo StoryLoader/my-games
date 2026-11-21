@@ -1,44 +1,60 @@
-// 막차 — look-dev page (the page contract: window.DUR, window.render(t), window.READY). t picks the frame:
-// 0 model sheet · 1 없는 역 (signature) · 2 held bust with light bands · 3 무진's fist · 4 its impact frame
+// 막차 — the film page (page contract: window.DUR, window.render(t), window.READY, window.EV, window.TEXTS).
+// ?look=1 shows the look-dev frames (t 0..4) instead.
 import { canvas, W, H, rgba } from './cel.js';
 import { makePost } from './post.js';
-import { sheet, platform, bust, impact } from './frames.js';
+import { DUR, SHOTS, shotAt, VO, T, BEAT, bar } from './story.js';
+import { SHOT_FN, setDurs } from './scenes.js';
+import { hud, subSpans } from './hud.js';
 
+const qs = new URLSearchParams(location.search);
 const [sc, g] = canvas(W, H), [gc, e] = canvas(W, H), [ovc, ov] = canvas(W, H);
 const post = makePost(document.getElementById('gl'));
-await document.fonts.load('80px "Black Han Sans"', '막차 모델 시트');
-for (const w of [600, 700, 800]) await document.fonts.load(`${w} 50px Pretendard`, '이번 역은 없는 역입니다 끝은 내가 내요 안내 방송 서하 무진 서준 낮 객차 터널');
+await document.fonts.load('80px "Black Han Sans"', '막차 다음 이야기 시청 2 7 운전실');
+for (const w of [600, 700, 800]) await document.fonts.load(`${w} 50px Pretendard`, '이번 역은 없는 역입니다 안내 방송 기관사 누나 운행표');
+await document.fonts.load('italic 800 46px Pretendard', 'LINE 2 · 00:48');
+let DURS = {}; try { const r = await fetch('voices/dur.json'); if (r.ok) DURS = await r.json(); } catch (x) { }
+setDurs(DURS);
+const SPANS = subSpans(DURS);
+const LOOK = qs.get('look') ? await import('./frames.js') : null;
 const RAW = { bloom: 0, halo: 0, soft: 0, flick: 0, lift: 0, contrast: 0, fade: 0, sat: 1, tint: [1, 1, 1], scan: 0, grille: 0, bleed: 1, rshift: 0, glow: 0, corner: 0, noiseA: 0, power: 1, track: 0, expo: 1 };
-
-// subtitles live on the tape (composited inside the CRT pass): cream-yellow, thick dark outline; a speaker tag box for the PA
-function sub(text, o = {}) {
-  ov.clearRect(0, 0, W, H); if (!text) return;
-  const y = 1500;
-  ov.save(); ov.font = '700 54px Pretendard'; ov.textBaseline = 'middle'; ov.lineJoin = 'round';
-  const tw = ov.measureText(text).width, tagW = o.tag ? 170 : 0, x = (W - tw - tagW) / 2 + tagW;
-  if (o.tag) {
-    const tx = x - tagW, ty = y - 26;
-    ov.fillStyle = rgba('#07121a', .8); ov.beginPath(); ov.roundRect(tx, ty, 150, 52, 8); ov.fill(); ov.strokeStyle = '#8ff4ff'; ov.lineWidth = 2.5; ov.stroke();
-    ov.font = '800 26px Pretendard'; ov.fillStyle = '#8ff4ff'; ov.textAlign = 'center'; ov.fillText(o.tag, tx + 75, y + 1); ov.textAlign = 'left'; ov.font = '700 54px Pretendard';
-  }
-  ov.shadowColor = 'rgba(0,0,0,.55)'; ov.shadowBlur = 10; ov.shadowOffsetY = 3;
-  ov.strokeStyle = '#120a1e'; ov.lineWidth = 10; ov.strokeText(text, x, y);
-  ov.shadowColor = 'transparent'; ov.fillStyle = o.col || '#fff0a0'; ov.fillText(text, x, y);
-  ov.restore();
-}
 
 function render(t) {
   for (const x of [g, e]) { x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.filter = 'none'; }
   g.fillStyle = '#000'; g.fillRect(0, 0, W, H); e.fillStyle = '#000'; e.fillRect(0, 0, W, H);
-  const k = Math.floor(t + 1e-6), S = { g, e, t, lt: t - k };
+  const fr = Math.floor(t * 12 + 1e-6);
   let over = {};
-  if (k === 0) { sheet(S); sub(''); over = RAW; }
-  else if (k === 1) { platform(S); sub('이번 역은… 없는 역입니다.', { tag: '안내 방송', col: '#bff6ff' }); }
-  else if (k === 2) { bust(S); sub('끝은 내가 내요.'); }
-  else if (k === 3) { impact(S, false); sub(''); }
-  else { impact(S, true); sub(''); over = { bloom: .2, halo: 0 }; }
+  if (LOOK) {
+    const k = Math.floor(t), S = { g, e, t, lt: t - k };
+    if (k === 0) { LOOK.sheet(S); over = RAW; } else if (k === 1) LOOK.platform(S); else if (k === 2) LOOK.bust(S); else LOOK.impact(S, k > 3);
+    ov.clearRect(0, 0, W, H);
+  } else {
+    const [id, t0, t1] = shotAt(t), S = { g, e, t, lt: t - t0, u: (t - t0) / (t1 - t0), fr, over: {} };
+    SHOT_FN[qs.get('shot') || id](S);
+    over = S.over || {};
+    hud(ov, t, SPANS, !!qs.get('nosub'));
+  }
+  if (t < .6) over = { ...over, power: Math.min(1, t / .6) };
+  if (window.__NODRAW) return;
   post.render(sc, gc, Math.round(t * 24), ovc, over);
 }
-window.render = render; window.DUR = 5; window.POST = post;
-render(1.5);
+// —— sound events for the mixer (mix.py reads them through the library's events.mjs) ——
+function events() {
+  const ev = [], add = (type, t, o = {}) => ev.push({ type, t: +t.toFixed(3), ...o });
+  add('crton', 0); add('tapeclick', .05);
+  for (const v of VO) { if (v.who === 'pa') add('chime', v.t - 1.0); }
+  add('ptt', 90.9); add('chime', 90.0);
+  add('doors', T.doorsClose); add('depart', T.depart);
+  add('brass', bar(3)); add('whoosh', bar(3) - .2);
+  add('slap', T.slap); add('ignite', T.ignite); add('impact', T.impact1, { v: 1.2 });
+  for (const p of T.punches) add('punch', p);
+  add('bell', T.bellBreak, { v: 1.2 }); add('impact', T.bellBreak); add('bell', T.raise, { v: .9 }); add('bell', 85.2, { v: .35 }); add('bell', 86.9, { v: .5 });
+  add('whispers', T.shadowOff[0], { d: 3 }); add('whispers', bar(21), { d: bar(26) - bar(21) }); add('whispers', T.peel[0], { d: T.peel[1] - T.peel[0], v: 1.2 });
+  add('brakes', T.brakes, { d: 2.6 }); add('flash', T.flash); add('cap', T.capOff); add('glitch', T.erase);
+  add('freeze', T.freeze); add('tapeout', T.tapeOut);
+  return ev.sort((a, b) => a.t - b.t);
+}
+window.EV = events();
+window.TEXTS = VO.map(v => ({ t: v.t, text: v.text, who: v.who }));
+window.render = render; window.DUR = LOOK ? 5 : DUR; window.POST = post;
+render(LOOK ? 1.5 : 10.5);
 window.READY = true;

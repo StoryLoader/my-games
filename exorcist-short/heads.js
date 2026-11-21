@@ -112,14 +112,14 @@ function mouth(g, P, cx, cy, w, type, fs = 1) {
   } else {
     let pts, teeth = 0, tongue = 0, bot;
     if (type === 'smileopen') { pts = [[L - 1, cy - 3, 1], [cx, cy - 2], [R + 1, cy - 3, 1], [cx + w * .2, cy + 6], [cx, cy + 10], [cx - w * .22, cy + 6]]; teeth = 1; tongue = 1; bot = cy + 10; }
-    else if (type === 'shout') { pts = [[L - 4, cy - 1, 1], [cx, cy - 5], [R + 4, cy - 1, 1], [cx + w * .3, cy + 22], [cx, cy + 28], [cx - w * .34, cy + 22]]; teeth = 1; tongue = 1; bot = cy + 28; }
+    else if (type === 'shout') { pts = [[L - 2, cy + 5, 1], [cx - w * .12, cy - 5], [cx + w * .1, cy - 5], [R + 2, cy + 4, 1], [cx + w * .26, cy + 25], [cx - w * .04, cy + 27], [cx - w * .32, cy + 24]]; teeth = 2; tongue = 1; bot = cy + 27; }   // corners pulled down: a war cry, not a grin
     else if (type === 'pant') { pts = [[L + 1, cy + 1, 1], [cx, cy - 2], [R - 1, cy + 1, 1], [cx + w * .2, cy + 14], [cx, cy + 17], [cx - w * .22, cy + 14]]; teeth = 1; tongue = 1; bot = cy + 17; }
     else if (type === 'oh') { pts = [[cx - w * .24, cy + 3], [cx, cy - 4], [cx + w * .22, cy + 3], [cx + w * .16, cy + 14], [cx - w * .16, cy + 14]]; bot = cy + 14; }
     else { pts = [[L + 3, cy, 1], [cx, cy - 1], [R - 3, cy, 1], [cx + w * .08, cy + 7], [cx - w * .1, cy + 7]]; tongue = .8; bot = cy + 7; }   // talk
     const MP = path(pts, true);
     g.save(); g.clip(MP); g.fillStyle = '#5a1a2a'; g.fill(MP);
     if (tongue) { g.fillStyle = '#e0707a'; g.beginPath(); g.ellipse(cx, bot + 1, w * .28, 6, 0, 0, TAU); g.fill(); }
-    if (teeth) { g.fillStyle = '#ffffff'; g.fillRect(cx - w, cy - 8, w * 2, 10.5); }
+    if (teeth) { g.fillStyle = '#ffffff'; g.fillRect(cx - w, cy - 8, w * 2, 10.5); if (teeth === 2) g.fillRect(cx - w, bot - 7, w * 2, 8); }
     g.restore();
     g.strokeStyle = lc; g.lineWidth = LS * 1.05 * LWK.k; g.lineJoin = 'round'; g.stroke(MP);
     lowerLip(bot + 4.5, w * .14);
@@ -218,6 +218,7 @@ const HAIR = {
 
 export function head80(g, P, o = {}) {
   const C = o.ch || {};
+  if (!o.light && C.autoShade) o = { ...o, light: C.autoShade };   // automatic shadow crescent along the whole contour (no far-shade band: no mask edge)
   const view = o.view || 'q', V0 = VIEWS[view], Hh0 = HAIR[view];
   const V = { ...V0, ...(C.views?.[view] || {}) }, Hh = { ...Hh0, goggles: C.goggles === false ? [] : Hh0.goggles, ...(C.hair?.[view] || {}) };
   const E = { ...EXPR[o.expr || 'neutral'], ...(o.E || {}) };
