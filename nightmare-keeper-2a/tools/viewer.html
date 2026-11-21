@@ -1,10 +1,10 @@
 <meta charset="utf-8">
-<title>악몽을 지키는 파수꾼 2</title>
+<title>악몽을 지키는 파수꾼 2 — 할머니의 첫 꿈</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
   /* a single dark film player: the vertical frame (1080×1920) scaled to fit, the soundtrack is the clock */
-  :root { --bg: #05040a; --fg: #eef0f6; --dim: #a6abbd; --accent: #c9ff8a; --line: rgba(214,222,238,.35); --veil: rgba(3,3,8,.5); color-scheme: dark; }
+  :root { --bg: #05040a; --fg: #eef0f6; --dim: #a6abbd; --accent: #ffc35a; --line: rgba(214,222,238,.35); --veil: rgba(3,3,8,.5); color-scheme: dark; }
   html, body { height: 100%; }
   body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.4 'Nanum Myeongjo', serif; overflow: hidden;
     padding-left: max(0px, env(safe-area-inset-left, 0px)); padding-right: max(0px, env(safe-area-inset-right, 0px)); }
@@ -15,7 +15,7 @@
   #cover { position: absolute; inset: 0; display: grid; place-items: center; background: var(--veil); cursor: pointer; border: 0; color: var(--fg); font: inherit; }
   #cover[hidden] { display: none; }
   .play { display: grid; gap: 30px; justify-items: center; margin-top: 520px; }
-  .play b { width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--line); display: grid; place-items: center; background: rgba(10,10,24,.6); box-shadow: 0 0 60px rgba(201,255,138,.18); }
+  .play b { width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--line); display: grid; place-items: center; background: rgba(10,10,24,.6); box-shadow: 0 0 60px rgba(255,195,90,.2); }
   .play b::after { content: ''; border-left: 56px solid var(--fg); border-top: 34px solid transparent; border-bottom: 34px solid transparent; margin-left: 16px; }
   #status { font-size: 42px; color: var(--dim); text-align: center; }
   #note { position: absolute; left: 0; right: 0; top: 40px; text-align: center; font-size: 36px; color: var(--dim); pointer-events: none; opacity: 0; transition: opacity .4s; }
@@ -33,7 +33,7 @@
 <div id="view"><div id="frame"><div id="stage"></div><canvas id="ov" width="1080" height="1920"></canvas>
   <div id="note" role="status"></div>
   <button id="cover" aria-label="재생"><div class="play"><b></b><span id="status">불러오는 중…</span></div></button></div></div>
-<div id="bar"><button id="pp" aria-label="재생/일시정지">▶</button><input id="seek" type="range" min="0" max="120" step="0.05" value="0" aria-label="재생 위치"><span id="time">0:00 / 2:00</span></div>
+<div id="bar"><button id="pp" aria-label="재생/일시정지">▶</button><input id="seek" type="range" min="0" max="121" step="0.05" value="0" aria-label="재생 위치"><span id="time">0:00 / 2:01</span></div>
 <audio id="aud" src="mix.mp3" preload="auto" playsinline></audio>
 <script>window.FILM_SIZE = [1080, 1920];   // the vertical cut (Shorts)</script>
 <script type="module" src="app.js"></script>
@@ -72,7 +72,7 @@
   aud.addEventListener('loadedmetadata', () => { if (want != null) { try { aud.currentTime = want; } catch (e) {} } });
   aud.addEventListener('ended', stop);
   aud.addEventListener('error', () => { if (withSound) { clock0 = now(); wall0 = performance.now(); withSound = false; say('소리 파일을 불러오지 못해 소리 없이 재생합니다', 6000); } });
-  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR; st.textContent = '재생 · 약 2분 · 소리를 켜 주세요'; last = -1; draw(16.0); last = -1; draw(11.0);   /* both sets drawn once while loading, so the cut into the tower doesn't stall */ seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused'); requestAnimationFrame(loop); }
+  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR; st.textContent = '재생 · 약 2분 · 소리를 켜 주세요'; last = -1; draw(5.0); last = -1; draw(82.0); last = -1; draw(21.5);   /* both sets (and the bell's light) drawn once while loading, so no cut stalls; the cover is the title */ seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused'); requestAnimationFrame(loop); }
     else setTimeout(wait, 100); };
   wait();
   addEventListener('keydown', e => { if (e.code === 'Space' && ready) { e.preventDefault(); playing ? stop() : start(); } });

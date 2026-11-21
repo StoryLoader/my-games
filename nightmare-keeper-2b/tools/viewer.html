@@ -1,10 +1,10 @@
 <meta charset="utf-8">
-<title>악몽을 지키는 파수꾼 2</title>
+<title>열두 번째 등불</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
   /* a single dark film player: the vertical frame (1080×1920) scaled to fit, the soundtrack is the clock */
-  :root { --bg: #05040a; --fg: #eef0f6; --dim: #a6abbd; --accent: #c9ff8a; --line: rgba(214,222,238,.35); --veil: rgba(3,3,8,.5); color-scheme: dark; }
+  :root { --bg: #05040a; --fg: #eef0f6; --dim: #a6abbd; --accent: #f2d27a; --line: rgba(214,222,238,.35); --veil: rgba(3,3,8,.5); color-scheme: dark; }
   html, body { height: 100%; }
   body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.4 'Nanum Myeongjo', serif; overflow: hidden;
     padding-left: max(0px, env(safe-area-inset-left, 0px)); padding-right: max(0px, env(safe-area-inset-right, 0px)); }
@@ -72,7 +72,7 @@
   aud.addEventListener('loadedmetadata', () => { if (want != null) { try { aud.currentTime = want; } catch (e) {} } });
   aud.addEventListener('ended', stop);
   aud.addEventListener('error', () => { if (withSound) { clock0 = now(); wall0 = performance.now(); withSound = false; say('소리 파일을 불러오지 못해 소리 없이 재생합니다', 6000); } });
-  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR; st.textContent = '재생 · 약 2분 · 소리를 켜 주세요'; last = -1; draw(16.0); last = -1; draw(11.0);   /* both sets drawn once while loading, so the cut into the tower doesn't stall */ seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused'); requestAnimationFrame(loop); }
+  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR; st.textContent = '재생 · 약 2분 · 소리를 켜 주세요'; last = -1; draw(69.6); last = -1; draw(78.0); last = -1; draw(13.4);   /* the tower (the wall shadow, the vision) and the town drawn once while loading, so no cut stalls; the cover is the title */ seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused'); requestAnimationFrame(loop); }
     else setTimeout(wait, 100); };
   wait();
   addEventListener('keydown', e => { if (e.code === 'Space' && ready) { e.preventDefault(); playing ? stop() : start(); } });
