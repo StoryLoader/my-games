@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""score.py — the original score of 「악몽을 지키는 파수꾼 2 — 반딧불의 밤」, composed here and synthesized in code (no samples, no recordings).
+"""score.py — the original score of 「악몽을 지키는 파수꾼 2 — 열두 번째 등불」, composed here and synthesized in code (no samples, no recordings).
 Chamber-fantasy colours from the style's palette: harp and pizzicato bass (physically modelled, the library's pluck.py),
 celesta (FM bells), a string pad and a low "ah" choir (additive saws through formant filters), a recorder-like voice,
 timpani and a hand drum. D dorian → D major, ♩ = 72; the sections follow TREATMENT.md §6 and the times in timeline.json. Film 1's keeper motif
-on a lone harp; a new firefly theme (celesta, D major) born out of the silence at the crack.
+for the counting; a chromatic celesta riddle for the empty lantern; a pizzicato clock for the watching nights; silence before the
+bell; a low scare under the huge shadow; one harp note at the reveal; a warm D-major waltz (3/4) for the dog's shadow; a lullaby.
 
   $LIB/.venv/bin/python music/score.py            → music/score.wav (48 kHz stereo) and music/CUES.md
 """
@@ -101,106 +102,88 @@ def motif(t0, notes, inst='cel', step=None, vel=.7, oct=0):
         if inst == 'cel': put('cel', celesta(m + oct, 2.4, vel), t0 + i * step, 1, .15)
         else: put('cel', recorder(m + oct - 12, step * .95, vel), t0 + i * step, 1, -.1)
 
-FF = [(81, 1), (86, 1), (85, .5), (83, .5), (81, 1), (78, 1), (83, 1), (81, 2)]            # the firefly theme (D major)
-FF_ANS = [(81, 1), (86, 1), (88, .5), (86, .5), (85, 1), (81, 1), (83, .5), (85, .5), (86, 2)]
-def theme(t0, notes, inst='cel', vel=.7, oct=0, beat=BEAT, pan=.15):
+RIDDLE = [81, 80, 79, 78, 83, 82]            # A5 G#5 G5 F#5 B5 A#5 — the riddle of the empty lantern (chromatic)
+def notes(t0, seq, inst='cel', vel=.6, step=BEAT, oct=0, pan=.15, d=2.4):
     t = t0
-    for m, b in notes:
-        if inst == 'cel': put('cel', celesta(m + oct, 2.6, vel), t, 1, pan)
-        elif inst == 'rec': put('cel', recorder(m + oct - 12, b * beat * .95, vel), t, 1, -.1)
-        else: put('harp', harp(m + oct, vel), t, 1, pan)
-        t += b * beat
+    for m, b in seq:
+        if m is not None:
+            if inst == 'cel': put('cel', celesta(m + oct, d, vel), t, 1, pan)
+            elif inst == 'harp': put('harp', harp(m + oct, vel), t, 1, pan)
+            else: put('cel', recorder(m + oct - 12, b * step * .95, vel), t, 1, -.1)
+        t += b * step
     return t
+def clock(t0, t1, every, m=(38, 45), vel=.4):   # a pizzicato clock: tick (root) / tock (fifth)
+    k, t = 0, t0
+    while t < t1 - .05: put('low', pizz(m[k % 2], vel * (1 if k % 2 == 0 else .8)), t, 1, -.15 + .3 * (k % 2)); k += 1; t += every
+def waltz(t0, t1, prog, vel=.34, bar=3 * BEAT * .92, melody=None, mvel=.55):
+    k, t = 0, t0
+    while t < t1 - .1:
+        ch = prog[int((t - t0) / bar) % len(prog)]; i = k % 3
+        if i == 0: put('low', pizz(ch[0] - 12 if ch[0] >= 48 else ch[0], vel * 1.2), t)
+        else: [put('harp', harp(m + 12, vel * .8), t, 1, -.2 + .4 * j) for j, m in enumerate(ch[1:3])]
+        k += 1; t += bar / 3
+    if melody: notes(t0 + bar, melody, 'cel', vel=mvel, step=bar / 3)
 
-# A — 0 → 13.8: alone at the tower door. The keeper's motif on a single harp, slow and careful; the title on celesta
-put('low', lp(saw_stack(38, 14.5, det=(-.05, .05), top=600), 220) * env_adsr(14.5, 2.5, 3) * .05, 0)
-arps(1.6, 7.6, DOR[:2], rate=1, vel=.3)
-for k, m in enumerate(MOTIF): put('harp', harp(m - 12, .42), 3.0 + k * BEAT * 1.25, 1, .2)
-pads(7.5, 13.9, DOR[2:], 'strings', vel=.26)
-motif(8.35, MOTIF, 'cel', vel=.75); cues.append(('title motif (celesta)', 8.35))
-arps(8.35, 13.6, DOR[2:] + DOR[:1], rate=1, vel=.24)
-# B — 13.8 → 23: the tower room, last night's nightmares asleep on the shelf: string pad and sparse harp, hushed
-pads(13.9, 23.2, [DOR[0], DOR[3]], 'strings', vel=.22, bars_per=2)
-for k, m in enumerate([62, 69, 65, 64, 62, 60, 62, 57]):
-    put('harp', harp(m, .3), 14.6 + k * BEAT * 1.4, 1, -.15 + .04 * k)
-# C — 23 → 34: the round: harp in eighths, pizzicato, the lantern fills; a celesta pair on each lift
-arps(23.4, 34.0, DOR, rate=2, vel=.36)
-bassline(23.4, 34.0, DOR, vel=.5, every=2)
-for c in T['collect']: put('cel', celesta(86, 1.6, .45), c + .35, 1, .3); put('cel', celesta(93, 1.2, .28), c + .6, 1, -.3)
-motif(29.9, MOTIF, 'rec', step=BEAT, vel=.5)
-cues.append(('the round', 23.4))
-# D — 34 → 41.3: the lantern is full: tremolo strings, the harp repeating faster, a dark choir; it stops at the crack
-pads(34.0, T['crack'], [[50, 53, 57, 60, 63], [50, 53, 56, 60, 63]], 'choir', vel=.26, bars_per=1, oct=-12)
-pads(35.0, T['crack'], [[50, 53, 57, 62, 63]], 'strings', vel=.26, bars_per=3, trem=9)
-t = 34.6
-while t < T['crack'] - .1:
-    u = (t - 34.6) / (T['crack'] - 34.6); put('harp', harp(62 + (1 if int(t * 3) % 2 else 0), .3 + .28 * u), t, 1, .2); t += BEAT * (1 - .75 * u)
-t = 38.4
-while t < T['crack'] - .05:
-    u = (t - 38.4) / (T['crack'] - 38.4); put('perc', timp(38, .05 + .2 * u ** 1.5), t); t += .2 - .1 * u
-bassline(34.0, T['crack'], [DOR[0]], vel=.45, every=1)
-cues.append(('silence (crack)', T['crack']))
-# E — the palm: silence; a thin warm pad as the light reaches the moth; ONE celesta note when it turns into a firefly
-put('pad', strings(62, 4.2, .2) + strings(66, 4.2, .16) + strings(69, 4.2, .14), 48.6)
-put('pad', strings(62, 3.2, .1) * np.linspace(.4, 1, int(3.2 * SR)), T['transform'] - 3.1)
-put('cel', celesta(86, 4.0, .85), T['transform'], 1, 0); cues.append(('the first firefly: one note', T['transform']))
-# F — the firefly theme: celesta alone, then harp (D major) as it flies home; a bell-chord when its window turns gold
-theme(T['flyOff'] - .4, FF, 'cel', vel=.7)
-arps(T['flyOff'] + .8, 62.6, MAJ, rate=1, vel=.28, oct=12)
-pads(55.0, 62.8, MAJ[:2], 'strings', vel=.24)
-for j, m in enumerate([74, 78, 81, 86]): put('cel', celesta(m, 2.4, .45), T['homeArrive'] + .05 + j * .09, 1, -.3 + .2 * j)
-cues.append(('home window gold', T['homeArrive']))
-# G — 62.5 → 68.5: the decision: harp and strings hold under his line, a lift into the release
-pads(62.6, 68.6, [MAJ[2], MAJ[3]], 'strings', vel=.26, bars_per=1)
-for k, m in enumerate([62, 66, 69, 74, 73, 69, 71, 73]): put('harp', harp(m, .32), 62.8 + k * BEAT * .9, 1, .15)
-put('cel', celesta(81, 2.4, .5), T['openDoor'] + .1); put('cel', celesta(86, 2.4, .4), T['openDoor'] + .35)
-# H — 68.5 → 85.6: the release: the theme broadens: harp 8ths, pizzicato, strings, choir; every window a celesta note
-arps(68.6, 85.4, MAJ, rate=2, vel=.34, oct=12)
-bassline(68.6, 85.4, MAJ, vel=.48, every=1)
-pads(68.6, 85.6, MAJ, 'strings', vel=.34)
-pads(76.2, 85.6, MAJ, 'choir', vel=.28, oct=-12)
-theme(76.4, FF, 'rec', vel=.55); theme(76.4 + 8 * BEAT, FF_ANS, 'cel', vel=.6)
-PENT = [74, 76, 78, 81, 83, 86, 88, 90]
-for k, w in enumerate([e for e in json.load(open(os.path.join(HERE, 'events.json')))['ev'] if e['type'] == 'winGold' and e['t'] > 65]):
-    put('cel', celesta(PENT[k % len(PENT)] + (12 if k >= 8 else 0) - (12 if k >= 12 else 0), 1.8, .38), w['t'] + .04, 1, w.get('pan', 0) * .6)
-cues.append(('release: theme broadens', 68.6))
-# I — 85.6 → 87.5 a breath (gate); then the tower: the shelf opens lantern by lantern (rising celesta), gold swell
-SHO = [e['t'] for e in json.load(open(os.path.join(HERE, 'events.json')))['ev'] if e['type'] == 'shelfOpen']
-SC = [74, 76, 78, 81, 83]
-for k, t in enumerate(SHO): put('cel', celesta(SC[k % 5] + 12 * (k // 5 % 3), 1.6, .32 + .12 * (k / len(SHO))), t + .02, 1, -.5 + (k % 5) * .25)
-pads(87.6, 97.2, [MAJ[0], MAJ[2], MAJ[3], MAJ[0]], 'strings', vel=.36, bars_per=1)
-pads(88.6, 97.2, [MAJ[0], MAJ[1]], 'choir', vel=.34, bars_per=2, oct=-12)
-arps(92.2, 97.0, MAJ, rate=2, vel=.3, oct=24)
-put('perc', timp(38, .22), 87.6); put('perc', timp(45, .16), 93.95)
-cues.append(('shelf opens', SHO[0]))
-# J — 97 → 104: she wakes among them: harp alone with a high string; the keeper's motif in major, slow
-pads(97.2, 104.2, [MAJ[0]], 'strings', vel=.2, bars_per=2, oct=12)
-for k, m in enumerate(MOTIF_MAJ): put('harp', harp(m, .36), 97.6 + k * BEAT * 1.3, 1, -.1)
-# K — 104 → 120: dawn, the lullaby: 3/4 harp, celesta theme slowly, recorder answers, the last chord on the fade
-L = BEAT * 1.15
-k, t = 0, 104.3
-LUL = [[50, 57, 62, 66], [47, 54, 59, 62], [43, 50, 55, 59], [45, 52, 57, 61]]
-while t < 118.6:
-    ch = LUL[int((t - 104.3) / (3 * L)) % 4]; m = [ch[0], ch[2], ch[3]][k % 3] + 12
-    put('harp', harp(m, .3 if k % 3 else .36), t, 1, -.2 + .2 * (k % 3)); k += 1; t += L
-pads(104.3, 118.9, LUL, 'strings', vel=.24, bars_per=1)
-theme(110.0, [(m - 12, b * 1.15) for m, b in FF], 'cel', vel=.48)
-motif(115.4, MOTIF_MAJ, 'rec', step=BEAT * 1.4, vel=.42)
-for j, m in enumerate([74, 81, 86, 90]): put('cel', celesta(m, 4.0, .45 - .05 * j), 118.2 + j * .14, 1, -.2 + .15 * j)
-cues.append(('lullaby', 104.3))
+# A — 0 → 10.6: dawn, counting: a lone harp, a little uneasy; the riddle when the empty lantern is seen
+put('low', lp(saw_stack(38, 11, det=(-.05, .05), top=600), 220) * env_adsr(11, 2.0, 3) * .045, 0)
+for k, m in enumerate([62, 65, 69, 65]): put('harp', harp(m, .32), .7 + k * BEAT * 1.15, 1, .1)
+notes(4.6, [(m, .75) for m in RIDDLE[:4]], 'cel', vel=.55, d=2.0); cues.append(('riddle (empty lantern)', 4.6))
+pads(5.0, 10.8, [[50, 53, 57, 60, 63]], 'strings', vel=.2, bars_per=2)
+# B — 10.6 → 16.6: the title: the riddle in full over a low drone
+put('low', lp(saw_stack(38, 7, det=(-.05, .05), top=700), 240) * env_adsr(7, 1.0, 2.0) * .06, 10.4)
+notes(11.0, [(m, .75) for m in RIDDLE] + [(74, 2)], 'cel', vel=.7); cues.append(('title riddle', 11.0))
+pads(11.0, 16.6, [[50, 53, 56, 60, 63]], 'strings', vel=.24, bars_per=2)
+# C — 16.6 → 22.6: he decides: pizzicato steps up, a harp answer
+for k, m in enumerate([50, 53, 57, 62]): put('low', pizz(m - 12, .45), 17.0 + k * BEAT * .75)
+for k, m in enumerate([74, 77, 81]): put('harp', harp(m, .36), 19.6 + k * BEAT * .5, 1, .2)
+# D — 22.6 → 39: the first night: the pizzicato clock (waiting), a thin pad; the blink stops it; the click: a celesta stab
+clock(22.9, T['blink'] - .05, BEAT, vel=.34)
+pads(22.6, T['blink'], [[50, 53, 57, 60, 64], [46, 53, 57, 62, 65]], 'strings', vel=.2, bars_per=2)
+for k, t in enumerate([27.0, 30.4]): notes(t, [(m, .75) for m in RIDDLE[:3]], 'cel', vel=.35, oct=-12 if k else 0, d=1.8)
+for j, m in enumerate([75, 81, 86]): put('cel', celesta(m, 2.0, .6), T['click1'] + .08 + j * .03, 1, -.2 + .2 * j)
+cues.append(('the click (night 1)', T['click1']))
+pads(T['click1'] + .3, 39.0, [[50, 53, 56, 60, 63]], 'strings', vel=.22, bars_per=2, trem=7)
+# E — 39 → 45: the second night: the clock a little faster, harp eighths; 45 → 55 the morning: footprints, the scratch
+clock(39.4, 44.9, BEAT * .75, vel=.36)
+arps(39.4, 44.9, DOR[:2], rate=2, vel=.28)
+notes(46.4, [(m, .75) for m in RIDDLE[:4]], 'cel', vel=.5); notes(T['scratch'] - .1, [(81, .5), (80, .5), (85, 2)], 'cel', vel=.6); cues.append(('the same lantern', T['scratch']))
+pads(45.2, 55.0, [[50, 53, 57, 62, 64]], 'strings', vel=.2, bars_per=3)
+# F — 55 → 60.4: the third night, setting the trap: a harp ostinato over the clock, quicker still; then silence
+clock(55.3, 60.4, BEAT * .5, vel=.36)
+t = 55.4
+while t < 60.3: put('harp', harp(62 if int((t - 55.4) / (BEAT * .5)) % 2 else 63, .28), t, 1, .2); t += BEAT * .5
+cues.append(('silence (hiding)', 60.4))
+put('low', lp(saw_stack(37, 8.6, det=(-.04, .04), top=400), 160) * env_adsr(8.6, 2.5, 1.0) * .03, 60.6)   # a held breath, barely there
+# G — the light: a low hit and a dissonant swell under the huge wings; it falls as the shadow shrinks; one harp note at the cut
+put('perc', timp(33, .5), T['uncover']); put('low', lp(saw_stack(26, 4, det=(-.1, .1), top=500), 300) * env_adsr(4, .05, 2.4) * .11, T['uncover'])
+for m in (50, 51, 56): put('pad', strings(m + 12, 3.6, .26, trem=11), T['uncover'] + .05)
+pads(T['standUp'], 74.4, [[50, 53, 57, 62, 64]], 'strings', vel=.22, bars_per=2)
+put('harp', harp(74, .55), 74.55, 1, 0); cues.append(('reveal: one harp note', 74.55))
+# H — 74.5 → 88: 봄이 and her dog: celesta and strings, tender (D major with a minor colour)
+pads(75.0, 88.4, [[50, 54, 57, 62, 64], [47, 54, 57, 62, 66], [43, 50, 55, 58, 62], [45, 52, 57, 61, 64]], 'strings', vel=.24, bars_per=1)
+notes(T['vision'] + .2, [(81, 1), (78, 1), (76, 1), (74, 2), (None, 1), (78, 1), (76, 1), (73, 1), (74, 3)], 'cel', vel=.42, step=BEAT * 1.1)
+# I — the decision: a silence; one harp note when the lantern touches the floor; the waltz with the dog's shadow
+cues.append(('silence (decision)', 88.6))
+put('harp', harp(74, .5), T['setDown'] + .05, 1, 0); put('harp', harp(81, .4), T['setDown'] + .5, 1, .2)
+WALTZ_P = [[50, 57, 62, 66], [45, 57, 61, 64], [47, 54, 59, 62], [43, 55, 59, 62]]
+WALTZ_M = [(81, 2), (78, 1), (79, 2), (76, 1), (78, 2), (74, 1), (76, 3), (81, 2), (83, 1), (85, 2), (81, 1), (86, 3), (None, 3)]
+waltz(T['dogShadow'][0] - .3, 101.0, WALTZ_P, vel=.32, melody=WALTZ_M, mvel=.5); cues.append(('waltz (the dog)', T['dogShadow'][0]))
+# J — 101 → 120: dawn, the lullaby (slower waltz, a recorder answers); a two-note button when 노을 opens her eye
+waltz(101.2, 118.6, WALTZ_P, vel=.24, bar=3 * BEAT * 1.15, melody=[(m - 12 if m else None, b) for m, b in WALTZ_M[:7]], mvel=.36)
+notes(108.0, [(74, 1.5), (78, 1.5), (81, 3)], 'rec', vel=.4, step=BEAT)
+pads(101.2, 119.0, [[50, 57, 62, 66], [45, 57, 61, 64]], 'strings', vel=.18, bars_per=2)
+put('cel', celesta(86, 2.4, .5), T['eyeOpen'] + .1, 1, .2); put('cel', celesta(90, 2.4, .4), T['eyeOpen'] + .35, 1, .3)
+for j, m in enumerate([74, 81, 86]): put('cel', celesta(m, 4.0, .4 - .05 * j), 117.6 + j * .14, 1, -.2 + .15 * j)
 
-# —— silences: the crack (everything stops, a tail stays) and the breath before the shelf ——
-def gate(a, b, fade_out=.05, fade_in=.6, keep=('wind',)):
+# —— the silences: hiding (60.4 → the bell), the decision (88.6 → set down) ——
+def gate(a, b, fade_out=.05, fade_in=.6, keep=('wind', 'low')):
     i0, i1 = int(a * SR), int(b * SR); f0 = max(1, int(fade_out * SR)); f1 = max(1, int(fade_in * SR))
     for k, B in bus.items():
         if k in keep: continue
         B[i0:i0 + f0] *= np.linspace(1, 0, f0)[:, None]; B[i0 + f0:i1] = 0; B[i1:i1 + f1] *= np.linspace(0, 1, f1)[:, None]
-tail = sum(bus[k][int(T['crack'] * SR) - int(1.2 * SR):int(T['crack'] * SR)] for k in ('choir', 'pad', 'harp'))
-gate(T['crack'], 48.6, fade_out=.04, fade_in=.05)
-gate(85.5, 87.55, fade_out=.9, fade_in=.05)
-rv = np.zeros((int(4 * SR), 2)); ir = rng.standard_normal(int(3.5 * SR)) * np.exp(-np.arange(int(3.5 * SR)) / (1.0 * SR))
-for c in range(2): rv[:, c] = np.convolve(tail[:, c], ir)[:len(rv)] * .003
-add(bus['pad'], rv[:, 0], T['crack'], 1, -.3); add(bus['pad'], rv[:, 1], T['crack'], 1, .3)
+gate(60.45, T['uncover'] - .02, fade_out=.6, fade_in=.02)
+gate(88.6, T['setDown'], fade_out=1.0, fade_in=.02)
+gate(T['blink'] - .02, T['click1'] + .05, fade_out=.1, fade_in=.02, keep=())
 
 LEV = {'harp': 1.0, 'cel': .9, 'pad': 1.0, 'choir': .9, 'low': .9, 'perc': .9, 'wind': 1}
 for k, B in bus.items(): out += B * LEV[k]
@@ -212,5 +195,5 @@ os.makedirs(os.path.join(HERE, 'music'), exist_ok=True)
 with wave.open(os.path.join(HERE, 'music', 'score.wav'), 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.clip(out, -1, 1) * 32767).astype('<i2').tobytes())
 with open(os.path.join(HERE, 'music', 'CUES.md'), 'w') as f:
-    f.write('# Score cues (music/score.py)\n\nD dorian → D major, ♩ = 72. Times in seconds, from timeline.json.\n\n| cue | t |\n|---|---|\n' + ''.join(f'| {a} | {b:.2f} |\n' for a, b in cues))
+    f.write('# Score cues (music/score.py)\n\nD minor/dorian → D major, ♩ = 72. Times in seconds, from timeline.json.\n\n| cue | t |\n|---|---|\n' + ''.join(f'| {a} | {b:.2f} |\n' for a, b in cues))
 print('music/score.wav', round(len(out) / SR, 2), 's')
