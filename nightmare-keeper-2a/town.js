@@ -265,8 +265,8 @@ export function buildTown() {
     // —— his lantern light: amber, violet as it fills ——
     lampAt.copy(Hr.lanternPos(hf));
     const toCam = cam.position.clone().sub(lampAt).setY(0).normalize();
-    lamp.visible = halo.visible = Hr.root.visible;
-    lamp.position.copy(lampAt).addScaledVector(toCam, .6); lamp.intensity = (id === 'dawn' ? 1.4 : 3.4) * flick(t, 3) * (t > T.full ? .8 + .2 * Math.sin(t * 19) : 1);
+    halo.visible = Hr.root.visible;   // the light itself stays in the scene (a light count change recompiles every shader)
+    lamp.position.copy(lampAt).addScaledVector(toCam, .6); lamp.intensity = Hr.root.visible ? (id === 'dawn' ? 1.4 : 3.4) * flick(t, 3) * (t > T.full ? .8 + .2 * Math.sin(t * 19) : 1) : 0;
     lamp.color.set('#ffb050').lerp(VIOLET, fill * .6);
     halo.position.copy(lampAt); halo.scale.setScalar(.45 + .3 * fill); halo.material.opacity = .5; halo.material.color.set('#ffc070').lerp(new THREE.Color('#c890ff'), fill * .7);
     fillL.position.copy(Hr.root.position).add(new THREE.Vector3(.8, 1.8, 2.4)); fillL.intensity = id === 'dawn' ? .6 : 1.3;

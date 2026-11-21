@@ -214,7 +214,7 @@ export function buildTower() {
     Hr.face(cam, flip); Hr.frame(hf, ['hold', 'hold1'].includes(hf) ? 0 : null, 0);
     hLamp.intensity = ['hold', 'hold1'].includes(hf) ? 2.4 * flick(t, 3) : 0; if (hLamp.intensity) { hLamp.position.copy(Hr.lanternPos(hf)).add(cam.position.clone().sub(Hr.root.position).setY(0).normalize().multiplyScalar(.5)); }
     // his full lantern, set down by the window from the keyhole shot on
-    lantG.visible = lantL.visible = t > T.shut - .2; lantGl.material.emissiveIntensity = 2.2 * (.8 + .2 * Math.sin(t * 9));
+    lantG.visible = t > T.shut - .2; lantL.intensity = lantG.visible ? 1.4 : 0; lantGl.material.emissiveIntensity = 2.2 * (.8 + .2 * Math.sin(t * 9));   // lights stay in the scene (a light count change recompiles every shader)
     fill.position.copy(id === 'rope' || id === 'pull' ? ROPE : CH).add(new THREE.Vector3(.6, 1.6, 1.6)); fill.intensity = id === 'rope' || id === 'pull' ? 1.8 : .9;
     MS.userData.update(t); motes.userData.update(t);
     // focus
