@@ -21,13 +21,21 @@ function glyphMask(ch, x, y, S, W, H) {
   c.strokeStyle = '#000'; c.lineWidth = S * .04; c.lineJoin = 'round'; c.strokeText(ch, x + S / 2, y + S / 2 + S * .04);
   return (masks[key] = cv);
 }
-// write the column: p ∈ [0,1] overall progress; x, y top-left of the column; S = cell size
+// write the column: p ∈ [0,1] overall progress; x, y top-left of the column; S = cell size.
+// Work is confined to each syllable's cell (clip + sub-rect blits), and a finished syllable is kept and re-used.
+const done = {};
 export function writeTitle(dst, T, x, y, S, p, am = 1) {
   const W = T.wet.width, H = T.wet.height, n = TXT.length;
   for (let i = 0; i < n; i++) {
     const pi = clamp(p * n - i); if (pi <= 0) continue;
     const ch = TXT[i], cy = y + i * S * 1.02, k = S / 100;
-    for (const c of [T.ink.wet, T.ink.dry]) { c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.clearRect(0, 0, W, H); }
+    const rx = Math.max(0, Math.floor(x - S * .25)), ry = Math.max(0, Math.floor(cy - S * .25)), rw = Math.min(W - rx, Math.ceil(S * 1.5)), rh = Math.min(H - ry, Math.ceil(S * 1.5));
+    const key = [ch, x, cy, S].join(',');
+    if (pi >= 1 && am === 1 && done[key]) {
+      for (const kk of ['wet', 'dry']) { const d = dst[kk]; d.save(); d.setTransform(1, 0, 0, 1, 0, 0); d.drawImage(done[key][kk], rx, ry); d.restore(); }
+      continue;
+    }
+    for (const c of [T.ink.wet, T.ink.dry]) { c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.clearRect(rx, ry, rw, rh); }
     const passes = PASS[ch], m = passes.length;
     passes.forEach((ps, j) => {
       const pj = clamp(pi * m - j); if (pj <= 0) return;
@@ -35,10 +43,13 @@ export function writeTitle(dst, T, x, y, S, p, am = 1) {
       draw(T.ink, mk(pts, { w: 34 * k, tone: TONE.jiao, dry: .08, wet: .45, prof: 'even', rough: .06, nb: 40, solid: true, seed: 900 + i * 17 + j }), pj, am);
       draw(T.ink, mk(pts, { w: 22 * k, tone: TONE.jiao, dry: .7, wet: 0, prof: 'even', rough: .2, nb: 30, seed: 500 + i * 17 + j }), pj, am);
     });
-    const mask = glyphMask(ch, x, cy, S, W, H);
-    for (const key of ['wet', 'dry']) {
-      const c = T.ink[key]; c.globalCompositeOperation = 'destination-in'; c.drawImage(mask, 0, 0); c.globalCompositeOperation = 'source-over';
-      const d = dst[key]; d.save(); d.setTransform(1, 0, 0, 1, 0, 0); d.drawImage(T[key], 0, 0); d.restore();
+    const mask = glyphMask(ch, x, cy, S, W, H), keep = pi >= 1 && am === 1 ? {} : null;
+    for (const kk of ['wet', 'dry']) {
+      const c = T.ink[kk]; c.save(); c.beginPath(); c.rect(rx, ry, rw, rh); c.clip();
+      c.globalCompositeOperation = 'destination-in'; c.drawImage(mask, rx, ry, rw, rh, rx, ry, rw, rh); c.restore();
+      const d = dst[kk]; d.save(); d.setTransform(1, 0, 0, 1, 0, 0); d.drawImage(T[kk], rx, ry, rw, rh, rx, ry, rw, rh); d.restore();
+      if (keep) { const cv = document.createElement('canvas'); cv.width = rw; cv.height = rh; cv.getContext('2d').drawImage(T[kk], rx, ry, rw, rh, 0, 0, rw, rh); keep[kk] = cv; }
     }
+    if (keep) done[key] = keep;
   }
 }

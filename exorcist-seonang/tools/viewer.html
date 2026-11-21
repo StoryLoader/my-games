@@ -7,8 +7,8 @@
   :root { --bg: #12100d; --fg: #f1ead8; --dim: #b9b0a0; --accent: #c2412f; --line: rgba(241,234,216,.4); --veil: rgba(20,16,10,.28); color-scheme: dark; }
   html, body { height: 100%; }
   body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.4 system-ui, sans-serif; overflow: hidden;
-    padding-left: max(0px, env(safe-area-inset-left, 0px)); padding-right: max(0px, env(safe-area-inset-right, 0px)); }
-  #view { position: absolute; inset: 0; overflow: hidden; touch-action: manipulation; }
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  #view { position: absolute; top: 0; bottom: 0; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); overflow: hidden; touch-action: manipulation; }
   #frame { position: absolute; left: 50%; top: 50%; width: 1080px; height: 1920px; transform-origin: center center; }
   #c { position: absolute; left: 0; top: 0; display: block; }
   #cover { position: absolute; inset: 0; display: grid; place-items: center; background: var(--veil); cursor: pointer; border: 0; color: var(--fg); font: inherit; }
@@ -39,7 +39,7 @@
 (() => {
   const frame = document.getElementById('frame'), cover = document.getElementById('cover'), st = document.getElementById('status'), note = document.getElementById('note');
   const aud = document.getElementById('aud'), pp = document.getElementById('pp'), seek = document.getElementById('seek'), time = document.getElementById('time');
-  const fit = () => { const s = Math.min(innerWidth / 1080, innerHeight / 1920); frame.style.transform = `translate(-50%, -50%) scale(${s})`; };
+  const view = document.getElementById('view'), fit = () => { const s = Math.min(view.clientWidth / 1080, view.clientHeight / 1920); frame.style.transform = `translate(-50%, -50%) scale(${s})`; };
   addEventListener('resize', fit); fit();
   const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   const say = (m, ms = 3500) => { note.textContent = m; note.classList.add('on'); clearTimeout(say.t); say.t = setTimeout(() => note.classList.remove('on'), ms); };
