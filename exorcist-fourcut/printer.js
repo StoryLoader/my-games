@@ -34,9 +34,10 @@ export function buildPrinter() {
   const back = add(palm, new THREE.PlaneGeometry(STRIP_W, STRIP_H).rotateX(-Math.PI / 2), grey(0.92), { cast: false }); back.position.set(0, 0.012, 0); back.rotation.y = 0.06;
   const stampC = paperCanvas(360, 1120, (g, put) => {
     g.fillStyle = '#fff'; g.fillRect(0, 0, 360, 1120);
-    g.save(); g.translate(180, 560); g.rotate(-Math.PI / 2 - 0.05);
-    g.strokeStyle = '#000'; g.lineWidth = 16; g.strokeRect(-470, -140, 940, 280);
-    g.fillStyle = '#000'; g.font = '230px "Black Han Sans"'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('네 컷', 0, 12); g.restore();
+    g.save(); g.translate(180, 560); g.rotate(-0.04);
+    g.strokeStyle = '#000'; g.lineWidth = 16; g.strokeRect(-140, -330, 280, 660);
+    g.fillStyle = '#000'; g.font = '230px "Black Han Sans"'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('네', 0, -150); g.fillText('컷', 0, 170); g.restore();
+    put('stampA', '네', 180, 410, 'stamp', 230, { align: 'center', color: 'rgba(0,0,0,0)' }); put('stampB', '컷', 180, 730, 'stamp', 230, { align: 'center', color: 'rgba(0,0,0,0)' });
   });
   const stampM = add(palm, new THREE.PlaneGeometry(STRIP_W, STRIP_H).rotateX(-Math.PI / 2), printMat(canvasTex(stampC.canvas), { bias: 0.5, key: 'stamp' }), { cast: false });
   stampM.position.set(0, 0.0125, 0); stampM.rotation.y = 0.06; stampM.visible = false;

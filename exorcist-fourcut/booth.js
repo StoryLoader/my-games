@@ -24,7 +24,8 @@ export function buildBooth() {
   // —— the shooting booth: walls (x ±0.72, z -3.2 .. -1.58) ——
   const BW = grey(0.62, { r: 0.8 });
   box(scene, 1.46, 2.2, 0.05, 0, 1.1, -1.58, BW);                       // lens wall
-  box(scene, 0.05, 2.2, 1.62, 0.72, 1.1, -2.39, BW).visible = true;      // outer side wall (the waiting room sees this side)
+  box(scene, 0.05, 2.2, 0.25, 0.72, 1.1, -3.075, BW); box(scene, 0.05, 2.2, 0.77, 0.72, 1.1, -1.965, BW);   // outer side wall, a doorway between
+  box(scene, 0.05, 0.2, 0.6, 0.72, 2.1, -2.65, BW);
   const opening = box(scene, 0.06, 2.2, 0.6, 0.72, 1.1, -2.65, DARKW); opening.visible = false;
   box(scene, 1.46, 0.06, 1.62, 0, 2.2, -2.39, BW);                       // booth ceiling
   // the backdrop: two dark curtain halves with a gap (x≈0.32) where the girl first shows
@@ -41,7 +42,7 @@ export function buildBooth() {
   const scrC = document.createElement('canvas'); scrC.width = 432; scrC.height = 324;
   const scrTex = canvasTex(scrC, { mip: false, nearest: true });
   const screen = add(scene, new THREE.PlaneGeometry(0.32, 0.24), new THREE.MeshBasicMaterial({ map: scrTex }), { flat: true, cast: false, recv: false });
-  screen.rotation.y = Math.PI; screen.position.set(0, 1.12, -1.665);
+  screen.rotation.y = Math.PI; screen.position.set(0, 1.12, -1.672);   // in front of the rim's face (no z-fight)
   const scrRim = box(scene, 0.36, 0.28, 0.02, 0, 1.12, -1.655, grey(0.05));
   // rules on the booth's outer wall, beside the entrance (printed cards: the picture, not captions)
   const rules = paperCanvas(560, 760, (g, put) => {
@@ -66,6 +67,10 @@ export function buildBooth() {
   const lampL = new THREE.SpotLight(0xffffff, 4.5, 6, 0.95, 0.6, 1.2); lampL.position.set(1.7, 2.4, -1.2); lampL.target.position.set(2.2, 0.8, -1.4); scene.add(lampL, lampL.target);
   lampL.castShadow = true; lampL.shadow.mapSize.set(1024, 1024); lampL.shadow.bias = -0.0006;
   add(scene, new THREE.BoxGeometry(0.9, 0.04, 0.18), glow(1), { flat: true, cast: false, recv: false }).position.set(1.7, 2.42, -1.2);
+  const roomL = new THREE.SpotLight(0xffffff, 3.2, 6, 1.0, 0.7, 1.2); roomL.position.set(1.4, 2.4, -2.05); roomL.target.position.set(1.0, 0.6, -2.4); scene.add(roomL, roomL.target);
+  roomL.castShadow = true; roomL.shadow.mapSize.set(1024, 1024); roomL.shadow.bias = -0.0006;
+  add(scene, new THREE.BoxGeometry(0.9, 0.04, 0.18).rotateY(Math.PI / 2), glow(1), { flat: true, cast: false, recv: false }).position.set(1.4, 2.42, -2.05);
+  const posterL = new THREE.SpotLight(0xffffff, 2.2, 4, 0.5, 0.6, 1.2); posterL.position.set(1.7, 2.3, 0.6); posterL.target.position.set(2.43, 1.35, -0.05); scene.add(posterL, posterL.target);
   // —— inside light: the key from the lens (the ring light), very little fill ——
   const key = new THREE.SpotLight(0xffffff, 1.5, 5, 0.75, 0.35, 1.2); key.position.set(0, 1.5, -1.75); key.target.position.set(0, 1.25, -2.6); scene.add(key, key.target);
   key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02;
@@ -92,22 +97,23 @@ export function buildBooth() {
   // —— states for a shot or for a print ——
   const placeGhost = (step, o = {}) => {
     ghost.root.visible = step >= 0; if (step < 0) return;
-    const z = GHOST_Z[Math.min(3, Math.floor(step))], x = [0.31, 0.52, 0.2, 0.0][Math.min(3, Math.floor(step))];
+    const z = GHOST_Z[Math.min(3, Math.floor(step))], x = [0.31, 0.52, 0.3, 0.0][Math.min(3, Math.floor(step))];
     ghost.root.position.set(x, step >= 3 ? -0.12 : 0, z); ghost.root.rotation.y = 0;
-    ghost.pose({ armR: step === 2 ? [-1.25, 0, 0.6, -0.4] : [0, 0, -0.06, -0.1], armL: [0, 0, 0.06, -0.1], headX: step >= 3 ? -0.12 : 0.18, headZ: step === 0 ? 0.12 : 0, expr: step >= 3 ? 'smile' : 'neutral' });
+    if (o.ghostPos) ghost.root.position.set(...o.ghostPos);
+    ghost.pose({ armL: step >= 2 ? [-1.2, 0, -0.35, -0.4] : [0, 0, 0.06, -0.1], armR: [0, 0, -0.06, -0.1], headX: step >= 3 ? -0.12 : 0.18, headZ: step === 0 ? 0.12 : 0, expr: step >= 3 ? 'smile' : 'neutral' });
     ghost.veil.visible = !o.unveil && step >= 1;   // in the gap (step 0) her face shows, pale in the dark
   };
   function state(s = {}) {
     // s: { who: 'seoha'|'couple'|'none', ghost: -1..3, seohaExpr, mujin: bool, mirror, unveil, entOpen }
     const who = s.who ?? 'seoha';
     seoha.root.visible = who === 'seoha'; mina.root.visible = boy.root.visible = who === 'couple';
-    if (who === 'couple') { mina.root.position.set(-0.19, 0, -2.5); boy.root.position.set(0.2, 0, -2.58); mina.pose({ armR: [-0.6, 0, -0.9, -2.2], headZ: 0.12, expr: 'smile' }); boy.pose({ armL: [-0.3, 0, 0.5, -0.8], headZ: -0.06, expr: 'smile' }); }
+    if (who === 'couple') { mina.root.position.set(-0.3, 0, -2.5); boy.root.position.set(0.04, 0, -2.58); mina.pose({ armR: [-0.6, 0, -0.9, -2.2], headZ: 0.12, expr: 'smile' }); boy.pose({ armL: [-0.3, 0, 0.5, -0.8], headZ: -0.06, expr: 'smile' }); }
     seoha.pose({ expr: s.seohaExpr || 'stern', armR: s.mirror ? [-1.35, 0, -0.25, -0.35] : s.seohaArmR, armL: s.seohaArmL, headY: s.seohaHeadY || 0, headX: s.seohaHeadX || 0 });
     placeGhost(s.ghost ?? -1, s);
     mujin.root.visible = !!s.mujin;
     if (s.mujin) mujin.pose(s.mujinPose || { armR: [-1.6, 0.2, -0.3, -0.2], armL: [-1.5, -0.2, 0.3, -0.2], expr: 'shout', lean: 0.12 });
     mirror.visible = !!s.mirror; if (s.mirror) { mirror.position.set(0.04, 1.46, -1.82); mirror.rotation.set(0, Math.PI, 0); }
-    ent.visible = !s.entOpen; key.intensity = s.flash ? 14 : 1.5;
+    ent.visible = !s.entOpen; key.intensity = s.flash ? 14 : (s.ghost ?? -1) >= 3 && !s.ghostPos ? 0.55 : 1.5;
   }
   // the preview screen: what the lens sees, small, plus the count and the frame number (a canvas)
   function drawScreen(img, count, frameNo) {
@@ -120,7 +126,7 @@ export function buildBooth() {
     scrTex.needsUpdate = true;
   }
   return {
-    scene, cams, state, drawScreen, seoha, ghost, mujin, mina, boy, mirror, screen, ent, key, lampL, ring, photoMeshes, posterM, rulesM, texts,
+    scene, cams, state, drawScreen, seoha, ghost, mujin, mina, boy, mirror, screen, ent, key, lampL, roomL, ring, photoMeshes, posterM, rulesM, texts,
     setPhotos(list) { photoMeshes.forEach((m, i) => { m.material = list[i % list.length].mat; }); },
     setPoster(mat) { posterM.material = mat; },
   };

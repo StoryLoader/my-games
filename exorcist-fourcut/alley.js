@@ -35,7 +35,7 @@ export function buildAlley() {
   // light: the shop's white light pours down the lane (long shadows toward the camera); a weak street lamp behind us
   const shop = new THREE.SpotLight(0xffffff, 40, 30, 0.75, 0.5, 1.2); shop.position.set(0, 1.6, SHOP_Z - 0.6); shop.target.position.set(0, 0, 0); scene.add(shop, shop.target);
   shop.castShadow = true; shop.shadow.mapSize.set(2048, 2048); shop.shadow.bias = -0.0005; shop.shadow.normalBias = 0.02;
-  const street = new THREE.SpotLight(0xffffff, 6, 14, 0.8, 0.6, 1.2); street.position.set(0.8, 4.2, 1.5); street.target.position.set(-0.2, 1, -6); scene.add(street, street.target); street.castShadow = true;
+  const street = new THREE.SpotLight(0xffffff, 8, 14, 0.7, 0.6, 1.2); street.position.set(0.9, 3.6, -3.2); street.target.position.set(-0.4, 1.2, -6.6); scene.add(street, street.target); street.castShadow = true;
   scene.add(new THREE.HemisphereLight(0xffffff, 0x111111, 0.06));
   // people
   const jieun = figure('jieun'), seoha = figure('seoha'), mujin = figure('mujin');

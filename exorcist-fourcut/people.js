@@ -86,8 +86,8 @@ export function figure(kind, o = {}) {
   P.armL = arm(body, -1, sh, 0.3, 0.27, sleeve, { cuffMat: kind === 'seoha' ? M.coat : sleeve });
   P.armR = arm(body, 1, sh, 0.3, 0.27, sleeve, { cuffMat: kind === 'seoha' ? M.coat : sleeve });
   if (kind === 'mujin') {   // the beads wound round his right fist
-    for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; const b = add(P.armR.H, new THREE.SphereGeometry(0.018, 8, 6), M.bead, { cast: false }); b.position.set(Math.cos(a) * 0.05, -0.03 + Math.sin(a * 2) * 0.01, Math.sin(a) * 0.035); }
     P.beads = [];
+    for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; const b = add(P.armR.H, new THREE.SphereGeometry(0.018, 8, 6), M.bead, { cast: false }); b.position.set(Math.cos(a) * 0.05, -0.03 + Math.sin(a * 2) * 0.01, Math.sin(a) * 0.035); P.beads.push(b); }
   }
   // neck + head
   const neck = add(body, new THREE.CylinderGeometry(0.045 * wide, 0.05 * wide, 0.12, 10), kind === 'mujin' ? M.skin : M.skin); neck.position.y = shY + 0.06;
