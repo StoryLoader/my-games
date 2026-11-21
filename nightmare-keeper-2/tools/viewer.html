@@ -48,8 +48,10 @@
   // the soundtrack is the clock (the picture waits for it while it loads); if the browser refuses to play it, a wall clock stands in
   let playing = false, withSound = true, clock0 = 0, wall0 = 0, last = -1, ready = false;
   const now = () => (withSound ? aud.currentTime : clock0 + (playing ? (performance.now() - wall0) / 1000 : 0));
-  function draw(t) { if (!ready) return; t = Math.max(0, Math.min(window.DUR - .001, t)); if (Math.abs(t - last) < 1e-4) return; last = t; window.render(t); seek.value = t; time.textContent = `${fmt(t)} / ${fmt(window.DUR)}`; }
-  function loop() { if (playing) { draw(now()); if (now() >= window.DUR - .02) stop(); } requestAnimationFrame(loop); }
+  function draw(t) { if (!ready) return; t = Math.max(0, Math.min(window.DUR - .001, t)); if (Math.abs(t - last) < 1e-4) return; last = t;
+    try { window.render(t); } catch (e) { console.error('frame', t.toFixed(2), e); }   // one bad frame never stops the picture
+    seek.value = t; time.textContent = `${fmt(t)} / ${fmt(window.DUR)}`; }
+  function loop() { requestAnimationFrame(loop); if (playing) { draw(now()); if (now() >= window.DUR - .02) stop(); } }
   function playSound() {   // called inside the tap/click itself, so phones allow the sound
     const p = aud.play();
     if (p && p.catch) p.then(() => { if (!withSound) { withSound = true; say('소리를 켰습니다'); } }).catch(() => {

@@ -96,7 +96,7 @@ function subtitle(t, v) {
   if (a <= 0) return;
   g.save(); g.globalAlpha = a; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.font = F_SUB;
   if (PORT) g.font = "700 52px 'Nanum Myeongjo'";
-  const text = v.parts ? v.parts.filter(([o]) => t >= v.t + o - .15).pop()[1] : v.sub;   // a long line in parts, each from its own moment
+  const text = v.parts ? (v.parts.filter(([o]) => t >= v.t + o - .15).pop() || v.parts[0])[1] : v.sub;   // a long line in parts, each from its own moment
   const lines = PORT ? wrapKo(text, W - 220) : [text], lh = 70, cx = PORT ? W / 2 - 20 : W / 2;
   const y = PORT ? H * .775 : H - 92, tw = Math.max(...lines.map(L => g.measureText(L).width));
   const top = y - 74, hgt = 114 + (lines.length - 1) * lh;
