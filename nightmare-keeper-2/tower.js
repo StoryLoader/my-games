@@ -85,7 +85,7 @@ export function buildTower() {
   scene.add(ffs);
 
   const CAM = {
-    shelf: { p: track([[0, [-3.0, 3.4, 3.2]], [5.0, [.9, 3.0, 4.3]], [9.2, [3.3, 2.3, 4.5]]]), l: track([[0, [-2.0, 2.2, -2.6]], [5.0, [.2, 2.0, -2.2]], [9.2, [1.85, .95, 1.75]]]), fov: 34 },
+    shelf: { p: track([[0, [-3.0, 3.4, 3.2]], [4.2, [.7, 3.0, 4.2]], [6.4, [3.4, 2.05, 4.4]], [9.2, [3.0, 1.8, 3.75]]]), l: track([[0, [-2.0, 2.2, -2.6]], [4.2, [.1, 2.0, -2.2]], [6.4, [1.85, .98, 1.75]], [9.2, [1.85, 1.0, 1.75]]]), fov: 34 },   // the shelf while the narration names it, then 노을 asleep (from 19 s, when the line reaches her)
     towerRelease: { p: track([[0, [.9, 2.3, 3.8]], [5.5, [.6, 1.9, 3.1]], [11, [.3, 1.3, 2.4]]]), l: track([[0, [-.3, 2.1, -2.6]], [5.5, [-.2, 2.7, -2.4]], [11, [0, 5.6, -1.2]]]), fov: 34 },
     wake: { p: track([[0, [3.6, 2.0, 4.3]], [7, [3.15, 1.75, 3.7]]]), l: track([[0, [1.85, 1.0, 1.75]], [7, [1.85, 1.05, 1.75]]]), fov: 32 },
   };
@@ -114,9 +114,9 @@ export function buildTower() {
     Hr.root.visible = id !== 'shelf'; Hr.root.position.set(id === 'wake' ? -.5 : -.15, 0, id === 'wake' ? -.3 : .35);
     const hf = id === 'wake' ? (Math.floor(t * 1.2) % 2 ? 'hold1' : 'hold') : (Math.floor(t * 1.3) % 2 ? 'hup1' : 'hup');
     Hr.face(cam); Hr.frame(hf, 0, 1);
-    fill.position.copy(id === 'towerRelease' ? Hr.root.position : N.root.position).add(new THREE.Vector3(.4, 1.5, 2)); fill.intensity = 1.2;
+    fill.position.copy(id === 'towerRelease' ? Hr.root.position : N.root.position).add(new THREE.Vector3(.4, 1.5, 2)); fill.intensity = id === 'shelf' ? 1.2 + 1.2 * ss(seg(lt, 4.2, 6.4)) : 1.2;
     kept.userData.update(t); ffs.userData.update(t);
-    const subj = id === 'shelf' ? (lt < 6 ? new THREE.Vector3(lerp(-1.8, .2, ss(lt / 6)), 2.2, -2.4) : N.root.position.clone().setY(.9)) : id === 'wake' ? N.root.position.clone().setY(1.0) : new THREE.Vector3(0, lerp(2.2, 4.6, ss(seg(lt, 5, 11))), -2.0);
+    const subj = id === 'shelf' ? (lt < 5 ? new THREE.Vector3(lerp(-1.8, .2, ss(lt / 6)), 2.2, -2.4) : N.root.position.clone().setY(.9)) : id === 'wake' ? N.root.position.clone().setY(1.0) : new THREE.Vector3(0, lerp(2.2, 4.6, ss(seg(lt, 5, 11))), -2.0);
     post.dof.focus = cam.position.distanceTo(subj); post.dof.aper = id === 'wake' ? 130 : 120; post.dof.maxCoc = 18;
     focusObj = subj;
     post.bloom.strength = .55 + .25 * tg; post.bloom.threshold = .82;
