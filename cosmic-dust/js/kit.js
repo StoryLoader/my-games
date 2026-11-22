@@ -2,6 +2,7 @@
 const TXT = {};
 function txtImg(str, font, px, col = CREAM, o = {}){
   const key = [str, font, px, col, o.hatch ? 1 : 0].join('|'); if (TXT[key]) return TXT[key];
+  const gl = (window.GLYPHS = window.GLYPHS || {}); gl[font.f] = gl[font.f] || ''; for (const ch of str) if (!gl[font.f].includes(ch)) gl[font.f] += ch; (window.STRS = window.STRS || {})[str] = font.f;   // which characters each font really draws (checked against the subsets)
   const c0 = mk(10, 10).getContext('2d'); c0.font = `${font.w || ''} ${px}px ${font.f}`;
   const tw = Math.ceil(c0.measureText(str).width) + 24, th = Math.ceil(px * 1.4);
   const c = mk(tw, th), g = c.getContext('2d');

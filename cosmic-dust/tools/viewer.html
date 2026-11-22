@@ -1,0 +1,94 @@
+<meta charset="utf-8">
+<title>마지막 한 프레임</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* one dark film player: the vertical frame (1080×1920) scaled to fit; the soundtrack is the clock */
+  :root { --bg: #0b0908; --fg: #fff4dc; --dim: #b9ab92; --accent: #1fb39a; --line: rgba(255,244,220,.45); --veil: rgba(11,9,8,.25); color-scheme: dark; }
+  /* a projection room is dark in either theme: the same tokens for both */
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0b0908; --fg: #fff4dc; --dim: #b9ab92; --accent: #1fb39a; --line: rgba(255,244,220,.45); --veil: rgba(11,9,8,.25); color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg: #0b0908; --fg: #fff4dc; --dim: #b9ab92; --accent: #1fb39a; --line: rgba(255,244,220,.45); --veil: rgba(11,9,8,.25); color-scheme: dark; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.4 system-ui, sans-serif; overflow: hidden;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  #view { position: absolute; top: 0; bottom: 0; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); overflow: hidden; touch-action: manipulation; }
+  #frame { position: absolute; left: 50%; top: 50%; width: 1080px; height: 1920px; transform-origin: center center; }
+  #c { position: absolute; left: 0; top: 0; display: block; }
+  #cover { position: absolute; inset: 0; display: grid; place-items: center; background: var(--veil); cursor: pointer; border: 0; color: var(--fg); font: inherit; }
+  #cover[hidden] { display: none; }
+  .play { display: grid; gap: 30px; justify-items: center; margin-top: 560px; }
+  .play b { width: 170px; height: 170px; border-radius: 50%; border: 3px solid var(--line); display: grid; place-items: center; background: #0b0908; }
+  .play b::after { content: ''; border-left: 54px solid var(--fg); border-top: 32px solid transparent; border-bottom: 32px solid transparent; margin-left: 14px; }
+  #status { font-size: 40px; color: var(--dim); text-align: center; }
+  #note { position: absolute; left: 0; right: 0; top: 40px; text-align: center; font-size: 36px; color: var(--dim); pointer-events: none; opacity: 0; transition: opacity .4s; }
+  #note.on { opacity: 1; }
+  #bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    background: linear-gradient(0deg, rgba(0,0,0,.75), rgba(0,0,0,0)); opacity: 0; transition: opacity .3s; }
+  body:hover #bar, #bar:focus-within, body.paused #bar { opacity: 1; }
+  #bar button { background: none; border: 1px solid var(--line); color: var(--fg); border-radius: 6px; width: 44px; height: 34px; cursor: pointer; font-size: 14px; }
+  #bar button:focus-visible, #seek:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #seek { flex: 1; min-width: 0; accent-color: var(--accent); }
+  #time { font-variant-numeric: tabular-nums; color: var(--dim); font-size: 13px; min-width: 92px; text-align: right; }
+  @media (prefers-reduced-motion: reduce) { #bar, #note { transition: none; } }
+</style>
+<div id="view"><div id="frame"><canvas id="c" width="1080" height="1920"></canvas>
+  <div id="note" role="status"></div>
+  <button id="cover" aria-label="재생"><div class="play"><b></b><span id="status">불러오는 중…</span></div></button></div></div>
+<div id="bar"><button id="pp" aria-label="재생/일시정지">▶</button><input id="seek" type="range" min="0" max="162.5" step="0.05" value="0" aria-label="재생 위치"><span id="time">0:00 / 2:42</span></div>
+<audio id="aud" src="mix.mp3" preload="auto" playsinline></audio>
+<script>window.FONTS_SUB = true;</script>
+<script src="app.js"></script>
+<script>
+(() => {
+  const frame = document.getElementById('frame'), cover = document.getElementById('cover'), st = document.getElementById('status'), note = document.getElementById('note');
+  const aud = document.getElementById('aud'), pp = document.getElementById('pp'), seek = document.getElementById('seek'), time = document.getElementById('time');
+  const view = document.getElementById('view'); const fit = () => { const s = Math.min(view.clientWidth / 1080, view.clientHeight / 1920); frame.style.transform = `translate(-50%, -50%) scale(${s})`; };
+  addEventListener('resize', fit); fit();
+  const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const say = (m, ms = 3500) => { note.textContent = m; note.classList.add('on'); clearTimeout(say.t); say.t = setTimeout(() => note.classList.remove('on'), ms); };
+  // the soundtrack is the clock; if the browser refuses to play it, a wall clock stands in
+  let playing = false, withSound = true, clock0 = 0, wall0 = 0, last = -1, ready = false, warm = false, want = null;   // want: a seek made before the sound could take it
+  const now = () => (withSound ? aud.currentTime : clock0 + (playing ? (performance.now() - wall0) / 1000 : 0));
+  // pacing: the film has 15 drawings a second, so render() redraws only when the drawing changes; one draw per display frame at most,
+  // and after a slow draw the next display frame is left free so the browser can show it (frames drop, the picture stays on the sound's clock).
+  // If drawings keep taking longer than a frame of film, the wide halo is dropped (window.LITE).
+  let skip = 0, slow = 0;
+  function draw(t, force) { if (!ready) return; t = Math.max(0, Math.min(window.DUR - .001, t)); if (Math.abs(t - last) < 1e-4) return;
+    if (!force && skip > 0) { skip--; return; } last = t;
+    const t0 = performance.now();
+    try { window.render(t); } catch (e) { console.error('frame', t.toFixed(2), e); }   // one bad frame never stops the picture
+    const ms = performance.now() - t0;
+    if (!force) { if (ms > 34) skip = 1; slow = ms > 66 ? slow + 1 : Math.max(0, slow - 1); if (slow > 6 && !window.LITE) { window.LITE = true; say('이 기기에 맞춰 화면을 가볍게 그립니다'); } }
+    seek.value = t; time.textContent = `${fmt(t)} / ${fmt(window.DUR)}`; }
+  function loop() { requestAnimationFrame(loop); if (playing) { draw(now()); if (now() >= window.DUR - .02) stop(); } }
+  function playSound() {   // called inside the tap/click itself, so phones allow the sound
+    if (want != null) { try { aud.currentTime = want; } catch (e) {} }
+    const p = aud.play();
+    if (p && p.catch) p.then(() => { if (want != null && Math.abs(aud.currentTime - want) > .3) { try { aud.currentTime = want; } catch (e) {} } want = null; if (!withSound) { withSound = true; say('소리를 켰습니다'); } }).catch(() => {
+      if (withSound) { clock0 = aud.currentTime || clock0; wall0 = performance.now(); withSound = false; }
+      say('소리가 막혔습니다. 화면을 한 번 누르면 소리가 켜집니다', 6000); });
+  }
+  function start() { if (!ready || !warm) return; cover.hidden = true; document.body.classList.remove('paused'); pp.textContent = '❚❚';
+    if (now() >= window.DUR - .05) { want = 0; clock0 = 0; try { aud.currentTime = 0; } catch (e) {} }
+    if (!withSound) { clock0 = now(); wall0 = performance.now(); }
+    playing = true; playSound(); }
+  function stop() { if (!withSound) clock0 = now(); playing = false; aud.pause(); pp.textContent = '▶'; document.body.classList.add('paused'); }
+  cover.addEventListener('click', start);
+  pp.addEventListener('click', () => (playing ? stop() : start()));
+  frame.addEventListener('click', e => { if (e.target === cover || !ready || !warm) return;
+    if (playing && !withSound) { try { aud.currentTime = now(); } catch (err) {} playSound(); return; }   // a tap turns the sound on
+    playing ? stop() : start(); });
+  seek.addEventListener('input', () => { const t = +seek.value; clock0 = t; wall0 = performance.now(); want = t; try { aud.currentTime = t; } catch (e) {} last = -1; draw(t, true); });
+  aud.addEventListener('loadedmetadata', () => { if (want != null) { try { aud.currentTime = want; } catch (e) {} } });
+  aud.addEventListener('ended', stop);
+  aud.addEventListener('error', () => { if (withSound) { clock0 = now(); wall0 = performance.now(); withSound = false; say('소리 파일을 불러오지 못해 소리 없이 재생합니다', 6000); } });
+  const wait = () => { if (window.READY && window.render) { ready = true; seek.max = window.DUR;
+      for (const pt of (window.PREWARM || [])) { last = -1; draw(pt, true); }   // every shot drawn once while loading
+      last = -1; draw(window.COVER || 5, true);                                  // the cover is the promise itself
+      seek.value = 0; time.textContent = `0:00 / ${fmt(window.DUR)}`; document.body.classList.add('paused');
+      requestAnimationFrame(() => requestAnimationFrame(() => { warm = true; st.textContent = '재생 · 약 2분 43초 · 소리를 켜 주세요'; requestAnimationFrame(loop); })); }
+    else setTimeout(wait, 100); };
+  wait();
+  addEventListener('keydown', e => { if (e.code === 'Space' && ready && warm) { e.preventDefault(); playing ? stop() : start(); } });
+})();
+</script>

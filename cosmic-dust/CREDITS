@@ -1,0 +1,12 @@
+마지막 한 프레임 (The Last Frame) — credits
+
+Picture: every image drawn in code in the Lemo-Opuscar "Scratch Film" style (needle lines, transparent dye, scratched light).
+Sound: no music. Every effect synthesized in code (mix.py); nothing recorded or downloaded.
+Narration: Google Cloud Text-to-Speech, Chirp 3 HD voice "ko-KR-Chirp3-HD-Algenib".
+Facts and numbers: see research.md (Planck 2018; Bouvier & Wadhwa 2010; Dalrymple 2001; Djokic et al. 2017; Gumsley et al. 2017;
+ICS chart 2023; Langer et al. 2010; Renne et al. 2013; Hublin et al. 2017; Aubert et al. 2014; Zeder 2011; NASA).
+
+Fonts (SIL Open Font License 1.1, licences in fonts/):
+  Black Han Sans — Copyright 2015 The Black Han Sans Project Authors (github.com/zesstype/Black-Han-Sans)
+  D2Coding — Copyright (c) 2015, NAVER Corporation
+  Gowun Dodum — Copyright 2021 The Gowun Dodum Project Authors (github.com/yangheeryu/Gowun-Dodum)
