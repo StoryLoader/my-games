@@ -1,0 +1,24 @@
+{
+  "assets": [
+    {
+      "file": "assets/user/film/film_sound.mp4",
+      "source": "user",
+      "note": "The user's own film 「악몽을 지키는 파수꾼」 (nightmare-keeper/ in this repository, made in this session with the Lemo-Opuscar 2.5D Pixel Art style). The user asked (2026-11-18) to reuse the Shorts cut's narration and sound effects unchanged: the AAC track of nightmare-keeper/nightmare-keeper-shorts.mp4 is copied bit for bit (ffmpeg -c:a copy) under a 16x16 black picture so js/media.js can play it on the master clock. Voices: Google Cloud TTS Chirp 3 HD (narrator, 하루) and Fish Audio community voice '걸걸한 할머니' (노을), under the user's accounts; score and effects synthesized in code. Credits: licenses/nightmare-keeper-CREDITS.txt."
+    },
+    {
+      "file": "js/film/nk_film.js",
+      "source": "user",
+      "note": "The same film's picture, rendered live: the user's nightmare-keeper/*.js (story, sets, characters, overlay) bundled with esbuild 0.24.2 into one classic script, with three.js r170 (MIT, notice kept at the end of the file) and the Lemo-Opuscar engine pieces it was built on (MIT, licenses/nightmare-keeper-engine-LICENSE.txt). Changes for embedding only: element ids nk-stage / nk-ov, the voice durations inlined (no fetch from file://), the page globals moved under window.NK (NK.boot(), NK.render(t), NK.DUR). Size fixed at 1920x1080 by window.FILM_SIZE."
+    },
+    {
+      "file": "assets/user/sfx/sfx.mp4",
+      "source": "user",
+      "note": "No music (the user's standing rule: code-synthesized effects, no background music in explainers). The lecture's effects (the lantern struck and its hum, glass plates lifted and set down, letters engraved, chimes, the dive's breath of air, a wax seal, the hand lantern guttering, the lantern snuffed, a low room tone and crackle under the talk) are synthesized from code by sfx/make_sound.py in this project at the times the scenes registered (sfx/events.json from sfx/export_events.mjs) — no recorded or downloaded sound — and wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/mix/lecture_mix.mp3",
+      "source": "user",
+      "note": "The soundtrack for live playback: audio/narration.wav (this project's Google TTS narration) + assets/user/film/film_sound.mp4 (the user's film, whole at F0 and the 13 s highlight at H0, level-matched as media.js would) + assets/user/sfx/sfx.mp4 (effects synthesized in code, at 0.6), mixed by sfx/mix_master.py and brought to -16 LUFS. js/audio-master.js plays it in a normal browser so the film's sound starts with the first click (the user reported the film's sound missing when it was left to separate clips); render.py and the review tools keep the narration and the clips."
+    }
+  ]
+}

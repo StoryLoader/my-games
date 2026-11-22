@@ -1,0 +1,49 @@
+/* style.css — 「사람은 윤회하는가, 영영 사라지는가」: a watercolour dawn lake (storyboard.md → 월드 바이블). Stage 1920×1080. */
+
+:root {
+  --bg: #3d4a8f;
+  --fg: #2b2f4a;
+  --muted: #3f4568;
+  --accent: #ffcf7a;
+  --accent-2: #b7a3e8;
+  --gold: #b8730c; --lav: #6f4fcf; --mint: #11887a; --peach: #d8603e;
+  --gold-l: #ffd98f; --lav-l: #d6c8ff; --mint-l: #a6f0e3; --peach-l: #ffc2ae;
+
+  /* SIL OFL 1.1 fonts only (fonts/, css/fonts.css) */
+  --font: 'Pretendard', sans-serif;
+  --serif: 'Nanum Myeongjo', 'Pretendard', serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px;
+}
+:root { --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px; }
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+
+#stage { background: var(--bg); color: var(--fg); font-family: var(--font); font-variant-numeric: tabular-nums; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+#world { position: absolute; inset: 0; overflow: hidden; }
+#world canvas.world { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#ui { position: absolute; inset: 0; pointer-events: none; }
+.vignette { position: absolute; inset: 0; pointer-events: none; z-index: 40; background: radial-gradient(ellipse 95% 90% at 50% 45%, transparent 62%, rgba(30, 30, 70, 0.18) 100%); }
+
+/* ---- type: quiet serif on the sky, ink on light skies, white on dusk and night ---- */
+.t { position: absolute; margin: 0; white-space: nowrap; line-height: 1.18; opacity: 0; }
+.ink { color: var(--fg); text-shadow: 0 0 30px rgba(255, 255, 255, 0.95), 0 0 10px rgba(255, 255, 255, 0.85), 0 0 3px rgba(255, 255, 255, 0.8); }
+.lt { color: #fffaf0; text-shadow: 0 0 24px rgba(40, 30, 90, 0.55), 0 2px 10px rgba(40, 30, 90, 0.45); }
+.hero { font-family: var(--serif); font-weight: 800; letter-spacing: -0.02em; }
+.h1 { font-size: 132px; }
+.h2 { font-size: 92px; }
+.h3 { font-size: 64px; }
+.sub { font-family: var(--font); font-weight: 600; font-size: 40px; letter-spacing: -0.01em; }
+.ink .sub, .ink.sub { color: var(--muted); }
+.sub b { font-weight: 800; }
+.kick { font-family: var(--font); font-weight: 700; font-size: 30px; letter-spacing: 0.24em; opacity: 0.9; }
+.c-gold { color: var(--gold); } .c-lav { color: var(--lav); } .c-mint { color: var(--mint); } .c-peach { color: var(--peach); }
+.lt .c-gold { color: var(--gold-l); } .lt .c-lav { color: var(--lav-l); } .lt .c-mint { color: var(--mint-l); } .lt .c-peach { color: var(--peach-l); }
+.unit { font-size: 0.42em; font-weight: 700; margin-left: 0.08em; }
+
+/* chapter card: the question, centred high in the sky */
+.card { left: 0; right: 0; top: 120px; text-align: center; }
+.card .no { font-family: var(--font); font-weight: 700; font-size: 26px; letter-spacing: 0.4em; opacity: 0.7; }
+.card .q { display: block; margin-top: 18px; font-family: var(--serif); font-weight: 800; font-size: 84px; letter-spacing: -0.02em; }
+.card .q em { font-style: normal; }

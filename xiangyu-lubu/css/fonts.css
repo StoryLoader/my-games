@@ -1,0 +1,28 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* nanum-brush-script — Google Fonts ofl/nanumbrushscript @ 7af0d90b4d53 · HANDWRITING */
+@font-face {
+  font-family: 'Nanum Brush Script';   /* SIL OFL 1.1 · Copyright © 2010 NHN Corporation. All rights reserved. Font designed by Sandoll Communications Inc. · fonts/nanum-brush-script/OFL.txt */
+  src: url('../fonts/nanum-brush-script/NanumBrushScript-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+/* song-myung — Google Fonts ofl/songmyung @ 7af0d90b4d53 · SERIF */
+@font-face {
+  font-family: 'Song Myung';   /* SIL OFL 1.1 · Copyright 2018 The Song Myung Project Authors · fonts/song-myung/OFL.txt */
+  src: url('../fonts/song-myung/SongMyung-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+/* lxgw-wenkai-tc — Google Fonts ofl/lxgwwenkaitc @ 7af0d90b4d53 · HANDWRITING */
+@font-face {
+  font-family: 'LXGW WenKai TC';   /* SIL OFL 1.1 · Copyright 2024 The LXGW WenKai Project Authors (https://github.com/lxgw/LxgwWenkaiTC) · fonts/lxgw-wenkai-tc/OFL.txt */
+  src: url('../fonts/lxgw-wenkai-tc/LXGWWenKaiTC-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}

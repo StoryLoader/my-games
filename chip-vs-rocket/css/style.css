@@ -1,0 +1,87 @@
+/* style.css — 「반도체 vs 우주선, 무엇이 더 어려울까?」: two three.js worlds on one stage (storyboard.md).
+   Left = the chip world, light (a white cleanroom); right = the space world, dark. A vertical seam slides to give the
+   stage to whoever is speaking. Every word exists twice — once in each theme — and each copy is clipped to its own
+   side of the seam, so text is always dark on light and light on dark. Stage 1920×1080. */
+
+:root {
+  --bg: #0a0e18;
+  /* SIL OFL 1.1 fonts only (fonts/, css/fonts.css) */
+  --font: 'Pretendard', sans-serif;
+  --tech: 'Orbit', 'Pretendard', sans-serif;
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px;
+}
+#stage { --caption-bottom: 20px; --caption-max: 1500px; }
+#stage { background: var(--bg); font-family: var(--font); font-variant-numeric: tabular-nums; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+#world { position: absolute; inset: 0; overflow: hidden; }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+.ui { position: absolute; inset: 0; pointer-events: none; color: var(--fg); }
+#seam { position: absolute; top: 0; width: 6px; height: 1080px; margin-left: -3px; background: linear-gradient(180deg, #18b8a8, #ff8a3c); box-shadow: 0 0 22px rgba(255, 255, 255, 0.55); opacity: 0; }
+#sfx { position: absolute; left: 0; top: 0; width: 4px; height: 4px; opacity: 0; overflow: hidden; }
+
+.theme-light { --fg: #0f1b2a; --muted: #4c5b73; --faint: #76849a; --chip: #089a8c; --rocket: #d95f12; --gold: #a87400; --bad: #d63333; --ok: #128a45; --cold: #1f6fd0; --panel: rgba(255, 255, 255, 0.9); --card: #ffffff; --card-line: rgba(15, 27, 42, 0.14); --shadow: rgba(30, 50, 80, 0.22); }
+.theme-dark { --fg: #eef2f8; --muted: #9aa6ba; --faint: #76839a; --chip: #35e0d0; --rocket: #ff8a3c; --gold: #ffd34d; --bad: #ff5a5a; --ok: #5fe08a; --cold: #7fc4ff; --panel: rgba(8, 11, 20, 0.86); --card: #141a28; --card-line: rgba(255, 255, 255, 0.22); --shadow: rgba(0, 0, 0, 0.55); }
+
+.it { position: absolute; margin: 0; white-space: nowrap; opacity: 0; line-height: 1.25; }
+
+/* ---- type ---- */
+.hd { font-family: var(--font); font-weight: 900; letter-spacing: -0.02em; }
+.h1 { font-size: 132px; line-height: 1.08; }
+.h2 { font-size: 92px; line-height: 1.14; }
+.h3 { font-size: 64px; line-height: 1.2; }
+.h4 { font-size: 46px; line-height: 1.25; }
+.sub { font-family: var(--font); font-weight: 600; font-size: 38px; color: var(--muted); line-height: 1.4; }
+.sub b { color: var(--fg); font-weight: 800; }
+.kick { font-family: var(--tech); font-weight: 400; font-size: 32px; letter-spacing: 0.1em; color: var(--muted); }
+.src { display: block; margin-top: 14px; font-family: var(--font); font-weight: 500; font-size: 26px; color: var(--faint); letter-spacing: 0.01em; white-space: normal; max-width: 720px; line-height: 1.35; }
+.num { font-family: var(--tech); font-weight: 400; letter-spacing: -0.01em; }
+.c-chip { color: var(--chip); } .c-rocket { color: var(--rocket); } .c-gold { color: var(--gold); } .c-bad { color: var(--bad); } .c-ok { color: var(--ok); } .c-muted { color: var(--muted); } .c-cold { color: var(--cold); }
+.en { display: block; margin-top: 18px; font-family: var(--tech); font-size: 34px; color: var(--muted); letter-spacing: 0.02em; }
+
+/* ---- tags that ride on 3D objects ---- */
+.tag { position: absolute; left: 0; top: 0; opacity: 0; white-space: nowrap; font-family: var(--font); font-weight: 800; font-size: 40px; line-height: 1.2; padding: 8px 20px 10px; border-radius: 14px; background: var(--panel); color: var(--fg); border: 2px solid var(--card-line); box-shadow: 0 6px 16px var(--shadow); text-align: center; }
+.tag small { display: block; font-family: var(--font); font-weight: 600; font-size: 27px; color: var(--muted); }
+
+/* ---- scoreboard ---- */
+.board { left: 0; right: 0; top: 30px; display: flex; justify-content: center; align-items: center; gap: 22px; }
+.board .side { display: flex; align-items: center; gap: 20px; padding: 10px 26px; border-radius: 14px; background: var(--panel); border: 3px solid currentColor; }
+.board .side .nm { font-family: var(--font); font-weight: 900; font-size: 40px; }
+.board .side .sc { font-family: var(--tech); font-size: 58px; line-height: 1; min-width: 38px; text-align: center; color: var(--fg); }
+.board .pips { display: flex; gap: 10px; padding: 14px 18px; border-radius: 30px; background: var(--panel); }
+.board .pip { width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--faint); background: transparent; }
+.board .pip.chip { background: var(--chip); border-color: var(--chip); }
+.board .pip.rocket { background: var(--rocket); border-color: var(--rocket); }
+.board .pip.draw { background: linear-gradient(90deg, var(--chip) 50%, var(--rocket) 50%); border-color: var(--muted); }
+
+/* ---- round card ---- */
+.round { left: 0; right: 0; top: 300px; text-align: center; }
+.round .no { font-family: var(--tech); font-size: 44px; letter-spacing: 0.3em; color: var(--gold); }
+.round .ti { display: block; margin-top: 10px; font-family: var(--font); font-weight: 900; font-size: 168px; line-height: 1.1; letter-spacing: -0.02em; }
+.round .q { display: block; margin-top: 16px; font-family: var(--font); font-weight: 600; font-size: 44px; color: var(--muted); }
+
+/* ---- verdict stamp ---- */
+.verdict { padding: 18px 44px 20px; border: 8px solid currentColor; border-radius: 18px; background: var(--panel); font-family: var(--font); font-weight: 900; font-size: 84px; letter-spacing: 0.02em; text-align: center; line-height: 1.15; }
+.verdict small { display: block; font-family: var(--tech); font-weight: 400; font-size: 30px; letter-spacing: 0.2em; color: var(--muted); }
+
+/* ---- real photo cards (small, under the text) ---- */
+.card { width: var(--w, 360px); }
+.card .frame { background: var(--card); padding: 8px; border-radius: 10px; border: 2px solid var(--card-line); box-shadow: 0 14px 30px var(--shadow); }
+.card img { display: block; width: 100%; height: var(--h, 200px); object-fit: cover; object-position: var(--pos, 50% 50%); border-radius: 5px; }
+.card .lab { display: block; margin-top: 8px; font-family: var(--font); font-weight: 800; font-size: 27px; white-space: nowrap; color: var(--fg); white-space: normal; }
+.card .cap { display: block; margin-top: 2px; font-family: var(--font); font-weight: 500; font-size: 17px; line-height: 1.3; color: var(--faint); white-space: nowrap; overflow: hidden; }
+
+.crit { display: flex; align-items: center; gap: 22px; font-family: var(--font); font-weight: 800; font-size: 62px; }
+.crit .n { display: inline-flex; width: 76px; height: 76px; align-items: center; justify-content: center; border-radius: 50%; background: var(--gold); color: #fff; font-family: var(--tech); font-size: 42px; }
+.theme-dark .crit .n { color: #1a1405; }
+.plate { padding: 30px 46px; border-radius: 26px; background: var(--panel); box-shadow: 0 14px 30px var(--shadow); display: inline-block; }
+
+.check { font-family: var(--font); font-weight: 800; font-size: 50px; line-height: 1.5; }
+.check .m { display: inline-block; width: 70px; font-family: var(--tech); }
+
+.quote { font-family: var(--font); font-weight: 900; font-size: 104px; line-height: 1.2; letter-spacing: -0.02em; }
+
+.credits { width: 1640px; white-space: normal; font-family: var(--font); font-weight: 500; font-size: 30px; line-height: 1.55; color: var(--muted); padding: 34px 44px; border-radius: 24px; background: var(--panel); }
+.credits h4 { margin: 0 0 16px; font-family: var(--font); font-weight: 900; font-size: 56px; color: var(--fg); }
+.credits .grid { display: grid; grid-template-columns: 1.15fr 1fr; column-gap: 48px; }

@@ -1,0 +1,71 @@
+// 악몽을 지키는 파수꾼 2 — C 「칠십 년 치 꿈」: the timeline (single source of truth: the page, the mixer and the subtitles read
+// these numbers; tools/export.mjs writes them to timeline.json for Python). TREATMENT.md has the why of every shot.
+export const DUR = 125.6;
+
+// shot → set (town | tower). a/b in seconds.
+export const SHOTS = [
+  { id: 'snore', set: 'tower', a: 0.0, b: 13.4 },        // 노을 asleep; every snore pops a coloured dream moth; 하루 frozen beside her
+  { id: 'title', set: 'town', a: 13.4, b: 19.6 },        // the tower at night, colours leaking from its top: the title
+  { id: 'shadow', set: 'tower', a: 19.6, b: 34.0 },      // his lantern through a dream moth: a shadow play on the wall (the fish in a hat, the teapots)
+  { id: 'chase', set: 'tower', a: 34.0, b: 48.4 },       // he calls them to the lantern; they ignore it; he jumps, falls; a fish hat on his shadow
+  { id: 'burst', set: 'tower', a: 48.4, b: 58.0 },       // the biggest snore: dozens at once, up the stove pipe
+  { id: 'chimney', set: 'town', a: 58.0, b: 62.6 },      // out of the tower's chimney, over the town
+  { id: 'map', set: 'town', a: 62.6, b: 70.6 },          // straight overhead: windows take dream colours one by one (signature)
+  { id: 'alley', set: 'town', a: 70.6, b: 76.2 },        // he runs after them; a window shows the fish; he gives up and turns back
+  { id: 'lastDream', set: 'tower', a: 76.2, b: 90.4 },   // the last, deep-blue dream: the young keeper on the tower top, season after season
+  { id: 'allWindows', set: 'town', a: 90.4, b: 95.4 },   // every window in town shows the same keeper; dawn begins
+  { id: 'morning', set: 'town', a: 95.4, b: 121.6 },     // the villagers at the tower door; 노을 comes out, puzzled
+  { id: 'coda', set: 'tower', a: 121.6, b: 125.6 },      // morning light on the wall: the fish in a hat spins once more
+];
+
+export const T = {
+  snores: [0.3, 3.6, 6.9, 9.2, 10.0, 10.8, 11.6, 12.3, 20.4, 23.9, 27.2, 30.9, 34.3, 37.9, 41.4, 44.9],   // her snores (sound + breath)
+  pops: [0.55, 9.45, 10.25, 11.05, 11.85, 12.55, 27.45, 35.0, 41.6, 45.1],                                  // a dream moth pops out on these snores
+  fishOn: 21.0, fishOff: 28.0, teapotOn: 28.4, teapotOff: 34.6,   // the wall plays of the shadow shot
+  jump: 39.6, fall: 41.1, sitUp: 42.5, hatLand: 43.8, hatShadow: [44.0, 48.4],
+  big: 48.9, stream: [49.5, 56.6],                                 // the biggest snore; the swarm up the stove pipe
+  spout: [58.0, 62.6], winStart: 62.9, winStep: .5,                // out of the chimney; windows coloured one by one
+  run: [70.8, 74.6], stop: 74.8, turn: 75.4,
+  blueRise: 77.2, playOn: 78.6, snow: [79.4, 82.8], rain: [82.8, 86.2], leaves: [86.2, 89.6], blueOut: [88.4, 90.4],
+  keeperWin: 90.6, dawn: 91.8,
+  walkIn: [95.6, 99.0], doorOpen: 113.6, noeulOut: [114.0, 115.6],
+  fishSpin: [122.2, 124.0],
+  fadeOut: [124.4, 125.6],
+};
+
+// dream colours (the pops cycle through them; windows in town take them)
+export const DREAMS = ['#ff8fc8', '#ffd36a', '#5fe0c8', '#8fd0ff', '#c9a0ff'];   // pink, gold, teal, sky, lilac
+export const BLUE = '#3a5cff';                                                     // the last dream: deep blue
+
+// voice lines: t = start; duration from voices/dur.json. dlg: shown in the dialogue box (on-screen speaker), else subtitle
+export const VO = [
+  { id: 'n1', t: 1.2, sub: '마을의 악몽을 지키느라 칠십 년 동안 잠들지 못했던 노을 할머니가, 드디어 잠든 밤이었습니다.',
+    parts: [[0, '마을의 악몽을 지키느라 칠십 년 동안 잠들지 못했던'], [4.1, '노을 할머니가, 드디어 잠든 밤이었습니다.']] },
+  { id: 'n2', t: 9.3, sub: '밀린 꿈들이, 한꺼번에 쏟아지기 시작했습니다.' },
+  { id: 'h1', t: 23.6, dlg: true, who: '하루', sub: '…물고기가, 모자를 썼어?' },
+  { id: 'h2', t: 34.6, dlg: true, who: '하루', sub: '이리 와! 등불로 와야지!' },
+  { id: 'n3', t: 38.6, sub: '그런데 좋은 꿈은, 새 파수꾼 하루의 등불을 따라오지 않았습니다.' },
+  { id: 'h3', t: 51.2, dlg: true, who: '하루', sub: '안 돼, 거기로 나가면…!' },
+  { id: 'n4', t: 58.6, sub: '할머니의 꿈들은 굴뚝을 빠져나가, 잠든 집집마다 스며들었습니다.' },
+  { id: 'n5', t: 79.4, sub: '그리고 마지막 꿈은, 칠십 년 동안 밤마다 혼자서 마을을 지키던 꿈이었습니다.' },
+  { id: 'v1', t: 96.8, dlg: true, who: '아저씨', sub: '나 어젯밤에 이상한 꿈 꿨어. 모자 쓴 물고기가…' },
+  { id: 'v2', t: 101.2, dlg: true, who: '아주머니', sub: '나도. 그리고… 할머니가 밤새, 혼자 탑을 지키고 계셨어.' },
+  { id: 'n6', t: 107.2, sub: '그날 아침, 온 마을이 처음으로 알게 되었습니다. 누가 칠십 년 동안 자기들의 밤을 지켜 왔는지.',
+    parts: [[0, '그날 아침, 온 마을이 처음으로 알게 되었습니다.'], [4.7, '누가 칠십 년 동안 자기들의 밤을 지켜 왔는지.']] },
+  { id: 'k1', t: 116.6, dlg: true, who: '노을', sub: '…다들, 무슨 일이냐?' },
+  { id: 'h4', t: 119.2, dlg: true, who: '하루', sub: '할머니 꿈 이야기요.' },
+];
+
+// cards drawn by the overlay (Korean only: the film's language)
+export const CARDS = [
+  { kind: 'title', a: 13.8, b: 19.3, text: '악몽을 지키는 파수꾼 2', sub: '칠십 년 치 꿈' },
+  { kind: 'place', a: 95.8, b: 99.6, label: '등불탑 마을', text: '다음 날 아침' },
+];
+
+// black dips between sets: [cut, out, in]
+export const FADES = [[13.4, .35, .45], [19.6, .35, .45], [58.0, .3, .4], [76.2, .35, .45], [90.4, .3, .4], [95.4, .45, .6], [121.6, .35, .45]];
+
+export const shotAt = t => SHOTS.find(s => t >= s.a && t < s.b) || SHOTS[SHOTS.length - 1];
+export const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+export const seg = (t, a, b) => clamp((t - a) / (b - a));
+export const ss = x => { x = clamp(x); return x * x * (3 - 2 * x); };

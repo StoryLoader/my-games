@@ -1,0 +1,8 @@
+out/
+stills/
+screenshots/
+voices/.cache/
+mix.wav
+music/score.wav
+events.json
+voice_samples/

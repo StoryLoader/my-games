@@ -1,0 +1,52 @@
+/* style.css — 「항우 vs 여포」: ink on rice paper (storyboard.md → 월드 바이블). Stage pixels, 1920×1080. */
+:root {
+  --paper: #efe6d4;
+  --ink: #151315;
+  --ink-2: #4a4646;
+  --bronze: #b08a3e;      /* 항우, the cauldron */
+  --red: #a3302a;         /* 여포, the red horse only */
+  --seal: #c0392b;        /* seals */
+  --font: 'Pretendard', sans-serif;
+  --han: 'LXGW WenKai TC', 'Song Myung', serif;     /* Hanja inscriptions */
+  --ko: 'Song Myung', 'LXGW WenKai TC', 'Pretendard', serif;   /* Korean glosses, numbers, titles */
+  --brush: 'Nanum Brush Script', 'LXGW WenKai TC', 'Pretendard', cursive;  /* brushed Korean words (Hanja and symbols from the next fonts) */
+  --mono: 'D2Coding', 'Pretendard', monospace;
+  --safe: 96px; --safe-top: 96px; --safe-bottom: 96px; --safe-right: 96px;
+}
+#stage { background: var(--paper); color: var(--ink); font-family: var(--font); --caption-bottom: 20px; }
+#stage button, #stage input, #stage select, #stage textarea { font: inherit; letter-spacing: inherit; }
+
+#world { position: absolute; inset: 0; overflow: hidden; }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#light { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: 0.6; }
+#writing { position: absolute; inset: 0; pointer-events: none; }
+#paper { position: absolute; inset: 0; width: 1920px; height: 1080px; mix-blend-mode: multiply; opacity: 0.9; pointer-events: none; }
+#inkfx { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+#vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 75% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(60,44,28,0.28) 100%); }
+
+/* ---------- writing on the painting ---------- */
+.insc { position: absolute; display: flex; flex-direction: row-reverse; gap: 22px; align-items: flex-start; }
+.insc .col { writing-mode: vertical-rl; font-family: var(--han); font-weight: 700; color: var(--ink); line-height: 1.12; letter-spacing: 0.06em; white-space: nowrap; }
+.insc .col.ko { font-family: var(--ko); font-weight: 400; color: var(--ink-2); letter-spacing: 0.12em; }
+.insc .seal { width: 64px; height: 64px; align-self: flex-end; }
+.brush { position: absolute; font-family: var(--brush); color: var(--ink); white-space: nowrap; line-height: 1; }
+.han { position: absolute; font-family: var(--han); font-weight: 700; color: var(--ink); white-space: nowrap; line-height: 1; }
+.ko { position: absolute; font-family: var(--ko); color: var(--ink); white-space: nowrap; line-height: 1.1; }
+.num { position: absolute; font-family: var(--brush); color: var(--ink); white-space: nowrap; line-height: 1; font-variant-numeric: lining-nums; }
+.stamp { position: absolute; }
+.light-text { color: var(--paper); }
+.light-text .col, .light-text .col.ko { color: var(--paper); }
+
+/* ---------- real paintings and pages (assets/user/img, provenance.json): mounted as hanging scrolls in the world ---------- */
+.mount { position: absolute; padding: 26px 22px 30px; background: #d8ccb2; box-shadow: 0 18px 40px rgba(40,28,18,0.35), inset 0 0 0 10px #5d3f30, inset 0 0 0 13px #b08a3e; }
+.mount::before, .mount::after { content: ''; position: absolute; left: -16px; right: -16px; height: 16px; background: linear-gradient(#3b2a22, #20160f 60%, #3b2a22); border-radius: 8px; }
+.mount::before { top: -10px; } .mount::after { bottom: -12px; }
+.mount img { display: block; width: 100%; height: auto; filter: sepia(0.18) contrast(1.02); }
+.mount .cap { margin-top: 10px; font-family: var(--ko); font-size: 26px; color: #2a2220; text-align: center; line-height: 1.3; white-space: nowrap; }
+.mount .cap small { display: block; font-size: 18px; color: #5a4c44; }
+.mount.page { padding: 18px; background: #e6dcc6; box-shadow: 0 18px 40px rgba(40,28,18,0.35), inset 0 0 0 2px #8a7a62; }
+.mount.page::before, .mount.page::after { display: none; }
+.speaker { position: absolute; left: 96px; top: 86px; display: flex; align-items: center; gap: 14px; }
+.speaker canvas { width: 76px; height: 76px; }
+.speaker span { font-family: var(--brush); font-size: 92px; color: var(--ink); white-space: nowrap; }
+.speaker.light span { color: var(--paper); }

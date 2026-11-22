@@ -1,0 +1,17 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* playfair-display — Google Fonts ofl/playfairdisplay @ 29b4ec6df252 · SERIF */
+@font-face {
+  font-family: 'Playfair Display';   /* SIL OFL 1.1 · Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \ · fonts/playfair-display/OFL.txt */
+  src: url('../fonts/playfair-display/PlayfairDisplay[wght].ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Playfair Display';   /* SIL OFL 1.1 · Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \ · fonts/playfair-display/OFL.txt */
+  src: url('../fonts/playfair-display/PlayfairDisplay-Italic[wght].ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: block;
+}

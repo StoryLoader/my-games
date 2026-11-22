@@ -1,0 +1,8 @@
+out/
+screenshots/
+voices/.cache/
+mix.wav
+mix_viewer.wav
+music/score.wav
+events.json
+fonts/src/

@@ -1,0 +1,94 @@
+{
+  "assets": [
+    {
+      "file": "assets/user/vid/demo_a.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (0:27.3–0:33.3) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+    },
+    {
+      "file": "assets/user/vid/demo_b.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (1:12.5–1:19.5) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+    },
+    {
+      "file": "assets/user/vid/demo_c.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (2:31–2:38) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+    },
+    {
+      "file": "assets/user/vid/demo_d.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (5:12–5:19) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+    },
+    {
+      "file": "assets/user/vid/demo_e.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a making-of tutorial that shows the finished video at the start and the end (\"완성된 영상을 처음과 마지막에 보여줄것\"). An excerpt (6:08.2–6:16.4) of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」, rendered in this repository from ../chip-vs-rocket by that project's render.py (30 fps, 1080p, captions on, no audio). Not downloaded from anywhere."
+    },
+    {
+      "file": "assets/user/sfx/keys_a.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a burst of keyboard clicks, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/keys_b.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a second burst of keyboard clicks, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/enter.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a return-key press, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/step.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a two-note chime, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/whoosh.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a soft swish, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/pop.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a soft pop, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/tick.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a short tick, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/ok.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a rising two-note \"done\" sound, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/shutter.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a camera-shutter click, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/hit.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a low soft impact, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/rewind.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a falling tape-scrub sound, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/sfx/buzz.mp4",
+      "source": "user",
+      "note": "The user asked (2026-11-12) for code-synthesized sound effects and (2026-11-14) for more of them, louder (\"효과음 추가해\"). a short low double buzz, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/img/finished_frame.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-14) for a title, description and thumbnail for this video (\"영상 제목, 설명 썸네일 만들어줘\"). One frame (2.6 s) of assets/user/vid/demo_a.mp4 — the excerpt of the user's own finished video 「반도체 vs 우주선, 무엇이 더 어려울까?」 rendered in this repository from ../chip-vs-rocket — shown in the monitor of thumbnail/thumbnail.html. Not downloaded from anywhere."
+    }
+  ]
+}

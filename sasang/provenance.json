@@ -1,0 +1,69 @@
+{
+ "assets": [
+  {
+   "file": "assets/user/leejema-portrait.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:이제마 초상.jpg — Portrait of Lee Je-ma, drawn c. 1920 from memory (from 상교현토 동의수세보원), author unknown — public domain. Credit shown on screen and in the end credits. 500px thumbnail of the original served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/donguisusebowon-book.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:동의수세보원.jpg — photo of a copy of 『동의수세보원』 by 이강철 — CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0). Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/samgyetang.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Samgye-tang 2.jpg — photo by wizdata — CC0. Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/chillies.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Korean chillies.jpg — photo by yoopilsun — CC0. Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/pork-belly.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Samgyeopsal (pork belly).jpg — photo by idkjm123 — CC0. Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/naengmyeon.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Cold Buckwheat Noodle.jpg — photo by ProjectManhattan — CC0. Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/watermelon.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Slices of watermelon in Tokyo area - Sep 1 2019.jpeg — photo by Nesnad — CC BY 4.0 (https://creativecommons.org/licenses/by/4.0). Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/ginseng.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Insam (ginseng).jpg — photo by 국립국어원 — CC BY-SA 2.0 KR (https://creativecommons.org/licenses/by-sa/2.0/kr). Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/honey.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Dipper stick and honey in a jar.jpg — photo by Shixart1985 — CC BY 2.0 (https://creativecommons.org/licenses/by/2.0). Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/hanu.jpg",
+   "source": "user",
+   "note": "The user asked (2026-11-12) to actively use real photos/materials with sources (\"관련 실사 자료 적극 활용\"). Wikimedia Commons, File:Hanu 5.jpg — photo by Charlie Yoon — CC0. Credit shown on screen and in the end credits. 960px thumbnail served by upload.wikimedia.org, otherwise unmodified."
+  },
+  {
+   "file": "assets/user/sfx/swish.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects (\"2번과 3번 함께 사용해\"). a brush-stroke whoosh, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  },
+  {
+   "file": "assets/user/sfx/stamp.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects (\"2번과 3번 함께 사용해\"). a seal-stamp thump, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  },
+  {
+   "file": "assets/user/sfx/chime.mp4",
+   "source": "user",
+   "note": "The user asked (2026-11-12) for code-synthesized sound effects (\"2번과 3번 함께 사용해\"). a small bell chime, synthesized from code by sfx/make_sfx.py in this project (no recorded or downloaded sound), wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+  }
+ ]
+}

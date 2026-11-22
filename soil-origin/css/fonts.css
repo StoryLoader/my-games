@@ -1,0 +1,26 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* gowun-batang — Serif (바탕/명조): emotional stories, editorial pieces, quotes, literary titles. Regular + Bold. */
+@font-face {
+  font-family: 'Gowun Batang';   /* SIL OFL 1.1 · © 2021 The Gowun Batang Project Authors (Yanghee Ryu) · fonts/gowun-batang/OFL.txt */
+  src: url('../fonts/gowun-batang/GowunBatang-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Gowun Batang';   /* SIL OFL 1.1 · © 2021 The Gowun Batang Project Authors (Yanghee Ryu) · fonts/gowun-batang/OFL.txt */
+  src: url('../fonts/gowun-batang/GowunBatang-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+/* east-sea-dokdo — Google Fonts ofl/eastseadokdo @ 5bb28733cec3 · HANDWRITING */
+@font-face {
+  font-family: 'East Sea Dokdo';   /* SIL OFL 1.1 · Copyright (c) YoonDesign Inc. All Rights Reserved. · fonts/east-sea-dokdo/OFL.txt */
+  src: url('../fonts/east-sea-dokdo/EastSeaDokdo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}

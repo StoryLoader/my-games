@@ -1,0 +1,49 @@
+{
+  "assets": [
+    {
+      "file": "assets/user/sfx/sfx.mp4",
+      "source": "user",
+      "note": "No music (the user's standing rule: code-synthesized effects, no background music in documentaries). The effects track (sea, wind, storm and thunder, the stone hall, under the water, oars, armies at war, the bull, orichalcum's gleam, the earthquake and flood, Thera's eruption, Helike's wave, ripples) is synthesized from code by sfx/make_sound.py in this project from js/cues.js — no recorded or downloaded sound — and wrapped with a 16x16 black picture by ffmpeg so js/media.js can play it on the master clock."
+    },
+    {
+      "file": "assets/user/img/plato.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Plato Silanion Musei Capitolini MC1377.jpg (https://commons.wikimedia.org/wiki/File%3APlato_Silanion_Musei_Capitolini_MC1377.jpg) — licence: CC BY 2.5 (https://creativecommons.org/licenses/by/2.5); author: Marie-Lan Nguyen; Plato, copy of the portrait made by Silanion ca. 370 BC for the Academia in Athens"
+    },
+    {
+      "file": "assets/user/img/kircher.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Atlantis Kircher Mundus subterraneus 1678.jpg (https://commons.wikimedia.org/wiki/File%3AAtlantis_Kircher_Mundus_subterraneus_1678.jpg) — licence: Public domain; author: Athanasius Kircher; fiktive Karte mit Atlantis"
+    },
+    {
+      "file": "assets/user/img/donnelly.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Picture of Ignatius Donnelly.jpg (https://commons.wikimedia.org/wiki/File%3APicture_of_Ignatius_Donnelly.jpg) — licence: Public domain; author: not stated; Ignatius Donnelly"
+    },
+    {
+      "file": "assets/user/img/donnelly_map.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Atlantis map 1882.jpg (https://commons.wikimedia.org/wiki/File%3AAtlantis_map_1882.jpg) — licence: Public domain; author: Donnelly, Ignatius; "
+    },
+    {
+      "file": "assets/user/img/santorini.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:ISS-48 Santorini Caldera, Greece.jpg (https://commons.wikimedia.org/wiki/File%3AISS-48_Santorini_Caldera%2C_Greece.jpg) — licence: Public domain; author: NASA; This photo of the Santorini Caldera in southeastern Greece was taken from the International Space Station."
+    },
+    {
+      "file": "assets/user/img/akrotiri.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Ship procession fresco, part 2, Akrotiri, Greece.jpg (https://commons.wikimedia.org/wiki/File%3AShip_procession_fresco%2C_part_2%2C_Akrotiri%2C_Greece.jpg) — licence: Public domain; author: unknown author; Ship procession fresco, part 2, Akrotiri, Greece."
+    },
+    {
+      "file": "assets/user/img/gibraltar.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Strait of Gibraltar (satellite view).jpg (https://commons.wikimedia.org/wiki/File%3AStrait_of_Gibraltar_%28satellite_view%29.jpg) — licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0); author: Axelspace Corporation; Strait of Gibraltar, as viewed from Hodoyoshi-1 satellite."
+    },
+    {
+      "file": "assets/user/img/helike.jpg",
+      "source": "user",
+      "note": "The user asked (2026-11-17, standing for this series) to search for and use real old books, maps, portraits and photos. Downloaded from Wikimedia Commons: File:Excavations at Helike.jpg (https://commons.wikimedia.org/wiki/File%3AExcavations_at_Helike.jpg) — licence: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en); author: Sappho50; Excavation at the Hellenistic Dyeworks in Helike, Achaea,Greece, 2007"
+    }
+  ]
+}

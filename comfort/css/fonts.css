@@ -1,0 +1,10 @@
+/* fonts.css — @font-face for fonts added with scripts/add_font.mjs (catalogue or Google Fonts OFL). Generated; don't add other fonts by hand. */
+
+/* gowun-dodum — Google Fonts ofl/gowundodum @ c30b221beb0c · SANS_SERIF */
+@font-face {
+  font-family: 'Gowun Dodum';   /* SIL OFL 1.1 · Copyright 2021 The Gowun Dodum Project Authors (https://github.com/yangheeryu/Gowun-Dodum) · fonts/gowun-dodum/OFL.txt */
+  src: url('../fonts/gowun-dodum/GowunDodum-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
